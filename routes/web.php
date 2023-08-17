@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +21,17 @@ Route::get('/', function () {
     return view('layouts/app');
 });
 
-Route::get('/login', function () {
-    return view('auth/login');
-});
+// Auth
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::post('/login', [LoginController::class, 'store']);
+Route::post('/logout', [LogoutController::class, 'store'])->name('logout');
+
+
+// Registro - Rutas no visibles para los usuarios (solo el admin crea cuentas)
+Route::get('/register', [RegisterController::class, 'index'])->name('register');
+Route::post('/register', [RegisterController::class, 'store']);
+
+// Productos
+Route::get('/producto/buscador', [ProductoController::class, 'index'])->name('buscador');
+
+
