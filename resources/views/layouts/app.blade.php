@@ -42,7 +42,7 @@
     </header>
 
     <main class=" container mx-auto mt-10">
-        <h2 class=" font-black text-3xl mb-10 text-center">
+        <h2 class=" font-black text-white text-5xl mb-10 text-center">
             @yield('titulo')
         </h2>
 

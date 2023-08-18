@@ -14,4 +14,8 @@ class ProductoController extends Controller
     {
         return view('productos.buscador');
     }
+    public function create()
+    {
+        return view('productos.create');
+    }
 }

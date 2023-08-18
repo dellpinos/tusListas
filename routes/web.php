@@ -33,5 +33,5 @@ Route::post('/register', [RegisterController::class, 'store']);
 
 // Productos
 Route::get('/producto/buscador', [ProductoController::class, 'index'])->name('buscador');
-
+Route::get('/producto/nuevo-producto', [ProductoController::class, 'create'])->name('producto.create');
 
