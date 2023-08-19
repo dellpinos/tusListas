@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Precio;
+use App\Models\Provider;
+use App\Models\Categoria;
+use App\Models\Fabricante;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Producto extends Model
 {
@@ -17,4 +21,22 @@ class Producto extends Model
         'distribuidora_id',
         'categoria_id'
     ];
+
+    public function precio()
+    {
+        return $this->hasOne(Precio::class);
+    }
+    public function fabricante()
+    {
+        return $this->belongsTo(Fabricante::class);
+    }
+    public function categoria()
+    {
+        return $this->belongsTo(Categoria::class);
+    }
+    public function provider()
+    {
+        return $this->belongsTo(Provider::class);
+    }
+    
 }

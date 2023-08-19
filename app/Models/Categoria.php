@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Precio;
+use App\Models\Producto;
+use App\Models\ProvidersCategorias;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Categoria extends Model
 {
@@ -14,4 +17,17 @@ class Categoria extends Model
         'ganancia',
         'providersCategorias_id'
     ];
+
+    public function productos()
+    {
+        return $this->hasMany((Producto::class));
+    }
+    public function providersCategrorias()
+    {
+        return $this->hasMany((ProvidersCategorias::class));
+    }
+    public function precios()
+    {
+        return $this->hasMany((Precio::class));
+    }
 }

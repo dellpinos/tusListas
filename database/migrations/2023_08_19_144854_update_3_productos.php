@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::table('productos', function (Blueprint $table) {
 
-            $table->string('codigo', 4)->unique();
-            $table->foreignId('provider_id');
-            $table->foreignId('categoria_id');
+            $table->dropColumn('precio_id');
+
             
         });
     }
@@ -26,11 +25,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('productos', function (Blueprint $table) {
+            $table->foreignId('precio_id');
 
-            $table->dropColumn('codigo');
-            $table->dropColumn('provider_id');
-            $table->dropColumn('categoria_id');
-            
         });
     }
 };
+

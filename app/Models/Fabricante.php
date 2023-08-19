@@ -16,4 +16,13 @@ class Fabricante extends Model
         'descripcion'
 
     ];
+
+    public function productos()
+    {
+        return $this->hasMany((Producto::class));
+    }
+    public function precios()
+    {
+        return $this->hasMany((Precio::class));
+    }
 }
