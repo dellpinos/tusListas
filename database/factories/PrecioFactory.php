@@ -17,7 +17,10 @@ class PrecioFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'precio' => $this->faker->randomFloat($nbMaxDecimals = NULL, $min = 50, $max = 8000),
+            'dolar' => $this->faker->numberBetween($min = 200, $max = 1000),
+            'fabricante_id' => $this->faker->numberBetween($min = 1, $max = 40),
+            'categoria_id' => $this->faker->numberBetween($min = 1, $max = 40)
         ];
     }
 }

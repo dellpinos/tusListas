@@ -17,11 +17,13 @@ class ProviderFactory extends Factory
     public function definition(): array
     {
         return [
-            'nombre' => $this->faker->name(),
+            'nombre' => $this->faker->company(),
             'email' => $this->faker->email(),
             'telefono' => $this->faker->phoneNumber(),
-            'vendedor' => $this->faker->word(),
-            'web' => $this->faker->url()
+            'vendedor' => $this->faker->name(),
+            'web' => $this->faker->url(),
+            'ganancia' => $this->faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 1),
+            'providersCategorias_id' => $this->faker->numberBetween($min = 1, $max = 30),
         ];
     }
 }

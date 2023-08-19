@@ -14,6 +14,8 @@ class Provider extends Model
         'email',
         'telefono',
         'vendedor',
-        'web'
+        'web',
+        'providersCategorias_id',
+        'ganancia'
     ];
 }

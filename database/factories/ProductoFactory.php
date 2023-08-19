@@ -17,7 +17,12 @@ class ProductoFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'nombre' => $this->faker->colorName(),
+            'codigo' => $this->faker->regexify('[A-Za-z0-9]{4}'),
+            'fabricante_id' => $this->faker->numberBetween($min = 1, $max = 40),
+            'categoria_id' => $this->faker->numberBetween($min = 1, $max = 40),
+            'precio_id' => $this->faker->numberBetween($min = 1, $max = 300),
+            'provider_id' => $this->faker->numberBetween($min = 1, $max = 30),
         ];
     }
 }
