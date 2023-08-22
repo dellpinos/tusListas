@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Precio;
 use App\Models\Producto;
 use App\Models\Provider;
@@ -33,9 +34,7 @@ class ProductoController extends Controller
         $codigo = generarCodigo();
 
         $categorias = Categoria::orderBy('nombre', 'asc')->get();
-
         $proveedores = Provider::orderBy('nombre', 'asc')->get();
-
         $fabricantes = Fabricante::orderBy('nombre', 'asc')->get();
 
 
@@ -53,8 +52,11 @@ class ProductoController extends Controller
             'codigo' => Str::lower($request->codigo),
         ]);
 
-
-
+        // Tengo que almacenar o saber que ganancia quiere utilizar el usuario
+        // Ya existe el name "ganancia", tiene los valores "proveedor" o "categoria"
+        // Deberia agregar una tercer opción, personalizada que sea excusiva de este producto
+        // Añadir columna
+        // Tambien pensar sección para hacer los aumentos, por categoria o por proveedor
 
         // Primero tengo que crear el fabircante, la categoria, provider 
         $producto = Producto::create([
@@ -65,6 +67,7 @@ class ProductoController extends Controller
             'provider_id' => $request->provider_id
 
         ]);
+
 
 
         Precio::create([
@@ -79,20 +82,27 @@ class ProductoController extends Controller
         // Redireccionar a "show producto" con todos sus datos
 
         return redirect()->route('producto.show', ['producto' => $producto]);
-
-
     }
     public function show(Producto $producto)
     {
-
         $precio = Precio::where('producto_id', $producto->id)->first();
+        
+        $precio->updated_at = $precio->updated_at->subHours(3);
 
         $fabricante = Fabricante::find($producto->fabricante_id);
-
         $categoria = Categoria::find($producto->categoria_id);
         $provider = Provider::find($producto->provider_id);
 
 
+
+
+        // Que ganancia aplica?
+
+        // if()
+
+        // $gananciaAplicada = 
+
+        // $precio->venta = $precio->precio * ;
 
 
 

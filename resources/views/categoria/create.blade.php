@@ -32,7 +32,7 @@
                     @enderror
                 </div>
 
-{{--                 Falta el proveedor, provablemente necesite un hidden submit porque es el id de la tabla pivote --}}
+{{--                 Falta el proveedor, probablemente necesite un hidden submit porque es el id de la tabla pivote --}}
 
 
                 <input type="submit" value="Nueva Categoria"

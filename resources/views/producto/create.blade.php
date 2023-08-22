@@ -5,8 +5,6 @@
 
 
 @section('contenido')
-
-
     <div class="md:flex md:justify-center md:gap-10 md:items-center">
         <div class="md:w-6/12 p-5">
             <img src="#" alt="Imagen registro de usuarios">
@@ -41,9 +39,7 @@
                         <option value="" selected disabled>- Seleccionar -</option>
 
                         @foreach ($categorias as $categoria)
-
                             <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
-
                         @endforeach
 
                         @error('categoria')
@@ -55,14 +51,12 @@
                 <div class="mb-5">
                     <label for="fabricante" class="mb-2 block uppercase text-gray-500 font-bold">Laboratorio -
                         Fabricante</label>
-                    <select class="border p-3 w-full rounded-lg @error('fabricante') border-red-500 @enderror" id="fabricante"
-                        name="fabricante_id">
+                    <select class="border p-3 w-full rounded-lg @error('fabricante') border-red-500 @enderror"
+                        id="fabricante" name="fabricante_id">
                         <option value="" selected disabled>- Seleccionar -</option>
 
                         @foreach ($fabricantes as $fabricante)
-
                             <option value="{{ $fabricante->id }}">{{ $fabricante->nombre }}</option>
-
                         @endforeach
 
                         @error('fabricante')
@@ -79,9 +73,7 @@
                         <option value="" selected disabled>- Seleccionar -</option>
 
                         @foreach ($proveedores as $proveedor)
-
                             <option value="{{ $proveedor->id }}">{{ $proveedor->nombre }}</option>
-
                         @endforeach
 
                         @error('proveedor')
@@ -107,6 +99,14 @@
                         <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
                     @enderror
                 </div>
+
+                <div class="mb-5 flex justify-between">
+                    <label for="dolar" class=" block uppercase text-gray-500">Categoria</label>
+                    <input type="radio" value="categoria" name="ganancia" />
+                    <label for="dolar" class=" block uppercase text-gray-500">Proveedor</label>
+                    <input type="radio" value="proveedor" name="ganancia" />
+                </div>
+
 
 
                 <input type="submit" value="Crear Producto"
