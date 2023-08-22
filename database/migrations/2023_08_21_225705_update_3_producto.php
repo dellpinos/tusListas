@@ -12,10 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('productos', function (Blueprint $table) {
-
             $table->dropColumn('precio_id');
-
-            
         });
     }
 
@@ -26,8 +23,6 @@ return new class extends Migration
     {
         Schema::table('productos', function (Blueprint $table) {
             $table->foreignId('precio_id');
-
         });
     }
 };
-

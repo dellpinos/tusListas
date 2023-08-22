@@ -16,7 +16,8 @@ class Precio extends Model
         'precio',
         'dolar',
         'fabricante_id',
-        'categoria_id'
+        'categoria_id',
+        'producto_id'
     ];
 
     public function categoria()

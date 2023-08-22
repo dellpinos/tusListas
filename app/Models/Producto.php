@@ -17,15 +17,11 @@ class Producto extends Model
         'nombre',
         'codigo',
         'fabricante_id',
-        'precio_id',
-        'distribuidora_id',
+        'provider_id',
         'categoria_id'
     ];
 
-    public function precio()
-    {
-        return $this->hasOne(Precio::class);
-    }
+
     public function fabricante()
     {
         return $this->belongsTo(Fabricante::class);
