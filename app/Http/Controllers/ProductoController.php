@@ -58,17 +58,36 @@ class ProductoController extends Controller
         // Añadir columna
         // Tambien pensar sección para hacer los aumentos, por categoria o por proveedor
 
+        $ganancia = $request->ganancia;
+        $ganancia_tipo = '';
+
+        if($ganancia === 'proveedor') {
+            $ganancia_tipo = 'proveedor';
+            $ganancia_prod = null;
+        } elseif ($ganancia === 'categoria') {
+            $ganancia_tipo = 'categoria';
+            $ganancia_prod = null;
+        } else {
+            $ganancia_prod = $ganancia;
+            $ganancia_tipo = 'producto';
+        }
+        
+        if(!$ganancia) {
+            return redirect()->refresh();
+        }
+
+
         // Primero tengo que crear el fabircante, la categoria, provider 
         $producto = Producto::create([
             'nombre' => $request->name,
             'codigo' => $request->codigo,
             'categoria_id' => $request->categoria_id,
             'fabricante_id' => $request->fabricante_id,
-            'provider_id' => $request->provider_id
+            'provider_id' => $request->provider_id,
+            'ganancia_prod' => $ganancia_prod,
+            'ganancia_tipo' => $ganancia_tipo
 
         ]);
-
-
 
         Precio::create([
             'precio' => $request->precio,
@@ -88,22 +107,28 @@ class ProductoController extends Controller
         $precio = Precio::where('producto_id', $producto->id)->first();
         
         $precio->updated_at = $precio->updated_at->subHours(3);
-
+        
         $fabricante = Fabricante::find($producto->fabricante_id);
         $categoria = Categoria::find($producto->categoria_id);
         $provider = Provider::find($producto->provider_id);
 
-
-
-
-        // Que ganancia aplica?
-
-        // if()
-
-        // $gananciaAplicada = 
-
-        // $precio->venta = $precio->precio * ;
-
+        // Que ganancia aplica a este producto
+        if(!$producto->ganancia_prod) {
+            if($producto->ganancia_tipo === 'proveedor') {
+                $producto->ganancia = $provider->ganancia;
+                $producto->ganancia_tipo = 'Proveedor';
+            } else {
+                $producto->ganancia = $categoria->ganancia;
+                $producto->ganancia_tipo = 'Categoria';
+            }
+        } else {
+            $producto->ganancia = $producto->ganancia_prod;
+            $producto->ganancia_tipo = 'Producto';
+        }
+        
+        
+        
+        $producto->venta = $producto->ganancia * ($precio->precio * 1.21);
 
 
         // Paso el producto consultado en web.php (el routing)

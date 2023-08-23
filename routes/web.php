@@ -26,8 +26,6 @@ Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/register', [RegisterController::class, 'store']);
 
 // Productos
-Route::get('/producto/buscador', [ProductoController::class, 'index'])->name('buscador');
-
 Route::get('/producto/nuevo-producto', [ProductoController::class, 'create'])->name('producto.create');
 Route::post('/producto/producto-store', [ProductoController::class, 'store'])->name('producto.store');
 Route::get('/producto/producto-show/{producto}', [ProductoController::class, 'show'])->name('producto.show');
@@ -51,6 +49,7 @@ Route::post('/categoria/categoria-store', [CategoriaController::class, 'store'])
 
 // Prueba del buscador
 // Route::post('/producto/buscador', [ProductoController::class, 'show'])->name('producto.find');
+Route::get('/producto/buscador', [ProductoController::class, 'index'])->name('buscador');
 
 
 

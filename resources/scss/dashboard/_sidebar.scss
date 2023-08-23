@@ -1,0 +1,15 @@
+@use '../base/variables' as v;
+
+
+$cyan: #0891B2;
+
+.sidebar {
+
+    background-color: $cyan;
+
+
+    &__icono {
+        color: $cyan;
+        background-color: $cyan;
+    }
+}

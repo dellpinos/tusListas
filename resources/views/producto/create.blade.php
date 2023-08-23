@@ -3,6 +3,10 @@
     Nuevo Producto
 @endsection
 
+@push('scripts')
+    @vite('resources/js/productoForm.js')
+@endpush
+
 
 @section('contenido')
     <div class="md:flex md:justify-center md:gap-10 md:items-center">
@@ -16,7 +20,7 @@
                 <div class="mb-5">
                     <label for="codigo" class="mb-2 block uppercase text-gray-500 font-bold">Código del producto</label>
                     <input type="text" id="codigo" name="codigo" readonly
-                        class=" bg-gray-300  text-gray-500 border p-3 w-full rounded-lg @error('codigo') border-red-500 @enderror"
+                        class=" text-center bg-gray-300 font-bold text-black text-lg border p-3 w-full rounded-lg @error('codigo') border-red-500 @enderror"
                         value="{{ strtoupper($codigo) }}">
                     @error('codigo')
                         <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
@@ -65,7 +69,6 @@
                     </select>
                 </div>
 
-
                 <div class="mb-5">
                     <label for="proveedor" class="mb-2 block uppercase text-gray-500 font-bold">Distribuidora</label>
                     <select class="border p-3 w-full rounded-lg @error('proveedor') border-red-500 @enderror" id="proveedor"
@@ -82,29 +85,43 @@
                     </select>
                 </div>
 
-
                 <div class="mb-5">
-                    <label for="precio" class="mb-2 block uppercase text-gray-500 font-bold">Precio Costo</label>
-                    <input type="number" id="precio" name="precio" placeholder="Precio de costo"
+                    <label for="precio" class="mb-2 block uppercase text-gray-500 font-bold">Precio Costo sin IVA</label>
+                    <input type="number" id="precio" name="precio" placeholder="Precio de costo en pesos"
                         class="border p-3 w-full rounded-lg @error('precio') border-red-500 @enderror">
                     @error('precio')
                         <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="mb-5">
-                    <label for="dolar" class="mb-2 block uppercase text-gray-500 font-bold">Cotización dolar</label>
-                    <input type="number" id="dolar" name="dolar" placeholder="Cotización el dia de la fecha"
+                    <label for="dolar" class="mb-2 block uppercase text-gray-500 font-bold">Cotización dolar Blue
+                        (compra)</label>
+                    <input type="number" id="dolar" name="dolar" placeholder="Cotización al dia de la fecha"
                         class="border p-3 w-full rounded-lg @error('dolar') border-red-500 @enderror">
                     @error('dolar')
                         <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <div class="mb-5 flex justify-between">
-                    <label for="dolar" class=" block uppercase text-gray-500">Categoria</label>
-                    <input type="radio" value="categoria" name="ganancia" />
-                    <label for="dolar" class=" block uppercase text-gray-500">Proveedor</label>
-                    <input type="radio" value="proveedor" name="ganancia" />
+                <label for="ganancia" class=" mb-4 block uppercase text-gray-500 font-bold">Ganancia</label>
+                <div class="mb-5 flex justify-between border p-3 rounded-md border-gray-200" id="contenedor-radios">
+                    <label for="ganancia-categoria" class=" cursor-pointer text-gray-500">Categoria</label>
+                    <input type="radio" value="categoria" name="ganancia" class="cursor-pointer"
+                        id="ganancia-categoria" />
+                    <label for="ganancia-proveedor" class="cursor-pointer text-gray-500">Proveedor</label>
+                    <input type="radio" value="proveedor" name="ganancia" class="cursor-pointer" id="ganancia-proveedor"
+                        checked />
+                    <label for="ganancia-personalizada" class="cursor-pointer text-gray-500">Personalizada</label>
+                    <input type="radio" value="" name="ganancia" class="cursor-pointer"
+                        id="ganancia-personalizada" />
+                </div>
+                <div class="mb-5">
+                    <input type="number" step="0.1" min="1" id="ganancia" name="ganancia"
+                        placeholder="1.2, 1.7, 1.9" disabled
+                        class="bg-gray-300 cursor-not-allowed text-gray-500   border p-3 w-full rounded-lg @error('ganancia') border-red-500 @enderror">
+                    @error('ganancia')
+                        <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
+                    @enderror
                 </div>
 
 

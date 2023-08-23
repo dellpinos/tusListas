@@ -18,7 +18,9 @@ class Producto extends Model
         'codigo',
         'fabricante_id',
         'provider_id',
-        'categoria_id'
+        'categoria_id',
+        'ganancia_tipo',
+        'ganancia_prod'
     ];
 
 
