@@ -1,15 +1,33 @@
 @use '../base/variables' as v;
 
 
-$cyan: #0891B2;
 
 .sidebar {
 
-    background-color: $cyan;
+    &__enlace {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        color: v.$blanco;
+        text-align: center;
+        transition-property: background-color;
+        transition-duration: 300ms;
+        text-transform: uppercase;
+        font-weight: bold;
 
+        font-size: 1.3rem;
+        padding: 1.5rem;
+        gap: 1rem;
+        width: auto;
 
+        &:hover,
+        &.activo {
+            background-color: darken(v.$grisOscuro, 10%);
+            border-radius: .5rem;
+        }
+    }
     &__icono {
-        color: $cyan;
-        background-color: $cyan;
+        font-size: 2rem;
     }
 }

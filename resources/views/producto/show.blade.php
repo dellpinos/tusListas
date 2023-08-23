@@ -12,6 +12,7 @@
 
     <div class=" grid grid-cols-1 gap-6">
         <div class=" bg-gray-500 rounded shadow p-2">
+            <p><span class=" font-bold">Código: </span>{{$producto->codigo}}</p>
             <p><span class=" font-bold">Producto: </span>{{$producto->nombre}}</p>
             <p><span class=" font-bold">Fabricante: </span>{{$fabricante->nombre}}</p>
             <p><span class=" font-bold">Proveedor: </span>{{$provider->nombre}}</p>

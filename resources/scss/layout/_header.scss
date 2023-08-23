@@ -1,0 +1,7 @@
+@use '../base/variables' as v;
+
+.header {
+    &__nav {
+        font-size: 1.5rem;
+    }
+}

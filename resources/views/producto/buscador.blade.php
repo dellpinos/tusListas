@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('titulo')
     Buscador
@@ -8,7 +8,7 @@
 @section('contenido')
     {{-- Aqui debe haber un formulario que envie el request para la consulta, luego hacer un buscador con Js --}}
     <div class=" bg-white p-6 rounded-lg shadow-xl">
-        <form method="POST" action="{{route('producto.find')}}">
+        <form method="POST" action="#">
             @csrf
 
             <input type="text" id="producto" name="producto" placeholder="Que estas buscando?"

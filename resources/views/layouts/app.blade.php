@@ -4,7 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&display=swap" rel="stylesheet">
     <title>TusListas - @yield('titulo')</title>
 
     @stack('styles')
@@ -16,25 +21,24 @@
     <header class=" p-5 bg-gray-800 shadow-gray-400">
         <div class="container mx-auto flex justify-between items-center">
             <a href="#">
-                <h1 class=" text-3xl font-black text-white">Tus Listas</h1>
+                <h1 class=" text-5xl font-black text-white m-1">Tus Listas</h1>
             </a>
             @auth
-                <nav class="flex gap-2 items-center">
+                <nav class="header__nav flex gap-2 items-center">
 
                     <a></a>
-                    <a class=" font-bold text-white text-sm mx-2" href="#">
+                    <a class=" font-bold text-white mx-2" href="#">
                         Hola: <span class=" font-normal ">{{ auth()->user()->username }}</span></a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class=" hover:text-white font-bold uppercase text-gray-600 text-sm">Cerrar
+                        <button type="submit" class=" hover:text-white font-bold uppercase text-gray-600">Cerrar
                             sesión</button>
                     </form>
                 </nav>
             @endauth
             @guest
                 <nav class="flex gap-2 items-center">
-                    <a class=" font-bold uppercase text-gray-600 text-sm hover:text-white"
-                        href="{{ route('login') }}">Login</a>
+                    <a class=" font-bold uppercase text-gray-600 hover:text-white" href="{{ route('login') }}">Login</a>
                 </nav>
             @endguest
         </div>
