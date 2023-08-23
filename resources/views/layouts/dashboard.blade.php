@@ -16,19 +16,19 @@
         integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    @stack('styles')
-    @vite('resources/css/app.css')
-    @vite('resources/js/app.js')
+        @stack('styles')
+        @vite('resources/js/app.js')
+        @vite('resources/css/app.css')
 </head>
 
-<body class=" bg-gray-700 overflow-hidden">
+<body class=" bg-dashboard overflow-hidden">
     <header class=" p-5 bg-gray-800 shadow-gray-400">
         <div class="container mx-auto flex justify-between items-center">
             <a href="#">
-                <h1 class=" m-1 font-black text-white">Tus Listas</h1>
+                <h1 class=" header__logo">Tus Listas</h1>
             </a>
             @auth
-                <nav class="header__nav flex gap-2 items-center">
+                <nav class="header__nav">
 
                     <a></a>
                     <a class=" font-bold text-white mx-2" href="#">
@@ -41,7 +41,7 @@
                 </nav>
             @endauth
             @guest
-                <nav class="flex gap-2 items-center">
+                <nav class="header__nav">
                     <a class=" font-bold uppercase text-gray-600 hover:text-white"
                         href="{{ route('login') }}">Login</a>
                 </nav>
@@ -63,7 +63,7 @@
 
         <div class="w-3/4 h-screen overflow-y-auto p-4 container mx-auto">
 
-            <h2 class=" font-black text-white text-center">
+            <h2 class="">
                 @yield('titulo')
             </h2>
 

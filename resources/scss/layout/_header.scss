@@ -1,7 +1,17 @@
 @use '../base/variables' as v;
 
 .header {
+
+    &__logo {
+        color: v.$blanco;
+        margin: 0;
+    }
     &__nav {
         font-size: 1.5rem;
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+
     }
 }
+

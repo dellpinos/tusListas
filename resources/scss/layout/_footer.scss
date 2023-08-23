@@ -1,0 +1,16 @@
+@use '../base/variables' as v;
+
+
+.footer {
+    &__contenedor {
+        background-color: v.$grisClaro;
+        color: v.$grisBlanco;
+        font-weight: v.$bold;
+        margin: 10rem 0 0 0;
+        text-align: center;
+        padding: 2rem;
+        font-size: 1.8rem;
+        text-transform: uppercase;
+
+    }
+}

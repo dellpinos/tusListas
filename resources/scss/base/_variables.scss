@@ -4,7 +4,7 @@ $fuente_headings: 'Oswald', sans-serif;
 $fuente_textos: 'Roboto', sans-serif;
 
 $light: 300;
-$normal: 400;
+$regular: 400;
 $bold: 700;
 $black: 900;
 
@@ -18,8 +18,15 @@ $desktop: 1024px;
 $blanco: #FFFFFF;
 $negro: #000;
 $grisOscuro: #1f2937;
-$grisClaro: #374251;
+$grisMedio: #374251;
+$grisClaro: #6B7280;
+$grisBlanco: #9CA3AF;
 
+$azul: #0284C7;
+
+
+$rojo: #EF4444;
+$verde: #078F22;
 
 
 // $cyan: #0891B2;
@@ -30,14 +37,10 @@ $grisClaro: #374251;
 // $rosa: #DB2777;
 // $naranjaOscuro: #ff735c;
 
-
 // $gris: #6b7280;
 // $grisOscuro: #4B5563;
 // $grisClaro: #f3f4f6;
-// $negro: #000;
 // $grisAzul: #385964;
 
-$rojo: rgb(169, 0, 0);
-$verde: rgb(0, 120, 0);
 
 $separacion: 5rem;

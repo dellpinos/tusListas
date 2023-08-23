@@ -1,0 +1,57 @@
+@use '../base/variables' as v;
+@use '../base/mixins' as m;
+
+.formulario {
+    &__contenedor {
+        width: 33%;
+        background-color: v.$blanco;
+        padding: 3rem;
+        border-radius: .5rem;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    }
+
+    &__campo-contenedor {
+        margin: 0 0 3rem 0;
+        &--checkbox {
+            margin: 0 0 2rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            
+            label {
+                margin: 0;
+                text-transform: none;
+                font-weight: v.$regular;
+            }
+        }
+    }
+    &__label {
+        font-size: 1.4rem;
+        display: block;
+        margin: 0 0 1rem 0;
+        text-transform: uppercase;
+        color: v.$grisClaro;
+        font-weight: v.$bold;
+    }  
+
+    &__campo{
+        width: 100%;
+        border-width: 1px;
+        padding: 1rem;
+        border-radius: 1rem;
+        font-size: 1.6rem;
+
+    }
+
+    &__boton {
+        @include m.boton(v.$azul, v.$blanco);
+        border-radius: .5rem;
+        
+        @include m.tablet {
+            width: 100%;
+        }
+    }
+}
+
+
+
