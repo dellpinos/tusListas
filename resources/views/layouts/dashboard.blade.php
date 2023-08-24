@@ -21,28 +21,28 @@
         @vite('resources/css/app.css')
 </head>
 
-<body class=" bg-dashboard overflow-hidden">
-    <header class=" p-5 bg-gray-800 shadow-gray-400">
-        <div class="container mx-auto flex justify-between items-center">
+<body class=" bg-dashboard" >
+    <header class="header" >
+        <div class="header__contenedor" >
             <a href="#">
-                <h1 class=" header__logo">Tus Listas</h1>
+                <h1 class=" header__logo" >Tus Listas</h1>
             </a>
             @auth
-                <nav class="header__nav">
+                <nav class="header__nav" >
 
                     <a></a>
-                    <a class=" font-bold text-white mx-2" href="#">
+                    <a class="header__enlace" href="#" >
                         Hola: <span class=" font-normal ">{{ auth()->user()->username }}</span></a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class=" hover:text-white font-bold uppercase text-gray-600">Cerrar
+                        <button type="submit" class="header__button hover:text-white font-bold uppercase text-gray-600" >Cerrar
                             sesión</button>
                     </form>
                 </nav>
             @endauth
             @guest
                 <nav class="header__nav">
-                    <a class=" font-bold uppercase text-gray-600 hover:text-white"
+                    <a cclass="header__enlace"
                         href="{{ route('login') }}">Login</a>
                 </nav>
             @endguest
@@ -50,18 +50,19 @@
     </header>
 
     <main class="flex">
-        <aside class="w-1/8 h-screen bg-gray-800 p-4">
-            <nav class="space-y-2 grid">
+        <aside class="sidebar" ="">
+            <nav class=" sidebar__nav" ="">
                 <a href="{{ route('producto.create') }}" class="sidebar__enlace"><i class="fa-solid fa-plus sidebar__icono"></i>Nuevo Producto</a>
                 <a href="{{ route('proveedores') }}" class="sidebar__enlace"><i class="fa-solid fa-shop sidebar__icono"></i>Proveedores</a>
                 <a href="{{ route('categorias') }}" class="sidebar__enlace"><i class="fa-solid fa-folder-open sidebar__icono"></i>Categorias</a>
                 <a href="{{ route('fabricantes') }}" class="sidebar__enlace"><i class="fa-solid fa-flask sidebar__icono"></i>Laboratorios</a>
                 <a href="{{ route('buscador') }}" class="sidebar__enlace"><i class="fa-solid fa-magnifying-glass sidebar__icono"></i>Buscador</a>
                 <a href="#" class="sidebar__enlace"><i class="fa-solid fa-dollar-sign sidebar__icono"></i>Cambiar Precios</a>
+                <a href="#" class="sidebar__enlace"><i class="fa-solid fa-clipboard sidebar__icono"></i>Nuevo Pedido</a>
             </nav>
         </aside>
 
-        <div class="w-3/4 h-screen overflow-y-auto p-4 container mx-auto">
+        <div class="dashboard__contenedor-principal" >
 
             <h2 class="">
                 @yield('titulo')
@@ -73,11 +74,14 @@
 
     </main>
 
-    <footer class="mt-10 text-center p-5 text-gray-500 font-bold uppercase">
+    {{-- <footer class="mt-10 text-center p-5 text-gray-500 font-bold uppercase">
         MdP - Todos los derechos reservados {{ now()->year }}
 
+    </footer> --}}
+    <footer>
+        @stack('scripts')
+
     </footer>
-    @stack('scripts')
 
 
 </body>

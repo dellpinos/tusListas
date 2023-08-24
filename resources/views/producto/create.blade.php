@@ -14,11 +14,11 @@
             <img src="#" alt="Imagen registro de usuarios">
         </div>
 
-        <div class="md:w-4/12 bg-white p-6 rounded-lg shadow-xl">
+        <div class="formulario__contenedor">
             <form action="{{ route('producto.store') }}" method="POST">
                 @csrf
-                <div class="mb-5">
-                    <label for="codigo" class="mb-2 block uppercase text-gray-500 font-bold">Código del producto</label>
+                <div class="formulario__campo-contenedor">
+                    <label for="codigo" class="formulario__label">Código del producto</label>
                     <input type="text" id="codigo" name="codigo" readonly
                         class=" text-center bg-gray-300 font-bold text-black text-lg border p-3 w-full rounded-lg @error('codigo') border-red-500 @enderror"
                         value="{{ strtoupper($codigo) }}">
@@ -26,19 +26,19 @@
                         <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
                     @enderror
                 </div>
-                <div class="mb-5">
-                    <label for="name" class="mb-2 block uppercase text-gray-500 font-bold">Nombre del producto</label>
+                <div class="formulario__campo-contenedor">
+                    <label for="name" class="formulario__label">Nombre del producto</label>
                     <input type="text" id="name" name="name" placeholder="Nombre del producto"
-                        class="border p-3 w-full rounded-lg @error('name') border-red-500 @enderror"
+                        class="formulario__campo @error('name') border-red-500 @enderror"
                         value="{{ old('name') }}">
                     @error('name')
                         <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <div class="mb-5">
-                    <label for="categoria" class="mb-2 block uppercase text-gray-500 font-bold">Categoria</label>
-                    <select class="border p-3 w-full rounded-lg @error('categoria') border-red-500 @enderror" id="categoria"
+                <div class="formulario__campo-contenedor">
+                    <label for="categoria" class="formulario__label">Categoria</label>
+                    <select class="formulario__campo @error('categoria') border-red-500 @enderror" id="categoria"
                         name="categoria_id">
                         <option value="" selected disabled>- Seleccionar -</option>
 
@@ -52,10 +52,10 @@
                     </select>
                 </div>
 
-                <div class="mb-5">
-                    <label for="fabricante" class="mb-2 block uppercase text-gray-500 font-bold">Laboratorio -
+                <div class="formulario__campo-contenedor">
+                    <label for="fabricante" class="formulario__label">Laboratorio -
                         Fabricante</label>
-                    <select class="border p-3 w-full rounded-lg @error('fabricante') border-red-500 @enderror"
+                    <select class="formulario__campo @error('fabricante') border-red-500 @enderror"
                         id="fabricante" name="fabricante_id">
                         <option value="" selected disabled>- Seleccionar -</option>
 
@@ -69,9 +69,9 @@
                     </select>
                 </div>
 
-                <div class="mb-5">
-                    <label for="proveedor" class="mb-2 block uppercase text-gray-500 font-bold">Distribuidora</label>
-                    <select class="border p-3 w-full rounded-lg @error('proveedor') border-red-500 @enderror" id="proveedor"
+                <div class="formulario__campo-contenedor">
+                    <label for="proveedor" class="formulario__label">Distribuidora</label>
+                    <select class="formulario__campo @error('proveedor') border-red-500 @enderror" id="proveedor"
                         name="provider_id">
                         <option value="" selected disabled>- Seleccionar -</option>
 
@@ -85,19 +85,19 @@
                     </select>
                 </div>
 
-                <div class="mb-5">
-                    <label for="precio" class="mb-2 block uppercase text-gray-500 font-bold">Precio Costo sin IVA</label>
+                <div class="formulario__campo-contenedor">
+                    <label for="precio" class="formulario__label">Precio Costo sin IVA</label>
                     <input type="number" id="precio" name="precio" placeholder="Precio de costo en pesos"
-                        class="border p-3 w-full rounded-lg @error('precio') border-red-500 @enderror">
+                        class="formulario__campo @error('precio') border-red-500 @enderror">
                     @error('precio')
                         <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
                     @enderror
                 </div>
-                <div class="mb-5">
-                    <label for="dolar" class="mb-2 block uppercase text-gray-500 font-bold">Cotización dolar Blue
+                <div class="formulario__campo-contenedor">
+                    <label for="dolar" class="formulario__label">Cotización dolar Blue
                         (compra)</label>
                     <input type="number" id="dolar" name="dolar" placeholder="Cotización al dia de la fecha"
-                        class="border p-3 w-full rounded-lg @error('dolar') border-red-500 @enderror">
+                        class="formulario__campo @error('dolar') border-red-500 @enderror">
                     @error('dolar')
                         <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
                     @enderror
@@ -115,7 +115,7 @@
                     <input type="radio" value="" name="ganancia" class="cursor-pointer"
                         id="ganancia-personalizada" />
                 </div>
-                <div class="mb-5">
+                <div class="formulario__campo-contenedor">
                     <input type="number" step="0.1" min="1" id="ganancia" name="ganancia"
                         placeholder="1.2, 1.7, 1.9" disabled
                         class="bg-gray-300 cursor-not-allowed text-gray-500   border p-3 w-full rounded-lg @error('ganancia') border-red-500 @enderror">

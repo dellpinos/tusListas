@@ -1,0 +1,6 @@
+@use '../base/variables' as v;
+
+
+.font-normal {
+    font-weight: v.$regular;
+}
