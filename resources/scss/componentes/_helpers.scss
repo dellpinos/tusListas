@@ -1,6 +1,33 @@
 @use '../base/variables' as v;
+@use '../base/mixins' as m;
 
 
-.font-normal {
+.font-regular {
     font-weight: v.$regular;
+}
+// Los contenedores me van a servir para añadir los media querie y son vitales en el responsive
+.contenedor-md {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 5rem;
+}
+
+.contenedor-xl {
+    width: 95%;
+    display: flex;
+}
+
+.no-scroll {
+    overflow-y: hidden;
+}
+
+.boton {
+    @include m.boton(v.$azul, v.$blanco);
+    border-radius: .5rem;
+    
+    @include m.tablet {
+        width: 100%;
+    }
 }

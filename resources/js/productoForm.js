@@ -13,11 +13,11 @@
     function habilitarCampo() {
         if(campoPersonalizado.disabled === true && gananciaPersonalizada.checked === true) {
             campoPersonalizado.disabled = false;
-            campoPersonalizado.classList.remove('text-gray-500', 'bg-gray-300', 'cursor-not-allowed');
+            campoPersonalizado.classList.remove('formulario__campo--no-activo');
 
         } else {
             campoPersonalizado.disabled = true;
-            campoPersonalizado.classList.add('text-gray-500', 'bg-gray-300', 'cursor-not-allowed');
+            campoPersonalizado.classList.add('formulario__campo--no-activo');
             campoPersonalizado.value = '';
         }
     }

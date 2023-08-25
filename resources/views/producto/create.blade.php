@@ -9,7 +9,7 @@
 
 
 @section('contenido')
-    <div class="md:flex md:justify-center md:gap-10 md:items-center">
+    <div class=" contenedor-md">
         <div class="md:w-6/12 p-5">
             <img src="#" alt="Imagen registro de usuarios">
         </div>
@@ -20,7 +20,7 @@
                 <div class="formulario__campo-contenedor">
                     <label for="codigo" class="formulario__label">Código del producto</label>
                     <input type="text" id="codigo" name="codigo" readonly
-                        class=" text-center bg-gray-300 font-bold text-black text-lg border p-3 w-full rounded-lg @error('codigo') border-red-500 @enderror"
+                    class="formulario__campo formulario__campo--codigo @error('codigo') border-red-500 @enderror"
                         value="{{ strtoupper($codigo) }}">
                     @error('codigo')
                         <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
@@ -103,22 +103,22 @@
                     @enderror
                 </div>
 
-                <label for="ganancia" class=" mb-4 block uppercase text-gray-500 font-bold">Ganancia</label>
-                <div class="mb-5 flex justify-between border p-3 rounded-md border-gray-200" id="contenedor-radios">
-                    <label for="ganancia-categoria" class=" cursor-pointer text-gray-500">Categoria</label>
+                <label for="ganancia" class="formulario__label">Ganancia</label>
+                <div class="formulario__contenedor-radio" id="contenedor-radios">
+                    <label for="ganancia-categoria" class="formulario__label--small">Categoria</label>
                     <input type="radio" value="categoria" name="ganancia" class="cursor-pointer"
                         id="ganancia-categoria" />
-                    <label for="ganancia-proveedor" class="cursor-pointer text-gray-500">Proveedor</label>
+                    <label for="ganancia-proveedor" class="formulario__label--small">Proveedor</label>
                     <input type="radio" value="proveedor" name="ganancia" class="cursor-pointer" id="ganancia-proveedor"
                         checked />
-                    <label for="ganancia-personalizada" class="cursor-pointer text-gray-500">Personalizada</label>
+                    <label for="ganancia-personalizada" class="formulario__label--small">Personalizada</label>
                     <input type="radio" value="" name="ganancia" class="cursor-pointer"
                         id="ganancia-personalizada" />
                 </div>
                 <div class="formulario__campo-contenedor">
                     <input type="number" step="0.1" min="1" id="ganancia" name="ganancia"
                         placeholder="1.2, 1.7, 1.9" disabled
-                        class="bg-gray-300 cursor-not-allowed text-gray-500   border p-3 w-full rounded-lg @error('ganancia') border-red-500 @enderror">
+                        class=" formulario__campo formulario__campo--no-activo @error('ganancia') border-red-500 @enderror">
                     @error('ganancia')
                         <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
                     @enderror
@@ -127,7 +127,7 @@
 
 
                 <input type="submit" value="Crear Producto"
-                    class="bg-sky-600 hover:bg-sky-700 transition-colors cursor-pointer uppercase font-bold w-full p-3 text-white rounded-lg">
+                    class="formulario__boton">
             </form>
         </div>
 

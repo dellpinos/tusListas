@@ -32,10 +32,10 @@
 
                     <a></a>
                     <a class="header__enlace" href="#" >
-                        Hola: <span class=" font-normal ">{{ auth()->user()->username }}</span></a>
+                        Hola: <span class="font-regular ">{{ auth()->user()->username }}</span></a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="header__button hover:text-white font-bold uppercase text-gray-600" >Cerrar
+                        <button type="submit" class="header__button" >Cerrar
                             sesión</button>
                     </form>
                 </nav>
@@ -49,8 +49,8 @@
         </div>
     </header>
 
-    <main class="flex">
-        <aside class="sidebar" ="">
+    <main class="contenedor-xl">
+        <aside class="sidebar">
             <nav class=" sidebar__nav" ="">
                 <a href="{{ route('producto.create') }}" class="sidebar__enlace"><i class="fa-solid fa-plus sidebar__icono"></i>Nuevo Producto</a>
                 <a href="{{ route('proveedores') }}" class="sidebar__enlace"><i class="fa-solid fa-shop sidebar__icono"></i>Proveedores</a>

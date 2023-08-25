@@ -8,13 +8,24 @@
 
 @section('contenido')
     {{-- Esto deberia ser un componente/livewire --}}
+    <div class="categoria__contenedor-boton" >
+        <a href="{{ route('categoria.create') }}" class="categoria__boton">Crear Categoria</a>
+        <a href="#" class="categoria__boton">Buscar Categoria</a>
+    </div>
 
     @if ($categorias->count() > 0)
-        <div class=" grid grid-cols-1 gap-6">
+        <div class=" categoria__grid">
             @foreach ($categorias as $categoria)
-                <div class=" bg-gray-500 rounded shadow p-2">
+                <div class="categoria__contenedor">
                     <p><span class=" font-bold">Categoria: </span>{{$categoria->nombre}}</p>
                     <p><span class=" font-bold">Ganancia: </span>{{$categoria->ganancia}}</p>
+
+                    <div class="categoria__contenedor-boton categoria__contenedor-boton--sm">
+                        <a class="categoria__boton categoria__boton--modificar" href="#">Ver / Editar</a>
+                        <form action="#" method="POST">
+                            <button type="submit" class="categoria__boton categoria__boton--eliminar">Eliminar</button>
+                        </form>
+                    </div>
                 </div>
             @endforeach
         </div>
@@ -24,6 +35,6 @@
         </div>
 
     @else
-        <p class=" text-gray-600 uppercase text-sm text-center font-bold">No se encontraron fabricantes</p>
+        <p class=" text-gray-600 uppercase text-sm text-center font-bold">No se encontraron categorias</p>
     @endif
 @endsection
