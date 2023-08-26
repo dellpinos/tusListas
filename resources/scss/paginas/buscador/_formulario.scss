@@ -32,11 +32,12 @@
 
     &__campo-focus {
         border: none;
-        border-bottom: .5px solid v.$grisBlanco;
+        border-bottom: .5px solid lighten(v.$grisBlanco, 15%) ;
         border-radius: .5rem;
     }
 
     &__opciones-contenedor {
+        overflow-y: scroll;
         padding: 1rem;
         position: absolute;
         top: -10px;
