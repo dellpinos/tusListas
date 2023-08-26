@@ -9,7 +9,7 @@ class FabricanteController extends Controller
 {
     public function index()
     {
-        $fabricantes = Fabricante::orderBy('nombre', 'asc')->paginate(3);
+        $fabricantes = Fabricante::orderBy('nombre', 'asc')->paginate(6);
 
 
         return view('fabricante.index', [

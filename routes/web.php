@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\APIBuscador;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
@@ -44,6 +45,11 @@ Route::post('/proveedor/proveedor-store', [ProviderController::class, 'store'])-
 Route::get('/categorias', [CategoriaController::class, 'index'])->name('categorias');
 Route::get('/categoria/nueva-categoria', [CategoriaController::class, 'create'])->name('categoria.create');
 Route::post('/categoria/categoria-store', [CategoriaController::class, 'store'])->name('categoria.store');
+
+/* APIs */
+
+// API buscador
+Route::post('/api/buscador/producto', [APIBuscador::class, 'nombreProducto'])->name('buscador.producto');
 
 
 

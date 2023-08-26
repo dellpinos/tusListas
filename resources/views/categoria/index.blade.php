@@ -2,7 +2,7 @@
 
 
 @section('titulo')
-    Listar Categorias
+    Categorias
 @endsection
 
 

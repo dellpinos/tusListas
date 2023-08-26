@@ -15,7 +15,7 @@
 }
 
 .contenedor-xl {
-    width: 95%;
+    width: 100%;
     display: flex;
 }
 
@@ -30,4 +30,11 @@
     @include m.tablet {
         width: 100%;
     }
+}
+.relative {
+    position: relative;
+}
+
+.display-none {
+    display: none;
 }

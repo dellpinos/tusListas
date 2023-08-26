@@ -76,8 +76,6 @@
 {{--                 Falta la categoria, provablemente necesite un hidden submit porque es el id de la tabla pivote --}}
 
 
-
-
                 <input type="submit" value="Nuevo Proveedor"
                     class="formulario__boton">
             </form>

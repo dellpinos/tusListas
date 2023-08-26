@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @yield('meta')
 
     <title>TusListas - @yield('titulo')</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,14 +52,14 @@
 
     <main class="contenedor-xl">
         <aside class="sidebar">
-            <nav class=" sidebar__nav" ="">
+            <nav class=" sidebar__nav">
+                <a href="{{ route('buscador') }}" class="sidebar__enlace"><i class="fa-solid fa-magnifying-glass sidebar__icono"></i>Buscador</a>
+                <a href="#" class="sidebar__enlace"><i class="fa-solid fa-clipboard sidebar__icono"></i>Ingreso Mercaderia</a>
                 <a href="{{ route('producto.create') }}" class="sidebar__enlace"><i class="fa-solid fa-plus sidebar__icono"></i>Nuevo Producto</a>
+                <a href="#" class="sidebar__enlace"><i class="fa-solid fa-dollar-sign sidebar__icono"></i>Cambiar Precios</a>
                 <a href="{{ route('proveedores') }}" class="sidebar__enlace"><i class="fa-solid fa-shop sidebar__icono"></i>Proveedores</a>
                 <a href="{{ route('categorias') }}" class="sidebar__enlace"><i class="fa-solid fa-folder-open sidebar__icono"></i>Categorias</a>
                 <a href="{{ route('fabricantes') }}" class="sidebar__enlace"><i class="fa-solid fa-flask sidebar__icono"></i>Laboratorios</a>
-                <a href="{{ route('buscador') }}" class="sidebar__enlace"><i class="fa-solid fa-magnifying-glass sidebar__icono"></i>Buscador</a>
-                <a href="#" class="sidebar__enlace"><i class="fa-solid fa-dollar-sign sidebar__icono"></i>Cambiar Precios</a>
-                <a href="#" class="sidebar__enlace"><i class="fa-solid fa-clipboard sidebar__icono"></i>Nuevo Pedido</a>
             </nav>
         </aside>
 

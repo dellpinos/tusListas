@@ -2,7 +2,7 @@
 
 
 @section('titulo')
-    Listar Proveedores
+    Proveedores
 @endsection
 
 
