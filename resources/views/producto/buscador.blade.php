@@ -11,6 +11,7 @@
 
 @push('scripts')
     @vite('resources/js/buscadorProd.js')
+    @vite('resources/js/buscadorCodigo.js')
 @endpush
 
 
@@ -26,7 +27,7 @@
                         class="buscador__campo">
                 </div>
                 <div class="buscador__boton-contenedor">
-                    <button class="buscador__boton" type="submit">Buscar por Código</button>
+                    <a class="buscador__boton" id="btn-codigo">Buscar por Código</a>
                 </div>
             </form>
         </div>
@@ -42,7 +43,7 @@
 
             </div>
             <div class="buscador__boton-contenedor">
-                <button class="buscador__boton">Buscar por Nombre</button>
+                <button class="buscador__boton" type="submit" id="btn-nombre">Buscar por Nombre</button>
             </div>
 
         </div>

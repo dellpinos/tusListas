@@ -3,32 +3,33 @@
     Nuevo Producto
 @endsection
 
+@section('meta')
+    {{-- Esta etiqueta me permite leer el token csrf desde Js --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
+
 @push('scripts')
     @vite('resources/js/productoForm.js')
 @endpush
 
 
 @section('contenido')
-    <div class=" contenedor-md">
-        <form  action="{{ route('producto.store') }}" method="POST">
+    <form action="{{ route('producto.store') }}" method="POST" class="producto-formulario__grid">
+        @csrf
+        <div class="formulario__campo-contenedor">
+            <label for="codigo" class="formulario__label">Código del producto</label>
+            <input type="text" id="codigo" name="codigo" readonly
+                class="formulario__campo formulario__campo--codigo @error('codigo') border-red-500 @enderror"
+                value="{{ strtoupper($codigo) }}">
+            @error('codigo')
+                <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
+            @enderror
+        </div>
 
-            @csrf
-            <div class="formulario__contendor">
+        <div class="producto-formulario__contenedor">
 
+            <div class="producto-formulario__contenedor-sm">
 
-
-
-
-
-                <div class="formulario__campo-contenedor">
-                    <label for="codigo" class="formulario__label">Código del producto</label>
-                    <input type="text" id="codigo" name="codigo" readonly
-                        class="formulario__campo formulario__campo--codigo @error('codigo') border-red-500 @enderror"
-                        value="{{ strtoupper($codigo) }}">
-                    @error('codigo')
-                        <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-                    @enderror
-                </div>
                 <div class="formulario__campo-contenedor">
                     <label for="name" class="formulario__label">Nombre del producto</label>
                     <input type="text" id="name" name="name" placeholder="Nombre del producto"
@@ -86,17 +87,6 @@
                         @enderror
                     </select>
                 </div>
-
-
-
-                <div class="formulario__campo-contenedor">
-                    <label for="precio" class="formulario__label">Precio Costo sin IVA</label>
-                    <input type="number" id="precio" name="precio" placeholder="Precio de costo en pesos"
-                        class="formulario__campo @error('precio') border-red-500 @enderror">
-                    @error('precio')
-                        <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-                    @enderror
-                </div>
                 <div class="formulario__campo-contenedor">
                     <label for="dolar" class="formulario__label">Cotización dolar Blue
                         (compra)</label>
@@ -106,6 +96,29 @@
                         <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
                     @enderror
                 </div>
+
+            </div>
+            <div class="producto-formulario__contenedor-sm">
+
+
+                <div class="formulario__campo-contenedor">
+                    <label for="precio" class="formulario__label">Precio Costo sin IVA</label>
+                    <input type="number" id="precio" name="precio" placeholder="Precio de costo en pesos sin IVA"
+                        class="formulario__campo @error('precio') border-red-500 @enderror">
+                    @error('precio')
+                        <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="formulario__campo-contenedor">
+                    <label for="precio" class="formulario__label">Precio Costo con IVA</label>
+                    <input type="number" id="precio-iva" placeholder="Precio de costo en pesos con IVA"
+                        class="formulario__campo @error('precio') border-red-500 @enderror">
+                    @error('precio')
+                        <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
+                    @enderror
+                </div>
+
 
                 <label for="ganancia" class="formulario__label">Ganancia</label>
                 <div class="formulario__contenedor-radio" id="contenedor-radios">
@@ -128,12 +141,18 @@
                     @enderror
                 </div>
 
-
+                <div class="formulario__campo-contenedor">
+                    <label for="precio" class="formulario__label">Precio Venta</label>
+                    <div class="producto-formulario__venta">
+                        <input type="number" id="precio-venta" placeholder="Precio de venta" readonly
+                            class="formulario__campo producto-formulario__venta-campo formulario__campo--no-activo">
+                        <a id="btn-venta" class="producto-formulario__venta-boton">Calcular Precio</a>
+                    </div>
+                </div>
 
                 <input type="submit" value="Crear Producto" class="formulario__boton">
-
+            </div>
         </div>
-        </form>
 
-    </div>
+    </form>
 @endsection

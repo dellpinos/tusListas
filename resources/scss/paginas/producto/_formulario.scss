@@ -1,0 +1,45 @@
+@use '../../base/variables' as v;
+@use '../../base/mixins' as m;
+
+.producto-formulario {
+
+
+    &__grid {
+        @include m.grid(1, 2rem);
+        margin-bottom: 5rem;
+        background-color: v.$blanco;
+        padding: 3rem;
+        border-radius: .5rem;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    }
+    &__contenedor {
+        display: flex;
+        width: 100%;
+        gap: 2rem;
+        align-items: center;
+
+
+    }
+
+    &__contenedor-sm {
+        width: 100%;
+    }
+
+    &__venta {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__venta-campo {
+        width: 50%;
+    }
+    &__venta-boton {
+        @include m.boton(v.$verde, v.$blanco);
+        border-radius: .5rem;
+    }
+
+
+
+
+
+
+}

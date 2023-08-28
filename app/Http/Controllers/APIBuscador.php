@@ -15,7 +15,7 @@ class APIBuscador extends Controller
     public function index()
     {
     }
-    public function nombreProducto(Request $request)
+    public function nombre_producto(Request $request)
     {
 
         // Busqueda segun coincidencia de 3 caracteres
@@ -26,7 +26,7 @@ class APIBuscador extends Controller
 
         echo json_encode($resultado);
     }
-    public function productoIndividual(Request $request)
+    public function producto_individual(Request $request)
     {
 
         $id = $request->input('id');
@@ -61,6 +61,23 @@ class APIBuscador extends Controller
             'producto' => $producto,
             'precio' => $precio
         ];
+
+        echo json_encode($resultado);
+    }
+
+    public function codigo_producto(Request $request)
+    {
+
+
+        $resultado = Producto::where('codigo', $request->codigo_producto)->get();
+
+
+        if($resultado->isEmpty()){
+            echo json_encode(false);
+            return;
+
+        }
+
 
         echo json_encode($resultado);
     }

@@ -3,10 +3,18 @@
     const contenedorInput = document.querySelector('#contenedor-input');
     const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const inputProductoFalso = document.querySelector('#producto-nombre-falso');
+    const btnNombre = document.querySelector('#btn-nombre');
+    const cardProducto = document.querySelector('#card-producto');
+    const inputCodigo = document.querySelector('#producto-codigo');
     let flag = 0; // Saber cuando se obtuvo el primer resultado de la DB
     let arrayCoincidencias = []; // Aqui se almacena el resultado de la DB
     let coincidenciasPantalla = []; // Aqui se almacena el resultado de la DB filtrado
 
+    btnNombre.addEventListener('click', function (e) {
+        e.preventDefault();
+        generarHTML();
+
+    });
 
     inputProductoFalso.addEventListener('click', function () {
         // insertar html
@@ -25,6 +33,10 @@
         inputProducto.name = 'producto-nombre';
         inputProducto.classList.add('buscador__campo', 'buscador__campo-focus');
         inputProducto.placeholder = 'Pipeta power, Pecera 60x20, Collar Cuero, etc';
+
+        if(inputProductoFalso.value !== ''){
+            inputProducto.value = inputProductoFalso.value;
+        }
 
         contenedorOpciones.appendChild(inputProducto);
 
@@ -78,7 +90,6 @@
         async function findDB(inputProducto) {
 
             if (inputProducto.length === 3) {
-
                 try {
                     const datos = new FormData();
                     datos.append('input_producto', inputProducto);
@@ -93,9 +104,7 @@
                     });
 
                     let resultado = await respuesta.json();
-
                     flag = 1;
-
                     return resultado;
 
                 } catch (error) {
@@ -132,25 +141,17 @@
 
                     const sugerenciaBusqueda = document.createElement('LI');
                     sugerenciaBusqueda.textContent = coincidencia.nombre;
-
                     sugerenciaBusqueda.addEventListener('click', function (e) {
 
                         buscarProducto(coincidencia.id);
-
                     });
 
                     lista.appendChild(sugerenciaBusqueda);
-
                 }
-
             });
         }
 
         async function buscarProducto(id) {
-
-            // eliminar anterior
-
-            // hacer consulta
 
             try {
                 const datos = new FormData();
@@ -166,9 +167,7 @@
                 });
 
                 let resultado = await respuesta.json();
-
-                let cardProducto = document.querySelector('#card-producto');
-
+                
 
                 // Formatear fecha (se obtiene tal cual esta almacenada en la DB)
                 const fechaObj = new Date(resultado.precio.updated_at);
@@ -188,48 +187,24 @@
 
                 cardProducto.innerHTML = `
                 <a href="/producto/producto-show/${resultado.producto.id}" class="producto__grid-card">
-                <div class=" producto__contenedor ">
-                    <p><span class=" font-bold">Código: </span>${resultado.producto.codigo}</p>
-                    <p><span class=" font-bold">Producto: </span>${resultado.producto.nombre}</p>
-                    <p><span class=" font-bold">Ganancia aplicada: </span>${resultado.producto.ganancia}</p>
-                    <p><span class=" font-bold">Costo sin IVA: $ </span>${resultado.precio.precio}</p>
-                    <p><span class=" font-bold">Precio venta: $ </span>${resultado.producto.venta}</p>
-                    <p><span class=" font-bold">Modificación: </span>${fechaFormateada}</p>
-                
+                    <div class=" producto__contenedor ">
+                        <p><span class=" font-bold">Código: </span>${resultado.producto.codigo.toUpperCase()}</p>
+                        <p><span class=" font-bold">Producto: </span>${resultado.producto.nombre}</p>
+                        <p><span class=" font-bold">Ganancia aplicada: </span>${resultado.producto.ganancia}</p>
+                        <p><span class=" font-bold">Costo sin IVA: $ </span>${resultado.precio.precio}</p>
+                        <p><span class=" font-bold">Precio venta: $ </span>${resultado.producto.venta}</p>
+                        <p><span class=" font-bold">Modificación: </span>${fechaFormateada}</p>
                     </div>
                     <a href="/producto/producto-edit/${resultado.producto.id}" class="producto__card-contenedor-boton producto__boton producto__boton--verde">Modificar</a>
-            </a>
+                </a>
                 `;
-
+                inputProductoFalso.value = '';
+                inputCodigo.value = '';
 
             } catch (error) {
                 console.log('El servidor no responde');
             }
-
-
         }
     }
-
-
-
-
-
-    // Escojo/recorto los primeros 5 registros del resultado e itero el array para crear cada <li>
-
-    // utilizo el método slice(0, 5) para obtener los primeros 5 elementos del array e imprimirlos en pantalla
-
-    // realizar busqueda dentro de las opciones de la db
-
-    // resolver el scroll
-
-    // añadir hover a los <li>
-    // nagevar con el teclado?
-
-    // Cada <li> debe ser seleccionable y esto realiza la busqueda en la base de datos y renderiza la
-    // información del producto debajo de los buscadores, lo mismo tengo que hacer para la busqueda por codigo
-
-
-
-
 
 })();

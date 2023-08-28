@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\APIBuscador;
+use App\Http\Controllers\APICalculos;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
@@ -11,16 +12,13 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\FabricanteController;
 
 
-
-Route::get('/', function () {
-    return view('layouts/app');
-});
+// Buscador
+Route::get('/', [ProductoController::class, 'index'])->name('buscador');
 
 // Auth
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'store']);
 Route::post('/logout', [LogoutController::class, 'store'])->name('logout');
-
 
 // Registro - Rutas no visibles para los usuarios (solo el admin crea cuentas)
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
@@ -49,18 +47,20 @@ Route::get('/categorias', [CategoriaController::class, 'index'])->name('categori
 Route::get('/categoria/nueva-categoria', [CategoriaController::class, 'create'])->name('categoria.create');
 Route::post('/categoria/categoria-store', [CategoriaController::class, 'store'])->name('categoria.store');
 
-
 /* APIs */
 
 // API buscador
-Route::post('/api/buscador/producto', [APIBuscador::class, 'nombreProducto']);
-Route::post('/api/buscador/producto-individual', [APIBuscador::class, 'productoIndividual']);
+Route::post('/api/buscador/producto', [APIBuscador::class, 'nombre_producto']);
+Route::post('/api/buscador/producto-codigo', [APIBuscador::class, 'codigo_producto']);
+Route::post('/api/buscador/producto-individual', [APIBuscador::class, 'producto_individual']);
+
+// API Calculos
+Route::post('/api/calculo/ganancia', [APICalculos::class, 'calculo_ganancia']);
 
 
 
-// Prueba del buscador
-// Route::post('/producto/buscador', [ProductoController::class, 'show'])->name('producto.find');
-Route::get('/producto/buscador', [ProductoController::class, 'index'])->name('buscador');
+
+
 
 
 
