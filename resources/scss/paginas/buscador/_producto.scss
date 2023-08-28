@@ -2,7 +2,7 @@
 @use '../../base/mixins' as m;
 
 
-.categoria {
+.producto {
 
     &__contenedor-boton {
         display: flex;
@@ -16,8 +16,16 @@
         margin: 0 0 2rem 0;
         display: block;
         
-        @include m.tablet {
+        // @include m.tablet {
             
+        // }
+        &--verde {
+            background-color: v.$verde;
+            height: 100%;
+
+            &:hover {
+                background-color: darken(v.$verde, 10%)
+            }
         }
 
         &--eliminar {
@@ -44,7 +52,7 @@
     }
 
     &__grid {
-        @include m.grid(2, 4rem);
+        @include m.grid(1, 3rem);
     }
 
     &__contenedor {
@@ -54,10 +62,26 @@
         border-radius: 1rem;
         overflow: hidden;
         white-space: nowrap;
-
+        
         p {
+            font-size: 2rem;
             overflow: hidden;
             text-overflow: ellipsis;
         }
     }
+    &__card-contenedor {
+        display: flex;
+        gap: 0;
+        background-color: v.$grisOscuro;
+    }
+
+    &__grid-card {
+        width: 85%;
+    }
+
+    &__card-contenedor-boton {
+        width: 15%;
+        margin: 2rem;
+    }
+
 }

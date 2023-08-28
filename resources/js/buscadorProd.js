@@ -60,29 +60,29 @@
 
         async function filtrarResultado(e) {
             try {
-    
+
                 if (!flag) {
                     arrayCoincidencias = await findDB(e.target.value); // Almaceno la respuesta en memoria
                 }
-    
+
             } catch (error) {
                 console.log(error);
             }
-    
+
             if (flag) { // aqui puedo filtrar el array en memoria
-    
+
                 buscarCoincidenciasMemoria(e);
             }
         }
-    
+
         async function findDB(inputProducto) {
-    
+
             if (inputProducto.length === 3) {
-    
+
                 try {
                     const datos = new FormData();
                     datos.append('input_producto', inputProducto);
-    
+
                     const url = '/api/buscador/producto';
                     const respuesta = await fetch(url, {
                         method: 'POST',
@@ -91,49 +91,125 @@
                         },
                         body: datos
                     });
-    
+
                     let resultado = await respuesta.json();
-    
+
                     flag = 1;
-    
+
                     return resultado;
-    
+
                 } catch (error) {
                     console.log('El servidor no responde');
                 }
             }
         }
-    
+
         function buscarCoincidenciasMemoria(e) {
             const busqueda = e.target.value;
             const Regex = new RegExp(busqueda, 'i'); // la "i" es para ser insensible a mayusculas/minusculas
-    
+
             coincidenciasPantalla = arrayCoincidencias.filter(coincidencia => {
                 if (coincidencia.nombre.toLowerCase().search(Regex) !== -1) {
                     return coincidencia;
                 }
             });
-    
+
             generarHTMLcoincidencia()
         }
-    
+
         function generarHTMLcoincidencia() {
-    
+
             while (lista.firstChild) {
                 lista.removeChild(lista.firstChild);
             }
 
+            let acu = 0; // Cantidad de coincidencias
+
             coincidenciasPantalla.forEach(coincidencia => {
 
-                const sugerenciaBusqueda = document.createElement('LI');
-                sugerenciaBusqueda.textContent = coincidencia.nombre;
+                acu++;
+                if (acu <= 4) {
 
-                lista.appendChild(sugerenciaBusqueda);
+                    const sugerenciaBusqueda = document.createElement('LI');
+                    sugerenciaBusqueda.textContent = coincidencia.nombre;
+
+                    sugerenciaBusqueda.addEventListener('click', function (e) {
+
+                        buscarProducto(coincidencia.id);
+
+                    });
+
+                    lista.appendChild(sugerenciaBusqueda);
+
+                }
 
             });
+        }
+
+        async function buscarProducto(id) {
+
+            // eliminar anterior
+
+            // hacer consulta
+
+            try {
+                const datos = new FormData();
+                datos.append('id', id);
+
+                const url = '/api/buscador/producto-individual';
+                const respuesta = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': tokenCSRF
+                    },
+                    body: datos
+                });
+
+                let resultado = await respuesta.json();
+
+                let cardProducto = document.querySelector('#card-producto');
+
+
+                // Formatear fecha (se obtiene tal cual esta almacenada en la DB)
+                const fechaObj = new Date(resultado.precio.updated_at);
+                const mes = fechaObj.getMonth();
+                const dia = fechaObj.getDate() + 1; // Corrijo desfasaje
+                const year = fechaObj.getFullYear();
+
+                const fechaUTC = new Date(Date.UTC(year, mes, dia));
+
+                const opciones = {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                }
+                const fechaFormateada = fechaUTC.toLocaleDateString('es-AR', opciones);
+
+                cardProducto.innerHTML = `
+                <a href="/producto/producto-show/${resultado.producto.id}" class="producto__grid-card">
+                <div class=" producto__contenedor ">
+                    <p><span class=" font-bold">Código: </span>${resultado.producto.codigo}</p>
+                    <p><span class=" font-bold">Producto: </span>${resultado.producto.nombre}</p>
+                    <p><span class=" font-bold">Ganancia aplicada: </span>${resultado.producto.ganancia}</p>
+                    <p><span class=" font-bold">Costo sin IVA: $ </span>${resultado.precio.precio}</p>
+                    <p><span class=" font-bold">Precio venta: $ </span>${resultado.producto.venta}</p>
+                    <p><span class=" font-bold">Modificación: </span>${fechaFormateada}</p>
+                
+                    </div>
+                    <a href="/producto/producto-edit/${resultado.producto.id}" class="producto__card-contenedor-boton producto__boton producto__boton--verde">Modificar</a>
+            </a>
+                `;
+
+
+            } catch (error) {
+                console.log('El servidor no responde');
+            }
+
 
         }
     }
+
 
 
 

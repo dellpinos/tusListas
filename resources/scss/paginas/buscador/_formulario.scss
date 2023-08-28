@@ -52,6 +52,10 @@
             padding: 1rem;
             border-radius: 1rem;
             font-size: 1.6rem;
+            &:hover {
+                background-color: lighten(v.$grisBlanco, 20%);
+                cursor: pointer;
+            }
 
         }
     }

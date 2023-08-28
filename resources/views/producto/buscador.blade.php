@@ -38,16 +38,6 @@
 
                     <input type="text" id="producto-nombre-falso"
                         placeholder="Pipeta power, Pecera 60x20, Collar Cuero, etc" class="buscador__campo">
-
-
-                    {{-- <div id="contenedor-buscador-opciones" class="buscador__opciones-contenedor display-none">
-                        <input type="text" id="producto-nombre" name="producto-nombre" class="buscador__campo buscador__campo-focus" placeholder="Pipeta power, Pecera 60x20, Collar Cuero, etc">
-                        <ul id="buscador-opciones">
-                            <li>Opt</li>
-                            <li>Opt</li>
-                            <li>Opt</li>
-                        </ul>
-                    </div> --}}
                 </div>
 
             </div>
@@ -55,9 +45,14 @@
                 <button class="buscador__boton">Buscar por Nombre</button>
             </div>
 
-
-
         </div>
 
     </div>
+    <div class=" producto__grid producto__card-contenedor" id="card-producto">
+        {{-- Este contenido se genera con Js --}}
+    </div>
+
+
+
 @endsection
+

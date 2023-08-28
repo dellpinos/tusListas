@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 @section('titulo')
-    Nuevo Producto
+    {{ $producto->nombre }}
 @endsection
 
 @push('scripts')
@@ -10,21 +10,20 @@
 
 @section('contenido')
     <div class=" contenedor-md">
-        <form  action="{{ route('producto.store') }}" method="POST">
+        <div class="md:w-6/12 p-5">
+            <img src="#" alt="Imagen registro de usuarios">
+        </div>
 
-            @csrf
-            <div class="formulario__contendor">
+        <div class="formulario__contenedor">
+            <form action="{{ route('producto.update') }}" method="POST">
+                @csrf
 
-
-
-
-
-
+                <input type="hidden" name="id" value="{{ $producto->id }}" />
                 <div class="formulario__campo-contenedor">
                     <label for="codigo" class="formulario__label">Código del producto</label>
                     <input type="text" id="codigo" name="codigo" readonly
                         class="formulario__campo formulario__campo--codigo @error('codigo') border-red-500 @enderror"
-                        value="{{ strtoupper($codigo) }}">
+                        value="{{ strtoupper($producto->codigo) }}">
                     @error('codigo')
                         <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
                     @enderror
@@ -32,7 +31,7 @@
                 <div class="formulario__campo-contenedor">
                     <label for="name" class="formulario__label">Nombre del producto</label>
                     <input type="text" id="name" name="name" placeholder="Nombre del producto"
-                        class="formulario__campo @error('name') border-red-500 @enderror" value="{{ old('name') }}">
+                        class="formulario__campo @error('name') border-red-500 @enderror" value="{{ $producto->nombre }}">
                     @error('name')
                         <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
                     @enderror
@@ -42,10 +41,10 @@
                     <label for="categoria" class="formulario__label">Categoria</label>
                     <select class="formulario__campo @error('categoria') border-red-500 @enderror" id="categoria"
                         name="categoria_id">
-                        <option value="" selected disabled>- Seleccionar -</option>
+                        <option value="{{ $categoria->id }}" selected>{{ $categoria->nombre }}</option>
 
-                        @foreach ($categorias as $categoria)
-                            <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                        @foreach ($categorias as $elemento)
+                            <option value="{{ $elemento->id }}">{{ $elemento->nombre }}</option>
                         @endforeach
 
                         @error('categoria')
@@ -59,10 +58,11 @@
                         Fabricante</label>
                     <select class="formulario__campo @error('fabricante') border-red-500 @enderror" id="fabricante"
                         name="fabricante_id">
-                        <option value="" selected disabled>- Seleccionar -</option>
 
-                        @foreach ($fabricantes as $fabricante)
-                            <option value="{{ $fabricante->id }}">{{ $fabricante->nombre }}</option>
+                        <option value="{{ $fabricante->id }}" selected>{{ $fabricante->nombre }}</option>
+
+                        @foreach ($fabricantes as $elemento)
+                            <option value="{{ $elemento->id }}">{{ $elemento->nombre }}</option>
                         @endforeach
 
                         @error('fabricante')
@@ -75,10 +75,11 @@
                     <label for="proveedor" class="formulario__label">Distribuidora</label>
                     <select class="formulario__campo @error('proveedor') border-red-500 @enderror" id="proveedor"
                         name="provider_id">
-                        <option value="" selected disabled>- Seleccionar -</option>
 
-                        @foreach ($proveedores as $proveedor)
-                            <option value="{{ $proveedor->id }}">{{ $proveedor->nombre }}</option>
+                        <option value="{{ $provider->id }}" selected >{{ $provider->nombre }}</option>
+
+                        @foreach ($proveedores as $elemento)
+                            <option value="{{ $elemento->id }}">{{ $elemento->nombre }}</option>
                         @endforeach
 
                         @error('proveedor')
@@ -87,12 +88,10 @@
                     </select>
                 </div>
 
-
-
                 <div class="formulario__campo-contenedor">
                     <label for="precio" class="formulario__label">Precio Costo sin IVA</label>
                     <input type="number" id="precio" name="precio" placeholder="Precio de costo en pesos"
-                        class="formulario__campo @error('precio') border-red-500 @enderror">
+                        value="{{ $precio->precio }}" class="formulario__campo @error('precio') border-red-500 @enderror">
                     @error('precio')
                         <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
                     @enderror
@@ -101,27 +100,32 @@
                     <label for="dolar" class="formulario__label">Cotización dolar Blue
                         (compra)</label>
                     <input type="number" id="dolar" name="dolar" placeholder="Cotización al dia de la fecha"
-                        class="formulario__campo @error('dolar') border-red-500 @enderror">
+                        value="{{ $precio->dolar }}" class="formulario__campo @error('dolar') border-red-500 @enderror">
                     @error('dolar')
                         <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
                     @enderror
                 </div>
 
+
+
                 <label for="ganancia" class="formulario__label">Ganancia</label>
                 <div class="formulario__contenedor-radio" id="contenedor-radios">
+
                     <label for="ganancia-categoria" class="formulario__label--small">Categoria</label>
-                    <input type="radio" value="categoria" name="ganancia" class="cursor-pointer"
-                        id="ganancia-categoria" />
+                    <input type="radio" value="categoria" name="ganancia" class="cursor-pointer" id="ganancia-categoria"
+                        {{ $producto->ganancia_tipo === 'categoria' ? 'checked' : '' }} />
+
                     <label for="ganancia-proveedor" class="formulario__label--small">Proveedor</label>
                     <input type="radio" value="proveedor" name="ganancia" class="cursor-pointer" id="ganancia-proveedor"
-                        checked />
+                        {{ $producto->ganancia_tipo === 'proveedor' ? 'checked' : '' }} />
+
                     <label for="ganancia-personalizada" class="formulario__label--small">Personalizada</label>
-                    <input type="radio" value="" name="ganancia" class="cursor-pointer"
-                        id="ganancia-personalizada" />
+                    <input type="radio" value="" name="ganancia" class="cursor-pointer" id="ganancia-personalizada"
+                        {{ $producto->ganancia_tipo === 'producto' ? 'checked' : '' }} />
                 </div>
                 <div class="formulario__campo-contenedor">
-                    <input type="number" step="0.1" min="1" id="ganancia" name="ganancia"
-                        placeholder="1.2, 1.7, 1.9" disabled
+                    <input type="number" step="0.1" min="0" id="ganancia" name="ganancia"
+                        placeholder="1.2, 1.7, 1.9" disabled value="{{ $producto->ganancia }}"
                         class=" formulario__campo formulario__campo--no-activo @error('ganancia') border-red-500 @enderror">
                     @error('ganancia')
                         <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
@@ -130,10 +134,9 @@
 
 
 
-                <input type="submit" value="Crear Producto" class="formulario__boton">
-
+                <input type="submit" value="Actualizar Producto" class="formulario__boton">
+            </form>
         </div>
-        </form>
 
     </div>
 @endsection
