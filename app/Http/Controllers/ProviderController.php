@@ -37,4 +37,33 @@ class ProviderController extends Controller
         return redirect()->route('proveedores');
 
     }
+
+    public function edit(Provider $provider)
+    {
+        return view('provider.edit', [
+            'provider' => $provider
+        ]);
+
+    }
+    // public function update(Request $request)
+    // {
+
+    //     $fabricante = Fabricante::find($request->id);
+
+    //     $fabricante->nombre = $request->name;
+    //     $fabricante->telefono = $request->telefono;
+    //     $fabricante->vendedor = $request->vendedor;
+    //     $fabricante->descripcion = $request->descripcion;
+
+    //     $fabricante->save();
+
+    //     return redirect()->route('fabricantes');
+
+    // }
+    // public function destroy(Fabricante $fabricante)
+    // {
+    //     $fabricante->delete();
+
+    //     return redirect()->route('fabricantes');
+    // }
 }

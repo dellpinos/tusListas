@@ -10,6 +10,8 @@
     let arrayCoincidencias = []; // Aqui se almacena el resultado de la DB
     let coincidenciasPantalla = []; // Aqui se almacena el resultado de la DB filtrado
 
+
+
     btnNombre.addEventListener('click', function (e) {
         e.preventDefault();
         generarHTML();
@@ -34,7 +36,7 @@
         inputProducto.classList.add('buscador__campo', 'buscador__campo-focus');
         inputProducto.placeholder = 'Pipeta power, Pecera 60x20, Collar Cuero, etc';
 
-        if(inputProductoFalso.value !== ''){
+        if (inputProductoFalso.value !== '') {
             inputProducto.value = inputProductoFalso.value;
         }
 
@@ -141,6 +143,7 @@
 
                     const sugerenciaBusqueda = document.createElement('LI');
                     sugerenciaBusqueda.textContent = coincidencia.nombre;
+
                     sugerenciaBusqueda.addEventListener('click', function (e) {
 
                         buscarProducto(coincidencia.id);
@@ -167,7 +170,7 @@
                 });
 
                 let resultado = await respuesta.json();
-                
+
 
                 // Formatear fecha (se obtiene tal cual esta almacenada en la DB)
                 const fechaObj = new Date(resultado.precio.updated_at);

@@ -87,6 +87,14 @@
             width: 100%;
         }
     }
+    &__boton--rojo {
+        background-color: v.$rojo;
+
+        &:hover {
+            background-color: v.$negro;
+            color: v.$rojo;
+        }
+    }
 }
 
 

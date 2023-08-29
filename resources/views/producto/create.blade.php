@@ -150,9 +150,9 @@
                     </div>
                 </div>
 
-                <input type="submit" value="Crear Producto" class="formulario__boton">
             </div>
         </div>
+        <input type="submit" value="Crear Producto" class="formulario__boton">
 
     </form>
 @endsection

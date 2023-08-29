@@ -14,19 +14,22 @@
     </div>
 
 
+    {{-- No esta pasando la instancia de proveedor adecuadamento, provablemente un problema con el nombre --}}
+
+
     @if ($proveedores->count() > 0)
         <div class=" provider__grid">
-            @foreach ($proveedores as $proveedor)
+            @foreach ($proveedores as $provider)
                 <div class=" provider__contenedor">
-                    <p><span class=" font-bold">Proveedor: </span>{{$proveedor->nombre}}</p>
-                    <p><span class=" font-bold">Email: </span>{{$proveedor->email}}</p>
-                    <p><span class=" font-bold">Telefono: </span>{{$proveedor->telefono}}</p>
-                    <p><span class=" font-bold">Vendedor: </span>{{$proveedor->vendedor}}</p>
-                    <p><span class=" font-bold">Web: </span>{{$proveedor->web}}</p>
-                    <p><span class=" font-bold">Ganancia: </span>{{$proveedor->ganancia}}</p>
+                    <p><span class=" font-bold">provider: </span>{{$provider->nombre}}</p>
+                    <p><span class=" font-bold">Email: </span>{{$provider->email}}</p>
+                    <p><span class=" font-bold">Telefono: </span>{{$provider->telefono}}</p>
+                    <p><span class=" font-bold">Vendedor: </span>{{$provider->vendedor}}</p>
+                    <p><span class=" font-bold">Web: </span>{{$provider->web}}</p>
+                    <p><span class=" font-bold">Ganancia: </span>{{$provider->ganancia}}</p>
 
                     <div class="provider__contenedor-boton provider__contenedor-boton--sm">
-                        <a class="provider__boton provider__boton--modificar" href="#">Ver / Editar</a>
+                        <a class="provider__boton provider__boton--modificar" href="{{ route('proveedor.edit', $provider) }}">Ver / Editar</a>
                         <form action="#" method="POST">
                             <button type="submit" class="provider__boton provider__boton--eliminar">Eliminar</button>
                         </form>

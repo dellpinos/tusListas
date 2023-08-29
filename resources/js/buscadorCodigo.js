@@ -6,6 +6,16 @@
     const cardProducto = document.querySelector('#card-producto');
     const inputProductoFalso = document.querySelector('#producto-nombre-falso');
 
+    inputCodigo.addEventListener('keydown', function(e){
+        if(e.key === 'Enter') {
+            if (inputCodigo.value.length >= 4) {
+
+                let codigo = inputCodigo.value; // Los códigos estan escritos en minusculas
+                findDB(codigo.toLowerCase());
+            }
+        }
+    });
+
     btnCodigo.addEventListener('click', function (e) {
 
         if (inputCodigo.value.length >= 4) {

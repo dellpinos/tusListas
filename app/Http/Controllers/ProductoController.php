@@ -100,8 +100,6 @@ class ProductoController extends Controller
     public function show(Producto $producto)
     {
 
-        // dd($producto);
-
         $precio = Precio::where('producto_id', $producto->id)->first();
         
         $precio->updated_at = $precio->updated_at->subHours(3);
@@ -109,10 +107,6 @@ class ProductoController extends Controller
         $fabricante = Fabricante::find($producto->fabricante_id);
         $categoria = Categoria::find($producto->categoria_id);
         $provider = Provider::find($producto->provider_id);
-
-
-
-
 
         // Que ganancia aplica a este producto
         if(!$producto->ganancia_prod) {
@@ -127,8 +121,6 @@ class ProductoController extends Controller
             $producto->ganancia = $producto->ganancia_prod;
             $producto->ganancia_tipo = 'producto';
         }
-        
-        
         
         $producto->venta = $producto->ganancia * ($precio->precio * 1.21);
 
@@ -154,8 +146,6 @@ class ProductoController extends Controller
         $proveedores = Provider::orderBy('nombre', 'asc')->get();
         $fabricantes = Fabricante::orderBy('nombre', 'asc')->get();
 
-
-
         foreach($categorias as $elemento){
             if($producto->categoria_id  === $elemento->id) {
                 $categoria = $elemento;
@@ -171,8 +161,6 @@ class ProductoController extends Controller
                 $fabricante = $elemento;
             }
         }
-
-
 
         // Que ganancia aplica a este producto
         if(!$producto->ganancia_prod) {
@@ -190,9 +178,6 @@ class ProductoController extends Controller
         
         $producto->venta = $producto->ganancia * ($precio->precio * 1.21);
 
-
-
-        // Paso el producto consultado en web.php (el routing)
         return view('producto.edit', [
             'producto' => $producto,
             'precio' => $precio,
@@ -210,15 +195,9 @@ class ProductoController extends Controller
     public function update(Request $request)
     {
 
-
         $producto = Producto::find($request->id);
-
         $precio = Precio::where('producto_id', $producto->id)->first();
 
-
-
-
-        
         $ganancia = $request->ganancia;
         $ganancia_tipo = '';
         
@@ -244,16 +223,19 @@ class ProductoController extends Controller
         $producto->ganancia_prod = $ganancia_prod;
         $producto->ganancia_tipo = $ganancia_tipo;
 
-        $producto->save();
-
         $precio->precio = $request->precio;
         $precio->dolar = $request->dolar;
-
+        
+        $producto->save();
         $precio->save();
-
-
 
         return redirect()->route('producto.show', ['producto' => $producto]);
 
+    }
+    public function destroy(Producto $producto)
+    {
+        $producto->delete();
+
+        return redirect()->route('buscador');
     }
 }

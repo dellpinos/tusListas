@@ -33,5 +33,33 @@ class FabricanteController extends Controller
         return redirect()->route('fabricantes');
 
     }
+    public function edit(Fabricante $fabricante)
+    {
+        return view('fabricante.edit', [
+            'fabricante' => $fabricante
+        ]);
+
+    }
+    public function update(Request $request)
+    {
+
+        $fabricante = Fabricante::find($request->id);
+
+        $fabricante->nombre = $request->name;
+        $fabricante->telefono = $request->telefono;
+        $fabricante->vendedor = $request->vendedor;
+        $fabricante->descripcion = $request->descripcion;
+
+        $fabricante->save();
+
+        return redirect()->route('fabricantes');
+
+    }
+    public function destroy(Fabricante $fabricante)
+    {
+        $fabricante->delete();
+
+        return redirect()->route('fabricantes');
+    }
 
 }

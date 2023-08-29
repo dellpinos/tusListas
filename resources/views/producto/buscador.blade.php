@@ -19,8 +19,7 @@
     <div class="buscador__grid">
         {{-- Aqui debe haber un formulario que envie el request para la consulta, luego hacer un buscador con Js --}}
         <div class=" buscador__contenedor">
-            <form method="POST" action="#">
-                @csrf
+
                 <div class="buscador__campo-contenedor">
                     <label for="producto-codigo" class="formulario__label">Código del producto</label>
                     <input type="text" id="producto-codigo" name="producto-codigo" placeholder="C4GT, F320, 44G2, etc"
@@ -29,7 +28,7 @@
                 <div class="buscador__boton-contenedor">
                     <a class="buscador__boton" id="btn-codigo">Buscar por Código</a>
                 </div>
-            </form>
+
         </div>
         <div class=" buscador__contenedor">
 
@@ -43,7 +42,7 @@
 
             </div>
             <div class="buscador__boton-contenedor">
-                <button class="buscador__boton" type="submit" id="btn-nombre">Buscar por Nombre</button>
+                <button class="buscador__boton" id="btn-nombre">Buscar por Nombre</button>
             </div>
 
         </div>

@@ -14,7 +14,10 @@
 
 
 @section('contenido')
-    <form action="{{ route('producto.update') }}" method="POST" class="producto-formulario__grid">
+    <div class="producto-formulario__grid">
+
+
+    <form action="{{ route('producto.update') }}" method="POST">
         @csrf
         <input type="hidden" name="id" value="{{ $producto->id }}" />
         <div class="formulario__campo-contenedor">
@@ -123,17 +126,12 @@
                     @enderror
                 </div>
 
-
-
-
-
-
                 <label for="ganancia" class="formulario__label">Ganancia</label>
                 <div class="formulario__contenedor-radio" id="contenedor-radios">
 
                     <label for="ganancia-categoria" class="formulario__label--small">Categoria</label>
-                    <input type="radio" value="categoria" name="ganancia" class="cursor-pointer"
-                        id="ganancia-categoria" {{ $producto->ganancia_tipo === 'categoria' ? 'checked' : '' }} />
+                    <input type="radio" value="categoria" name="ganancia" class="cursor-pointer" id="ganancia-categoria"
+                        {{ $producto->ganancia_tipo === 'categoria' ? 'checked' : '' }} />
 
                     <label for="ganancia-proveedor" class="formulario__label--small">Proveedor</label>
                     <input type="radio" value="proveedor" name="ganancia" class="cursor-pointer"
@@ -160,9 +158,20 @@
                     </div>
                 </div>
 
-                <input type="submit" value="Guardar Cambios" class="formulario__boton">
 
             </div>
         </div>
+        <input type="submit" value="Guardar Cambios" class="formulario__boton">
     </form>
+
+
+
+
+
+    <form method="POST" action="{{ route('producto.destroy', $producto)}}">
+        @csrf
+        @method('DELETE')
+        <input type="submit" value="Eliminar Producto" class="formulario__boton formulario__boton--rojo">
+    </form>
+</div>
 @endsection
