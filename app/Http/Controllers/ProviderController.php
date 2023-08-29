@@ -9,11 +9,11 @@ class ProviderController extends Controller
 {
     public function index()
     {
-        $proveedores = Provider::orderBy('nombre', 'asc')->paginate(6);
+        $providers = Provider::orderBy('nombre', 'asc')->paginate(6);
 
 
         return view('provider.index', [
-            'proveedores' => $proveedores
+            'providers' => $providers
         ]);
     }
     public function create()
@@ -34,10 +34,9 @@ class ProviderController extends Controller
             'providersCategorias_id' => 1 // <<<<< Cambiar este dato, solo es una prueba
         ]);
 
-        return redirect()->route('proveedores');
+        return redirect()->route('providers');
 
     }
-
     public function edit(Provider $provider)
     {
         return view('provider.edit', [
@@ -45,25 +44,28 @@ class ProviderController extends Controller
         ]);
 
     }
-    // public function update(Request $request)
-    // {
+    public function update(Request $request)
+    {
+        $provider = Provider::find($request->id);
 
-    //     $fabricante = Fabricante::find($request->id);
+        $provider->nombre = $request->name;
+        $provider->email = $request->email;
+        $provider->telefono = $request->telefono;
+        $provider->vendedor = $request->vendedor;
+        $provider->web = $request->web;
+        $provider->ganancia = $request->ganancia;
+        $provider->providersCategorias_id = 1;
 
-    //     $fabricante->nombre = $request->name;
-    //     $fabricante->telefono = $request->telefono;
-    //     $fabricante->vendedor = $request->vendedor;
-    //     $fabricante->descripcion = $request->descripcion;
 
-    //     $fabricante->save();
+        $provider->save();
 
-    //     return redirect()->route('fabricantes');
+        return redirect()->route('providers');
 
-    // }
-    // public function destroy(Fabricante $fabricante)
-    // {
-    //     $fabricante->delete();
+    }
+    public function destroy(Provider $provider)
+    {
+        $provider->delete();
 
-    //     return redirect()->route('fabricantes');
-    // }
+        return redirect()->route('providers');
+    }
 }

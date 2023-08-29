@@ -23,7 +23,7 @@ class CategoriaController extends Controller
     public function store(Request $request)
     {
 
-        // Añadir validaciones y autenticación
+        // Añadir validaciones y autenticación // Falta agregar validaciones, por ejemplo el nombre debe ser unique
         Categoria::create([
             'nombre' => $request->name,
             'ganancia' => $request->ganancia,
@@ -31,6 +31,38 @@ class CategoriaController extends Controller
         ]);
 
         return redirect()->route('categorias');
+    }
 
+
+
+    public function edit(Categoria $categoria)
+    {
+        return view('categoria.edit', [
+            'categoria' => $categoria
+        ]);
+
+    }
+    public function update(Request $request)
+    {
+
+        // Falta agregar validaciones, por ejemplo el nombre debe ser unique
+
+        $categoria = Categoria::find($request->id);
+
+        $categoria->nombre = $request->name;
+        $categoria->ganancia = $request->ganancia;
+        $categoria->providersCategorias_id = 1; // <<<<< Cambiar este dato, solo es una prueba
+
+
+        $categoria->save();
+
+        return redirect()->route('categorias');
+
+    }
+    public function destroy(Categoria $categoria)
+    {
+        $categoria->delete();
+
+        return redirect()->route('categorias');
     }
 }

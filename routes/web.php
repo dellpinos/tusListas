@@ -40,25 +40,22 @@ Route::get('/fabricante/fabricante-edit/{fabricante}', [FabricanteController::cl
 Route::post('/fabricante/fabricante-update', [FabricanteController::class, 'update'])->name('fabricante.update');
 Route::delete('fabricante/{fabricante}', [FabricanteController::class, 'destroy'])->name('fabricante.destroy');
 
-
 // Provider - Proveedores
-Route::get('/proveedores', [ProviderController::class, 'index'])->name('proveedores');
-Route::get('/proveedor/nuevo-proveedor', [ProviderController::class, 'create'])->name('proveedor.create');
-Route::post('/proveedor/proveedor-store', [ProviderController::class, 'store'])->name('proveedor.store');
-
-
-
-Route::get('/proveedor/proveedor-edit/{provider}', [ProviderController::class, 'edit'])->name('proveedor.edit');
-
-
-
-Route::post('/proveedor/proveedor-update', [ProviderController::class, 'update'])->name('proveedor.update');
-Route::delete('proveedor/{provider}', [ProviderController::class, 'destroy'])->name('proveedor.destroy');
+Route::get('/providers', [ProviderController::class, 'index'])->name('providers');
+Route::get('/provider/nuevo-provider', [ProviderController::class, 'create'])->name('provider.create');
+Route::post('/provider/provider-store', [ProviderController::class, 'store'])->name('provider.store');
+Route::get('/provider/provider-edit/{provider}', [ProviderController::class, 'edit'])->name('provider.edit');
+Route::post('/provider/provider-update', [ProviderController::class, 'update'])->name('provider.update');
+Route::delete('provider/{provider}', [ProviderController::class, 'destroy'])->name('provider.destroy');
 
 // Categorias
 Route::get('/categorias', [CategoriaController::class, 'index'])->name('categorias');
 Route::get('/categoria/nueva-categoria', [CategoriaController::class, 'create'])->name('categoria.create');
 Route::post('/categoria/categoria-store', [CategoriaController::class, 'store'])->name('categoria.store');
+Route::get('/categoria/categoria-edit/{categoria}', [CategoriaController::class, 'edit'])->name('categoria.edit');
+Route::post('/categoria/categoria-update', [CategoriaController::class, 'update'])->name('categoria.update');
+Route::delete('categoria/{categoria}', [CategoriaController::class, 'destroy'])->name('categoria.destroy');
+
 
 /* APIs */
 

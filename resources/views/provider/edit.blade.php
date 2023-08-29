@@ -1,17 +1,19 @@
 @extends('layouts.dashboard')
 @section('titulo')
-    {{ $provider->name }}
+    {{ $provider->nombre }}
 @endsection
 
 
 @section('contenido')
     <div class="provider__contenedor-boton">
-        <a href="{{ route('proveedores') }}" class="provider__boton">&laquo; Volver</a>
+        <a href="{{ route('providers') }}" class="provider__boton">&laquo; Volver</a>
     </div>
 
     <div class="proveedor-formulario__grid">
-        <form action="{{ route('proveedor.update') }}" method="POST">
+        <form action="{{ route('provider.update') }}" method="POST">
             @csrf
+
+            <input type="hidden" name="id" value="{{ $provider->id }}" />
 
             <div class="proveedor-formulario__contenedor">
 
