@@ -6,12 +6,12 @@
 
 @section('contenido')
     <div class="provider__contenedor-boton">
-        <a href="{{ route('proveedores') }}" class="provider__boton">&laquo; Volver</a>
+        <a href="{{ route('providers') }}" class="provider__boton">&laquo; Volver</a>
         <a href="#" class="provider__boton">Buscar Proveedor</a>
     </div>
 
     <div class="proveedor-formulario__grid">
-        <form action="{{ route('proveedor.store') }}" method="POST">
+        <form action="{{ route('provider.store') }}" method="POST">
             @csrf
 
             <div class="proveedor-formulario__contenedor">
@@ -77,7 +77,7 @@
 
                 </div>
 
-                {{-- Falta la categoria, provablemente necesite un hidden submit porque es el id de la tabla pivote --}}
+                {{-- Falta la categoria, probablemente necesite un hidden submit porque es el id de la tabla pivote --}}
 
 
             </div>
