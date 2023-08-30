@@ -11,14 +11,20 @@
     const campoVenta = document.querySelector('#precio-venta');
 
 
+
     document.addEventListener("DOMContentLoaded", function () {
         if (campoConIva.value !== undefined) {
-            campoConIva.value = Math.round(campoSinIva.value * 1.21);
+            if(campoSinIva.value !== '') {
+                campoConIva.value = Math.round(campoSinIva.value * 1.21);
+
+            }
         }
     });
 
     contenedorRadios.addEventListener('click', function () {
-        habilitarCampo();
+
+
+            habilitarCampo();
     });
 
     campoSinIva.addEventListener('input', function () {
@@ -41,21 +47,23 @@
         if (campoPersonalizado.disabled === true && gananciaPersonalizada.checked === true) {
             campoPersonalizado.disabled = false;
             campoPersonalizado.classList.remove('formulario__campo--no-activo');
-
-        } else {
+        
+        } else { // Este campo se deshabilita aunque presionen "pesonalizado"
             campoPersonalizado.disabled = true;
             campoPersonalizado.classList.add('formulario__campo--no-activo');
             campoPersonalizado.value = '';
+
         }
     }
 
 
     async function calcularGanancia() {
+
         const radioChecked = document.querySelector('input[type="radio"]:checked');
         let precioVenta = 0;
 
-        if (radioChecked.value === 'personalizada') {
 
+        if (radioChecked.value === 'personalizada') {
             // Calculo leyendo el formulario
             precioVenta = (campoSinIva.value * 1.21) * campoPersonalizado.value;
 
@@ -94,6 +102,7 @@
             });
 
             let resultado = await respuesta.json();
+            campoPersonalizado.value = resultado;
             return resultado;
 
         } catch (error) {

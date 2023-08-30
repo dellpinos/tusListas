@@ -56,6 +56,22 @@
                 </div>
 
                 <div class="formulario__campo-contenedor">
+                    <label for="proveedor" class="formulario__label">Proveedor</label>
+                    <select class="formulario__campo @error('proveedor') border-red-500 @enderror" id="proveedor"
+                        name="provider_id">
+                        <option value="" selected disabled>- Seleccionar -</option>
+
+                        @foreach ($proveedores as $proveedor)
+                            <option value="{{ $proveedor->id }}">{{ $proveedor->nombre }}</option>
+                        @endforeach
+
+                        @error('proveedor')
+                            <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
+                        @enderror
+                    </select>
+                </div>
+
+                <div class="formulario__campo-contenedor">
                     <label for="fabricante" class="formulario__label">Laboratorio -
                         Fabricante</label>
                     <select class="formulario__campo @error('fabricante') border-red-500 @enderror" id="fabricante"
@@ -72,21 +88,7 @@
                     </select>
                 </div>
 
-                <div class="formulario__campo-contenedor">
-                    <label for="proveedor" class="formulario__label">Distribuidora</label>
-                    <select class="formulario__campo @error('proveedor') border-red-500 @enderror" id="proveedor"
-                        name="provider_id">
-                        <option value="" selected disabled>- Seleccionar -</option>
 
-                        @foreach ($proveedores as $proveedor)
-                            <option value="{{ $proveedor->id }}">{{ $proveedor->nombre }}</option>
-                        @endforeach
-
-                        @error('proveedor')
-                            <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-                        @enderror
-                    </select>
-                </div>
                 <div class="formulario__campo-contenedor">
                     <label for="dolar" class="formulario__label">Cotización dolar Blue
                         (compra)</label>
@@ -129,7 +131,7 @@
                     <input type="radio" value="proveedor" name="ganancia" class="cursor-pointer" id="ganancia-proveedor"
                         checked />
                     <label for="ganancia-personalizada" class="formulario__label--small">Personalizada</label>
-                    <input type="radio" value="" name="ganancia" class="cursor-pointer"
+                    <input type="radio" value="personalizada" name="ganancia" class="cursor-pointer"
                         id="ganancia-personalizada" />
                 </div>
                 <div class="formulario__campo-contenedor">
