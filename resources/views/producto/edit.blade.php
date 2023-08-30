@@ -158,9 +158,75 @@
                     </div>
                 </div>
 
+                <div class="producto-formulario__flex producto-formulario__contenedor-checkbox">
+                    <input type="checkbox" id="check-fraccion"
+                        class="  @error('ganancia') border-red-500 @enderror">
+                    <label for="check-fraccion" class="formulario__label">Venta fraccionado</label>
+                </div>
+
 
             </div>
         </div>
+
+
+        <div> {{-- <div> Contenedor con hight:0 --}}
+
+            <div class="formulario__campo-contenedor">
+                <label for="codigo" class="formulario__label">Código del Producto Fraccionado</label>
+                
+                <input type="text" id="codigo" name="codigo_fraccionado" readonly
+                    class="formulario__campo formulario__campo--codigo @error('codigo') border-red-500 @enderror"
+                    value="####">
+                @error('codigo')
+                    <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="producto-formulario__flex"> {{-- <<< Definir esta clase --}}
+
+                <div class="formulario__campo-contenedor width-full">
+                    <label for="unidad-fraccion" class="formulario__label">Unidad del Producto</label>
+                    <input type="text" id="unidad-fraccion" name="unidad-fraccion" placeholder="blister, frasco, ml, kg"
+                        class="formulario__campo @error('unidad-fraccion') border-red-500 @enderror">
+                    @error('unidad-fraccion')
+                        <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="formulario__campo-contenedor width-full">
+                    <label for="contenido-total" class="formulario__label">Total de Unidades</label>
+                    <input type="number" id="contenido-total" name="contenido_total" placeholder="25, 3, 500"
+                        class="formulario__campo @error('contenido-total') border-red-500 @enderror">
+                    @error('contenido-total')
+                        <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="formulario__campo-contenedor width-full">
+                    <label for="ganancia-fraccion" class="formulario__label">Ganancia Fracción</label>
+                    <input type="number" id="ganancia-fraccion" name="ganancia-fraccion" placeholder="1.1, 1.2, 1.4"
+                        class="formulario__campo @error('ganancia-fraccion') border-red-500 @enderror">
+                    @error('ganancia-fraccion')
+                        <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
+                    @enderror
+                </div>
+
+            </div> {{-- Fin contenedor Flex --}}
+
+
+
+            <div class="formulario__campo-contenedor">
+                <label for="precio-fraccionado" class="formulario__label">Precio Venta Fraccionado</label>
+                <div class="producto-formulario__venta">
+                    <input type="number" id="precio-fraccionado" placeholder="Precio de venta" readonly
+                        class="formulario__campo producto-formulario__venta-campo formulario__campo--no-activo ">
+                    <a id="btn-fraccionado" class="producto-formulario__venta-boton">Calcular Precio Fraccionado</a>
+                </div>
+            </div>
+
+
+
+        </div> {{-- Fin contenedor oculto --}}
         <input type="submit" value="Guardar Cambios" class="formulario__boton">
     </form>
 

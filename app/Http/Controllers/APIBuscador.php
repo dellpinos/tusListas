@@ -19,10 +19,10 @@ class APIBuscador extends Controller
     {
 
         // Busqueda segun coincidencia de 3 caracteres
-
         $patron = $request->input('input_producto');
 
         $resultado = Producto::where('nombre', 'LIKE', '%' . $patron . '%')->get();
+
 
         echo json_encode($resultado);
     }
@@ -32,7 +32,7 @@ class APIBuscador extends Controller
         $id = $request->input('id');
 
         $producto = Producto::find($id);
-        $precio = Precio::where('producto_id', $producto->id)->first();
+        $precio = Precio::find($producto->precio_id);
 
         $precio->updated_at = $precio->updated_at->subHours(3);
 
@@ -55,7 +55,7 @@ class APIBuscador extends Controller
         }
 
         $producto->venta = $producto->ganancia * ($precio->precio * 1.21);
-
+        $producto->increment('contador_show');
 
         $resultado = [
             'producto' => $producto,
@@ -67,18 +67,13 @@ class APIBuscador extends Controller
 
     public function codigo_producto(Request $request)
     {
-
-
         $resultado = Producto::where('codigo', $request->codigo_producto)->get();
-
 
         if($resultado->isEmpty()){
             echo json_encode(false);
             return;
 
         }
-
-
         echo json_encode($resultado);
     }
 }

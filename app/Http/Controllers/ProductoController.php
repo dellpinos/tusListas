@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\Precio;
 use App\Models\Producto;
 use App\Models\Provider;
@@ -71,6 +70,12 @@ class ProductoController extends Controller
             return redirect()->refresh();
         }
 
+        $precio = Precio::create([
+            'precio' => $request->precio,
+            'dolar' => $request->dolar,
+            'fabricante_id' => $request->fabricante_id,
+            'categoria_id' => $request->categoria_id
+        ]);
 
         // Primero tengo que crear el fabircante, la categoria, provider 
         $producto = Producto::create([
@@ -80,17 +85,11 @@ class ProductoController extends Controller
             'fabricante_id' => $request->fabricante_id,
             'provider_id' => $request->provider_id,
             'ganancia_prod' => $ganancia_prod,
-            'ganancia_tipo' => $ganancia_tipo
-
+            'ganancia_tipo' => $ganancia_tipo,
+            'precio_id' => $precio->id
         ]);
 
-        Precio::create([
-            'precio' => $request->precio,
-            'dolar' => $request->dolar,
-            'fabricante_id' => $request->fabricante_id,
-            'categoria_id' => $request->categoria_id,
-            'producto_id' => $producto->id
-        ]);
+
 
 
         // Redireccionar a "show producto" con todos sus datos
@@ -100,14 +99,15 @@ class ProductoController extends Controller
     public function show(Producto $producto)
     {
 
-        $precio = Precio::where('producto_id', $producto->id)->first();
+        $producto->increment('contador_show');
         
-        $precio->updated_at = $precio->updated_at->subHours(3);
-        
+        $precio = Precio::find($producto->precio_id);
         $fabricante = Fabricante::find($producto->fabricante_id);
         $categoria = Categoria::find($producto->categoria_id);
         $provider = Provider::find($producto->provider_id);
+        
 
+        $precio->updated_at = $precio->updated_at->subHours(3);
         // Que ganancia aplica a este producto
         if(!$producto->ganancia_prod) {
             if($producto->ganancia_tipo === 'proveedor') {
@@ -138,14 +138,15 @@ class ProductoController extends Controller
 
     public function edit(Producto $producto)
     {
-        $precio = Precio::where('producto_id', $producto->id)->first();
-        
-        $precio->updated_at = $precio->updated_at->subHours(3);
 
+        $precio = Precio::find($producto->precio_id);
+        
         $categorias = Categoria::orderBy('nombre', 'asc')->get();
         $proveedores = Provider::orderBy('nombre', 'asc')->get();
         $fabricantes = Fabricante::orderBy('nombre', 'asc')->get();
-
+        
+        
+        $precio->updated_at = $precio->updated_at->subHours(3);
         foreach($categorias as $elemento){
             if($producto->categoria_id  === $elemento->id) {
                 $categoria = $elemento;
@@ -196,7 +197,14 @@ class ProductoController extends Controller
     {
 
         $producto = Producto::find($request->id);
-        $precio = Precio::where('producto_id', $producto->id)->first();
+        $precio = Precio::find($producto->precio_id);
+
+
+
+        if(number_format($request->precio, 2, '.', '') !== $precio->precio) { // formato decimal
+            $precio->increment('contador_update');
+        }
+
 
         $ganancia = $request->ganancia;
         $ganancia_tipo = '';
@@ -225,7 +233,7 @@ class ProductoController extends Controller
 
         $precio->precio = $request->precio;
         $precio->dolar = $request->dolar;
-        
+
         $producto->save();
         $precio->save();
 
