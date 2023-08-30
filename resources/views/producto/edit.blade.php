@@ -61,6 +61,23 @@
                 </div>
 
                 <div class="formulario__campo-contenedor">
+                    <label for="proveedor" class="formulario__label">Proveedor</label>
+                    <select class="formulario__campo @error('proveedor') border-red-500 @enderror" id="proveedor"
+                        name="provider_id">
+
+                        <option value="{{ $provider->id }}" selected>{{ $provider->nombre }}</option>
+
+                        @foreach ($proveedores as $elemento)
+                            <option value="{{ $elemento->id }}">{{ $elemento->nombre }}</option>
+                        @endforeach
+
+                        @error('proveedor')
+                            <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
+                        @enderror
+                    </select>
+                </div>
+
+                <div class="formulario__campo-contenedor">
                     <label for="fabricante" class="formulario__label">Laboratorio -
                         Fabricante</label>
                     <select class="formulario__campo @error('fabricante') border-red-500 @enderror" id="fabricante"
@@ -73,23 +90,6 @@
                         @endforeach
 
                         @error('fabricante')
-                            <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-                        @enderror
-                    </select>
-                </div>
-
-                <div class="formulario__campo-contenedor">
-                    <label for="proveedor" class="formulario__label">Distribuidora - Proveedor</label>
-                    <select class="formulario__campo @error('proveedor') border-red-500 @enderror" id="proveedor"
-                        name="provider_id">
-
-                        <option value="{{ $provider->id }}" selected>{{ $provider->nombre }}</option>
-
-                        @foreach ($proveedores as $elemento)
-                            <option value="{{ $elemento->id }}">{{ $elemento->nombre }}</option>
-                        @endforeach
-
-                        @error('proveedor')
                             <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
                         @enderror
                     </select>
