@@ -30,6 +30,7 @@
     &__contenedor-checkbox {
         justify-content: center;
         align-items: center;
+        margin-bottom: 1rem;
 
         label {
             margin: 0;
@@ -51,5 +52,23 @@
     &__venta-boton {
         @include m.boton(v.$verde, v.$blanco);
         border-radius: .5rem;
+    }
+
+    &__contenedor-oculto {
+        opacity: 0;
+        height: 0;
+        overflow: hidden;
+        visibility: hidden;
+        transition: opacity 2s, height 2s, overflow 2s, visibility 2s;
+
+        
+    }
+    &__contenedor-visible {
+        opacity: 1;
+        height: auto;
+        overflow: auto;
+        transition: opacity 2s, height 2s, overflow 2s, visibility 2s;
+        visibility: visible;
+
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\APIBuscador;
 use App\Http\Controllers\APICalculos;
+use App\Http\Controllers\APICodigo;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
@@ -66,6 +67,9 @@ Route::post('/api/buscador/producto-individual', [APIBuscador::class, 'producto_
 
 // API Calculos
 Route::post('/api/calculo/ganancia', [APICalculos::class, 'calculo_ganancia']);
+
+// API Codigo
+Route::get('/api/codigo-unico', [APICodigo::class, 'generar_codigo']);
 
 
 

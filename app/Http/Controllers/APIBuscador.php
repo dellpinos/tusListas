@@ -29,6 +29,11 @@ class APIBuscador extends Controller
     public function producto_individual(Request $request)
     {
 
+        function redondear($numero)
+        {
+            return ceil($numero / 10) * 10;
+        }
+
         $id = $request->input('id');
 
         $producto = Producto::find($id);
@@ -57,6 +62,13 @@ class APIBuscador extends Controller
         $producto->venta = $producto->ganancia * ($precio->precio * 1.21);
         $producto->increment('contador_show');
 
+        // Producto fraccionado
+        if ($producto->unidad_fraccion !== null && $producto->contenido_total !== null && $producto->ganancia_fraccion !== null) {
+            $producto->venta = $producto->ganancia * ($precio->precio * 1.21);
+            $producto->venta = ($producto->venta * $producto->ganancia_fraccion) / $producto->contenido_total;
+            $producto->venta = redondear($producto->venta);
+        }
+
         $resultado = [
             'producto' => $producto,
             'precio' => $precio
@@ -69,10 +81,9 @@ class APIBuscador extends Controller
     {
         $resultado = Producto::where('codigo', $request->codigo_producto)->get();
 
-        if($resultado->isEmpty()){
+        if ($resultado->isEmpty()) {
             echo json_encode(false);
             return;
-
         }
         echo json_encode($resultado);
     }

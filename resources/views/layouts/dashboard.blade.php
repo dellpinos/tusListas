@@ -53,13 +53,14 @@
     <main class="contenedor-xl">
         <aside class="sidebar">
             <nav class=" sidebar__nav">
-                <a href="{{ route('buscador') }}" class="sidebar__enlace"><i class="fa-solid fa-magnifying-glass sidebar__icono"></i>Buscador</a>
+
+                <a href="{{ route('buscador') }}" class="sidebar__enlace @if(request()->path() === "/") activo  @endif"><i class="fa-solid fa-magnifying-glass sidebar__icono"></i>Buscador</a>
                 <a href="#" class="sidebar__enlace"><i class="fa-solid fa-clipboard sidebar__icono"></i>Ingreso Mercaderia</a>
-                <a href="{{ route('producto.create') }}" class="sidebar__enlace"><i class="fa-solid fa-plus sidebar__icono"></i>Nuevo Producto</a>
+                <a href="{{ route('producto.create') }}" class="sidebar__enlace @if(request()->path() === "producto/nuevo-producto") activo  @endif"><i class="fa-solid fa-plus sidebar__icono"></i>Nuevo Producto</a>
                 <a href="#" class="sidebar__enlace"><i class="fa-solid fa-dollar-sign sidebar__icono"></i>Cambiar Precios</a>
-                <a href="{{ route('providers') }}" class="sidebar__enlace"><i class="fa-solid fa-shop sidebar__icono"></i>Proveedores</a>
-                <a href="{{ route('categorias') }}" class="sidebar__enlace"><i class="fa-solid fa-folder-open sidebar__icono"></i>Categorias</a>
-                <a href="{{ route('fabricantes') }}" class="sidebar__enlace"><i class="fa-solid fa-flask sidebar__icono"></i>Laboratorios</a>
+                <a href="{{ route('providers') }}" class="sidebar__enlace @if(request()->path() === "providers") activo  @endif"><i class="fa-solid fa-shop sidebar__icono"></i>Proveedores</a>
+                <a href="{{ route('categorias') }}" class="sidebar__enlace @if(request()->path() === "categorias") activo  @endif"><i class="fa-solid fa-folder-open sidebar__icono"></i>Categorias</a>
+                <a href="{{ route('fabricantes') }}" class="sidebar__enlace @if(request()->path() === "fabricantes") activo  @endif"><i class="fa-solid fa-flask sidebar__icono"></i>Laboratorios</a>
             </nav>
         </aside>
 

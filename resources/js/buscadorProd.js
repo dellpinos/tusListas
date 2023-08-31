@@ -171,6 +171,8 @@
 
                 let resultado = await respuesta.json();
 
+                resultado.producto.venta = redondear(resultado.producto.venta);
+
 
                 // Formatear fecha (se obtiene tal cual esta almacenada en la DB)
                 const fechaObj = new Date(resultado.precio.updated_at);
@@ -208,6 +210,10 @@
                 console.log('El servidor no responde');
             }
         }
+    }
+
+    function redondear(numero) {
+        return Math.ceil(numero / 10) * 10;
     }
 
 })();
