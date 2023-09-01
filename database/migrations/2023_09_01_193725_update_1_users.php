@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('categorias', function (Blueprint $table) {
-            $table->float('ganancia', 4, 2)->default(1)->change();
+        Schema::table('users', function (Blueprint $table) {
+
+            $table->dropColumn('admin');
+            $table->string('user_type')->default('user');
         });
     }
 
@@ -21,8 +23,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('categorias', function (Blueprint $table) {
-            $table->float('ganancia', 3, 1)->change();
+        Schema::table('users', function (Blueprint $table) {
+
+            $table->boolean('admin')->default(false);
+            $table->dropColumn('user_type');
         });
     }
 };

@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::table('productos', function (Blueprint $table) {
 
-            $table->float('ganancia_fraccion', 4, 2)->change();
-            $table->float('ganancia_prod', 4, 2)->change();
+            $table->string('nombre')->unique()->change();
+            $table->float('ganancia_fraccion', 4, 2)->nullable()->change();
+            $table->float('ganancia_prod', 4, 2)->nullable()->change();
         });
     }
 
@@ -25,6 +26,8 @@ return new class extends Migration
     {
         Schema::table('productos', function (Blueprint $table) {
 
+            
+            $table->dropUnique('productos_nombre_unique');
             $table->float('ganancia_fraccion', 3, 1)->change();
             $table->float('ganancia_prod', 3, 1)->change();
         });

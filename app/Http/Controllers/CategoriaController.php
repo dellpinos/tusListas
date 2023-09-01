@@ -22,6 +22,10 @@ class CategoriaController extends Controller
     }
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required|unique:categorias|max:60',
+            'ganancia' => 'required'
+        ]);
 
         // Añadir validaciones y autenticación // Falta agregar validaciones, por ejemplo el nombre debe ser unique
         Categoria::create([
@@ -44,6 +48,11 @@ class CategoriaController extends Controller
     }
     public function update(Request $request)
     {
+
+        $this->validate($request, [
+            'nombre' => 'required|unique:categorias|max:60',
+            'ganancia' => 'required'
+        ]);
 
         // Falta agregar validaciones, por ejemplo el nombre debe ser unique
 
