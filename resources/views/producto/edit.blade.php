@@ -159,11 +159,19 @@
                 </div>
 
                 <div class="producto-formulario__flex producto-formulario__contenedor-checkbox">
+
+                    @if($producto_fraccionado || $producto_secundario !== '')
+                    
+                    <a href="{{route('producto.show', $producto_secundario)}}" class="producto-formulario__venta-boton">Producto No Fraccionado</a>
+                    @else
                     <input type="checkbox" id="check-fraccion"
                         class="  @error('ganancia') border-red-500 @enderror">
+                    
+                        
+                    @endif
                     <label for="check-fraccion" class="formulario__label">Venta fraccionado</label>
-                </div>
 
+                </div>
 
             </div>
         </div>
@@ -176,7 +184,7 @@
                 
                 <input type="text" id="codigo-fraccionado" name="codigo_fraccionado" readonly
                     class="formulario__campo formulario__campo--codigo @error('codigo') border-red-500 @enderror"
-                    value="{{ strtoupper($producto->codigo) }}">
+                    value="@if($producto_fraccionado) {{ strtoupper($producto->codigo) }}@endif">
                 @error('codigo')
                     <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
                 @enderror
@@ -204,7 +212,7 @@
 
                 <div class="formulario__campo-contenedor width-full">
                     <label for="ganancia-fraccion" class="formulario__label">Ganancia Extra Fracción</label>
-                    <input type="number" id="ganancia-fraccion" name="ganancia_fraccion" placeholder="1.1, 1.2, 1.4"
+                    <input type="number" id="ganancia-fraccion" step="any" name="ganancia_fraccion" placeholder="1.1, 1.2, 1.4"
                     value="{{ $producto->ganancia_fraccion }}" class="formulario__campo text-right @error('ganancia-fraccion') border-red-500 @enderror">
                     @error('ganancia-fraccion')
                         <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>

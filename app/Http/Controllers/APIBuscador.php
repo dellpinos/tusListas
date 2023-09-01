@@ -29,10 +29,6 @@ class APIBuscador extends Controller
     public function producto_individual(Request $request)
     {
 
-        function redondear($numero)
-        {
-            return ceil($numero / 10) * 10;
-        }
 
         $id = $request->input('id');
 

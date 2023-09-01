@@ -1,6 +1,5 @@
 (function () {
 
-    // Listener al contenedor de los <input> radio
     const gananciaPersonalizada = document.querySelector('#ganancia-personalizada');
     const campoPersonalizado = document.querySelector('#ganancia');
     const contenedorRadios = document.querySelector('#contenedor-radios');
@@ -9,6 +8,15 @@
     const btnVenta = document.querySelector('#btn-venta');
     const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const campoVenta = document.querySelector('#precio-venta');
+
+    const checkFraccion = document.querySelector('#check-fraccion');
+    const contenedorOculto = document.querySelector('#producto-contenedor-oculto');
+    const codigoFraccionado = document.querySelector('#codigo-fraccionado');
+    const unidadFraccion = document.querySelector('#unidad-fraccion');
+    const totalFraccionado = document.querySelector('#contenido-total');
+    const gananciaFraccion = document.querySelector('#ganancia-fraccion');
+    const precioFraccionado = document.querySelector('#precio-fraccionado');
+    const btnFraccionado = document.querySelector('#btn-fraccionado');
 
     let precioVenta = 0;
 
@@ -60,11 +68,7 @@
 
     async function calcularGanancia() {
 
-        if (checkFraccion.checked === true){
-            checkFraccion.checked = false;
-            deseleccionarFraccionado();
 
-        }
 
         const radioChecked = document.querySelector('input[type="radio"]:checked');
 
@@ -86,6 +90,16 @@
 
         }
         campoVenta.value = redondear(precioVenta);
+
+        if(checkFraccion) {
+
+            if (checkFraccion.checked === true){
+                checkFraccion.checked = false;
+                deseleccionarFraccionado();
+    
+            }
+        }
+
     }
 
     async function consultarGanancia(seleccion, id) {
@@ -114,77 +128,75 @@
         }
     }
 
-    const checkFraccion = document.querySelector('#check-fraccion');
-    const contenedorOculto = document.querySelector('#producto-contenedor-oculto');
-    const codigoFraccionado = document.querySelector('#codigo-fraccionado');
-    const unidadFraccion = document.querySelector('#unidad-fraccion');
-    const totalFraccionado = document.querySelector('#contenido-total');
-    const gananciaFraccion = document.querySelector('#ganancia-fraccion');
-    const precioFraccionado = document.querySelector('#precio-fraccionado');
-    const btnFraccionado = document.querySelector('#btn-fraccionado');
+    btnFraccionado.addEventListener('click', calcularGananciaFraccionado);
 
+    if(checkFraccion) {
 
-    checkFraccion.addEventListener('click', function () {
+        checkFraccion.addEventListener('click', function () {
+        
 
-        if (checkFraccion.checked === true) {
-            // Seleccionado
-            console.log('visible!');
-
-            contenedorOculto.classList.add('producto-formulario__contenedor-visible');
-            contenedorOculto.classList.remove('producto-formulario__contenedor-oculto');
-
-            // Consultar DB para obtener código
-            if (codigoFraccionado.value === '') {
-                (async () => {
-                    const codigo = await generarCodigo();
-                    codigoFraccionado.value = codigo.toUpperCase(); // Nuevo código
-                })();
-            }
-
-            // Añadir required al HTML
-            unidadFraccion.required = true;
-            totalFraccionado.required = true;
-            gananciaFraccion.required = true;
-
-            btnFraccionado.addEventListener('click', calcularGananciaFraccionado);
-
-
-
-            // Generar código
-            async function generarCodigo() {
-
-                try {
-                    const url = '/api/codigo-unico';
-                    const respuesta = await fetch(url);
-                    const resultado = await respuesta.json();
-
-                    return resultado;
-
-                } catch (error) {
-                    console.log(error);
+            if (checkFraccion.checked === true) {
+                // Seleccionado
+                console.log('visible!');
+    
+                contenedorOculto.classList.add('producto-formulario__contenedor-visible');
+                contenedorOculto.classList.remove('producto-formulario__contenedor-oculto');
+    
+                // Consultar DB para obtener código
+                if (codigoFraccionado.value === '') {
+                    (async () => {
+                        const codigo = await generarCodigo();
+                        codigoFraccionado.value = codigo.toUpperCase(); // Nuevo código
+                    })();
                 }
-
-            }
-
-            async function calcularGananciaFraccionado() {
-
-                if (precioVenta) {
-                    // Calculo leyendo el formulario
-                    precioFraccionado.value = redondear(Math.round((precioVenta / totalFraccionado.value) * gananciaFraccion.value));
-                } else {
-                    console.log('Debes calcular el precio No Fraccionado primero');
+    
+                // Añadir required al HTML
+                unidadFraccion.required = true;
+                totalFraccionado.required = true;
+                gananciaFraccion.required = true;
+    
+    
+    
+    
+                // Generar código
+                async function generarCodigo() {
+    
+                    try {
+                        const url = '/api/codigo-unico';
+                        const respuesta = await fetch(url);
+                        const resultado = await respuesta.json();
+    
+                        return resultado;
+    
+                    } catch (error) {
+                        console.log(error);
+                    }
+    
                 }
+    
+    
+    
+            } else {
+                // Deseleccionado
+                deseleccionarFraccionado();
+    
             }
+    
+    
+    
+        });
+    }
+    
 
+    async function calcularGananciaFraccionado() {
+
+        if (precioVenta) {
+            // Calculo leyendo el formulario
+            precioFraccionado.value = redondear(Math.round((precioVenta / totalFraccionado.value) * gananciaFraccion.value));
         } else {
-            // Deseleccionado
-            deseleccionarFraccionado();
-
+            console.log('Debes calcular el precio No Fraccionado primero');
         }
-
-
-
-    });
+    }
 
     function deseleccionarFraccionado(){
         console.log('invisible!');
@@ -200,6 +212,8 @@
         totalFraccionado.value = '';
         gananciaFraccion.value = '';
         precioFraccionado.value = '';
+        codigoFraccionado = '';
+
     }
 
         function redondear(numero) {

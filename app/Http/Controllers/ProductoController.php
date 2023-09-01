@@ -22,15 +22,8 @@ class ProductoController extends Controller
     }
     public function create()
     {
-        // Generar código al azar y verificar si existe
-        function generarCodigo()
-        {
-            do {
-                $codigo = Str::lower(Str::random(4));
-            } while (Producto::where('codigo', $codigo)->exists()); // Verifina que sea unico o vuelve a generar
-            return $codigo;
-        }
-        $codigo = generarCodigo();
+
+        $codigo = generarCodigo(); // helper
 
         $categorias = Categoria::orderBy('nombre', 'asc')->get();
         $proveedores = Provider::orderBy('nombre', 'asc')->get();
@@ -98,7 +91,7 @@ class ProductoController extends Controller
             // Producto fraccionado
             Producto::create([
                 'nombre' => $request->name . " - Fraccionado",
-                'codigo' => $request->codigo_fraccionado,
+                'codigo' => strtolower($request->codigo_fraccionado),
                 'categoria_id' => $request->categoria_id,
                 'fabricante_id' => $request->fabricante_id,
                 'provider_id' => $request->provider_id,
@@ -113,16 +106,9 @@ class ProductoController extends Controller
 
         // Redireccionar a "show producto" con todos sus datos
         return redirect()->route('producto.show', ['producto' => $producto]);
-
     }
     public function show(Producto $producto)
     {
-
-        // Redondear en el multiplo de 10 mas cercano, hacia arriba
-        function redondear($numero)
-        {
-            return ceil($numero / 10) * 10;
-        }
 
         $producto->increment('contador_show');
 
@@ -175,9 +161,9 @@ class ProductoController extends Controller
         $precio = Precio::find($producto->precio_id);
 
         // Consulto si existe otro registro relacionado a esta instancia de Precio (existe fraccionado)
-        $productos = Producto::where('precio_id', $precio->id); 
+        $productos = Producto::where('precio_id', $precio->id)->get();
 
-        $version_fraccionado = '';
+        $producto_secundario = '';
         $producto_fraccionado = false;
 
         // Hay 3 opciones:
@@ -191,37 +177,35 @@ class ProductoController extends Controller
 
         // _3_ formulario desplegado para ser modificado, boton-enlace en el precio (este mismo metodo con otro $producto)
 
-        if($productos->count() > 1) {
+        if ($productos->count() > 1) {
+
             // Existe fraccionado
             if ($producto->unidad_fraccion !== null && $producto->contenido_total !== null && $producto->ganancia_fraccion !== null) {
                 // Es un producto fraccionado Opt _3_
+
                 $producto_fraccionado = true;
+                foreach ($productos as $elemento) {
+                    if ($elemento->id !== $producto->id) {
+                        $producto_secundario = $elemento;
+                    }
+                }
 
 
             } else {
+
                 // No es un producto fraccionado Opt _2_
                 $producto_fraccionado = false;
                 foreach ($productos as $elemento) {
-                    if($elemento->id !== $producto->id) {
-                        $version_fraccionado = $elemento;
+                    if ($elemento->id !== $producto->id) {
+                        $producto_secundario = $elemento;
                     }
                 }
-    
             }
 
-            dd('Existe fraccionado');
+            // dd('Existe fraccionado');
 
 
-        } else {
-            // No existe fraccionado Opt _1_ 
-            dd('No existe fraccionado');
-
-        }
-
-
-
-
-
+        } 
 
 
         $categorias = Categoria::orderBy('nombre', 'asc')->get();
@@ -273,7 +257,8 @@ class ProductoController extends Controller
             'proveedores' => $proveedores,
 
 
-            'producto_fraccionado' => $producto_fraccionado
+            'producto_fraccionado' => $producto_fraccionado,
+            'producto_secundario' => $producto_secundario
 
         ]);
     }
@@ -283,12 +268,9 @@ class ProductoController extends Controller
         $producto = Producto::find($request->id);
         $precio = Precio::find($producto->precio_id);
 
-
-
         if (number_format($request->precio, 2, '.', '') !== $precio->precio) { // formato decimal
             $precio->increment('contador_update');
         }
-
 
         $ganancia = $request->ganancia;
         $ganancia_tipo = '';
@@ -318,7 +300,25 @@ class ProductoController extends Controller
         $precio->precio = $request->precio;
         $precio->dolar = $request->dolar;
 
+        if ($request->codigo_fraccionado !== null) {
+            // Producto fraccionado
+            $producto_secundario = Producto::create([
+                'nombre' => $request->name . " - Fraccionado",
+                'codigo' => strtolower($request->codigo_fraccionado),
+                'categoria_id' => $request->categoria_id,
+                'fabricante_id' => $request->fabricante_id,
+                'provider_id' => $request->provider_id,
+                'ganancia_prod' => $ganancia_prod,
+                'ganancia_tipo' => $ganancia_tipo,
+                'precio_id' => $precio->id,
+                'unidad_fraccion' => $request->unidad_fraccion,
+                'contenido_total' => $request->contenido_total,
+                'ganancia_fraccion' => $request->ganancia_fraccion
+            ]);
+        }
+
         $producto->save();
+        $producto_secundario->save();
         $precio->save();
 
         return redirect()->route('producto.show', ['producto' => $producto]);
