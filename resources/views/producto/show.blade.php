@@ -18,7 +18,7 @@
         <p><span class=" font-bold">Ganancia aplicada: </span>{{$producto->ganancia}}</p>
         <p><span class=" font-bold">Ganancia aplicada según: </span>{{ucfirst($producto->ganancia_tipo)}}</p>
         <p><span class=" font-bold">Costo sin IVA: $ </span>{{$precio->precio}}</p>
-        <p><span class=" font-bold">Precio venta: $ </span>{{$producto->venta}}</p>
+        <p><span class=" font-bold">Precio venta: $ </span>{{$producto->venta}} <span class="font-bold">{{$producto->unidad_fraccion}}</span></p>
         <p><span class=" font-bold">Cotización compra dolar Blue: U$S </span>{{$precio->dolar}}</p>
         <p><span class=" font-bold">Modificación: </span>{{$precio->updated_at->format('j F Y, H:i')}}hs</p>
     </div>

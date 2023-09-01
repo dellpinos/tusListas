@@ -105,7 +105,7 @@
 
                 <div class="formulario__campo-contenedor">
                     <label for="precio" class="formulario__label">Precio Costo sin IVA</label>
-                    <input type="number" id="precio" name="precio" placeholder="0"
+                    <input type="number" step="any" id="precio" name="precio" placeholder="0"
                         class="formulario__campo text-right @error('precio') border-red-500 @enderror">
                     @error('precio')
                         <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
@@ -114,7 +114,7 @@
 
                 <div class="formulario__campo-contenedor">
                     <label for="precio" class="formulario__label">Precio Costo con IVA</label>
-                    <input type="number" id="precio-iva" placeholder="0"
+                    <input type="number" step="any" id="precio-iva" placeholder="0"
                         class="formulario__campo text-right @error('precio') border-red-500 @enderror">
                     @error('precio')
                         <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
@@ -164,12 +164,12 @@
         <div id="producto-contenedor-oculto" class="producto-formulario__contenedor-oculto"> {{-- <div> Contenedor con hight:0 --}}
 
             <div class="formulario__campo-contenedor">
-                <label for="codigo" class="formulario__label">Código del Producto Fraccionado</label>
+                <label for="codigo-fraccionado" class="formulario__label">Código del Producto Fraccionado</label>
                 
                 <input type="text" id="codigo-fraccionado" name="codigo_fraccionado" readonly
                     class="formulario__campo formulario__campo--codigo @error('codigo') border-red-500 @enderror"
                     value="">
-                @error('codigo')
+                @error('codigo-fraccionado')
                     <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
                 @enderror
             </div>
