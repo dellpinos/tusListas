@@ -17,7 +17,7 @@ class Precio extends Model
         'dolar',
         'fabricante_id',
         'categoria_id',
-        'producto_id'
+        'contador_update'
     ];
 
     public function categoria()
@@ -28,8 +28,8 @@ class Precio extends Model
     {
         return $this->belongsTo(Fabricante::class);
     }
-    public function producto()
+    public function productos()
     {
-        return $this->belongsTo(Producto::class);
+        return $this->hasMany((Producto::class));
     }
 }

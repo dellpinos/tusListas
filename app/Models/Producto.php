@@ -20,7 +20,12 @@ class Producto extends Model
         'provider_id',
         'categoria_id',
         'ganancia_tipo',
-        'ganancia_prod'
+        'ganancia_prod',
+        'precio_id',
+        'contador_show',
+        'unidad_fraccion',
+        'contenido_total',
+        'ganancia_fraccion'
     ];
 
 
