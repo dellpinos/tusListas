@@ -265,6 +265,7 @@ class ProductoController extends Controller
     public function update(Request $request)
     {
 
+
         $producto = Producto::find($request->id);
         $precio = Precio::find($producto->precio_id);
 
@@ -315,10 +316,10 @@ class ProductoController extends Controller
                 'contenido_total' => $request->contenido_total,
                 'ganancia_fraccion' => $request->ganancia_fraccion
             ]);
+            $producto_secundario->save();
         }
 
         $producto->save();
-        $producto_secundario->save();
         $precio->save();
 
         return redirect()->route('producto.show', ['producto' => $producto]);

@@ -182,7 +182,7 @@
             <div class="formulario__campo-contenedor">
                 <label for="codigo" class="formulario__label">Código del Producto Fraccionado</label>
                 
-                <input type="text" id="codigo-fraccionado" name="codigo_fraccionado" readonly
+                <input type="text" id="codigo-fraccionado" @if(!$producto_fraccionado) name="codigo_fraccionado" @endif readonly
                     class="formulario__campo formulario__campo--codigo @error('codigo') border-red-500 @enderror"
                     value="@if($producto_fraccionado) {{ strtoupper($producto->codigo) }}@endif">
                 @error('codigo')

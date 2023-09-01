@@ -11,7 +11,7 @@
 
     const checkFraccion = document.querySelector('#check-fraccion');
     const contenedorOculto = document.querySelector('#producto-contenedor-oculto');
-    const codigoFraccionado = document.querySelector('#codigo-fraccionado');
+    let codigoFraccionado = document.querySelector('#codigo-fraccionado');
     const unidadFraccion = document.querySelector('#unidad-fraccion');
     const totalFraccionado = document.querySelector('#contenido-total');
     const gananciaFraccion = document.querySelector('#ganancia-fraccion');
@@ -19,8 +19,6 @@
     const btnFraccionado = document.querySelector('#btn-fraccionado');
 
     let precioVenta = 0;
-
-
 
     document.addEventListener("DOMContentLoaded", function () {
         if (campoConIva.value !== undefined) {
@@ -50,7 +48,6 @@
 
     });
 
-
     // Habilitar / Deshabilitar campo opcional
     function habilitarCampo() {
         if (campoPersonalizado.disabled === true && gananciaPersonalizada.checked === true) {
@@ -65,10 +62,7 @@
         }
     }
 
-
     async function calcularGanancia() {
-
-
 
         const radioChecked = document.querySelector('input[type="radio"]:checked');
 
@@ -133,7 +127,6 @@
     if(checkFraccion) {
 
         checkFraccion.addEventListener('click', function () {
-        
 
             if (checkFraccion.checked === true) {
                 // Seleccionado
@@ -155,9 +148,6 @@
                 totalFraccionado.required = true;
                 gananciaFraccion.required = true;
     
-    
-    
-    
                 // Generar código
                 async function generarCodigo() {
     
@@ -171,23 +161,14 @@
                     } catch (error) {
                         console.log(error);
                     }
-    
                 }
-    
-    
-    
             } else {
                 // Deseleccionado
                 deseleccionarFraccionado();
-    
             }
-    
-    
-    
         });
     }
     
-
     async function calcularGananciaFraccionado() {
 
         if (precioVenta) {
@@ -215,10 +196,7 @@
         codigoFraccionado = '';
 
     }
-
         function redondear(numero) {
         return Math.ceil(numero / 10) * 10;
     }
-
-
 })();
