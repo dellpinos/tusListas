@@ -9,32 +9,29 @@
 @section('contenido')
 
 <div class="md:flex md:justify-center md:gap-10 md:items-center">
-    <div class="md:w-6/12 p-5">
-        <img src="#" alt="Imagen login de usuarios">
-    </div>
 
     <div class="formulario__contenedor">
         <form method="POST" action="{{ route('login') }}" novalidate>
             @csrf
             @if (session('mensaje'))
-                <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ session('mensaje') }}</p>
+                <p class=" alerta__error">{{ session('mensaje') }}</p>
             @endif
 
             <div class="formulario__campo-contenedor">
                 <label for="email" class="formulario__label">Email</label>
                 <input type="email" id="email" name="email" placeholder="Tu email"
-                    class="formulario__campo @error('email') border-red-500 @enderror"
+                    class="formulario__campo @error('email') borde__error @enderror"
                     value="{{ old('email') }}">
                 @error('email')
-                    <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
+                    <p class=" alerta__error">{{ $message }}</p>
                 @enderror
             </div>
             <div class="formulario__campo-contenedor">
                 <label for="password" class="formulario__label">Password</label>
                 <input type="password" id="password" name="password" placeholder="Tu password"
-                    class="formulario__campo @error('password') border-red-500 @enderror">
+                    class="formulario__campo @error('password') borde__error @enderror">
                 @error('password')
-                    <p class=" bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
+                    <p class=" alerta__error">{{ $message }}</p>
                 @enderror
             </div>
 

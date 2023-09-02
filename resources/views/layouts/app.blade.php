@@ -24,7 +24,7 @@
 <body class=" bg-home">
     <header class=" p-5 bg-gray-800 shadow-gray-400">
         <div class="container mx-auto flex justify-between items-center">
-            <a href="#">
+            <a href="{{ route('login') }}">
                 <h1 class=" header__logo">Tus Listas</h1>
             </a>
             @auth

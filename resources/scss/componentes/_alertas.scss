@@ -1,10 +1,30 @@
 @use '../base/variables' as v;
 
 .alerta {
-    &__error {
 
+    font-size: 1.2rem;
+    margin: .3rem 0 .3rem 0;
+    border-radius: .5rem;
+    padding: .5rem;
+    text-align: center;
+    color: v.$blanco;
+
+    &__error {
+        @extend .alerta;
+        background-color: v.$rojo;
     }
     &__exito {
-        
+        @extend .alerta;
+        background-color: v.$verde;
+    }
+}
+.borde {
+
+    &__error {
+        border-color: v.$rojo;
+    }
+
+    &__exito {
+
     }
 }
