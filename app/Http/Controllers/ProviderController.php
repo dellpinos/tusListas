@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class ProviderController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         $providers = Provider::orderBy('nombre', 'asc')->paginate(6);

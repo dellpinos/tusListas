@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class FabricanteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         $fabricantes = Fabricante::orderBy('nombre', 'asc')->paginate(6);

@@ -30,8 +30,7 @@
             @auth
                 <nav class="header__nav">
 
-                    <a></a>
-                    <a class=" font-bold text-white mx-2" href="#">
+                    <a class=" font-bold text-white mx-2" href="{{ route('buscador') }}">
                         Hola: <span class=" font-normal ">{{ auth()->user()->username }}</span></a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

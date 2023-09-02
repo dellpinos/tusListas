@@ -20,6 +20,7 @@ class LoginController extends Controller
         if(!auth()->attempt($request->only('email', 'password'), $request->remember)) {
             return back()->with('mensaje', 'Email o password incorrecto');
         }
+
         return redirect()->route('buscador');
     }
 }

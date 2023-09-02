@@ -8,8 +8,17 @@ use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
+
+        if (auth()->user()->user_type !== 'admin') {
+            return redirect()->route('login');
+        }
+
         return view('auth.register');
     }
     public function store(Request $request)
@@ -35,13 +44,8 @@ class RegisterController extends Controller
             'password' => $request->password
         ]);
 
-        // Autenticar al usuario
-        auth()->attempt([
-            'email' => $request->email,
-            'password' => $request->password
-        ]);
 
         // Redireccionar
-        // return redirect()->route('buscador.index');
+        return redirect()->route('buscador');
     }
 }

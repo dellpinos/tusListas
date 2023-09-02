@@ -18,6 +18,7 @@ class ProductoController extends Controller
     }
     public function index()
     {
+
         return view('producto.buscador');
     }
     public function create()

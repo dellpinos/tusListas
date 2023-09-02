@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class APICodigo extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function generar_codigo()
     {
         // Generar código al azar y verificar si existe
