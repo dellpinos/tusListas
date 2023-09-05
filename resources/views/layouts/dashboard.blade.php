@@ -17,35 +17,36 @@
         integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-        @stack('styles')
-        @vite('resources/js/app.js')
-        @vite('resources/css/app.css')
+    @stack('styles')
+    @vite('resources/js/app.js')
+    @vite('resources/css/app.css')
 </head>
 
-<body class=" bg-dashboard" >
-    <header class="header" >
-        <div class="header__contenedor" >
+<body class=" bg-dashboard">
+    <header class="header">
+        <div class="header__contenedor">
             <a href="{{ route('buscador') }}">
-                <h1 class=" header__logo" >Tus Listas</h1>
+                <h1 class=" header__logo">Tus Listas</h1>
             </a>
             @auth
-                <nav class="header__nav" >
+                <nav class="header__nav">
 
                     @if (auth()->user()->user_type === 'admin')
-                    <a class="header__enlace" href="{{ route('register') }}">User <span class="font-regular">Admin</span></a>
+                        <a class="header__enlace" href="{{ route('register') }}">User <span
+                                class="font-regular">Admin</span></a>
                     @endif
-                    <a class="header__enlace" href="#">Hola: <span class="font-regular ">{{ auth()->user()->username }}</span></a>
+                    <a class="header__enlace" href="#">Hola: <span
+                            class="font-regular ">{{ auth()->user()->username }}</span></a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="header__button" >Cerrar
+                        <button type="submit" class="header__button">Cerrar
                             sesión</button>
                     </form>
                 </nav>
             @endauth
             @guest
                 <nav class="header__nav">
-                    <a cclass="header__enlace"
-                        href="{{ route('login') }}">Login</a>
+                    <a cclass="header__enlace" href="{{ route('login') }}">Login</a>
                 </nav>
             @endguest
         </div>
@@ -55,17 +56,29 @@
         <aside class="sidebar">
             <nav class=" sidebar__nav">
 
-                <a href="{{ route('buscador') }}" class="sidebar__enlace @if(request()->path() === "/") activo  @endif"><i class="fa-solid fa-magnifying-glass sidebar__icono"></i>Buscador</a>
-                <a href="#" class="sidebar__enlace"><i class="fa-solid fa-clipboard sidebar__icono"></i>Ingreso Mercaderia</a>
-                <a href="{{ route('producto.create') }}" class="sidebar__enlace @if(request()->path() === "producto/nuevo-producto") activo  @endif"><i class="fa-solid fa-plus sidebar__icono"></i>Nuevo Producto</a>
-                <a href="#" class="sidebar__enlace"><i class="fa-solid fa-dollar-sign sidebar__icono"></i>Cambiar Precios</a>
-                <a href="{{ route('providers') }}" class="sidebar__enlace @if(request()->path() === "providers") activo  @endif"><i class="fa-solid fa-shop sidebar__icono"></i>Proveedores</a>
-                <a href="{{ route('categorias') }}" class="sidebar__enlace @if(request()->path() === "categorias") activo  @endif"><i class="fa-solid fa-folder-open sidebar__icono"></i>Categorias</a>
-                <a href="{{ route('fabricantes') }}" class="sidebar__enlace @if(request()->path() === "fabricantes") activo  @endif"><i class="fa-solid fa-flask sidebar__icono"></i>Laboratorios</a>
+                <a href="{{ route('buscador') }}"
+                    class="sidebar__enlace @if (request()->path() === '/') activo @endif"><i
+                        class="fa-solid fa-magnifying-glass sidebar__icono"></i>Buscador</a>
+                <a href="#" class="sidebar__enlace"><i class="fa-solid fa-clipboard sidebar__icono"></i>Ingreso
+                    Mercaderia</a>
+                <a href="{{ route('producto.create') }}"
+                    class="sidebar__enlace @if (request()->path() === 'producto/nuevo-producto') activo @endif"><i
+                        class="fa-solid fa-plus sidebar__icono"></i>Nuevo Producto</a>
+                <a href="#" class="sidebar__enlace"><i class="fa-solid fa-dollar-sign sidebar__icono"></i>Cambiar
+                    Precios</a>
+                <a href="{{ route('providers') }}"
+                    class="sidebar__enlace @if (request()->path() === 'providers') activo @endif"><i
+                        class="fa-solid fa-shop sidebar__icono"></i>Proveedores</a>
+                <a href="{{ route('categorias') }}"
+                    class="sidebar__enlace @if (request()->path() === 'categorias') activo @endif"><i
+                        class="fa-solid fa-folder-open sidebar__icono"></i>Categorias</a>
+                <a href="{{ route('fabricantes') }}"
+                    class="sidebar__enlace @if (request()->path() === 'fabricantes') activo @endif"><i
+                        class="fa-solid fa-flask sidebar__icono"></i>Laboratorios</a>
             </nav>
         </aside>
 
-        <div class="dashboard__contenedor-principal" >
+        <div class="dashboard__contenedor-principal">
 
             <h2 class="">
                 @yield('titulo')
