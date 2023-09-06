@@ -17,6 +17,7 @@ class Precio extends Model
         'dolar',
         'fabricante_id',
         'categoria_id',
+        'provider_id',
         'contador_update'
     ];
 
@@ -27,6 +28,10 @@ class Precio extends Model
     public function fabricante()
     {
         return $this->belongsTo(Fabricante::class);
+    }
+    public function provider()
+    {
+        return $this->belongsTo(Provider::class);
     }
     public function productos()
     {
