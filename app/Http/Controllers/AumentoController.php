@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Aumento;
 use App\Models\Provider;
 use App\Models\Categoria;
 use App\Models\Fabricante;
@@ -21,7 +22,23 @@ class AumentoController extends Controller
             'proveedores' => $proveedores
         ]);
     }
+    public function listado_aumentos()
+    {
+        $registros = Aumento::all();
+
+        return view('aumentos.listado', [
+            'registros' => $registros
+        ]);
+    }
+
+    public function dolar_aumentos()
+    {
+
+        return view('aumentos.dolar');
+    }
 }
+
+/// Crear vista para registro de aumentos
 
 
 

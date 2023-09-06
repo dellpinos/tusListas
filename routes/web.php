@@ -38,6 +38,8 @@ Route::delete('producto/{producto}', [ProductoController::class, 'destroy'])->na
 
 // Aumentos
 Route::get('/aumentos', [AumentoController::class, 'index'])->name('aumentos');
+Route::get('/aumento/listado', [AumentoController::class, 'listado_aumentos'])->name('aumento.listado');
+Route::get('aumento/dolar', [AumentoController::class, 'dolar_aumentos'])->name('aumento.dolar');
 
 // Ingreso de Mercaderia
 Route::get('/ingreso', [IngresoController::class, 'index'])->name('ingreso');

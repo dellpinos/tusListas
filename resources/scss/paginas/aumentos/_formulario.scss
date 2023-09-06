@@ -14,21 +14,13 @@
 
     &__flex {
         display: flex;
-
         gap: 2rem;
         align-items: center;
-
         margin-bottom: 5rem;
-        background-color: v.$blanco;
         padding: 3rem;
         border-radius: .5rem;
+        background-color: v.$blanco;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-
-    }
-    &__contenedor {
-        display: flex;
-        width: 100%;
-        gap: 2rem;
     }
 
     &__contenedor-sm {
@@ -44,11 +36,40 @@
 
     &__campo-contenedor {
         width: 100%;
+        
+    }
+    &__campo-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 0 2rem 0;
+        padding: 0 5rem 0 5rem;
+        
+        label {
+            width: 20%;
+            font-size: 3rem;
+        }
+        input {
+            width: 50%;
+            font-size: 3rem;
+        }
     }
     &__boton {
         height: 100%;
         width: 20%;
         white-space: nowrap;
+    }
+
+    &__contenedor {
+        padding: 3rem;
+        border-radius: .5rem;
+        background-color: v.$blanco;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+
+        width: 70%;
+        margin: 5rem auto;
+
+        
     }
 
 }

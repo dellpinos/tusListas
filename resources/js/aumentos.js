@@ -1,6 +1,6 @@
-(function() {
+import Swal from 'sweetalert2';
 
-    console.log('Hola');
+(function () {
 
     const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -17,51 +17,85 @@
     const fabricantePorc = document.querySelector('#aumentos-porc-fab');
 
 
-    btnCatPorc.addEventListener('click', function() {
+    btnCatPorc.addEventListener('click', function () {
 
-        // Al servidor envio categoria y porcentaje
-        // El servidor devuelve la cantidad de registro afectados
-        aumentoCategoria(categoria.value, categoriaPorc.value);
+        alertaAumento('categoria', categoria.value, categoriaPorc.value);
 
         categoria.value = '';
         categoriaPorc.value = '';
 
-        console.log('Click!! Categoria!');
     });
 
-    btnProPorc.addEventListener('click', function() {
+    btnProPorc.addEventListener('click', function () {
 
-        // Al servidor envio categoria y porcentaje
-        // El servidor devuelve la cantidad de registro afectados
-        aumentoCategoria(provider.value, providerPorc.value);
+        alertaAumento('provider', provider.value, providerPorc.value);
 
         provider.value = '';
         providerPorc.value = '';
 
-        console.log('Click!! Provider!');
     });
 
-    btnFabPorc.addEventListener('click', function() {
+    btnFabPorc.addEventListener('click', function () {
 
-        // Al servidor envio categoria y porcentaje
-        // El servidor devuelve la cantidad de registro afectados
-        aumentoCategoria(fabricante.value, fabricantePorc.value);
+        alertaAumento('fabricante', fabricante.value, fabricantePorc.value);
 
         fabricante.value = '';
         fabricantePorc.value = '';
 
-        console.log('Click!! Fabricante!');
     });
 
 
-    async function aumentoCategoria(categoria, porcentaje) {
+    function alertaAumento(tipo, valor, porcentaje) {
+
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: 'Estas seguro?',
+            text: "No hay vuelta atras",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si, aumentar ' + porcentaje + "%",
+            cancelButtonText: 'No, era una prueba!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                (async function () {
+                    const resultado = await aumento(tipo, valor, porcentaje);
+
+                    swalWithBootstrapButtons.fire(
+                        'Precios actualizados',
+                        resultado.toString() + ' precios han sido actualizados.',
+                        'success'
+                    )
+                })();
+            } else if (
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelado',
+                    'No se han hecho cambios',
+                    'error'
+                )
+            }
+        });
+    }
+
+
+    async function aumento(tipo, id, porcentaje) {
 
         try {
             const datos = new FormData();
-            datos.append('categoria_id', categoria);
+            datos.append(tipo + '_id', id);
             datos.append('porcentaje', porcentaje)
 
-            const url = '/api/aumentos/categoria';
+            const url = '/api/aumentos/' + tipo;
 
             const respuesta = await fetch(url, {
                 method: 'POST',
@@ -73,9 +107,6 @@
 
             let resultado = await respuesta.json();
 
-            console.log(resultado + "Han sido afectados");
-
-
             return resultado;
 
         } catch (error) {
@@ -83,62 +114,5 @@
         }
     }
 
-    async function aumentoProvider(provider, porcentaje) {
-
-        try {
-            const datos = new FormData();
-            datos.append('provider_id', provider);
-            datos.append('porcentaje', porcentaje)
-
-            const url = '/api/aumentos/provider';
-
-            const respuesta = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': tokenCSRF
-                },
-                body: datos
-            });
-
-            let resultado = await respuesta.json();
-
-            console.log(resultado + "Han sido afectados");
-
-
-            return resultado;
-
-        } catch (error) {
-            console.log('El servidor no responde');
-        }
-    }
-
-    async function aumentoFabricante(categoria, porcentaje) {
-
-        try {
-            const datos = new FormData();
-            datos.append('fabricante_id', fabricante);
-            datos.append('porcentaje', porcentaje)
-
-            const url = '/api/aumentos/fabricante';
-
-            const respuesta = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': tokenCSRF
-                },
-                body: datos
-            });
-
-            let resultado = await respuesta.json();
-
-            console.log(resultado + "Han sido afectados");
-
-
-            return resultado;
-
-        } catch (error) {
-            console.log('El servidor no responde');
-        }
-    }
 
 })();

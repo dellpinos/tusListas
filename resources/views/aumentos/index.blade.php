@@ -18,8 +18,8 @@
 
 @section('contenido')
 <div class="categoria__contenedor-boton" >
-    <a href="#" class="categoria__boton">Aumento Dolar</a>
-    <a href="#" class="categoria__boton">Registro de Aumentos</a>
+    <a href="{{ route('aumento.dolar') }}" class="categoria__boton">Aumento Dolar</a>
+    <a href="{{ route('aumento.listado')}}" class="categoria__boton">Registro de Aumentos</a>
 </div>
     <div class="aumento-formulario__contenedor-sm">
         <div class="aumento-formulario__flex">
