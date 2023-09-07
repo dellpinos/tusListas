@@ -180,8 +180,8 @@ class ProductoController extends Controller
         // _3_ formulario desplegado para ser modificado, boton-enlace en el precio (este mismo metodo con otro $producto)
 
         if ($productos->count() > 1) {
-
             // Existe fraccionado
+
             if ($producto->unidad_fraccion !== null && $producto->contenido_total !== null && $producto->ganancia_fraccion !== null) {
                 // Es un producto fraccionado Opt _3_
 
@@ -191,7 +191,6 @@ class ProductoController extends Controller
                         $producto_secundario = $elemento;
                     }
                 }
-
 
             } else {
 
@@ -203,10 +202,6 @@ class ProductoController extends Controller
                     }
                 }
             }
-
-            // dd('Existe fraccionado');
-
-
         } 
 
 

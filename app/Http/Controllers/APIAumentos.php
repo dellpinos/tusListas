@@ -88,4 +88,41 @@ class APIAumentos extends Controller
 
         echo json_encode($preciosAfectados);
     }
+    public function dolar_listado()
+    {
+        // 10 precios - productos con "dolar" mas bajo
+        $precios = Precio::orderBy('dolar', 'asc')->limit(10)->get();
+        $productos = [];
+        $resultado = [];
+        foreach ($precios as $precio) {
+            $productosTodos = Producto::where('precio_id', $precio->id)->get();
+
+            if ($productosTodos->count() > 1) {
+                // Existe Fraccionado
+                foreach ($productosTodos as $producto) {
+                    if ($producto->unidad_fraccion === null && $producto->contenido_total === null && $producto->ganancia_fraccion === null) {
+                        // No es el fraccionado
+                        $resultado = precioVenta($producto, $precio);
+                        $productos[] = $resultado['producto'];
+                        $precio = $resultado['precio'];
+                    }
+                }
+            } else {
+                // No existe fraccionado
+                $resultado = precioVenta($productosTodos->first(), $precio);
+                $productos[] = $resultado['producto'];
+                $precio = $resultado['precio'];
+            }
+        }
+
+        
+
+        echo json_encode([
+            'precios' => $precios, 
+            'productos' => $productos]
+        );
+
+
+
+    }
 }

@@ -20,7 +20,6 @@ import Swal from 'sweetalert2';
     btnCatPorc.addEventListener('click', function () {
 
         alertaAumento('categoria', categoria.value, categoriaPorc.value);
-
         categoria.value = '';
         categoriaPorc.value = '';
 
@@ -29,7 +28,6 @@ import Swal from 'sweetalert2';
     btnProPorc.addEventListener('click', function () {
 
         alertaAumento('provider', provider.value, providerPorc.value);
-
         provider.value = '';
         providerPorc.value = '';
 
@@ -38,12 +36,10 @@ import Swal from 'sweetalert2';
     btnFabPorc.addEventListener('click', function () {
 
         alertaAumento('fabricante', fabricante.value, fabricantePorc.value);
-
         fabricante.value = '';
         fabricantePorc.value = '';
 
     });
-
 
     function alertaAumento(tipo, valor, porcentaje) {
 

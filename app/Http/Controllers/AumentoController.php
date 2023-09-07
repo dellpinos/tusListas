@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Precio;
 use App\Models\Aumento;
 use App\Models\Provider;
 use App\Models\Categoria;
@@ -36,10 +37,7 @@ class AumentoController extends Controller
 
         return view('aumentos.dolar');
     }
+
 }
 
 /// Crear vista para registro de aumentos
-
-
-
-
