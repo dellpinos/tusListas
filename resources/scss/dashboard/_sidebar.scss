@@ -8,11 +8,8 @@
     background-color: v.$grisOscuro;
     width: 15%;
     max-height: 100%;
-
-    overflow-y: hidden; // <<<
-    height: 100vh; // <<<<
-
-
+    overflow-y: hidden;
+    height: 100vh;
 
     &__nav {
         display: grid;
