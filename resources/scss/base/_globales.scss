@@ -10,7 +10,19 @@ html {
 }
 
 body {
+    // min-height: 100%; Altura del documento?
+    
     font-family: v.$fuente_textos;
+    margin: 0;
+}
+a {
+    text-decoration: none;
+}
+li {
+    list-style: none;
+}
+p {
+    margin: 0;
 }
 
 .bg-home {
@@ -18,6 +30,7 @@ body {
 }
 .bg-dashboard {
     background-color: v.$blancoFondo;
+    
 }
 
 // Estilos de SweetAlert2 (popups/alertas)

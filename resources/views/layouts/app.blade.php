@@ -16,17 +16,19 @@
         integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-        @stack('styles')
+
+        @vite('resources/scss/app.scss')
+        
 
 </head>
 
-<body class=" bg-home">
-    <header class=" p-5 bg-gray-800 shadow-gray-400">
-        <div class="container mx-auto flex justify-between items-center">
+<body class="bg-home">
+    <header class="header">
+        <div class="header__contenedor">
             <a href="{{ route('login') }}">
                 <h1 class=" header__logo">Tus Listas</h1>
             </a>
-            @auth
+            {{-- @auth
                 <nav class="header__nav">
 
                     <a class=" font-bold text-white mx-2" href="{{ route('buscador') }}">
@@ -43,24 +45,28 @@
                     <a class=" font-bold uppercase text-gray-600 hover:text-white"
                         href="{{ route('login') }}">Login</a>
                 </nav>
-            @endguest
+            @endguest --}}
         </div>
     </header>
 
-    <main class=" container mx-auto mt-10">
-        <h2 class="">
-            @yield('titulo')
-        </h2>
+    <main class="contenedor-xl">
 
-        @yield('contenido')
+        <div class="home__contenedor-principal">
+
+            <h2 class="">
+                @yield('titulo')
+            </h2>
+
+            @yield('contenido')
+        </div>
 
     </main>
 
     <footer class="footer__contenedor">
-        MdP - Todos los derechos reservados {{ now()->year }}
+        <span class="footer__nombre">Martín del Pino</span> - Todos los derechos reservados {{ now()->year }}
 
     </footer>
-    @stack('scripts')
+    @vite('resources/js/app.js')
 
 
 </body>

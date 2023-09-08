@@ -3,6 +3,12 @@
 
 .formulario {
 
+    &__contenedor-md {
+        width: 95%;
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+    }
 
     &__contenedor {
         width: 40%;
