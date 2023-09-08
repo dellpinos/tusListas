@@ -9,7 +9,9 @@
     Buscador
 @endsection
 
+{{-- Solo deben ejecutarse en las paginas correspondientes --}}
 @push('scripts')
+
     @vite('resources/js/buscadorProd.js')
     @vite('resources/js/buscadorCodigo.js')
 @endpush
