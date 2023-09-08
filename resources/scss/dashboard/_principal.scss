@@ -5,13 +5,14 @@
 
     &__contenedor-principal {
         
+        overflow-y: scroll;
 
 
+        // width: 75%;overflow-y: auto;
+        width: 100%;
+        padding: 3rem 8rem 8rem 8rem;
 
-        width: 75%;
 
-
-        padding: 1rem;
         margin-left: auto;
         margin-right: auto;
 
