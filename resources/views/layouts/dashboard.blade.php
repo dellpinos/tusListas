@@ -75,6 +75,7 @@
                 <a href="{{ route('fabricantes') }}"
                     class="sidebar__enlace @if (request()->path() === 'fabricantes') activo @endif"><i
                         class="fa-solid fa-flask sidebar__icono"></i>Laboratorios</a>
+
             </nav>
         </aside>
 

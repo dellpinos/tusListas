@@ -20,3 +20,39 @@ body {
     background-color: v.$blancoFondo;
 }
 
+// Estilos de SweetAlert2 (popups/alertas)
+
+.swal2-popup {
+    font-size: 1.4rem!important;
+}
+.swal2-cancel {
+
+}
+.btn {
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    margin: 0 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 1.4rem;
+    line-height: 1.25;
+    border-radius: 0.25rem;
+    transition: all 0.15s ease-in-out;
+}
+.btn-danger {
+    color: v.$blanco;
+    background-color: v.$rojo;
+    border-color: v.$rojo;
+}
+.btn-success {
+    color: v.$blanco;
+    background-color: v.$verde;
+    border-color: v.$verde;
+}
+

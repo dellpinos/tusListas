@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Controllers\APIAumentos;
+use App\Http\Controllers\APICodigo;
 use App\Http\Controllers\APIBuscador;
 use App\Http\Controllers\APICalculos;
-use App\Http\Controllers\APICodigo;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\AumentoController;
+use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\RegisterController;
@@ -32,6 +35,15 @@ Route::get('/producto/producto-show/{producto}', [ProductoController::class, 'sh
 Route::get('/producto/producto-edit/{producto}', [ProductoController::class, 'edit'])->name('producto.edit');
 Route::post('/producto/producto-update', [ProductoController::class, 'update'])->name('producto.update');
 Route::delete('producto/{producto}', [ProductoController::class, 'destroy'])->name('producto.destroy');
+
+// Aumentos
+Route::get('/aumentos', [AumentoController::class, 'index'])->name('aumentos');
+Route::get('/aumento/listado', [AumentoController::class, 'listado_aumentos'])->name('aumento.listado');
+Route::get('aumento/dolar', [AumentoController::class, 'dolar_aumentos'])->name('aumento.dolar');
+
+// Ingreso de Mercaderia
+Route::get('/ingreso', [IngresoController::class, 'index'])->name('ingreso');
+
 
 // Fabricantes
 Route::get('/fabricantes', [FabricanteController::class, 'index'])->name('fabricantes');
@@ -71,6 +83,12 @@ Route::post('/api/calculo/ganancia', [APICalculos::class, 'calculo_ganancia']);
 // API Codigo
 Route::get('/api/codigo-unico', [APICodigo::class, 'generar_codigo']);
 
+// API Aumentos
+Route::post('/api/aumentos/categoria', [APIAumentos::class, 'aumento_categoria']);
+Route::post('/api/aumentos/fabricante', [APIAumentos::class, 'aumento_fabricante']);
+Route::post('/api/aumentos/provider', [APIAumentos::class, 'aumento_provider']);
+
+Route::get('/api/aumentos/dolar-listado', [APIAumentos::class, 'dolar_listado']);
 
 
 
