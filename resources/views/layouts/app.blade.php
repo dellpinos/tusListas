@@ -17,8 +17,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         @stack('styles')
-        @vite('resources/js/app.js')
-        @vite('resources/css/app.css')
+
 </head>
 
 <body class=" bg-home">

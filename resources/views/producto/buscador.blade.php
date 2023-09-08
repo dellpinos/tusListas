@@ -9,10 +9,6 @@
     Buscador
 @endsection
 
-@push('scripts')
-    @vite('resources/js/buscadorProd.js')
-    @vite('resources/js/buscadorCodigo.js')
-@endpush
 
 
 @section('contenido')

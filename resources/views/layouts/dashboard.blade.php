@@ -17,12 +17,12 @@
         integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-        @stack('styles')
+        @vite('resources/scss/app.scss')
         @vite('resources/js/app.js')
-        @vite('resources/css/app.css')
-</head>
-
-<body class=" bg-dashboard" >
+        
+        </head>
+        
+        <body class=" bg-dashboard" >
     <header class="header" >
         <div class="header__contenedor" >
             <a href="{{ route('buscador') }}">

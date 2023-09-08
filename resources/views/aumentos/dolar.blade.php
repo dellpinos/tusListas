@@ -5,10 +5,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 
-@push('scripts')
-    @vite('resources/js/aumentoDolar.js')
-
-@endpush
 
 @section('titulo')
     Aumento en Base al U$S

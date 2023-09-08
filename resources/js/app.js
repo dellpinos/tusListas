@@ -1,1 +1,6 @@
-import '../scss/app.scss';
+
+import './aumentoDolar';
+import './aumentos';
+import './buscadorCodigo';
+import './buscadorProd';
+import './productoForm';
