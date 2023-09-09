@@ -2,15 +2,21 @@
 
 
 .footer {
+
     &__contenedor {
-        background-color: v.$grisClaro;
-        color: v.$grisBlanco;
+        background-color: v.$grisBlanco;
+        color: v.$blanco;
         font-weight: v.$bold;
         margin: 10rem 0 0 0;
         text-align: center;
-        padding: 2rem;
+        padding: 4rem;
         font-size: 1.8rem;
         text-transform: uppercase;
+
+    }
+
+    &__nombre {
+        text-transform: none;
 
     }
 }

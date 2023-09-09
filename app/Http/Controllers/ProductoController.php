@@ -70,7 +70,8 @@ class ProductoController extends Controller
             'precio' => $request->precio,
             'dolar' => $request->dolar,
             'fabricante_id' => $request->fabricante_id,
-            'categoria_id' => $request->categoria_id
+            'categoria_id' => $request->categoria_id,
+            'provider_id' => $request->provider_id
         ]);
 
         // Primero tengo que crear el fabircante, la categoria, provider 
@@ -179,8 +180,8 @@ class ProductoController extends Controller
         // _3_ formulario desplegado para ser modificado, boton-enlace en el precio (este mismo metodo con otro $producto)
 
         if ($productos->count() > 1) {
-
             // Existe fraccionado
+
             if ($producto->unidad_fraccion !== null && $producto->contenido_total !== null && $producto->ganancia_fraccion !== null) {
                 // Es un producto fraccionado Opt _3_
 
@@ -190,7 +191,6 @@ class ProductoController extends Controller
                         $producto_secundario = $elemento;
                     }
                 }
-
 
             } else {
 
@@ -202,10 +202,6 @@ class ProductoController extends Controller
                     }
                 }
             }
-
-            // dd('Existe fraccionado');
-
-
         } 
 
 
@@ -257,7 +253,6 @@ class ProductoController extends Controller
             'fabricantes' => $fabricantes,
             'proveedores' => $proveedores,
 
-
             'producto_fraccionado' => $producto_fraccionado,
             'producto_secundario' => $producto_secundario
 
@@ -299,6 +294,10 @@ class ProductoController extends Controller
         $producto->ganancia_prod = $ganancia_prod;
         $producto->ganancia_tipo = $ganancia_tipo;
 
+
+        $precio->categoria_id = intval($request->categoria_id);
+        $precio->fabricante_id = intval($request->fabricante_id);
+        $precio->provider_id = intval($request->provider_id);
         $precio->precio = $request->precio;
         $precio->dolar = $request->dolar;
 

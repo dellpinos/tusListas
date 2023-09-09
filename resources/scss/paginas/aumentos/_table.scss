@@ -1,0 +1,39 @@
+@use '../../base/variables' as v;
+@use '../../base/mixins' as m;
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.5rem;
+    text-align: center;
+
+    &__thead {
+        background-color: v.$grisMedio;
+        color: v.$blanco;
+
+    }
+
+    &__th {
+        padding: 1rem;
+
+    }
+
+    &__tr {
+        &:nth-child(even) {
+            background-color: v.$grisBlanco;
+        }
+    }
+
+    &__td {
+        padding: 1.5rem;
+        &--acciones {
+            @extend .table__td;
+            display: flex;
+            justify-content: flex-end;
+            gap: 2rem;
+            align-items: center;
+        }
+    }
+
+
+}

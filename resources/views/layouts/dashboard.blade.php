@@ -17,9 +17,10 @@
         integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    @stack('styles')
-    @vite('resources/js/app.js')
-    @vite('resources/css/app.css')
+
+    @vite('resources/scss/app.scss')
+    
+
 </head>
 
 <body class=" bg-dashboard">
@@ -52,20 +53,25 @@
         </div>
     </header>
 
-    <main class="contenedor-xl">
+    <main class="dashboard__grid">
+        
         <aside class="sidebar">
             <nav class=" sidebar__nav">
 
                 <a href="{{ route('buscador') }}"
                     class="sidebar__enlace @if (request()->path() === '/') activo @endif"><i
                         class="fa-solid fa-magnifying-glass sidebar__icono"></i>Buscador</a>
-                <a href="#" class="sidebar__enlace"><i class="fa-solid fa-clipboard sidebar__icono"></i>Ingreso
-                    Mercaderia</a>
+
+                <a href="{{ route('ingreso') }}"
+                    class="sidebar__enlace @if (request()->path() === 'ingreso') activo @endif"><i
+                        class="fa-solid fa-clipboard sidebar__icono"></i>Ingreso Mercaderia</a>
                 <a href="{{ route('producto.create') }}"
                     class="sidebar__enlace @if (request()->path() === 'producto/nuevo-producto') activo @endif"><i
                         class="fa-solid fa-plus sidebar__icono"></i>Nuevo Producto</a>
-                <a href="#" class="sidebar__enlace"><i class="fa-solid fa-dollar-sign sidebar__icono"></i>Cambiar
-                    Precios</a>
+                <a href="{{ route('aumentos') }}"
+                    class="sidebar__enlace @if (request()->path() === 'aumentos') activo @endif""><i
+                        class="fa-solid fa-dollar-sign sidebar__icono"></i>Cambiar Precios</a>
+
                 <a href="{{ route('providers') }}"
                     class="sidebar__enlace @if (request()->path() === 'providers') activo @endif"><i
                         class="fa-solid fa-shop sidebar__icono"></i>Proveedores</a>
@@ -75,6 +81,7 @@
                 <a href="{{ route('fabricantes') }}"
                     class="sidebar__enlace @if (request()->path() === 'fabricantes') activo @endif"><i
                         class="fa-solid fa-flask sidebar__icono"></i>Laboratorios</a>
+
             </nav>
         </aside>
 
@@ -87,18 +94,9 @@
             @yield('contenido')
         </div>
 
-
     </main>
 
-    {{-- <footer class="mt-10 text-center p-5 text-gray-500 font-bold uppercase">
-        MdP - Todos los derechos reservados {{ now()->year }}
-
-    </footer> --}}
-    <footer>
-        @stack('scripts')
-
-    </footer>
-
+    @vite('resources/js/app.js')
 
 </body>
 
