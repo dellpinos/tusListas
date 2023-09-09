@@ -8,9 +8,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 
-@push('scripts')
-    @vite('resources/js/productoForm.js')
-@endpush
 
 
 @section('contenido')
