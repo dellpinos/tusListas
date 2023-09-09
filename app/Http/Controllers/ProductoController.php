@@ -66,6 +66,25 @@ class ProductoController extends Controller
         }
 
 
+        $this->validate($request, [
+            'codigo' => 'required|max:4|min:4|unique:productos',
+            'nombre' => 'required|max:60|unique:productos',
+            'categoria_id' => 'required|integer|max:1',
+            'fabricante_id' => 'required|integer|max:1',
+            'provider_id' => 'required|integer|max:1',
+            'dolar' => 'numeric|required',
+            'precio' => 'numeric|required',
+            'ganancia' => 'string|required',
+            'codigo_fraccionado' => 'nullable|max:4|min:4|unique:productos',
+            'unidad_fraccionado' => 'nullable|string|max:60',
+            'contenido_total' => 'nullable|numeric',
+            'ganancia_fraccion' => 'required|numeric', 'between:0.01,9.99'
+
+        ]);
+
+
+
+
         $precio = Precio::create([
             'precio' => $request->precio,
             'dolar' => $request->dolar,
@@ -76,7 +95,7 @@ class ProductoController extends Controller
 
         // Primero tengo que crear el fabircante, la categoria, provider 
         $producto = Producto::create([
-            'nombre' => $request->name,
+            'nombre' => $request->nombre,
             'codigo' => $request->codigo,
             'categoria_id' => $request->categoria_id,
             'fabricante_id' => $request->fabricante_id,
@@ -91,6 +110,17 @@ class ProductoController extends Controller
 
         if ($request->codigo_fraccionado !== null) {
             // Producto fraccionado
+
+            $this->validate($request, [
+
+                'codigo_fraccionado' => 'required|max:4|min:4|unique:productos',
+                'unidad_fraccionado' => 'required|string|max:60',
+                'contenido_total' => 'required|numberic',
+                'ganancia_fraccion' => 'required|numeric', 'between:0.01,9.99'
+    
+            ]);
+
+
             Producto::create([
                 'nombre' => $request->name . " - Fraccionado",
                 'codigo' => strtolower($request->codigo_fraccionado),
@@ -103,6 +133,7 @@ class ProductoController extends Controller
                 'unidad_fraccion' => $request->unidad_fraccion,
                 'contenido_total' => $request->contenido_total,
                 'ganancia_fraccion' => $request->ganancia_fraccion
+
             ]);
         }
 
@@ -167,6 +198,11 @@ class ProductoController extends Controller
 
         $producto_secundario = '';
         $producto_fraccionado = false;
+
+
+        // Agregar validaciones y eliminar elemento fraccionado de ser necesario
+
+
 
         // Hay 3 opciones:
         // 1_ Si no es un producto fraccionado y no existe el mismo voy a permitir crearlo con el checkbox

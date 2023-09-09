@@ -24,16 +24,17 @@ class CategoriaController extends Controller
     {
         return view('categoria.create');
     }
+
     public function store(Request $request)
     {
+
         $this->validate($request, [
-            'name' => 'required|unique:categorias|max:60',
-            'ganancia' => 'required'
+            'nombre' => 'required|unique:categorias|max:60',
+            'ganancia' => 'required|numeric', 'between:0.01,9.99'
         ]);
 
-        // Añadir validaciones y autenticación // Falta agregar validaciones, por ejemplo el nombre debe ser unique
         Categoria::create([
-            'nombre' => $request->name,
+            'nombre' => $request->nombre,
             'ganancia' => $request->ganancia,
             'providersCategorias_id' => 1 // <<<<< Cambiar este dato, solo es una prueba
         ]);
@@ -52,17 +53,17 @@ class CategoriaController extends Controller
     }
     public function update(Request $request)
     {
-
+        $categoria = Categoria::find($request->id);
+        
         $this->validate($request, [
-            'nombre' => 'required|unique:categorias|max:60',
-            'ganancia' => 'required'
+            'nombre' => 'required|max:60|unique:categorias,nombre,' . $categoria->id,
+            'ganancia' => 'required|numeric', 'between:0.01,9.99'
         ]);
 
         // Falta agregar validaciones, por ejemplo el nombre debe ser unique
 
-        $categoria = Categoria::find($request->id);
 
-        $categoria->nombre = $request->name;
+        $categoria->nombre = $request->nombre;
         $categoria->ganancia = $request->ganancia;
         $categoria->providersCategorias_id = 1; // <<<<< Cambiar este dato, solo es una prueba
 
