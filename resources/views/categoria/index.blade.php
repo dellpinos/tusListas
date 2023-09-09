@@ -1,13 +1,10 @@
 @extends('layouts.dashboard')
 
-
 @section('titulo')
     Categorias
 @endsection
 
-
 @section('contenido')
-    {{-- Esto deberia ser un componente/livewire --}}
     <div class="categoria__contenedor-boton" >
         <a href="{{ route('categoria.create') }}" class="categoria__boton">Crear Categoria</a>
         <a href="#" class="categoria__boton">Buscar Categoria</a>
@@ -37,6 +34,6 @@
         </div>
 
     @else
-        <p class=" text-gray-600 uppercase text-sm text-center font-bold">No se encontraron categorias</p>
+        <p class="mensaje__vacio">No se encontraron categorias</p>
     @endif
 @endsection

@@ -37,6 +37,6 @@
         </div>
 
     @else
-        <p class=" text-gray-600 uppercase text-sm text-center font-bold">No se encontraron fabricantes</p>
+        <p class="mensaje__vacio">No se encontraron fabricantes</p>
     @endif
 @endsection

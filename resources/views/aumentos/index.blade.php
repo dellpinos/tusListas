@@ -9,8 +9,6 @@
     Cambiar Precios
 @endsection
 
-
-
 @section('contenido')
 <div class="categoria__contenedor-boton" >
     <a href="{{ route('aumento.dolar') }}" class="categoria__boton">Aumento Dolar</a>
@@ -85,10 +83,7 @@
         </div>
     </div>
 
-
     <h3>Aumentos Individuales</h3>
-
-
 
     <div class="buscador__grid">
         <div class=" buscador__contenedor">
