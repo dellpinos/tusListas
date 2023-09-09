@@ -9,11 +9,6 @@
     Cambiar Precios
 @endsection
 
-@push('scripts')
-    @vite('resources/js/buscadorProd.js')
-    @vite('resources/js/buscadorCodigo.js')
-    @vite('resources/js/aumentos.js')
-@endpush
 
 
 @section('contenido')

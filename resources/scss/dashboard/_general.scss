@@ -1,0 +1,13 @@
+@use '../base/variables' as v;
+
+
+.dashboard {
+
+    &__grid {
+        display: flex;
+        overflow-y: auto;
+    }
+}
+
+
+

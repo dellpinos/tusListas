@@ -15,6 +15,10 @@
         padding: 3rem;
         border-radius: .5rem;
         box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+        label {
+            margin-bottom: 2rem;
+        }
     }
 
     &__campo-contenedor {
@@ -34,6 +38,7 @@
         border: none;
         border-bottom: .5px solid lighten(v.$grisBlanco, 15%) ;
         border-radius: .5rem;
+        
     }
 
     &__opciones-contenedor {
@@ -45,10 +50,14 @@
         background-color: v.$blanco;
         width: 105%;
         border-radius: .5rem;
-        border-width: 1px;
+        border: 0.5px solid v.$grisBlanco;
+
+        ul {
+            padding: 0;
+        }
 
         li {
-
+            width: 100%;
             padding: 1rem;
             border-radius: 1rem;
             font-size: 1.6rem;

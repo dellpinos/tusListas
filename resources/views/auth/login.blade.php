@@ -8,7 +8,7 @@
 
 @section('contenido')
 
-<div class="md:flex md:justify-center md:gap-10 md:items-center">
+<div class="formulario__contenedor-md">
 
     <div class="formulario__contenedor">
         <form method="POST" action="{{ route('login') }}" novalidate>
