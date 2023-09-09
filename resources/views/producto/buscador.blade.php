@@ -11,6 +11,7 @@
 
 
 
+
 @section('contenido')
     <div class="buscador__grid">
         {{-- Aqui debe haber un formulario que envie el request para la consulta, luego hacer un buscador con Js --}}
