@@ -15,9 +15,7 @@
 @section('contenido')
 
 @if (session('mensaje'))
-
     <p class="mensaje__error">{{session('mensaje')}}</p>
-    
 @endif
     <div class="buscador__grid">
         {{-- Aqui debe haber un formulario que envie el request para la consulta, luego hacer un buscador con Js --}}
@@ -51,9 +49,12 @@
         </div>
 
     </div>
-    <div class=" producto__grid producto__card-contenedor" id="card-producto">
+    <div class="" id="card-producto">
         {{-- Este contenido se genera con Js --}}
+
+        <p class="mensaje__info">No se ha realizado una busqueda</p>
     </div>
+    
 
 
 

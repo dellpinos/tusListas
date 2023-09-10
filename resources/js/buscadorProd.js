@@ -197,6 +197,8 @@
                         resultado.producto.unidad_fraccion = '';
                     }
 
+                    cardProducto.classList.add('producto__grid', 'producto__card-contenedor');
+
                     cardProducto.innerHTML = `
                 <a href="/producto/producto-show/${resultado.producto.id}" class="producto__grid-card">
                     <div class=" producto__contenedor ">

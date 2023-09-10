@@ -321,7 +321,7 @@ class ProductoController extends Controller
             'provider_id' => 'required|integer',
             'dolar' => 'numeric|required',
             'precio' => 'numeric|required',
-            // 'ganancia' => 'required' <<<<<<<<<<<
+            'ganancia' => 'required'
 
         ]);
 

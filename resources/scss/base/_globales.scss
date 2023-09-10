@@ -20,7 +20,7 @@ body {
 textarea, input, label, a {
     font-family: v.$fuente_textos;
 }
-select {
+select, input[type="checkbox"] {
     cursor: pointer;
 }
 input[type="radio"] {

@@ -106,6 +106,7 @@
                     @error('dolar')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror
+                    <a class="enlace__normal" href="https://dolarhoy.com/cotizaciondolarblue" target="_blank">Consultar Dolar Hoy</a>
                 </div>
             </div>
 
