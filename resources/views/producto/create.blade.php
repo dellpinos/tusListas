@@ -36,11 +36,11 @@
                 <div class="formulario__campo-contenedor">
                     <label for="categoria" class="formulario__label">Categoria</label>
                     <select required class="formulario__campo @error('categoria') borde__error @enderror" id="categoria"
-                        name="categoria_id">
+                        name="categoria_id" >
                         <option value="" selected disabled>- Seleccionar -</option>
 
                         @foreach ($categorias as $categoria)
-                            <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                            <option value="{{ $categoria->id }}" {{ intval(old('categoria_id')) === $categoria->id ? 'selected' : '' }}>{{ $categoria->nombre }}</option>
                         @endforeach
 
                         @error('categoria')
@@ -56,7 +56,7 @@
                         <option value="" selected disabled>- Seleccionar -</option>
 
                         @foreach ($proveedores as $proveedor)
-                            <option value="{{ $proveedor->id }}">{{ $proveedor->nombre }}</option>
+                            <option value="{{ $proveedor->id }}" {{ intval(old('provider_id')) === $proveedor->id ? 'selected' : '' }}>{{ $proveedor->nombre }}</option>
                         @endforeach
 
                         @error('proveedor')
@@ -73,7 +73,7 @@
                         <option value="" selected disabled>- Seleccionar -</option>
 
                         @foreach ($fabricantes as $fabricante)
-                            <option value="{{ $fabricante->id }}">{{ $fabricante->nombre }}</option>
+                            <option value="{{ $fabricante->id }}" {{ intval(old('fabricante_id')) === $fabricante->id ? 'selected' : '' }}>{{ $fabricante->nombre }}</option>
                         @endforeach
 
                         @error('fabricante')
@@ -87,7 +87,7 @@
                     <label for="dolar" class="formulario__label">Cotización dolar Blue
                         (compra)</label>
                     <input required type="number" id="dolar" name="dolar" placeholder="0"
-                        class="formulario__campo text-right @error('dolar') borde__error @enderror">
+                        class="formulario__campo text-right @error('dolar') borde__error @enderror" value="{{ old('dolar') }}">
                     @error('dolar')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror
@@ -100,7 +100,7 @@
                 <div class="formulario__campo-contenedor">
                     <label for="precio" class="formulario__label">Precio Costo sin IVA</label>
                     <input required type="number" step="any" id="precio" name="precio" placeholder="0"
-                        class="formulario__campo text-right @error('precio') borde__error @enderror">
+                        class="formulario__campo text-right @error('precio') borde__error @enderror" value="{{ old('precio') }}">
                     @error('precio')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror
@@ -115,7 +115,7 @@
                     @enderror
                 </div>
 
-
+                
                 <label for="ganancia" class="formulario__label">Ganancia</label>
                 <div class="formulario__contenedor-radio" id="contenedor-radios">
                     <label for="ganancia-categoria" class="formulario__label--small">Categoria</label>
@@ -161,7 +161,7 @@
                 <label for="codigo-fraccionado" class="formulario__label">Código del Producto Fraccionado</label>
                 
                 <input type="text" id="codigo-fraccionado" name="codigo_fraccionado" readonly
-                    class="formulario__campo formulario__campo--codigo @error('codigo') border-red-500 @enderror"
+                    class="formulario__campo formulario__campo--codigo @error('codigo') borde__error @enderror"
                     value="">
                 @error('codigo-fraccionado')
                     <p class="alerta__error">{{ $message }}</p>
@@ -173,8 +173,8 @@
                 <div class="formulario__campo-contenedor width-full">
                     <label for="unidad-fraccion" class="formulario__label">Unidad del Producto</label>
                     <input type="text" id="unidad-fraccion" name="unidad_fraccion" placeholder="blister, frasco, ml, kg"
-                        class="formulario__campo @error('unidad-fraccion') border-red-500 @enderror">
-                    @error('unidad-fraccion')
+                        class="formulario__campo @error('unidad_fraccion') borde__error @enderror" value="{{ old('unidad_fraccion') }}">
+                    @error('unidad_fraccion')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror
                 </div>
@@ -182,17 +182,17 @@
                 <div class="formulario__campo-contenedor width-full">
                     <label for="contenido-total" class="formulario__label">Total de Unidades</label>
                     <input type="number" id="contenido-total" name="contenido_total" placeholder="25, 3, 500"
-                        class="formulario__campo text-right @error('contenido-total') border-red-500 @enderror">
-                    @error('contenido-total')
+                        class="formulario__campo text-right @error('contenido_total') borde__error @enderror" value="{{ old('contenido_total') }}">
+                    @error('contenido_total')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div class="formulario__campo-contenedor width-full">
                     <label for="ganancia-fraccion" class="formulario__label">Ganancia Extra Fracción</label>
-                    <input type="number" step="any" min="1" id="ganancia-fraccion" name="ganancia_fraccion" placeholder="1.1, 1.2, 1.4"
-                        class="formulario__campo text-right @error('ganancia-fraccion') border-red-500 @enderror">
-                    @error('ganancia-fraccion')
+                    <input type="number" step="any" min="1" max="10" id="ganancia-fraccion" name="ganancia_fraccion" placeholder="1.1, 1.2, 1.4"
+                        class="formulario__campo text-right @error('ganancia_fraccion') borde__error @enderror" value="{{ old('ganancia_fraccion') }}">
+                    @error('ganancia_fraccion')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror
                 </div>

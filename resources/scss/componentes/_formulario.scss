@@ -82,6 +82,7 @@
         &--no-activo {
             cursor: not-allowed;
             background-color: lighten(v.$grisBlanco, 20%);
+            color: v.$grisBlanco;
 
         }
 
