@@ -20,6 +20,14 @@ body {
 textarea, input, label, a {
     font-family: v.$fuente_textos;
 }
+select {
+    cursor: pointer;
+}
+input[type="radio"] {
+    cursor: pointer;
+
+
+}
 a {
     text-decoration: none;
 }

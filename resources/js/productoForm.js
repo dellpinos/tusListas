@@ -21,6 +21,22 @@
         const precioFraccionado = document.querySelector('#precio-fraccionado');
         const btnFraccionado = document.querySelector('#btn-fraccionado');
 
+        const radiobtns = document.querySelectorAll('input[type="radio"]');
+
+        let radioChecked = document.querySelector('input[type="radio"]:checked');
+
+        radiobtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                console.log('click!!!');
+                habilitarCampo(e);
+
+                calcularGanancia();
+                campoVenta.value = '';
+            });
+        });
+
+
+
         let precioVenta = 0;
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -29,13 +45,13 @@
                     campoConIva.value = Math.round(campoSinIva.value * 1.21);
 
                 }
+
+                calcularGanancia();
+
             }
+
         });
 
-        contenedorRadios.addEventListener('click', function () {
-
-            habilitarCampo();
-        });
 
         campoSinIva.addEventListener('input', function () {
             campoConIva.value = Math.round(campoSinIva.value * 1.21);
@@ -47,27 +63,33 @@
 
         // Consultar precio venta
         btnVenta.addEventListener('click', function () {
-            calcularGanancia();
+            const click = true;
+            calcularGanancia(click);
 
         });
 
-        // Habilitar / Deshabilitar campo opcional
-        function habilitarCampo() {
-            if (campoPersonalizado.disabled === true && gananciaPersonalizada.checked === true) {
-                campoPersonalizado.disabled = false;
-                campoPersonalizado.classList.remove('formulario__campo--no-activo');
 
-            } else { // Este campo se deshabilita aunque presionen "pesonalizado"
-                campoPersonalizado.disabled = true;
+        // Habilitar / Deshabilitar campo opcional
+        function habilitarCampo(e) {
+            if(e.target.value === 'personalizada' && campoPersonalizado.readOnly === true){
+
+                campoPersonalizado.readOnly = false;
+                campoPersonalizado.classList.remove('formulario__campo--no-activo');
+            } else if (e.target.value !== 'personalizada') {
+                
+                campoPersonalizado.readOnly = true;
                 campoPersonalizado.classList.add('formulario__campo--no-activo');
                 campoPersonalizado.value = '';
-
             }
+
+
         }
 
-        async function calcularGanancia() {
 
-            const radioChecked = document.querySelector('input[type="radio"]:checked');
+
+        async function calcularGanancia(click) {
+
+            radioChecked = document.querySelector('input[type="radio"]:checked');
 
             if (radioChecked.value === 'personalizada') {
                 // Calculo leyendo el formulario
@@ -86,7 +108,10 @@
                 precioVenta = (campoSinIva.value * 1.21) * ganancia;
 
             }
-            campoVenta.value = redondear(precioVenta);
+            if(click) { // Solo cambio el "precio venta" si es presionado el btn de calcular
+                campoVenta.value = redondear(precioVenta);
+
+            }
 
             if (checkFraccion) {
 

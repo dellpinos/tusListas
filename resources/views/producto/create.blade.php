@@ -107,7 +107,7 @@
                 </div>
 
                 <div class="formulario__campo-contenedor">
-                    <label for="precio" class="formulario__label">Precio Costo con IVA</label>
+                    <label for="precio-iva" class="formulario__label">Precio Costo con IVA</label>
                     <input type="number" step="any" id="precio-iva" placeholder="0"
                         class="formulario__campo text-right @error('precio') borde__error @enderror">
                     @error('precio')
@@ -115,7 +115,7 @@
                     @enderror
                 </div>
 
-                
+
                 <label for="ganancia" class="formulario__label">Ganancia</label>
                 <div class="formulario__contenedor-radio" id="contenedor-radios">
                     <label for="ganancia-categoria" class="formulario__label--small">Categoria</label>

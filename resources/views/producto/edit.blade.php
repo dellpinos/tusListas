@@ -15,7 +15,7 @@
 
 
 @if($producto_fraccionado)
-    <p class="mensaje__vacio">Hay opciones que no pueden modificarse en un producto 'fraccionado'. Para realizar modificaciones, este debe ser eliminado y luego recreado como una versión 'fraccionada' del producto original.</p>
+    <p class="mensaje__info">Hay opciones que no pueden modificarse en un producto 'fraccionado'. Para realizar modificaciones, este debe ser eliminado y luego recreado como una versión 'fraccionada' del producto original.</p>
 @endif
     <div class="producto-formulario__grid">
 
@@ -121,7 +121,7 @@
                 </div>
 
                 <div class="formulario__campo-contenedor">
-                    <label for="precio" class="formulario__label">Precio Costo con IVA</label>
+                    <label for="precio-iva" class="formulario__label">Precio Costo con IVA</label>
                     <input type="number" id="precio-iva" placeholder="0"
                         class="formulario__campo text-right @error('precio') borde__error @enderror">
                 </div>
@@ -147,7 +147,7 @@
                 </div>
                 <div class="formulario__campo-contenedor">
                     <input type="number" step="0.1" min="0" id="ganancia" name="ganancia"
-                        placeholder="1.2, 1.7, 1.9" value="{{ $producto->ganancia }}"
+                        placeholder="1.2, 1.7, 1.9" value="{{ $producto->ganancia }}" readonly
                         class=" formulario__campo formulario__campo--no-activo text-right @error('ganancia') borde__error @enderror">
                     @error('ganancia')
                         <p class="alerta__error">{{ $message }}</p>
