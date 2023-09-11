@@ -18,6 +18,7 @@
         background-color: v.$verde;
     }
 }
+
 .borde {
 
     &__error {
@@ -28,3 +29,33 @@
 
     }
 }
+
+.mensaje {
+    border-radius: .5rem;
+    margin-top: 5rem;
+    margin-bottom: 2rem;
+    font-weight: v.$bold;
+    text-align: center;
+    text-transform: uppercase;
+
+    padding: 1rem;
+
+    &__vacio {
+        @extend .mensaje;
+        border: .5px solid v.$grisBlanco;
+        color: v.$grisClaro;
+    }
+
+    &__error {
+        @extend .mensaje;
+        border: .5px solid v.$rojo;
+        color: v.$rojo;
+    }
+
+    &__info {
+        @extend .mensaje;
+        border: .5px solid v.$grisBlanco;
+        color: v.$grisClaro;
+    }
+}
+

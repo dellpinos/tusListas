@@ -26,9 +26,17 @@ class FabricanteController extends Controller
     }
     public function store(Request $request)
     {
+
+
+        $this->validate($request, [
+            'nombre' => 'required|max:60|unique:fabricantes',
+            'telefono' => 'string|nullable|max:60',
+            'vendedor' => 'string|nullable|max:60',
+            'descripcion' => 'string|nullable|max:500'
+        ]);
         // Añadir validaciones y autenticación
         Fabricante::create([
-            'nombre' => $request->name,
+            'nombre' => $request->nombre,
             'telefono' => $request->telefono,
             'vendedor' => $request->vendedor,
             'descripcion' => $request->descripcion
@@ -49,7 +57,14 @@ class FabricanteController extends Controller
 
         $fabricante = Fabricante::find($request->id);
 
-        $fabricante->nombre = $request->name;
+        $this->validate($request, [
+            'nombre' => 'required|string|max:60|unique:fabricantes,nombre,' . $fabricante->id,
+            'telefono' => 'string|nullable|max:60',
+            'vendedor' => 'string|nullable|max:60',
+            'descripcion' => 'string|nullable|max:500'
+        ]);
+
+        $fabricante->nombre = $request->nombre;
         $fabricante->telefono = $request->telefono;
         $fabricante->vendedor = $request->vendedor;
         $fabricante->descripcion = $request->descripcion;

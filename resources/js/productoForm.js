@@ -2,26 +2,35 @@
 
     if (document.querySelector('#precio')) {
 
-
-        const gananciaPersonalizada = document.querySelector('#ganancia-personalizada');
         const campoPersonalizado = document.querySelector('#ganancia');
-        const contenedorRadios = document.querySelector('#contenedor-radios');
         const campoSinIva = document.querySelector('#precio');
         const campoConIva = document.querySelector('#precio-iva');
-        const btnVenta = document.querySelector('#btn-venta');
+        const btnVenta = document.querySelector('#btn-venta'); // calcular precio venta
         const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         const campoVenta = document.querySelector('#precio-venta');
 
-        const checkFraccion = document.querySelector('#check-fraccion');
+        const checkFraccion = document.querySelector('#check-fraccion'); // abre formulario secundario
         const contenedorOculto = document.querySelector('#producto-contenedor-oculto');
         let codigoFraccionado = document.querySelector('#codigo-fraccionado');
         const unidadFraccion = document.querySelector('#unidad-fraccion');
         const totalFraccionado = document.querySelector('#contenido-total');
         const gananciaFraccion = document.querySelector('#ganancia-fraccion');
         const precioFraccionado = document.querySelector('#precio-fraccionado');
-        const btnFraccionado = document.querySelector('#btn-fraccionado');
+        const btnFraccionado = document.querySelector('#btn-fraccionado'); // calcular precio fraccionado
 
+        const radiobtns = document.querySelectorAll('input[type="radio"]');
+        let radioChecked = document.querySelector('input[type="radio"]:checked');
         let precioVenta = 0;
+        const click = true;
+
+        radiobtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                habilitarCampo(e);
+
+                calcularGanancia();
+                campoVenta.value = '';
+            });
+        });
 
         document.addEventListener("DOMContentLoaded", function () {
             if (campoConIva.value !== undefined) {
@@ -29,45 +38,48 @@
                     campoConIva.value = Math.round(campoSinIva.value * 1.21);
 
                 }
+
+                calcularGanancia();
             }
         });
 
-        contenedorRadios.addEventListener('click', function () {
-
-            habilitarCampo();
-        });
-
         campoSinIva.addEventListener('input', function () {
+
+            precioFraccionado.value = 0;
+            campoVenta.value = 0;
+            calcularGanancia(click);
             campoConIva.value = Math.round(campoSinIva.value * 1.21);
         });
 
         campoConIva.addEventListener('input', function () {
             campoSinIva.value = Math.round(campoConIva.value / 1.21);
+            
         });
 
         // Consultar precio venta
         btnVenta.addEventListener('click', function () {
-            calcularGanancia();
+            
+            calcularGanancia(click);
 
         });
 
         // Habilitar / Deshabilitar campo opcional
-        function habilitarCampo() {
-            if (campoPersonalizado.disabled === true && gananciaPersonalizada.checked === true) {
-                campoPersonalizado.disabled = false;
-                campoPersonalizado.classList.remove('formulario__campo--no-activo');
+        function habilitarCampo(e) {
+            if(e.target.value === 'personalizada' && campoPersonalizado.readOnly === true){
 
-            } else { // Este campo se deshabilita aunque presionen "pesonalizado"
-                campoPersonalizado.disabled = true;
+                campoPersonalizado.readOnly = false;
+                campoPersonalizado.classList.remove('formulario__campo--no-activo');
+            } else if (e.target.value !== 'personalizada') {
+                
+                campoPersonalizado.readOnly = true;
                 campoPersonalizado.classList.add('formulario__campo--no-activo');
                 campoPersonalizado.value = '';
-
             }
         }
 
-        async function calcularGanancia() {
+        async function calcularGanancia(click) {
 
-            const radioChecked = document.querySelector('input[type="radio"]:checked');
+            radioChecked = document.querySelector('input[type="radio"]:checked');
 
             if (radioChecked.value === 'personalizada') {
                 // Calculo leyendo el formulario
@@ -77,16 +89,19 @@
 
                 // Consulta la DB
                 const proveedor_id = document.querySelector('#proveedor');
-                ganancia = await consultarGanancia(radioChecked.value, proveedor_id.value);
+                let ganancia = await consultarGanancia(radioChecked.value, proveedor_id.value);
                 precioVenta = (campoSinIva.value * 1.21) * ganancia;
 
             } else {
                 const categoria_id = document.querySelector('#categoria');
-                ganancia = await consultarGanancia(radioChecked.value, categoria_id.value);
+                let ganancia = await consultarGanancia(radioChecked.value, categoria_id.value);
                 precioVenta = (campoSinIva.value * 1.21) * ganancia;
 
             }
-            campoVenta.value = redondear(precioVenta);
+            if(click) { // Solo cambio el "precio venta" si es presionado el btn de calcular
+                campoVenta.value = redondear(precioVenta);
+
+            }
 
             if (checkFraccion) {
 
@@ -96,7 +111,6 @@
 
                 }
             }
-
         }
 
         async function consultarGanancia(seleccion, id) {
@@ -133,7 +147,6 @@
 
                 if (checkFraccion.checked === true) {
                     // Seleccionado
-                    console.log('visible!');
 
                     contenedorOculto.classList.add('producto-formulario__contenedor-visible');
                     contenedorOculto.classList.remove('producto-formulario__contenedor-oculto');
@@ -176,14 +189,14 @@
 
             if (precioVenta) {
                 // Calculo leyendo el formulario
-                precioFraccionado.value = redondear(Math.round((precioVenta / totalFraccionado.value) * gananciaFraccion.value));
+                precioFraccionado.value = redondear((precioVenta / totalFraccionado.value) * gananciaFraccion.value);
             } else {
                 console.log('Debes calcular el precio No Fraccionado primero');
             }
         }
 
         function deseleccionarFraccionado() {
-            console.log('invisible!');
+
             contenedorOculto.classList.add('producto-formulario__contenedor-oculto');
             contenedorOculto.classList.remove('producto-formulario__contenedor-visible');
 

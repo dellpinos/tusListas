@@ -17,6 +17,17 @@ body {
     font-family: v.$fuente_textos;
     margin: 0;
 }
+textarea, input, label, a {
+    font-family: v.$fuente_textos;
+}
+select, input[type="checkbox"] {
+    cursor: pointer;
+}
+input[type="radio"] {
+    cursor: pointer;
+
+
+}
 a {
     text-decoration: none;
 }

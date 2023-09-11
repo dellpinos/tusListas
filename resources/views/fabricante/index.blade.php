@@ -32,11 +32,11 @@
             @endforeach
         </div>
 
-        <div class=" my-5 bg-gray-500 p-4 text-black" >
+        <div class="" >
             {{ $fabricantes->links() }}
         </div>
 
     @else
-        <p class=" text-gray-600 uppercase text-sm text-center font-bold">No se encontraron fabricantes</p>
+        <p class="mensaje__vacio">No se encontraron fabricantes</p>
     @endif
 @endsection

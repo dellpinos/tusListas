@@ -27,9 +27,19 @@ class ProviderController extends Controller
     public function store(Request $request)
     {
 
+        $this->validate($request, [
+            'nombre' => 'required|unique:providers|max:60',
+            'email' => 'email|nullable',
+            'telefono' => 'string|nullable',
+            'vendedor' => 'string|max:60|nullable',
+            'web' => 'url|nullable',
+            'ganancia' => 'required|numeric', 'between:0.01,9.99'
+        ]);
+
+
         // Añadir validaciones y autenticación
         Provider::create([
-            'nombre' => $request->name,
+            'nombre' => $request->nombre,
             'email' =>$request->email,
             'telefono' => $request->telefono,
             'vendedor' => $request->vendedor,
@@ -52,7 +62,17 @@ class ProviderController extends Controller
     {
         $provider = Provider::find($request->id);
 
-        $provider->nombre = $request->name;
+        $this->validate($request, [
+            'nombre' => 'required|max:60|unique:providers,nombre,' . $provider->id,
+            'email' => 'email|nullable',
+            'telefono' => 'string|nullable',
+            'vendedor' => 'string|max:60|nullable',
+            'web' => 'url|nullable',
+            'ganancia' => 'required|numeric', 'between:0.01,9.99'
+        ]);
+
+
+        $provider->nombre = $request->nombre;
         $provider->email = $request->email;
         $provider->telefono = $request->telefono;
         $provider->vendedor = $request->vendedor;

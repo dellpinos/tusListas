@@ -1,0 +1,16 @@
+@use '../base/variables' as v;
+@use '../base/mixins' as m;
+
+
+.enlace {
+    display: inline-block;
+    font-size: 1.4rem;
+    color: v.$azul;
+    
+    &__normal {
+        @extend .enlace;
+        font-size: 1rem;
+        padding: .5rem 0 0 .5rem;
+
+    }
+}
