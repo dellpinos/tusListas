@@ -32,7 +32,7 @@
             @endforeach
         </div>
 
-        <div class=" my-5 bg-gray-500 p-4 text-black" >
+        <div class="" >
             {{ $fabricantes->links() }}
         </div>
 
