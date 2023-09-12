@@ -55,6 +55,7 @@
 
 
 
+
         {{-- <p class="mensaje__info">No se ha realizado una busqueda</p> --}}
     </div>
     
