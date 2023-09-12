@@ -92,10 +92,18 @@ class APIAumentos extends Controller
     {
         // 10 precios - productos con "dolar" mas bajo
         $precios = Precio::orderBy('dolar', 'asc')->limit(10)->get();
+
         $productos = [];
         $resultado = [];
         foreach ($precios as $precio) {
             $productosTodos = Producto::where('precio_id', $precio->id)->get();
+
+            
+            if($productosTodos->count() === 0) {
+                $precio->delete(); //// PROVISORIO, elimina un precio sin producto. Resolver al trabajar en delete() de registros
+                return; // retorna, hay que recargar la página para volver a ejecutar hasta que no queden precios sin producto
+            }
+
 
             if ($productosTodos->count() > 1) {
                 // Existe Fraccionado
@@ -109,6 +117,7 @@ class APIAumentos extends Controller
                 }
             } else {
                 // No existe fraccionado
+
                 $resultado = precioVenta($productosTodos->first(), $precio);
                 $productos[] = $resultado['producto'];
                 $precio = $resultado['precio'];

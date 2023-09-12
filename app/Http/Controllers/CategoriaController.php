@@ -13,7 +13,7 @@ class CategoriaController extends Controller
     }
     public function index()
     {
-        $categorias = Categoria::orderBy('nombre', 'asc')->paginate(6);
+        $categorias = Categoria::orderBy('nombre', 'asc')->get();
 
 
         return view('categoria.index', [
