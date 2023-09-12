@@ -4,7 +4,6 @@
     Proveedores
 @endsection
 
-
 @section('contenido')
 
     <div class="provider__contenedor-boton">
@@ -12,15 +11,9 @@
         <a href="#" class="provider__boton">Buscar Proveedor</a>
     </div>
 
-
-
-
-
     @if ($providers->count() > 0)
-        <div class="swiper slider"> <!-- Swiper principal -->
+        <div class="swiper slider mb-10"> <!-- Swiper principal -->
             <div class="swiper-wrapper"> <!-- Swiper secundario -->
-
-
 
                 @foreach ($providers as $provider)
                     <div class=" provider__contenedor swiper-slide">
@@ -45,15 +38,11 @@
 
             </div> <!-- Swiper secundario -->
 
-            
             <div class="swiper-pagination"></div> <!-- Pagination -->
 
             <!-- Navigation buttons -->
             <div class="swiper-button-prev"></div>
             <div class="swiper-button-next"></div>
-
-            
-
 
         </div> <!-- Swiper principal -->
     @else

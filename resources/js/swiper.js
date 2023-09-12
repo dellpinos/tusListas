@@ -15,19 +15,19 @@ import 'swiper/css/navigation';
                 spaceBetween: 15,
                 freeMode: true,
                 loop: true,
-                
-                modules: [ Navigation, Pagination ],
+                watchOverflow: true,
+
+                modules: [Navigation, Pagination],
                 navigation: {
                     nextEl: '.swiper-button-next',
                     prevEl: '.swiper-button-prev',
+                    hideOnClick: true,
                 },
                 pagination: {
                     el: ".swiper-pagination",
                     clickable: true,
                     type: 'bullets',
                     dynamicBullets: true,
-
-
                 }
                 // breakpoints: {
                 //     768: {
@@ -43,6 +43,10 @@ import 'swiper/css/navigation';
             }
 
             const swiper = new Swiper('.swiper', opciones);
+
+            swiper.on('click', function() {
+                swiper.init();
+            });
 
 
         }
