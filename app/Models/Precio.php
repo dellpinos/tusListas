@@ -18,7 +18,10 @@ class Precio extends Model
         'fabricante_id',
         'categoria_id',
         'provider_id',
-        'contador_update'
+        'contador_update',
+        'desc_porc',
+        'desc_duracion',
+        'desc_acu'
     ];
 
     public function categoria()
