@@ -52,7 +52,11 @@
     <div class="" id="card-producto">
         {{-- Este contenido se genera con Js --}}
 
-        <p class="mensaje__info">No se ha realizado una busqueda</p>
+
+
+
+
+        {{-- <p class="mensaje__info">No se ha realizado una busqueda</p> --}}
     </div>
     
 

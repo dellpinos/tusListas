@@ -12,10 +12,14 @@
     </div>
 
     @if ($fabricantes->count() > 0)
-        <div class="fabricante__grid">
+        
+    <div class="swiper slider mb-10"> <!-- Swiper principal -->
+        <div class="swiper-wrapper"> <!-- Swiper secundario -->
+
+
             @foreach ($fabricantes as $fabricante)
-                <div class="fabricante__contenedor">
-                    <p><span class=" font-bold">Fabricante: </span>{{$fabricante->nombre}}</p>
+                <div class="fabricante__contenedor swiper-slide">
+                    <h3>{{ $fabricante->nombre }}</h3>
                     <p><span class=" font-bold">Telefono: </span>{{$fabricante->telefono}}</p>
                     <p><span class=" font-bold">Vendedor: </span>{{$fabricante->vendedor}}</p>
                     <p><span class=" font-bold">Descripción: </span>{{$fabricante->descripcion}}</p>
@@ -30,11 +34,18 @@
                     </div>
                 </div>
             @endforeach
-        </div>
 
-        <div class="" >
-            {{ $fabricantes->links() }}
-        </div>
+
+        </div> <!-- Swiper secundario -->
+
+        <div class="swiper-pagination"></div> <!-- Pagination -->
+
+        <!-- Navigation buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+
+    </div> <!-- Swiper principal -->
+
 
     @else
         <p class="mensaje__vacio">No se encontraron fabricantes</p>

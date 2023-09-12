@@ -25,8 +25,27 @@
         <a class="formulario__boton" id="btn-dolar">Buscar Desactualizados</a>
     </div>
 
-    <div  id="aumento-dolar-registros">
+    
 
-    </div>
+
+        <div class="swiper slider mb-10"> <!-- Swiper principal -->
+            
+            <div id="aumento-dolar-registros" class="swiper-wrapper"> <!-- Swiper secundario -->
+
+
+                    {{-- Generado con Js --}}
+
+
+            </div> <!-- Swiper secundario -->
+
+            <div class="swiper-pagination"></div> <!-- Pagination -->
+
+            <!-- Navigation buttons -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+
+        </div> <!-- Swiper principal -->
+
+    
     <a class="formulario__boton" id="btn-dolar-actualizar">Actualizar todos</a>
 @endsection
