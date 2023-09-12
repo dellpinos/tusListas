@@ -22,8 +22,7 @@ class ProviderFactory extends Factory
             'telefono' => $this->faker->phoneNumber(),
             'vendedor' => $this->faker->name(),
             'web' => $this->faker->url(),
-            'ganancia' => $this->faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 1),
-            'providersCategorias_id' => $this->faker->numberBetween($min = 1, $max = 30),
+            'ganancia' => $this->faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 1)
         ];
     }
 }
