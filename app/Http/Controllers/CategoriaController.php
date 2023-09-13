@@ -71,10 +71,5 @@ class CategoriaController extends Controller
         return redirect()->route('categorias');
 
     }
-    public function destroy(Categoria $categoria)
-    {
-        $categoria->delete();
 
-        return redirect()->route('categorias');
-    }
 }

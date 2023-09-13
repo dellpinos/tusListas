@@ -124,8 +124,6 @@ class APIAumentos extends Controller
             }
         }
 
-        
-
         echo json_encode([
             'precios' => $precios, 
             'productos' => $productos]

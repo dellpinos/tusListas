@@ -55,6 +55,7 @@ p {
 
 }
 .btn {
+    cursor: pointer;
     display: inline-block;
     text-align: center;
     white-space: nowrap;
@@ -75,10 +76,18 @@ p {
     color: v.$blanco;
     background-color: v.$rojo;
     border-color: v.$rojo;
+
+    &:hover {
+        background-color: darken(v.$rojo, 10%);
+    }
 }
 .btn-success {
     color: v.$blanco;
     background-color: v.$verde;
     border-color: v.$verde;
+
+    &:hover {
+        background-color: darken(v.$verde, 10%);
+    }
 }
 
