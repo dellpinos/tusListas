@@ -15,13 +15,8 @@
         <a href="#" class="categoria__boton">Buscar Categoria</a>
     </div>
 
-
-
     <div class="swiper slider mb-10"> <!-- Swiper principal -->
         <div class="swiper-wrapper" id="categorias-registros"> <!-- Swiper secundario -->
-    
-
-    
     
         </div> <!-- Swiper secundario -->
     

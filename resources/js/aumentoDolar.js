@@ -3,7 +3,7 @@
 // Asigno los elementos consultados en los array globales
 // Recorro los array globales generando el código con scripting
 // Al utilizar scripting tengo acceso a los eventos como el click sobre los botones
-
+import swiper from './swiper';
 
 
 (function () {
@@ -97,6 +97,7 @@
                     
                     `;
                         contRegistros.appendChild(cardProducto);
+                        swiper.update();
                     }
 
                 }); // Fin cada precio
