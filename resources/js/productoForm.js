@@ -98,9 +98,9 @@
                 precioVenta = (campoSinIva.value * 1.21) * ganancia;
 
             }
+
             if(click) { // Solo cambio el "precio venta" si es presionado el btn de calcular
                 campoVenta.value = redondear(precioVenta);
-
             }
 
             if (checkFraccion) {
@@ -205,11 +205,11 @@
             totalFraccionado.required = false;
             gananciaFraccion.required = false;
 
-            unidadFraccion.value = '';
-            totalFraccionado.value = '';
-            gananciaFraccion.value = '';
             precioFraccionado.value = '';
-            codigoFraccionado = '';
+            unidadFraccion.value = null; // Cambio de '' a null
+            totalFraccionado.value = null;
+            gananciaFraccion.value = null;
+            codigoFraccionado = null;
 
         }
         function redondear(numero) {

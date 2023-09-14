@@ -5,17 +5,17 @@ import * as helpers from './helpers';
 
 (function () {
 
-    if (document.querySelector('#fabricantes-registros')) {
+    if (document.querySelector('#providers-registros')) {
 
-        let fabricantesArray = [];
+        let providersArray = [];
         const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const contRegistros = document.querySelector('#fabricantes-registros'); // contenedor
-        const inputBusqueda = document.querySelector('#fabricante-formulario');
+        const contRegistros = document.querySelector('#providers-registros'); // contenedor
+        const inputBusqueda = document.querySelector('#provider-formulario');
         const campoBuscador = document.querySelector('.formulario__contenedor-busqueda');
         const contenedorVacio = document.querySelector('#mensaje-vacio');
 
-        // Obtener todas las fabricantes
-        listadofabricantes();
+        // Obtener todas las providers
+        listadoproviders();
 
         campoBuscador.onclick = function() {
             inputBusqueda.focus();
@@ -25,7 +25,7 @@ import * as helpers from './helpers';
             if (e.target.value.length >= 3) {
                 buscarCoincidenciasMemoria(e);
             } else if (e.target.value.length < 3) {
-                listadofabricantes();
+                listadoproviders();
             }
         });
 
@@ -35,14 +35,14 @@ import * as helpers from './helpers';
         });
 
         // Consulta DB
-        async function listadofabricantes() {
+        async function listadoproviders() {
             try {
 
-                const url = '/api/fabricantes/all';
+                const url = '/api/providers/all';
                 const respuesta = await fetch(url);
                 const resultado = await respuesta.json();
 
-                fabricantesArray = resultado.fabricantes; // array de fabricantes
+                providersArray = resultado.providers; // array de providers
                 mostrarElementos();
 
             } catch (error) {
@@ -56,53 +56,63 @@ import * as helpers from './helpers';
             limpiarElementos(contRegistros);
             limpiarElementos(contenedorVacio);
 
-            if (fabricantesArray.length === 0) {
+            if (providersArray.length === 0) {
 
                 const textoNoCat = document.createElement('P');
 
                 limpiarElementos(contenedorVacio);
 
-                textoNoCat.textContent = "No se encontraron fabricantes";
+                textoNoCat.textContent = "No se encontraron providers";
                 textoNoCat.classList.add('mensaje__vacio');
                 contenedorVacio.appendChild(textoNoCat);
                 return;
             }
 
-            fabricantesArray.forEach(fabricante => {
+
+            providersArray.forEach(provider => {
 
                 const contenedor = document.createElement('DIV');
-                contenedor.classList.add('fabricante__contenedor', 'swiper-slide');
+                contenedor.classList.add('provider__contenedor', 'swiper-slide');
 
                 const catHeading = document.createElement('H3');
-                catHeading.textContent = fabricante.nombre;
+                catHeading.textContent = provider.nombre;
 
-                fabricante.telefono = fabricante.telefono !== null ? fabricante.telefono : '';
                 const catParrafo = document.createElement('P');
-                catParrafo.textContent = "Teléfono: " + fabricante.telefono;
+                catParrafo.classList.add('provider__ganancia');
+                catParrafo.textContent = "Ganancia: " + provider.ganancia;
 
-                fabricante.vendedor = fabricante.vendedor !== null ? fabricante.vendedor : '';
+                provider.email = provider.email !== null ? provider.email : '';
                 const catParrafo2 = document.createElement('P');
-                catParrafo2.textContent = "Vendedor: " + fabricante.vendedor;
+                catParrafo2.textContent = "Email: " + provider.email;
 
+                provider.telefono = provider.telefono !== null ? provider.telefono : '';
                 const catParrafo3 = document.createElement('P');
-                fabricante.descripcion = fabricante.descripcion !== null ? fabricante.descripcion : '';
-                catParrafo3.textContent = "Descripción: " + fabricante.descripcion;
+                catParrafo3.textContent = "Teléfono: " + provider.telefono;
+
+                provider.vendedor = provider.vendedor !== null ? provider.vendedor : '';
+                const catParrafo4 = document.createElement('P');
+                catParrafo4.textContent = "Vendedor: " + provider.vendedor;
+
+                provider.web = provider.web !== null ? provider.web : '';
+                const catParrafo5 = document.createElement('P');
+                catParrafo5.textContent = "Web: " + provider.web;
+
 
                 const contenedorSM = document.createElement('DIV');
                 contenedorSM.classList.add('formulario__contenedor-boton', 'formulario__contenedor-boton--sm');
 
                 const catEnlace = document.createElement('A');
-                catEnlace.setAttribute('href', `/fabricante/fabricante-edit/${fabricante.id}`);
-                catEnlace.classList.add('fabricante__boton', 'fabricante__boton--modificar');
+                catEnlace.setAttribute('href', `/provider/provider-edit/${provider.id}`);
+                catEnlace.classList.add('provider__boton', 'provider__boton--modificar');
                 catEnlace.textContent = "Ver / Editar";
 
                 const catBtn = document.createElement('BUTTON');
-                catBtn.classList.add('fabricante__boton', 'fabricante__boton--eliminar');
+                catBtn.classList.add('provider__boton', 'provider__boton--eliminar');
                 catBtn.textContent = "Eliminar";
 
                 catBtn.addEventListener('click', async () => {
                     try {
-                        await alertaDelete(fabricante.id, 'fabricante', true, tokenCSRF);
+                        await alertaDelete(provider.id, 'provider', true, tokenCSRF);
                         mostrarElementos();
 
                     } catch (error) {
@@ -119,13 +129,16 @@ import * as helpers from './helpers';
                 contenedor.appendChild(catParrafo);
                 contenedor.appendChild(catParrafo2);
                 contenedor.appendChild(catParrafo3);
+                contenedor.appendChild(catParrafo4);
+                contenedor.appendChild(catParrafo5);
+
                 contenedor.appendChild(contenedorSM);
 
                 contRegistros.appendChild(contenedor);
 
                 swiper.update();
 
-            }); // Fin cada fabricante
+            }); // Fin cada provider
         }
 
         function limpiarElementos(padre) {
@@ -134,7 +147,7 @@ import * as helpers from './helpers';
             }
         }
 
-        // Toma un id a eliminar, un tipo (fabricante, provider o fabricante) que será parte de la url hacia la API
+        // Toma un id a eliminar, un tipo (provider, provider o provider) que será parte de la url hacia la API
         // y un array (opcional) en caso de utilizar vitualDOM
         // Contiene una llamada al método mostrarElementos(), este debe contener el scripting de los elementos HTML del paginador
         // Contiene una llamada a filtrarVirtualDOM(), es un helper
@@ -170,7 +183,7 @@ import * as helpers from './helpers';
                                 'success'
                             );
                             if (flag) {
-                                fabricantesArray = filtrarVirtualDOM(fabricantesArray, id); // si hay un array va a filtrarlo
+                                providersArray = filtrarVirtualDOM(providersArray, id); // si hay un array va a filtrarlo
                                 mostrarElementos();
                             }
                         } else {
@@ -200,7 +213,7 @@ import * as helpers from './helpers';
             return array;
         }
 
-        // Toma un id a eliminar y un tipo, este puede ser "fabricante, provider o fabricante". El tipo es parte de la URL hacia la API
+        // Toma un id a eliminar y un tipo, este puede ser "provider, provider o provider". El tipo es parte de la URL hacia la API
         // tokenCSRF debe estar definido como variable global dentro del archivo que importa estas funciones
         async function destroy(id, tipo, token) {
 
@@ -230,9 +243,9 @@ import * as helpers from './helpers';
             const busqueda = e.target.value; // input del usuario
             const Regex = new RegExp(busqueda, 'i'); // la "i" es para ser insensible a mayusculas/minusculas
 
-            fabricantesArray = fabricantesArray.filter(fabricante => { // filtra elementos en memoria
-                if (fabricante.nombre.toLowerCase().search(Regex) !== -1) {
-                    return fabricante;
+            providersArray = providersArray.filter(provider => { // filtra elementos en memoria
+                if (provider.nombre.toLowerCase().search(Regex) !== -1) {
+                    return provider;
                 }
             });
 

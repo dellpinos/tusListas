@@ -5,6 +5,7 @@ use App\Http\Controllers\APIAumentos;
 use App\Http\Controllers\APIBuscador;
 use App\Http\Controllers\APICalculos;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\APIProviders;
 use App\Http\Controllers\APICategorias;
 use App\Http\Controllers\APIFabricantes;
 use App\Http\Controllers\LoginController;
@@ -71,7 +72,6 @@ Route::get('/categoria/categoria-edit/{categoria}', [CategoriaController::class,
 Route::post('/categoria/categoria-update', [CategoriaController::class, 'update'])->name('categoria.update');
 
 
-
 /* APIs */
 
 // API buscador
@@ -100,7 +100,11 @@ Route::post('/api/categorias/destroy', [APICategorias::class, 'destroy']);
 Route::get('/api/fabricantes/all', [APIFabricantes::class, 'all']);
 Route::post('/api/fabricantes/destroy', [APIFabricantes::class, 'destroy']);
 
-// No responde
+// API Provider
+Route::get('/api/providers/all', [APIProviders::class, 'all']);
+Route::post('/api/providers/destroy', [APIProviders::class, 'destroy']);
+
+
 
 
 
