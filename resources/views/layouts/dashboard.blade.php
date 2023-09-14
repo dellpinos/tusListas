@@ -54,6 +54,7 @@
     </header>
 
     <main class="dashboard__grid">
+
         
         <aside class="sidebar">
             <nav class=" sidebar__nav">
@@ -80,7 +81,7 @@
                         class="fa-solid fa-folder-open sidebar__icono"></i>Categorias</a>
                 <a href="{{ route('fabricantes') }}"
                     class="sidebar__enlace @if (request()->path() === 'fabricantes') activo @endif"><i
-                        class="fa-solid fa-flask sidebar__icono"></i>Laboratorios</a>
+                        class="fa-solid fa-industry sidebar__icono"></i>Fabricantes</a>
 
             </nav>
         </aside>

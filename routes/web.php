@@ -1,10 +1,13 @@
 <?php
 
-use App\Http\Controllers\APIAumentos;
 use App\Http\Controllers\APICodigo;
+use App\Http\Controllers\APIAumentos;
 use App\Http\Controllers\APIBuscador;
 use App\Http\Controllers\APICalculos;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\APIProviders;
+use App\Http\Controllers\APICategorias;
+use App\Http\Controllers\APIFabricantes;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\AumentoController;
@@ -67,7 +70,6 @@ Route::get('/categoria/nueva-categoria', [CategoriaController::class, 'create'])
 Route::post('/categoria/categoria-store', [CategoriaController::class, 'store'])->name('categoria.store');
 Route::get('/categoria/categoria-edit/{categoria}', [CategoriaController::class, 'edit'])->name('categoria.edit');
 Route::post('/categoria/categoria-update', [CategoriaController::class, 'update'])->name('categoria.update');
-Route::delete('categoria/{categoria}', [CategoriaController::class, 'destroy'])->name('categoria.destroy');
 
 
 /* APIs */
@@ -89,6 +91,20 @@ Route::post('/api/aumentos/fabricante', [APIAumentos::class, 'aumento_fabricante
 Route::post('/api/aumentos/provider', [APIAumentos::class, 'aumento_provider']);
 
 Route::get('/api/aumentos/dolar-listado', [APIAumentos::class, 'dolar_listado']);
+
+// API Categoria
+Route::get('/api/categorias/all', [APICategorias::class, 'all']);
+Route::post('/api/categorias/destroy', [APICategorias::class, 'destroy']);
+
+// API Fabricante
+Route::get('/api/fabricantes/all', [APIFabricantes::class, 'all']);
+Route::post('/api/fabricantes/destroy', [APIFabricantes::class, 'destroy']);
+
+// API Provider
+Route::get('/api/providers/all', [APIProviders::class, 'all']);
+Route::post('/api/providers/destroy', [APIProviders::class, 'destroy']);
+
+
 
 
 

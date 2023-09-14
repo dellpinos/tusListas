@@ -25,16 +25,20 @@ class ProductoController extends Controller
     {
 
         $codigo = generarCodigo(); // helper
-
+        $precio = Precio::orderBy('dolar', 'desc')->first();
+        
         $categorias = Categoria::orderBy('nombre', 'asc')->get();
         $proveedores = Provider::orderBy('nombre', 'asc')->get();
         $fabricantes = Fabricante::orderBy('nombre', 'asc')->get();
+
+        $dolar_pred = (old('dolar') === null) ? $precio->dolar : old('dolar');
 
         return view('producto.create', [
             'codigo' => $codigo,
             'categorias' => $categorias,
             'fabricantes' => $fabricantes,
-            'proveedores' => $proveedores
+            'proveedores' => $proveedores,
+            'dolar_pred' => $dolar_pred
         ]);
     }
     public function store(Request $request)
@@ -315,7 +319,7 @@ class ProductoController extends Controller
                 $producto_fraccionado = true;
                 foreach ($productos as $elemento) {
                     if ($elemento->id !== $producto->id) {
-                        $producto_secundario = $elemento;
+                        $producto_secundario = $elemento; // secundario es no-fraccionado
                     }
                 }
             } else {
@@ -393,9 +397,6 @@ class ProductoController extends Controller
 
             $producto->save();
 
-
-            // El usuario quiere crear un fraccionado
-
         } else {
 
             if ($producto_fraccionado === false) {
@@ -413,7 +414,7 @@ class ProductoController extends Controller
 
                 $producto->save();
 
-                $producto_secundario->nombre = $request->nombre;
+                $producto_secundario->nombre = $request->nombre . " - Fraccionado";
                 $producto_secundario->categoria_id = intval($request->categoria_id);
                 $producto_secundario->fabricante_id = intval($request->fabricante_id);
                 $producto_secundario->provider_id = intval($request->provider_id);

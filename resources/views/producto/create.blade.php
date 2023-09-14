@@ -27,7 +27,8 @@
                 <div class="formulario__campo-contenedor">
                     <label for="name" class="formulario__label">Nombre del producto</label>
                     <input required type="text" id="name" name="nombre" placeholder="Nombre del producto"
-                        class="formulario__campo @error('nombre') borde__error @enderror" value="{{ old('nombre') }}">
+                        class="formulario__campo @error('nombre') borde__error @enderror" 
+                        value="{{ old('nombre') }}">
                     @error('nombre')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror
@@ -87,7 +88,7 @@
                     <label for="dolar" class="formulario__label">Cotización dolar Blue
                         (compra)</label>
                     <input required type="number" id="dolar" name="dolar" placeholder="0"
-                        class="formulario__campo text-right @error('dolar') borde__error @enderror" value="{{ old('dolar') }}">
+                        class="formulario__campo text-right @error('dolar') borde__error @enderror" value="{{ $dolar_pred }}">
                     @error('dolar')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror

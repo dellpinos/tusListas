@@ -5,7 +5,7 @@
 
 
 @section('contenido')
-    <div class="provider__contenedor-boton">
+    <div class="formulario__contenedor-boton">
         <a href="{{ route('providers') }}" class="provider__boton">&laquo; Volver</a>
     </div>
 
@@ -20,8 +20,10 @@
                 <div class="proveedor-formulario__contenedor-sm">
                     <div class="formulario__campo-contenedor">
                         <label for="name" class="formulario__label">Nombre del Proveedor</label>
-                        <input required type="text" id="name" name="nombre" placeholder="Arcuri, Lepore, Panacea, etc"
-                            class="formulario__campo @error('nombre') borde__error @enderror" value="{{ $provider->nombre }}">
+                        <input required type="text" id="name" name="nombre"
+                            placeholder="Arcuri, Lepore, Panacea, etc"
+                            class="formulario__campo @error('nombre') borde__error @enderror"
+                            value="{{ $provider->nombre }}">
                         @error('nombre')
                             <p class="alerta__error">{{ $message }}</p>
                         @enderror
@@ -35,9 +37,9 @@
                         @enderror
                     </div>
                     <div class="formulario__campo-contenedor">
-                        <label for="telefono" class="formulario__label">Telefono</label>
+                        <label for="telefono" class="formulario__label">Teléfono</label>
                         <input type="tel" id="telefono" name="telefono"
-                            placeholder="Telefono del Laboratorio o Fabricante"
+                            placeholder="Teléfono del Laboratorio o Fabricante"
                             class="formulario__campo @error('telefono') borde__error @enderror"
                             value="{{ $provider->telefono }}">
                         @error('telefono')
@@ -60,7 +62,7 @@
                     </div>
                     <div class="formulario__campo-contenedor">
                         <label for="web" class="formulario__label">Sitio Web</label>
-                        <input type="text" id="web" name="web" placeholder="www.arcuri.com.ar"
+                        <input type="text" id="web" name="web" placeholder="www.ejemplo.com.ar"
                             class="formulario__campo @error('web') borde__error @enderror" value="{{ $provider->web }}">
                         @error('web')
                             <p class="alerta__error">{{ $message }}</p>
@@ -68,7 +70,8 @@
                     </div>
                     <div class="formulario__campo-contenedor">
                         <label for="ganancia" class="formulario__label">Ganancia</label>
-                        <input required type="number" step="0.01" min="0.01" max="9.99" id="ganancia" name="ganancia" placeholder="1.5, 1.8, 1.9"
+                        <input required type="number" step="0.01" min="0.01" max="9.99" id="ganancia"
+                            name="ganancia" placeholder="1.5, 1.8, 1.9"
                             class="formulario__campo @error('ganancia') borde__error @enderror"
                             value="{{ $provider->ganancia }}">
                         @error('ganancia')
