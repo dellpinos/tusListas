@@ -33,7 +33,7 @@ class ProviderController extends Controller
             'email' => 'email|nullable',
             'telefono' => 'string|nullable',
             'vendedor' => 'string|max:60|nullable',
-            'web' => 'url|nullable',
+            'web' => 'string|nullable',
             'ganancia' => 'required|numeric', 'between:0.01,9.99'
         ]);
 
@@ -67,7 +67,7 @@ class ProviderController extends Controller
             'email' => 'email|nullable',
             'telefono' => 'string|nullable',
             'vendedor' => 'string|max:60|nullable',
-            'web' => 'url|nullable',
+            'web' => 'string|nullable',
             'ganancia' => 'required|numeric', 'between:0.01,9.99'
         ]);
 

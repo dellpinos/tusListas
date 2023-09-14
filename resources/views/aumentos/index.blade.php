@@ -10,7 +10,7 @@
 @endsection
 
 @section('contenido')
-<div class="categoria__contenedor-boton" >
+<div class="formulario__contenedor-boton" >
     <a href="{{ route('aumento.dolar') }}" class="categoria__boton">Aumento Dolar</a>
     <a href="{{ route('aumento.listado')}}" class="categoria__boton">Registro de Aumentos</a>
 </div>
