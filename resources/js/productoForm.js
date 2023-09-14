@@ -23,8 +23,13 @@
         let precioVenta = 0;
         const click = true;
 
+        const selectCat = document.querySelector('#categoria');
+        const selectProv = document.querySelector('#provider');
+
+
         radiobtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
+
                 habilitarCampo(e);
 
                 calcularGanancia();
@@ -53,24 +58,26 @@
 
         campoConIva.addEventListener('input', function () {
             campoSinIva.value = Math.round(campoConIva.value / 1.21);
-            
+
         });
 
         // Consultar precio venta
         btnVenta.addEventListener('click', function () {
-            
+
             calcularGanancia(click);
 
         });
 
         // Habilitar / Deshabilitar campo opcional
         function habilitarCampo(e) {
-            if(e.target.value === 'personalizada' && campoPersonalizado.readOnly === true){
+
+
+            if (e.target.value === 'personalizada' && campoPersonalizado.readOnly === true) {
 
                 campoPersonalizado.readOnly = false;
                 campoPersonalizado.classList.remove('formulario__campo--no-activo');
             } else if (e.target.value !== 'personalizada') {
-                
+
                 campoPersonalizado.readOnly = true;
                 campoPersonalizado.classList.add('formulario__campo--no-activo');
                 campoPersonalizado.value = '';
@@ -79,38 +86,54 @@
 
         async function calcularGanancia(click) {
 
-            radioChecked = document.querySelector('input[type="radio"]:checked');
 
-            if (radioChecked.value === 'personalizada') {
-                // Calculo leyendo el formulario
-                precioVenta = (campoSinIva.value * 1.21) * campoPersonalizado.value;
+            if(selectCat.value !== '' && selectProv.value !== '') { // Debe escoger categoria y provider primero
 
-            } else if (radioChecked.value === 'proveedor') {
+                radioChecked = document.querySelector('input[type="radio"]:checked');
 
-                // Consulta la DB
-                const proveedor_id = document.querySelector('#proveedor');
-                let ganancia = await consultarGanancia(radioChecked.value, proveedor_id.value);
-                precioVenta = (campoSinIva.value * 1.21) * ganancia;
+                console.log(typeof(radioChecked.value) + " " + radioChecked.value); /// << funciona bien
 
-            } else {
-                const categoria_id = document.querySelector('#categoria');
-                let ganancia = await consultarGanancia(radioChecked.value, categoria_id.value);
-                precioVenta = (campoSinIva.value * 1.21) * ganancia;
+                if (radioChecked.value === 'personalizada') {
+                    // Calculo leyendo el formulario
+                    precioVenta = (campoSinIva.value * 1.21) * campoPersonalizado.value;
+    
+                } else if (radioChecked.value === 'provider') {
+    
+                    // Consulta la DB
+                    const provider_id = document.querySelector('#provider');
 
-            }
-
-            if(click) { // Solo cambio el "precio venta" si es presionado el btn de calcular
-                campoVenta.value = redondear(precioVenta);
-            }
-
-            if (checkFraccion) {
-
-                if (checkFraccion.checked === true) {
-                    checkFraccion.checked = false;
-                    deseleccionarFraccionado();
-
+                    console.log(provider_id.value + " provider id");
+                    let ganancia = await consultarGanancia(radioChecked.value, provider_id.value);
+                    console.log(ganancia + " ganancia provider");
+                    precioVenta = (campoSinIva.value * 1.21) * ganancia;
+                    console.log(precioVenta + " precio venta provider");
+    
+                } else if (radioChecked.value === 'categoria') {
+    
+                    const categoria_id = document.querySelector('#categoria');
+                    console.log(categoria_id.value + " categoria id");
+                    let ganancia = await consultarGanancia(radioChecked.value, categoria_id.value);
+                    console.log(ganancia + " ganancia");
+                    precioVenta = (campoSinIva.value * 1.21) * ganancia;
+                    console.log(precioVenta + " precio venta");
+    
                 }
+    
+                if (click) { // Solo cambio el "precio venta" si es presionado el btn de calcular
+                    campoVenta.value = redondear(precioVenta);
+                }
+    
+                if (checkFraccion) {
+    
+                    if (checkFraccion.checked === true) {
+                        checkFraccion.checked = false;
+                        deseleccionarFraccionado();
+    
+                    }
+                }
+
             }
+
         }
 
         async function consultarGanancia(seleccion, id) {
