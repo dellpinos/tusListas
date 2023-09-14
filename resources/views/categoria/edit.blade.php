@@ -4,10 +4,11 @@
 @endsection
 
 
+
 @section('contenido')
-    <div class="categoria__contenedor-boton">
-        <a href="{{ route('categorias') }}" class="provider__boton">&laquo; Volver</a>
-    </div>
+<div class="formulario__contenedor-boton">
+    <a href="{{ route('categorias') }}" class="categoria__boton">&laquo; Volver</a>
+</div>
 
     <div class="categoria-formulario__grid">
         <form action="{{ route('categoria.update') }}" method="POST">

@@ -7,6 +7,7 @@ import './buscadorCodigo';
 import './buscadorProd';
 import './productoForm';
 import './listadoCategoria';
+import './listadoFabricante';
 import './helpers';
 
 

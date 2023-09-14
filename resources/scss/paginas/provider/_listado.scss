@@ -14,7 +14,6 @@
     &__boton {
         @include m.boton(v.$azul, v.$blanco);
         border-radius: .5rem;
-        margin: 0 0 2rem 0;
         display: block;
         
         @include m.tablet {

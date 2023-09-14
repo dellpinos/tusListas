@@ -10,7 +10,7 @@
 @endsection
 
 @section('contenido')
-    <div class="categoria__contenedor-boton">
+    <div class="formulario__contenedor-boton">
         <a href="{{ route('categoria.create') }}" class="categoria__boton">Crear Categoria</a>
 
         <div class="formulario__contenedor-busqueda">

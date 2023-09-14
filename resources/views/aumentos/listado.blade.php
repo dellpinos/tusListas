@@ -6,7 +6,7 @@
 @endsection
 
 @section('contenido')
-<div class="categoria__contenedor-boton" >
+<div class="formulario__contenedor-boton" >
     <a href="{{ route('aumentos') }}" class="categoria__boton">&laquo; Volver</a>
 </div>
 

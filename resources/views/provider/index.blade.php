@@ -6,7 +6,7 @@
 
 @section('contenido')
 
-    <div class="provider__contenedor-boton">
+    <div class="formulario__contenedor-boton">
         <a href="{{ route('provider.create') }}" class="provider__boton">Crear Proveedor</a>
         <a href="#" class="provider__boton">Buscar Proveedor</a>
     </div>
@@ -20,11 +20,11 @@
                         <h3>{{ $provider->nombre }}</h3>
                         <p><span class="font-bold">Ganancia: </span><span class="provider__ganancia">{{ $provider->ganancia }}</span></p>
                         <p><span class=" font-bold">Email: </span>{{ $provider->email }}</p>
-                        <p><span class=" font-bold">Telefono: </span>{{ $provider->telefono }}</p>
+                        <p><span class=" font-bold">Teléfono: </span>{{ $provider->telefono }}</p>
                         <p><span class=" font-bold">Vendedor: </span>{{ $provider->vendedor }}</p>
                         <p><span class=" font-bold">Web: </span>{{ $provider->web }}</p>
 
-                        <div class="provider__contenedor-boton provider__contenedor-boton--sm">
+                        <div class="formulario__contenedor-boton formulario__contenedor-boton--sm">
                             <a class="provider__boton provider__boton--modificar"
                                 href="{{ route('provider.edit', $provider) }}">Ver / Editar</a>
                             <form action="{{ route('provider.destroy', $provider) }}" method="POST">

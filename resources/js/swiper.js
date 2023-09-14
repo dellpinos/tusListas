@@ -47,11 +47,9 @@ const opciones = {
 
 const swiper = new Swiper('.swiper', opciones);
 
-
 swiper.on('click', function () {
-    swiper.init();
+//    swiper.init();
 });
-
 
 export default swiper;
 

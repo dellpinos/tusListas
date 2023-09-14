@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\APIAumentos;
 use App\Http\Controllers\APICodigo;
+use App\Http\Controllers\APIAumentos;
 use App\Http\Controllers\APIBuscador;
 use App\Http\Controllers\APICalculos;
-use App\Http\Controllers\APICategorias;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\APICategorias;
+use App\Http\Controllers\APIFabricantes;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\AumentoController;
@@ -94,6 +95,10 @@ Route::get('/api/aumentos/dolar-listado', [APIAumentos::class, 'dolar_listado'])
 // API Categoria
 Route::get('/api/categorias/all', [APICategorias::class, 'all']);
 Route::post('/api/categorias/destroy', [APICategorias::class, 'destroy']);
+
+// API Fabricante
+Route::get('/api/fabricantes/all', [APIFabricantes::class, 'all']);
+Route::post('/api/fabricantes/destroy', [APIFabricantes::class, 'destroy']);
 
 // No responde
 

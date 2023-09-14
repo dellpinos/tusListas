@@ -1,11 +1,11 @@
 @extends('layouts.dashboard')
 @section('titulo')
-    {{ $fabricante->nombre}}
+    {{ $fabricante->nombre }}
 @endsection
 
 
 @section('contenido')
-    <div class="fabricante__contenedor-boton">
+    <div class="formulario__contenedor-boton">
         <a href="{{ route('fabricantes') }}" class="fabricante__boton">&laquo; Volver</a>
     </div>
 
@@ -16,18 +16,19 @@
             <input type="hidden" name="id" value="{{ $fabricante->id }}" />
             <div class="fabricante-formulario__contenedor-sm">
                 <div class="formulario__campo-contenedor">
-                    <label for="name" class="formulario__label">Nombre del Laboratiorio -
-                        Fabricante</label>
-                    <input required type="text" id="name" name="nombre" placeholder="Holliday, Brower, Importado, etc"
+                    <label for="name" class="formulario__label">Nombre del Fabricante</label>
+                    <input required type="text" id="name" name="nombre"
+                        placeholder="Holliday, Brower, Importado, etc"
                         class="formulario__campo @error('nombre') borde__error @enderror" value="{{ $fabricante->nombre }}">
                     @error('nombre')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="formulario__campo-contenedor">
-                    <label for="telefono" class="formulario__label">Telefono</label>
-                    <input type="tel" id="telefono" name="telefono" placeholder="Telefono del Laboratorio o Fabricante"
-                        class="formulario__campo @error('telefono') borde__error @enderror" value="{{ $fabricante->telefono }}">
+                    <label for="telefono" class="formulario__label">Teléfono</label>
+                    <input type="tel" id="telefono" name="telefono" placeholder="Teléfono del Laboratorio o Fabricante"
+                        class="formulario__campo @error('telefono') borde__error @enderror"
+                        value="{{ $fabricante->telefono }}">
                     @error('telefono')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror
@@ -35,7 +36,8 @@
                 <div class="formulario__campo-contenedor">
                     <label for="vendedor" class="formulario__label">Nombre del vendendor</label>
                     <input type="text" id="vendedor" name="vendedor" placeholder="Nombre del vendedor"
-                        class="formulario__campo @error('vendedor') borde__error @enderror" value="{{ $fabricante->vendedor }}">
+                        class="formulario__campo @error('vendedor') borde__error @enderror"
+                        value="{{ $fabricante->vendedor }}">
                     @error('vendedor')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror

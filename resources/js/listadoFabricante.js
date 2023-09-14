@@ -4,16 +4,18 @@ import Swal from 'sweetalert2';
 import * as helpers from './helpers';
 
 (function () {
-    if (document.querySelector('#categorias-registros')) {
 
-        let categoriasArray = [];
+    console.log('hola');
+    if (document.querySelector('#fabricantes-registros')) {
+
+        let fabricantesArray = [];
         const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const contRegistros = document.querySelector('#categorias-registros'); // contenedor
-        const inputBusqueda = document.querySelector('#categoria-formulario');
+        const contRegistros = document.querySelector('#fabricantes-registros'); // contenedor
+        const inputBusqueda = document.querySelector('#fabricante-formulario');
         const campoBuscador = document.querySelector('.formulario__contenedor-busqueda');
 
-        // Obtener todas las categorias
-        listadoCategorias();
+        // Obtener todas las fabricantes
+        listadofabricantes();
 
         campoBuscador.onclick = function() {
             inputBusqueda.focus();
@@ -23,7 +25,7 @@ import * as helpers from './helpers';
             if (e.target.value.length >= 3) {
                 buscarCoincidenciasMemoria(e);
             } else if (e.target.value.length < 3) {
-                listadoCategorias();
+                listadofabricantes();
             }
         });
 
@@ -33,14 +35,14 @@ import * as helpers from './helpers';
         });
 
         // Consulta DB
-        async function listadoCategorias() {
+        async function listadofabricantes() {
             try {
 
-                const url = '/api/categorias/all';
+                const url = '/api/fabricantes/all';
                 const respuesta = await fetch(url);
                 const resultado = await respuesta.json();
 
-                categoriasArray = resultado.categorias; // array de categorias
+                fabricantesArray = resultado.fabricantes; // array de fabricantes
                 mostrarElementos();
 
             } catch (error) {
@@ -53,52 +55,68 @@ import * as helpers from './helpers';
             // Elimina los elementos hijos
             limpiarElementos(contRegistros);
 
-            if (categoriasArray.length === 0) {
+            if (fabricantesArray.length === 0) {
 
                 const contenedorVacio = document.querySelector('#mensaje-vacio');
                 const textoNoCat = document.createElement('P');
 
                 limpiarElementos(contenedorVacio);
 
-                textoNoCat.textContent = "No se encontraron categorias";
+                textoNoCat.textContent = "No se encontraron fabricantes";
                 textoNoCat.classList.add('mensaje__vacio');
                 contenedorVacio.appendChild(textoNoCat);
                 return;
             }
 
-            categoriasArray.forEach(categoria => {
+            //////////////
+
+
+
+
+            ///////////////
+
+            fabricantesArray.forEach(fabricante => {
 
                 const contenedor = document.createElement('DIV');
-                contenedor.classList.add('categoria__contenedor', 'swiper-slide');
+                contenedor.classList.add('fabricante__contenedor', 'swiper-slide');
 
                 const catHeading = document.createElement('H3');
-                catHeading.textContent = categoria.nombre;
+                catHeading.textContent = fabricante.nombre;
+
+                fabricante.telefono = fabricante.telefono !== null ? fabricante.telefono : '';
 
                 const catParrafo = document.createElement('P');
+                catParrafo.textContent = "Teléfono: " + fabricante.telefono;
 
-                const catSpan1 = document.createElement('SPAN');
-                catSpan1.classList.add('font-bold');
-                catSpan1.textContent = "Ganancia: ";
+                fabricante.vendedor = fabricante.vendedor !== null ? fabricante.vendedor : '';
 
-                const catSpan2 = document.createElement('SPAN');
-                catSpan2.classList.add('categoria__ganancia');
-                catSpan2.textContent = categoria.ganancia;
+                const catParrafo2 = document.createElement('P');
+
+                catParrafo2.textContent = "Vendedor: " + fabricante.vendedor;
+
+                const catParrafo3 = document.createElement('P');
+
+                fabricante.descripcion = fabricante.descripcion !== null ? fabricante.descripcion : '';
+
+
+                catParrafo3.textContent = "Descripción: " + fabricante.descripcion;
+
 
                 const contenedorSM = document.createElement('DIV');
                 contenedorSM.classList.add('formulario__contenedor-boton', 'formulario__contenedor-boton--sm');
 
                 const catEnlace = document.createElement('A');
-                catEnlace.setAttribute('href', `/categoria/categoria-edit/${categoria.id}`);
-                catEnlace.classList.add('categoria__boton', 'categoria__boton--modificar');
+                catEnlace.setAttribute('href', `/fabricante/fabricante-edit/${fabricante.id}`);
+                catEnlace.classList.add('fabricante__boton', 'fabricante__boton--modificar');
                 catEnlace.textContent = "Ver / Editar";
 
                 const catBtn = document.createElement('BUTTON');
-                catBtn.classList.add('categoria__boton', 'categoria__boton--eliminar');
+                catBtn.classList.add('fabricante__boton', 'fabricante__boton--eliminar');
                 catBtn.textContent = "Eliminar";
 
                 catBtn.addEventListener('click', async () => {
                     try {
-                        await alertaDelete(categoria.id, 'categoria', true, tokenCSRF);
+                        await alertaDelete(fabricante.id, 'fabricante', true, tokenCSRF);
                         mostrarElementos();
 
                     } catch (error) {
@@ -106,21 +124,22 @@ import * as helpers from './helpers';
                     }
                 });
 
-                catParrafo.appendChild(catSpan1);
-                catParrafo.appendChild(catSpan2);
+
 
                 contenedorSM.appendChild(catEnlace);
                 contenedorSM.appendChild(catBtn);
 
                 contenedor.appendChild(catHeading);
                 contenedor.appendChild(catParrafo);
+                contenedor.appendChild(catParrafo2);
+                contenedor.appendChild(catParrafo3);
                 contenedor.appendChild(contenedorSM);
 
                 contRegistros.appendChild(contenedor);
 
                 swiper.update();
 
-            }); // Fin cada categoria
+            }); // Fin cada fabricante
         }
 
         function limpiarElementos(padre) {
@@ -129,7 +148,7 @@ import * as helpers from './helpers';
             }
         }
 
-        // Toma un id a eliminar, un tipo (categoria, provider o fabricante) que será parte de la url hacia la API
+        // Toma un id a eliminar, un tipo (fabricante, provider o fabricante) que será parte de la url hacia la API
         // y un array (opcional) en caso de utilizar vitualDOM
         // Contiene una llamada al método mostrarElementos(), este debe contener el scripting de los elementos HTML del paginador
         // Contiene una llamada a filtrarVirtualDOM(), es un helper
@@ -165,7 +184,7 @@ import * as helpers from './helpers';
                                 'success'
                             );
                             if (flag) {
-                                categoriasArray = filtrarVirtualDOM(categoriasArray, id); // si hay un array va a filtrarlo
+                                fabricantesArray = filtrarVirtualDOM(fabricantesArray, id); // si hay un array va a filtrarlo
                                 mostrarElementos();
                             }
                         } else {
@@ -195,7 +214,7 @@ import * as helpers from './helpers';
             return array;
         }
 
-        // Toma un id a eliminar y un tipo, este puede ser "categoria, provider o fabricante". El tipo es parte de la URL hacia la API
+        // Toma un id a eliminar y un tipo, este puede ser "fabricante, provider o fabricante". El tipo es parte de la URL hacia la API
         // tokenCSRF debe estar definido como variable global dentro del archivo que importa estas funciones
         async function destroy(id, tipo, token) {
 
@@ -225,9 +244,9 @@ import * as helpers from './helpers';
             const busqueda = e.target.value; // input del usuario
             const Regex = new RegExp(busqueda, 'i'); // la "i" es para ser insensible a mayusculas/minusculas
 
-            categoriasArray = categoriasArray.filter(categoria => { // filtra elementos en memoria
-                if (categoria.nombre.toLowerCase().search(Regex) !== -1) {
-                    return categoria;
+            fabricantesArray = fabricantesArray.filter(fabricante => { // filtra elementos en memoria
+                if (fabricante.nombre.toLowerCase().search(Regex) !== -1) {
+                    return fabricante;
                 }
             });
 

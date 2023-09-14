@@ -4,10 +4,6 @@
 
 .categoria {
 
-    &__contenedor-boton {
-        display: flex;
-        justify-content: space-between;
-    }
     
     &__boton {
         @include m.boton(v.$azul, v.$blanco);
