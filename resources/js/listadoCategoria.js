@@ -11,6 +11,7 @@ import * as helpers from './helpers';
         const contRegistros = document.querySelector('#categorias-registros'); // contenedor
         const inputBusqueda = document.querySelector('#categoria-formulario');
         const campoBuscador = document.querySelector('.formulario__contenedor-busqueda');
+        const contenedorVacio = document.querySelector('#mensaje-vacio');
 
         // Obtener todas las categorias
         listadoCategorias();
@@ -52,10 +53,11 @@ import * as helpers from './helpers';
 
             // Elimina los elementos hijos
             limpiarElementos(contRegistros);
+            limpiarElementos(contenedorVacio);
+            
 
             if (categoriasArray.length === 0) {
 
-                const contenedorVacio = document.querySelector('#mensaje-vacio');
                 const textoNoCat = document.createElement('P');
 
                 limpiarElementos(contenedorVacio);
@@ -75,14 +77,8 @@ import * as helpers from './helpers';
                 catHeading.textContent = categoria.nombre;
 
                 const catParrafo = document.createElement('P');
-
-                const catSpan1 = document.createElement('SPAN');
-                catSpan1.classList.add('font-bold');
-                catSpan1.textContent = "Ganancia: ";
-
-                const catSpan2 = document.createElement('SPAN');
-                catSpan2.classList.add('categoria__ganancia');
-                catSpan2.textContent = categoria.ganancia;
+                catParrafo.classList.add('categoria__ganancia');
+                catParrafo.textContent = "Ganancia: " + categoria.ganancia;
 
                 const contenedorSM = document.createElement('DIV');
                 contenedorSM.classList.add('formulario__contenedor-boton', 'formulario__contenedor-boton--sm');
@@ -105,9 +101,6 @@ import * as helpers from './helpers';
                         console.log(error);
                     }
                 });
-
-                catParrafo.appendChild(catSpan1);
-                catParrafo.appendChild(catSpan2);
 
                 contenedorSM.appendChild(catEnlace);
                 contenedorSM.appendChild(catBtn);

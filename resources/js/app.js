@@ -8,6 +8,7 @@ import './buscadorProd';
 import './productoForm';
 import './listadoCategoria';
 import './listadoFabricante';
+import './listadoProvider';
 import './helpers';
 
 
