@@ -14,6 +14,9 @@
         let coincidenciasPantalla = []; // Aqui se almacena el resultado de la DB filtrado
 
 
+        // Buscar por codigo - producto se cambian con un paginador, se gira (como el ejemplo del cubo)
+        // El usuario puede escoger uno u otro metodo de busqueda
+
 
         btnNombre.addEventListener('click', function (e) {
             e.preventDefault();

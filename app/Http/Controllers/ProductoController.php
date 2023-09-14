@@ -25,16 +25,20 @@ class ProductoController extends Controller
     {
 
         $codigo = generarCodigo(); // helper
-
+        $precio = Precio::orderBy('dolar', 'desc')->first();
+        
         $categorias = Categoria::orderBy('nombre', 'asc')->get();
         $proveedores = Provider::orderBy('nombre', 'asc')->get();
         $fabricantes = Fabricante::orderBy('nombre', 'asc')->get();
+
+        $dolar_pred = (old('dolar') === null) ? $precio->dolar : old('dolar');
 
         return view('producto.create', [
             'codigo' => $codigo,
             'categorias' => $categorias,
             'fabricantes' => $fabricantes,
-            'proveedores' => $proveedores
+            'proveedores' => $proveedores,
+            'dolar_pred' => $dolar_pred
         ]);
     }
     public function store(Request $request)

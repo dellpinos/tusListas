@@ -13,6 +13,12 @@ const opciones = {
     freeMode: true,
     loop: true,
     watchOverflow: true,
+    speed: 500,
+
+    keyboard: {
+        enabled: true,
+        onlyInViewport: false,
+    },
 
     modules: [Navigation, Pagination],
     navigation: {
