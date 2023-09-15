@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 
 class AumentoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         $categorias = Categoria::orderBy('nombre', 'asc')->get();

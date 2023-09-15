@@ -5,6 +5,7 @@ use App\Http\Controllers\APIAumentos;
 use App\Http\Controllers\APIBuscador;
 use App\Http\Controllers\APICalculos;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\APIProductos;
 use App\Http\Controllers\APIProviders;
 use App\Http\Controllers\APICategorias;
 use App\Http\Controllers\APIFabricantes;
@@ -103,6 +104,11 @@ Route::post('/api/fabricantes/destroy', [APIFabricantes::class, 'destroy']);
 // API Provider
 Route::get('/api/providers/all', [APIProviders::class, 'all']);
 Route::post('/api/providers/destroy', [APIProviders::class, 'destroy']);
+
+
+// API Producto
+Route::get('/api/productos/all', [APIProductos::class, 'all']);
+Route::post('/api/productos/destroy', [APIProductos::class, 'destroy']);
 
 
 
