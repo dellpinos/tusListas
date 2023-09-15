@@ -32,8 +32,6 @@
                         <p class=" alerta__error">{{ $message }}</p>
                     @enderror
                 </div>
-
-                {{--  Falta el proveedor, probablemente necesite un hidden submit porque es el id de la tabla pivote --}}
             </div>
             <input type="submit" value="Crear Categoria" class="formulario__boton">
         </form>

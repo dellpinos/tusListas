@@ -51,24 +51,23 @@
                 </div>
 
                 <div class="formulario__campo-contenedor">
-                    <label for="proveedor" class="formulario__label">Proveedor</label>
-                    <select required class="formulario__campo @error('proveedor') borde__error @enderror" id="provider"
+                    <label for="provider" class="formulario__label">Proveedor</label>
+                    <select required class="formulario__campo @error('provider') borde__error @enderror" id="provider"
                         name="provider_id">
                         <option value="" selected disabled>- Seleccionar -</option>
 
-                        @foreach ($proveedores as $proveedor)
-                            <option value="{{ $proveedor->id }}" {{ intval(old('provider_id')) === $proveedor->id ? 'selected' : '' }}>{{ $proveedor->nombre }}</option>
+                        @foreach ($providers as $provider)
+                            <option value="{{ $provider->id }}" {{ intval(old('provider_id')) === $provider->id ? 'selected' : '' }}>{{ $provider->nombre }}</option>
                         @endforeach
 
-                        @error('proveedor')
+                        @error('provider')
                             <p class="alerta__error">{{ $message }}</p>
                         @enderror
                     </select>
                 </div>
 
                 <div class="formulario__campo-contenedor">
-                    <label for="fabricante" class="formulario__label">Laboratorio -
-                        Fabricante</label>
+                    <label for="fabricante" class="formulario__label">Fabricante</label>
                     <select required class="formulario__campo @error('fabricante') borde__error @enderror" id="fabricante"
                         name="fabricante_id">
                         <option value="" selected disabled>- Seleccionar -</option>
@@ -123,21 +122,22 @@
                     <label for="ganancia-categoria" class="formulario__label--small">Categoria</label>
                     <input type="radio" value="categoria" name="ganancia" class="cursor-pointer"
                         id="ganancia-categoria" />
-                    <label for="ganancia-proveedor" class="formulario__label--small">Proveedor</label>
-                    <input type="radio" value="provider" name="ganancia" class="cursor-pointer" id="ganancia-proveedor"
+                    <label for="ganancia-provider" class="formulario__label--small">Proveedor</label>
+                    <input type="radio" value="provider" name="ganancia" class="cursor-pointer" id="ganancia-provider"
                         checked />
                     <label for="ganancia-personalizada" class="formulario__label--small">Personalizada</label>
                     <input type="radio" value="personalizada" name="ganancia" class="cursor-pointer"
                         id="ganancia-personalizada" />
                 </div>
                 <div class="formulario__campo-contenedor">
-                    <input type="number" step="0.1" min="1" id="ganancia" name="ganancia"
+                    <input type="number" step="0.1" min="1" id="ganancia" {{-- elimino el name --}}
                         placeholder="1.2, 1.7, 1.9" readonly
                         class=" formulario__campo formulario__campo--no-activo text-right @error('ganancia') borde__error @enderror">
                     @error('ganancia')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror
                 </div>
+                <input type="hidden" id="ganancia-numero" name="ganancia_numero" value="">
 
                 <div class="formulario__campo-contenedor">
                     <label for="precio" class="formulario__label">Precio Venta</label>

@@ -26,20 +26,6 @@ class APIProductos extends Controller
             'productos' => $productos
         ]);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function destroy(Request $request)
     {
 

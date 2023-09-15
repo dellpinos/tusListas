@@ -45,7 +45,7 @@
                     <select class="formulario__campo" id="aumentos-provider">
                         <option value="" selected disabled>- Seleccionar -</option>
         
-                        @foreach ($proveedores as $provider)
+                        @foreach ($providers as $provider)
                             <option value="{{ $provider->id }}">{{ $provider->nombre }}</option>
                         @endforeach
                     </select>

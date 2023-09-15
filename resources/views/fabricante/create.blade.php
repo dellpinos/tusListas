@@ -27,7 +27,7 @@
                 </div>
                 <div class="formulario__campo-contenedor">
                     <label for="telefono" class="formulario__label">Teléfono</label>
-                    <input type="tel" id="telefono" name="telefono" placeholder="Teléfono del Laboratorio o Fabricante"
+                    <input type="tel" id="telefono" name="telefono" placeholder="Teléfono de contacto"
                         class="formulario__campo @error('telefono') borde__error @enderror" value="{{ old('telefono') }}">
                     @error('telefono')
                         <p class="alerta__error">{{ $message }}</p>

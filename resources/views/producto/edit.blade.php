@@ -67,18 +67,18 @@
                     </div>
 
                     <div class="formulario__campo-contenedor">
-                        <label for="proveedor" class="formulario__label">Proveedor</label>
+                        <label for="provider" class="formulario__label">Proveedor</label>
                         <select
-                            class="formulario__campo @if ($producto_fraccionado) formulario__campo--no-activo @endif @error('proveedor') borde__error @enderror"
+                            class="formulario__campo @if ($producto_fraccionado) formulario__campo--no-activo @endif @error('provider') borde__error @enderror"
                             id="provider" name="provider_id" @if ($producto_fraccionado) readonly @endif>
 
                             <option value="{{ $provider->id }}" selected>{{ $provider->nombre }}</option>
 
-                            @foreach ($proveedores as $elemento)
+                            @foreach ($providers as $elemento)
                                 <option value="{{ $elemento->id }}">{{ $elemento->nombre }}</option>
                             @endforeach
 
-                            @error('proveedor')
+                            @error('provider')
                                 <p class="alerta__error">{{ $message }}</p>
                             @enderror
                         </select>
@@ -140,22 +140,24 @@
                         <input type="radio" value="categoria" name="ganancia" class="cursor-pointer"
                             id="ganancia-categoria" @if ($producto->ganancia_tipo === 'categoria') checked @endif />
 
-                        <label for="ganancia-proveedor" class="formulario__label--small">Proveedor</label>
-                        <input type="radio" value="proveedor" name="ganancia" class="cursor-pointer"
-                            id="ganancia-proveedor" @if ($producto->ganancia_tipo === 'proveedor') checked @endif />
+                        <label for="ganancia-provider" class="formulario__label--small">Proveedor</label>
+                        <input type="radio" value="provider" name="ganancia" class="cursor-pointer"
+                            id="ganancia-provider" @if ($producto->ganancia_tipo === 'provider') checked @endif />
 
                         <label for="ganancia-personalizada" class="formulario__label--small">Personalizada</label>
                         <input type="radio" value="personalizada" name="ganancia" class="cursor-pointer"
                             id="ganancia-personalizada" @if ($producto->ganancia_tipo === 'producto') checked @endif />
                     </div>
                     <div class="formulario__campo-contenedor">
-                        <input type="number" step="0.1" min="0" id="ganancia" name="ganancia"
+                        <input type="number" step="0.1" min="0" id="ganancia"
                             placeholder="1.2, 1.7, 1.9" value="{{ $producto->ganancia }}" readonly
                             class=" formulario__campo formulario__campo--no-activo text-right @error('ganancia') borde__error @enderror">
                         @error('ganancia')
                             <p class="alerta__error">{{ $message }}</p>
                         @enderror
                     </div>
+                    <input type="hidden" id="ganancia-numero" name="ganancia_numero" value="">
+
                     <div class="formulario__campo-contenedor">
                         <label for="precio" class="formulario__label">Precio Venta</label>
                         <div class="producto-formulario__venta">

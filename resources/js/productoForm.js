@@ -3,6 +3,9 @@ import * as helpers from './helpers';
 
 (function () {
 
+
+    /// Siempre almacena como ganancia del producto
+
     if (document.querySelector('#precio')) {
 
         const campoPersonalizado = document.querySelector('#ganancia');
@@ -18,6 +21,7 @@ import * as helpers from './helpers';
         const unidadFraccion = document.querySelector('#unidad-fraccion');
         const totalFraccionado = document.querySelector('#contenido-total');
         const gananciaFraccion = document.querySelector('#ganancia-fraccion');
+        const gananciaNumero = document.querySelector('#ganancia-numero');
         const precioFraccionado = document.querySelector('#precio-fraccionado');
         const btnFraccionado = document.querySelector('#btn-fraccionado'); // calcular precio fraccionado
 
@@ -48,9 +52,9 @@ import * as helpers from './helpers';
                 if (campoSinIva.value !== '') {
                     campoConIva.value = Math.round(campoSinIva.value * 1.21);
 
+                    calcularGanancia();
                 }
 
-                calcularGanancia();
             }
         });
 
@@ -99,6 +103,7 @@ import * as helpers from './helpers';
                 if (radioChecked.value === 'personalizada') {
                     // Calculo leyendo el formulario
                     precioVenta = (campoSinIva.value * 1.21) * campoPersonalizado.value;
+                    gananciaNumero.value = campoPersonalizado.value;
 
                 } else if (radioChecked.value === 'provider') {
 
@@ -106,12 +111,14 @@ import * as helpers from './helpers';
                     const provider_id = document.querySelector('#provider');
                     let ganancia = await consultarGanancia(radioChecked.value, provider_id.value);
                     precioVenta = (campoSinIva.value * 1.21) * ganancia;
+                    gananciaNumero.value = '';
 
                 } else if (radioChecked.value === 'categoria') {
 
                     const categoria_id = document.querySelector('#categoria');
                     let ganancia = await consultarGanancia(radioChecked.value, categoria_id.value);
                     precioVenta = (campoSinIva.value * 1.21) * ganancia;
+                    gananciaNumero.value = '';
 
                 }
 
