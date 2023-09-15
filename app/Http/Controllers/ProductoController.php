@@ -163,7 +163,7 @@ class ProductoController extends Controller
         if (empty($producto->ganancia_prod)) {
             if ($producto->ganancia_tipo === 'provider') {
                 $producto->ganancia = $provider->ganancia;
-                $producto->ganancia_tipo = 'provider';
+                $producto->ganancia_tipo = 'proveedor'; // Este cambio es por como se imprime en pantalla
             } else {
                 $producto->ganancia = $categoria->ganancia;
                 $producto->ganancia_tipo = 'categoria';
@@ -203,21 +203,14 @@ class ProductoController extends Controller
         $categorias = Categoria::orderBy('nombre', 'asc')->get();
         $providers = Provider::orderBy('nombre', 'asc')->get();
         $fabricantes = Fabricante::orderBy('nombre', 'asc')->get();
-
-
         $precio = Precio::find($producto->precio_id);
 
         // Cargo 1 o 2 productos relacionados a este precio
         $productos = Producto::where('precio_id', $precio->id)->get();
-
         // En caso de haber otro registro relacionado
         $producto_secundario = '';
         // Este es un producto fraccionado
         $producto_fraccionado = false;
-        // // Corrección zona horarioa -03 UTC
-        // $precio->updated_at = $precio->updated_at->subHours(3);
-
-        // Agregar validaciones y eliminar elemento fraccionado de ser necesario <<<<<<<<<<<
 
         /** Consulto si existe otro registro relacionado a esta instancia de Precio (existe fraccionado) */
 

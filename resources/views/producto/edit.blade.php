@@ -211,7 +211,7 @@
                     <div class="formulario__campo-contenedor width-full">
                         <label for="unidad-fraccion" class="formulario__label">Unidad del Producto</label>
                         <input type="text" id="unidad-fraccion" name="unidad_fraccion"
-                            placeholder="blister, frasco, ml, kg" value="{{ $producto->unidad_fraccion }}" @if ($producto_fraccionado) required @endif
+                            placeholder="blister, frasco, kg, unidad, etc" value="{{ $producto->unidad_fraccion }}" @if ($producto_fraccionado) required @endif
                             class="formulario__campo @error('unidad-fraccion') borde__error @enderror">
                         @error('unidad-fraccion')
                             <p class="alerta__error">{{ $message }}</p>
@@ -220,7 +220,7 @@
 
                     <div class="formulario__campo-contenedor width-full">
                         <label for="contenido-total" class="formulario__label ">Total de Unidades</label>
-                        <input type="number" id="contenido-total" name="contenido_total" placeholder="25, 3, 500"
+                        <input type="number" id="contenido-total" name="contenido_total" placeholder="3, 25, 500"
                             value="{{ $producto->contenido_total }}" @if ($producto_fraccionado) required @endif
                             class="formulario__campo text-right @error('contenido-total') borde__error @enderror">
                         @error('contenido-total')

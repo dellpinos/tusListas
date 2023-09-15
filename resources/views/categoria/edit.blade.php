@@ -19,7 +19,7 @@
             <div class="categoria-formulario__contenedor-sm">
                 <div class="formulario__campo-contenedor">
                     <label for="name" class="formulario__label">Nombre de la categoria</label>
-                    <input required type="text" id="name" name="nombre" placeholder="Acuario, Farmacos, Pet Shop, etc"
+                    <input required type="text" id="name" name="nombre" placeholder="Nombre de la categoria"
                         class="formulario__campo @error('nombre') borde__error @enderror" value="{{ $categoria->nombre }}">
                     @error('nombre')
                         <p class="alerta__error">{{ $message }}</p>

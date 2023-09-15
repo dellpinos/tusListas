@@ -174,7 +174,7 @@
 
                 <div class="formulario__campo-contenedor width-full">
                     <label for="unidad-fraccion" class="formulario__label">Unidad del Producto</label>
-                    <input type="text" id="unidad-fraccion" name="unidad_fraccion" placeholder="blister, frasco, ml, kg"
+                    <input type="text" id="unidad-fraccion" name="unidad_fraccion" placeholder="blister, frasco, kg, unidad, etc"
                         class="formulario__campo @error('unidad_fraccion') borde__error @enderror" value="{{ old('unidad_fraccion') }}">
                     @error('unidad_fraccion')
                         <p class="alerta__error">{{ $message }}</p>

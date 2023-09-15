@@ -6,8 +6,6 @@ use App\Models\Provider;
 use App\Models\Categoria;
 use Illuminate\Support\Str;
 
-
-
 // Redondea al numero mayor y multiplo de cero mas cercano
 function redondear($numero)
 {

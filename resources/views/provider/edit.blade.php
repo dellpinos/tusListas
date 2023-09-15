@@ -21,7 +21,7 @@
                     <div class="formulario__campo-contenedor">
                         <label for="name" class="formulario__label">Nombre del Proveedor</label>
                         <input required type="text" id="name" name="nombre"
-                            placeholder="Arcuri, Lepore, Panacea, etc"
+                            placeholder="Nombre del proveedor"
                             class="formulario__campo @error('nombre') borde__error @enderror"
                             value="{{ $provider->nombre }}">
                         @error('nombre')

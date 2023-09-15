@@ -18,7 +18,7 @@
                 <div class="formulario__campo-contenedor">
                     <label for="name" class="formulario__label">Nombre del Fabricante</label>
                     <input required type="text" id="name" name="nombre"
-                        placeholder="Holliday, Brower, Importado, etc"
+                        placeholder="Nombre del fabricante"
                         class="formulario__campo @error('nombre') borde__error @enderror" value="{{ $fabricante->nombre }}">
                     @error('nombre')
                         <p class="alerta__error">{{ $message }}</p>
