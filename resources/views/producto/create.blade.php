@@ -52,7 +52,7 @@
 
                 <div class="formulario__campo-contenedor">
                     <label for="proveedor" class="formulario__label">Proveedor</label>
-                    <select required class="formulario__campo @error('proveedor') borde__error @enderror" id="proveedor"
+                    <select required class="formulario__campo @error('proveedor') borde__error @enderror" id="provider"
                         name="provider_id">
                         <option value="" selected disabled>- Seleccionar -</option>
 
@@ -124,7 +124,7 @@
                     <input type="radio" value="categoria" name="ganancia" class="cursor-pointer"
                         id="ganancia-categoria" />
                     <label for="ganancia-proveedor" class="formulario__label--small">Proveedor</label>
-                    <input type="radio" value="proveedor" name="ganancia" class="cursor-pointer" id="ganancia-proveedor"
+                    <input type="radio" value="provider" name="ganancia" class="cursor-pointer" id="ganancia-proveedor"
                         checked />
                     <label for="ganancia-personalizada" class="formulario__label--small">Personalizada</label>
                     <input type="radio" value="personalizada" name="ganancia" class="cursor-pointer"
@@ -132,7 +132,7 @@
                 </div>
                 <div class="formulario__campo-contenedor">
                     <input type="number" step="0.1" min="1" id="ganancia" name="ganancia"
-                        placeholder="1.2, 1.7, 1.9" disabled
+                        placeholder="1.2, 1.7, 1.9" readonly
                         class=" formulario__campo formulario__campo--no-activo text-right @error('ganancia') borde__error @enderror">
                     @error('ganancia')
                         <p class="alerta__error">{{ $message }}</p>

@@ -22,7 +22,7 @@
 
         <form action="{{ route('producto.update') }}" method="POST">
             @csrf
-            <input type="hidden" name="id" value="{{ $producto->id }}" />
+            <input type="hidden" name="id" value="{{ $producto->id }}" id="producto-id" />
             <div class="formulario__campo-contenedor">
                 <label for="codigo" class="formulario__label">Código del producto</label>
                 <input type="text" id="codigo" name="codigo" readonly
@@ -70,7 +70,7 @@
                         <label for="proveedor" class="formulario__label">Proveedor</label>
                         <select
                             class="formulario__campo @if ($producto_fraccionado) formulario__campo--no-activo @endif @error('proveedor') borde__error @enderror"
-                            id="proveedor" name="provider_id" @if ($producto_fraccionado) readonly @endif>
+                            id="provider" name="provider_id" @if ($producto_fraccionado) readonly @endif>
 
                             <option value="{{ $provider->id }}" selected>{{ $provider->nombre }}</option>
 
@@ -256,10 +256,14 @@
         </form>
 
 
-        <form method="POST" action="{{ route('producto.destroy', $producto) }}">
+{{--         <form method="POST" action="{{ route('producto.destroy', $producto) }}">
             @csrf
             @method('DELETE')
             <input type="submit" value="Eliminar Producto" class="formulario__boton formulario__boton--rojo">
-        </form>
+        </form> --}}
+
+        <button id="producto-destroy" class="formulario__boton formulario__boton--rojo">Eliminar Producto</button>
+
+        
     </div>
 @endsection

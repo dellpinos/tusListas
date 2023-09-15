@@ -13,6 +13,12 @@ use Illuminate\Http\Request;
 
 class APIAumentos extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function aumento_categoria(Request $request)
     {
         // dd($request->request);
