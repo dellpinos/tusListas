@@ -11,17 +11,17 @@
         <a href="{{ route('providers') }}" class="provider__boton">&laquo; Volver</a>
     </div>
 
-    <div class="proveedor-formulario__grid">
+    <div class="provider-formulario__grid">
         <form action="{{ route('provider.store') }}" method="POST">
             @csrf
 
-            <div class="proveedor-formulario__contenedor">
+            <div class="provider-formulario__contenedor">
 
-                <div class="proveedor-formulario__contenedor-sm">
+                <div class="provider-formulario__contenedor-sm">
                     <div class="formulario__campo-contenedor">
                         <label for="name" class="formulario__label">Nombre del Proveedor</label>
                         <input required type="text" id="name" name="nombre"
-                            placeholder="Arcuri, Lepore, Panacea, etc"
+                            placeholder="Nombre del proveedor"
                             class="formulario__campo @error('nombre') borde__error @enderror" value="{{ old('nombre') }}">
                         @error('nombre')
                             <p class=" alerta__error">{{ $message }}</p>
@@ -38,7 +38,7 @@
                     <div class="formulario__campo-contenedor">
                         <label for="telefono" class="formulario__label">Teléfono</label>
                         <input type="tel" id="telefono" name="telefono"
-                            placeholder="Teléfono del Laboratorio o Fabricante"
+                            placeholder="Teléfono de contacto"
                             class="formulario__campo @error('telefono') borde__error @enderror"
                             value="{{ old('telefono') }}">
                         @error('telefono')
@@ -47,7 +47,7 @@
                     </div>
 
                 </div>
-                <div class="proveedor-formulario__contenedor-sm">
+                <div class="provider-formulario__contenedor-sm">
 
 
                     <div class="formulario__campo-contenedor">

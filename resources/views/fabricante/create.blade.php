@@ -19,7 +19,7 @@
                 <div class="formulario__campo-contenedor">
                     <label for="name" class="formulario__label">Nombre del Fabricante</label>
                     <input required type="text" id="name" name="nombre"
-                        placeholder="Holliday, Brower, Importado, etc"
+                        placeholder="Nombre del fabricante"
                         class="formulario__campo @error('nombre') borde__error @enderror" value="{{ old('nombre') }}">
                     @error('nombre')
                         <p class=" alerta__error">{{ $message }}</p>
@@ -27,7 +27,7 @@
                 </div>
                 <div class="formulario__campo-contenedor">
                     <label for="telefono" class="formulario__label">Teléfono</label>
-                    <input type="tel" id="telefono" name="telefono" placeholder="Teléfono del Laboratorio o Fabricante"
+                    <input type="tel" id="telefono" name="telefono" placeholder="Teléfono de contacto"
                         class="formulario__campo @error('telefono') borde__error @enderror" value="{{ old('telefono') }}">
                     @error('telefono')
                         <p class="alerta__error">{{ $message }}</p>

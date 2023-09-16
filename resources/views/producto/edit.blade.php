@@ -22,7 +22,7 @@
 
         <form action="{{ route('producto.update') }}" method="POST">
             @csrf
-            <input type="hidden" name="id" value="{{ $producto->id }}" />
+            <input type="hidden" name="id" value="{{ $producto->id }}" id="producto-id" />
             <div class="formulario__campo-contenedor">
                 <label for="codigo" class="formulario__label">Código del producto</label>
                 <input type="text" id="codigo" name="codigo" readonly
@@ -67,18 +67,18 @@
                     </div>
 
                     <div class="formulario__campo-contenedor">
-                        <label for="proveedor" class="formulario__label">Proveedor</label>
+                        <label for="provider" class="formulario__label">Proveedor</label>
                         <select
-                            class="formulario__campo @if ($producto_fraccionado) formulario__campo--no-activo @endif @error('proveedor') borde__error @enderror"
-                            id="proveedor" name="provider_id" @if ($producto_fraccionado) readonly @endif>
+                            class="formulario__campo @if ($producto_fraccionado) formulario__campo--no-activo @endif @error('provider') borde__error @enderror"
+                            id="provider" name="provider_id" @if ($producto_fraccionado) readonly @endif>
 
                             <option value="{{ $provider->id }}" selected>{{ $provider->nombre }}</option>
 
-                            @foreach ($proveedores as $elemento)
+                            @foreach ($providers as $elemento)
                                 <option value="{{ $elemento->id }}">{{ $elemento->nombre }}</option>
                             @endforeach
 
-                            @error('proveedor')
+                            @error('provider')
                                 <p class="alerta__error">{{ $message }}</p>
                             @enderror
                         </select>
@@ -140,22 +140,24 @@
                         <input type="radio" value="categoria" name="ganancia" class="cursor-pointer"
                             id="ganancia-categoria" @if ($producto->ganancia_tipo === 'categoria') checked @endif />
 
-                        <label for="ganancia-proveedor" class="formulario__label--small">Proveedor</label>
-                        <input type="radio" value="proveedor" name="ganancia" class="cursor-pointer"
-                            id="ganancia-proveedor" @if ($producto->ganancia_tipo === 'proveedor') checked @endif />
+                        <label for="ganancia-provider" class="formulario__label--small">Proveedor</label>
+                        <input type="radio" value="provider" name="ganancia" class="cursor-pointer"
+                            id="ganancia-provider" @if ($producto->ganancia_tipo === 'provider') checked @endif />
 
                         <label for="ganancia-personalizada" class="formulario__label--small">Personalizada</label>
                         <input type="radio" value="personalizada" name="ganancia" class="cursor-pointer"
                             id="ganancia-personalizada" @if ($producto->ganancia_tipo === 'producto') checked @endif />
                     </div>
                     <div class="formulario__campo-contenedor">
-                        <input type="number" step="0.1" min="0" id="ganancia" name="ganancia"
+                        <input type="number" step="0.1" min="0" id="ganancia"
                             placeholder="1.2, 1.7, 1.9" value="{{ $producto->ganancia }}" readonly
                             class=" formulario__campo formulario__campo--no-activo text-right @error('ganancia') borde__error @enderror">
                         @error('ganancia')
                             <p class="alerta__error">{{ $message }}</p>
                         @enderror
                     </div>
+                    <input type="hidden" id="ganancia-numero" name="ganancia_numero" value="">
+
                     <div class="formulario__campo-contenedor">
                         <label for="precio" class="formulario__label">Precio Venta</label>
                         <div class="producto-formulario__venta">
@@ -209,7 +211,7 @@
                     <div class="formulario__campo-contenedor width-full">
                         <label for="unidad-fraccion" class="formulario__label">Unidad del Producto</label>
                         <input type="text" id="unidad-fraccion" name="unidad_fraccion"
-                            placeholder="blister, frasco, ml, kg" value="{{ $producto->unidad_fraccion }}" @if ($producto_fraccionado) required @endif
+                            placeholder="blister, frasco, kg, unidad, etc" value="{{ $producto->unidad_fraccion }}" @if ($producto_fraccionado) required @endif
                             class="formulario__campo @error('unidad-fraccion') borde__error @enderror">
                         @error('unidad-fraccion')
                             <p class="alerta__error">{{ $message }}</p>
@@ -218,7 +220,7 @@
 
                     <div class="formulario__campo-contenedor width-full">
                         <label for="contenido-total" class="formulario__label ">Total de Unidades</label>
-                        <input type="number" id="contenido-total" name="contenido_total" placeholder="25, 3, 500"
+                        <input type="number" id="contenido-total" name="contenido_total" placeholder="3, 25, 500"
                             value="{{ $producto->contenido_total }}" @if ($producto_fraccionado) required @endif
                             class="formulario__campo text-right @error('contenido-total') borde__error @enderror">
                         @error('contenido-total')
@@ -256,10 +258,14 @@
         </form>
 
 
-        <form method="POST" action="{{ route('producto.destroy', $producto) }}">
+{{--         <form method="POST" action="{{ route('producto.destroy', $producto) }}">
             @csrf
             @method('DELETE')
             <input type="submit" value="Eliminar Producto" class="formulario__boton formulario__boton--rojo">
-        </form>
+        </form> --}}
+
+        <button id="producto-destroy" class="formulario__boton formulario__boton--rojo">Eliminar Producto</button>
+
+        
     </div>
 @endsection

@@ -62,7 +62,7 @@ import * as helpers from './helpers';
 
                 limpiarElementos(contenedorVacio);
 
-                textoNoCat.textContent = "No se encontraron providers";
+                textoNoCat.textContent = "No se encontraron proveedores";
                 textoNoCat.classList.add('mensaje__vacio');
                 contenedorVacio.appendChild(textoNoCat);
                 return;

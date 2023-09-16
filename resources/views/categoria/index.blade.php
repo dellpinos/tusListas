@@ -17,7 +17,6 @@
             <i class="formulario__icono-busqueda fa-solid fa-magnifying-glass"></i>
             <input class="formulario__campo-busqueda" id="categoria-formulario" type="text">
         </div>
-        {{--         <a href="#" class="categoria__boton">Buscar Categoria</a> --}}
     </div>
 
     <div class="swiper slider mb-10"> <!-- Swiper principal -->

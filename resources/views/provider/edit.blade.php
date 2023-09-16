@@ -9,19 +9,19 @@
         <a href="{{ route('providers') }}" class="provider__boton">&laquo; Volver</a>
     </div>
 
-    <div class="proveedor-formulario__grid">
+    <div class="provider-formulario__grid">
         <form action="{{ route('provider.update') }}" method="POST">
             @csrf
 
             <input type="hidden" name="id" value="{{ $provider->id }}" />
 
-            <div class="proveedor-formulario__contenedor">
+            <div class="provider-formulario__contenedor">
 
-                <div class="proveedor-formulario__contenedor-sm">
+                <div class="provider-formulario__contenedor-sm">
                     <div class="formulario__campo-contenedor">
                         <label for="name" class="formulario__label">Nombre del Proveedor</label>
                         <input required type="text" id="name" name="nombre"
-                            placeholder="Arcuri, Lepore, Panacea, etc"
+                            placeholder="Nombre del proveedor"
                             class="formulario__campo @error('nombre') borde__error @enderror"
                             value="{{ $provider->nombre }}">
                         @error('nombre')
@@ -39,7 +39,7 @@
                     <div class="formulario__campo-contenedor">
                         <label for="telefono" class="formulario__label">Teléfono</label>
                         <input type="tel" id="telefono" name="telefono"
-                            placeholder="Teléfono del Laboratorio o Fabricante"
+                            placeholder="Teléfono de contacto"
                             class="formulario__campo @error('telefono') borde__error @enderror"
                             value="{{ $provider->telefono }}">
                         @error('telefono')
@@ -48,7 +48,7 @@
                     </div>
 
                 </div>
-                <div class="proveedor-formulario__contenedor-sm">
+                <div class="provider-formulario__contenedor-sm">
 
 
                     <div class="formulario__campo-contenedor">

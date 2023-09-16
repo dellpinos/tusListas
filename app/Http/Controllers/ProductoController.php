@@ -26,18 +26,21 @@ class ProductoController extends Controller
 
         $codigo = generarCodigo(); // helper
         $precio = Precio::orderBy('dolar', 'desc')->first();
-        
-        $categorias = Categoria::orderBy('nombre', 'asc')->get();
-        $proveedores = Provider::orderBy('nombre', 'asc')->get();
-        $fabricantes = Fabricante::orderBy('nombre', 'asc')->get();
+        $dolar_pred = '';
 
-        $dolar_pred = (old('dolar') === null) ? $precio->dolar : old('dolar');
+
+        if($precio !== null) { // En caso del primer producto
+            $dolar_pred = (old('dolar') === null) ? $precio->dolar : old('dolar');
+        }
+        $categorias = Categoria::orderBy('nombre', 'asc')->get();
+        $providers = Provider::orderBy('nombre', 'asc')->get();
+        $fabricantes = Fabricante::orderBy('nombre', 'asc')->get();
 
         return view('producto.create', [
             'codigo' => $codigo,
             'categorias' => $categorias,
             'fabricantes' => $fabricantes,
-            'proveedores' => $proveedores,
+            'providers' => $providers,
             'dolar_pred' => $dolar_pred
         ]);
     }
@@ -51,20 +54,28 @@ class ProductoController extends Controller
         $ganancia = $request->ganancia;
         $ganancia_tipo = '';
 
-        if ($ganancia === 'proveedor') {
-            $ganancia_tipo = 'proveedor';
+        /// Ver edit y update
+
+        // ganancia_numero
+        if ($ganancia === 'provider') {
+            $ganancia_tipo = 'provider';
             $ganancia_prod = null;
+
         } elseif ($ganancia === 'categoria') {
             $ganancia_tipo = 'categoria';
             $ganancia_prod = null;
-        } else {
-            $ganancia_prod = $ganancia;
+
+        } elseif ($ganancia === 'personalizada' && !empty($request->ganancia_numero)) {
             $ganancia_tipo = 'producto';
+            $ganancia_prod = $request->ganancia_numero;
         }
 
-        if (!$ganancia) {
-            return redirect()->refresh();
+
+        if(empty($request->ganancia) || (!is_numeric($ganancia_prod) && $ganancia_prod !== null)) { // $ganancia_prod debe ser un numero
+            return redirect()->route('buscador')->with('mensaje', "Ganancia no válida");
         }
+
+
 
         $this->validate($request, [
             'codigo' => 'required|max:4|min:4|unique:productos',
@@ -149,10 +160,10 @@ class ProductoController extends Controller
         $precio->updated_at = $precio->updated_at->subHours(3);
 
         // Que ganancia aplica a este producto
-        if (!$producto->ganancia_prod) {
-            if ($producto->ganancia_tipo === 'proveedor') {
+        if (empty($producto->ganancia_prod)) {
+            if ($producto->ganancia_tipo === 'provider') {
                 $producto->ganancia = $provider->ganancia;
-                $producto->ganancia_tipo = 'proveedor';
+                $producto->ganancia_tipo = 'proveedor'; // Este cambio es por como se imprime en pantalla
             } else {
                 $producto->ganancia = $categoria->ganancia;
                 $producto->ganancia_tipo = 'categoria';
@@ -161,6 +172,7 @@ class ProductoController extends Controller
             $producto->ganancia = $producto->ganancia_prod;
             $producto->ganancia_tipo = 'producto';
         }
+
 
         $producto->venta = $producto->ganancia * ($precio->precio * 1.21);
         $producto->venta = redondear($producto->venta);
@@ -189,23 +201,16 @@ class ProductoController extends Controller
 
         // Cargar datos para los <select>
         $categorias = Categoria::orderBy('nombre', 'asc')->get();
-        $proveedores = Provider::orderBy('nombre', 'asc')->get();
+        $providers = Provider::orderBy('nombre', 'asc')->get();
         $fabricantes = Fabricante::orderBy('nombre', 'asc')->get();
-
-
         $precio = Precio::find($producto->precio_id);
 
         // Cargo 1 o 2 productos relacionados a este precio
         $productos = Producto::where('precio_id', $precio->id)->get();
-
         // En caso de haber otro registro relacionado
         $producto_secundario = '';
         // Este es un producto fraccionado
         $producto_fraccionado = false;
-        // // Corrección zona horarioa -03 UTC
-        // $precio->updated_at = $precio->updated_at->subHours(3);
-
-        // Agregar validaciones y eliminar elemento fraccionado de ser necesario <<<<<<<<<<<
 
         /** Consulto si existe otro registro relacionado a esta instancia de Precio (existe fraccionado) */
 
@@ -243,6 +248,10 @@ class ProductoController extends Controller
         }
         // 1_ No es un producto fraccionado y no existe un fraccionado 
 
+        $categoria = '';
+        $provider = '';
+        $fabricante = '';
+
 
         // Consultar categoria, provider y fabricante del producto actual 
         foreach ($categorias as $elemento) {
@@ -250,7 +259,7 @@ class ProductoController extends Controller
                 $categoria = $elemento;
             }
         }
-        foreach ($proveedores as $elemento) {
+        foreach ($providers as $elemento) {
             if ($producto->provider_id  === $elemento->id) {
                 $provider = $elemento;
             }
@@ -262,12 +271,11 @@ class ProductoController extends Controller
         }
 
 
-
         // Que ganancia aplica a este producto
         if (!$producto->ganancia_prod) {
-            if ($producto->ganancia_tipo === 'proveedor') {
+            if ($producto->ganancia_tipo === 'provider') {
                 $producto->ganancia = $provider->ganancia;
-                $producto->ganancia_tipo = 'proveedor';
+                $producto->ganancia_tipo = 'provider';
             } else {
                 $producto->ganancia = $categoria->ganancia;
                 $producto->ganancia_tipo = 'categoria';
@@ -287,7 +295,7 @@ class ProductoController extends Controller
             'provider' => $provider,
             'categorias' => $categorias,
             'fabricantes' => $fabricantes,
-            'proveedores' => $proveedores,
+            'providers' => $providers,
 
             'producto_fraccionado' => $producto_fraccionado, // bool
             'producto_secundario' => $producto_secundario // instancia producto
@@ -349,17 +357,17 @@ class ProductoController extends Controller
         $ganancia = $request->ganancia;
         $ganancia_tipo = '';
 
-        if ($ganancia === 'proveedor') {
-            $ganancia_tipo = 'proveedor';
+        if ($ganancia === 'provider') {
+            $ganancia_tipo = 'provider';
             $ganancia_prod = null;
         } elseif ($ganancia === 'categoria') {
             $ganancia_tipo = 'categoria';
             $ganancia_prod = null;
-        } else {
+        } elseif ($ganancia === 'personalizada' && !empty($request->ganancia_numero)) {
             $ganancia_tipo = 'producto';
-            $ganancia_prod = $ganancia; // ganancia personalizada
+            $ganancia_prod = $request->ganancia_numero;
         }
-        if (empty($request->ganancia) || !is_numeric($ganancia_prod)) { // $ganancia_prod debe ser un numero
+        if(empty($request->ganancia) || (!is_numeric($ganancia_prod) && $ganancia_prod !== null)) { // $ganancia_prod debe ser un numero
             return redirect()->route('buscador')->with('mensaje', "Ganancia no válida");
         }
 
