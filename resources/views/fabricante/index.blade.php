@@ -1,42 +1,58 @@
 @extends('layouts.dashboard')
 
+@section('meta')
+    {{-- Esta etiqueta me permite leer el token csrf desde Js --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
+
 @section('titulo')
-    Fabricantes - Laboratorios
+    Fabricantes
 @endsection
 
 @section('contenido')
-    {{-- Esto deberia ser un componente/livewire --}}
-    <div class="fabricante__contenedor-boton" >
-        <a href="{{ route('fabricante.create') }}" class="fabricante__boton">Crear Fabricante</a>
-        <a href="#" class="fabricante__boton">Buscar Fabricante</a>
+
+<div class="formulario__contenedor-boton">
+    <a href="{{ route('fabricante.create') }}" class="fabricante__boton">Crear Fabricante</a>
+    <div class="formulario__contenedor-busqueda">
+        <i class="formulario__icono-busqueda fa-solid fa-magnifying-glass"></i>
+        <input class="formulario__campo-busqueda" id="fabricante-formulario" type="text">
     </div>
+</div>
 
-    @if ($fabricantes->count() > 0)
-        <div class="fabricante__grid">
-            @foreach ($fabricantes as $fabricante)
-                <div class="fabricante__contenedor">
-                    <p><span class=" font-bold">Fabricante: </span>{{$fabricante->nombre}}</p>
-                    <p><span class=" font-bold">Telefono: </span>{{$fabricante->telefono}}</p>
-                    <p><span class=" font-bold">Vendedor: </span>{{$fabricante->vendedor}}</p>
-                    <p><span class=" font-bold">Descripción: </span>{{$fabricante->descripcion}}</p>
+<div class="swiper slider mb-10"> <!-- Swiper principal -->
+    <div class="swiper-wrapper" id="fabricantes-registros"> <!-- Swiper secundario -->
 
-                    <div class="fabricante__contenedor-boton fabricante__contenedor-boton--sm">
-                        <a class="fabricante__boton fabricante__boton--modificar" href="{{ route('fabricante.edit', $fabricante) }}">Ver / Editar</a>
-                        <form action="{{ route('fabricante.destroy', $fabricante) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="fabricante__boton fabricante__boton--eliminar">Eliminar</button>
-                        </form>
-                    </div>
-                </div>
-            @endforeach
-        </div>
+    </div> <!-- Swiper secundario -->
 
-        <div class=" my-5 bg-gray-500 p-4 text-black" >
-            {{ $fabricantes->links() }}
-        </div>
+    <div class="swiper-pagination"></div> <!-- Pagination -->
 
-    @else
-        <p class="mensaje__vacio">No se encontraron fabricantes</p>
-    @endif
+    <!-- Navigation buttons -->
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+
+</div> <!-- Swiper principal -->
+
+<div id="mensaje-vacio">
+    {{-- Js --}}
+</div>
+
 @endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{{-- <<<<<<<<<<<< --}}
+
+
+

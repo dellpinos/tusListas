@@ -6,8 +6,6 @@ use App\Models\Provider;
 use App\Models\Categoria;
 use Illuminate\Support\Str;
 
-
-
 // Redondea al numero mayor y multiplo de cero mas cercano
 function redondear($numero)
 {
@@ -49,7 +47,7 @@ function precioVenta(Producto $producto, Precio $precio)
 
     // Que ganancia aplica a este producto
     if (!$producto->ganancia_prod) {
-        if ($producto->ganancia_tipo === 'proveedor') {
+        if ($producto->ganancia_tipo === 'provider') {
             $producto->ganancia = $provider->ganancia;
             $producto->ganancia_tipo = 'Proveedor';
         } else {

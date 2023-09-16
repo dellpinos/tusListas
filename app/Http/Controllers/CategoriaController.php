@@ -13,7 +13,7 @@ class CategoriaController extends Controller
     }
     public function index()
     {
-        $categorias = Categoria::orderBy('nombre', 'asc')->paginate(6);
+        $categorias = Categoria::orderBy('nombre', 'asc')->get();
 
 
         return view('categoria.index', [
@@ -35,8 +35,7 @@ class CategoriaController extends Controller
 
         Categoria::create([
             'nombre' => $request->nombre,
-            'ganancia' => $request->ganancia,
-            'providersCategorias_id' => 1 // <<<<< Cambiar este dato, solo es una prueba
+            'ganancia' => $request->ganancia
         ]);
 
         return redirect()->route('categorias');
@@ -65,7 +64,6 @@ class CategoriaController extends Controller
 
         $categoria->nombre = $request->nombre;
         $categoria->ganancia = $request->ganancia;
-        $categoria->providersCategorias_id = 1; // <<<<< Cambiar este dato, solo es una prueba
 
 
         $categoria->save();
@@ -73,10 +71,5 @@ class CategoriaController extends Controller
         return redirect()->route('categorias');
 
     }
-    public function destroy(Categoria $categoria)
-    {
-        $categoria->delete();
 
-        return redirect()->route('categorias');
-    }
 }

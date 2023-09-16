@@ -13,7 +13,8 @@ class ProviderController extends Controller
     }
     public function index()
     {
-        $providers = Provider::orderBy('nombre', 'asc')->paginate(6);
+        $providers = Provider::orderBy('nombre', 'asc')->get();
+
 
 
         return view('provider.index', [
@@ -32,7 +33,7 @@ class ProviderController extends Controller
             'email' => 'email|nullable',
             'telefono' => 'string|nullable',
             'vendedor' => 'string|max:60|nullable',
-            'web' => 'url|nullable',
+            'web' => 'string|nullable',
             'ganancia' => 'required|numeric', 'between:0.01,9.99'
         ]);
 
@@ -44,8 +45,7 @@ class ProviderController extends Controller
             'telefono' => $request->telefono,
             'vendedor' => $request->vendedor,
             'web' => $request->web,
-            'ganancia' => $request->ganancia,
-            'providersCategorias_id' => 1 // <<<<< Cambiar este dato, solo es una prueba
+            'ganancia' => $request->ganancia
         ]);
 
         return redirect()->route('providers');
@@ -67,7 +67,7 @@ class ProviderController extends Controller
             'email' => 'email|nullable',
             'telefono' => 'string|nullable',
             'vendedor' => 'string|max:60|nullable',
-            'web' => 'url|nullable',
+            'web' => 'string|nullable',
             'ganancia' => 'required|numeric', 'between:0.01,9.99'
         ]);
 
@@ -78,7 +78,6 @@ class ProviderController extends Controller
         $provider->vendedor = $request->vendedor;
         $provider->web = $request->web;
         $provider->ganancia = $request->ganancia;
-        $provider->providersCategorias_id = 1;
 
 
         $provider->save();

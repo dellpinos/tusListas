@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @yield('meta')
 
+    <meta name="description" content="App de gestión de precios e inventario">
+
     <title>TusListas - @yield('titulo')</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,11 +18,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
         integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'" />
 
     @vite('resources/scss/app.scss')
     
-
 </head>
 
 <body class=" bg-dashboard">
@@ -54,6 +56,7 @@
     </header>
 
     <main class="dashboard__grid">
+
         
         <aside class="sidebar">
             <nav class=" sidebar__nav">
@@ -80,7 +83,7 @@
                         class="fa-solid fa-folder-open sidebar__icono"></i>Categorias</a>
                 <a href="{{ route('fabricantes') }}"
                     class="sidebar__enlace @if (request()->path() === 'fabricantes') activo @endif"><i
-                        class="fa-solid fa-flask sidebar__icono"></i>Laboratorios</a>
+                        class="fa-solid fa-industry sidebar__icono"></i>Fabricantes</a>
 
             </nav>
         </aside>

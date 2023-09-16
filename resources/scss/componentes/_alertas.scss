@@ -31,16 +31,31 @@
 }
 
 .mensaje {
+    border-radius: .5rem;
+    margin-top: 5rem;
+    margin-bottom: 2rem;
+    font-weight: v.$bold;
+    text-align: center;
+    text-transform: uppercase;
+
+    padding: 1rem;
 
     &__vacio {
-        border-radius: .5rem;
-        margin-top: 5rem;
+        @extend .mensaje;
         border: .5px solid v.$grisBlanco;
-        font-weight: v.$bold;
-        text-align: center;
-        text-transform: uppercase;
         color: v.$grisClaro;
-        padding: 1rem;
+    }
+
+    &__error {
+        @extend .mensaje;
+        border: .5px solid v.$rojo;
+        color: v.$rojo;
+    }
+
+    &__info {
+        @extend .mensaje;
+        border: .5px solid v.$grisBlanco;
+        color: v.$grisClaro;
     }
 }
 

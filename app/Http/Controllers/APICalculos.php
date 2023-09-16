@@ -30,9 +30,9 @@ class APICalculos extends Controller
         if ($request->ganancia === 'categoria') {
             $categoria = Categoria::find($request->id);
             $respuesta = $categoria->ganancia;
-        } elseif ($request->ganancia === 'proveedor') {
-            $proveedor = Provider::find($request->id);
-            $respuesta = $proveedor->ganancia;
+        } elseif ($request->ganancia === 'provider') {
+            $provider = Provider::find($request->id);
+            $respuesta = $provider->ganancia;
         }
 
         echo json_encode($respuesta);

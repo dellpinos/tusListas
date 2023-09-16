@@ -1,39 +1,38 @@
 @extends('layouts.dashboard')
 
+@section('meta')
+    {{-- Esta etiqueta me permite leer el token csrf desde Js --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
+
 @section('titulo')
     Categorias
 @endsection
 
 @section('contenido')
-    <div class="categoria__contenedor-boton" >
+    <div class="formulario__contenedor-boton">
         <a href="{{ route('categoria.create') }}" class="categoria__boton">Crear Categoria</a>
-        <a href="#" class="categoria__boton">Buscar Categoria</a>
+
+        <div class="formulario__contenedor-busqueda">
+            <i class="formulario__icono-busqueda fa-solid fa-magnifying-glass"></i>
+            <input class="formulario__campo-busqueda" id="categoria-formulario" type="text">
+        </div>
     </div>
 
-    @if ($categorias->count() > 0)
-        <div class=" categoria__grid">
-            @foreach ($categorias as $categoria)
-                <div class="categoria__contenedor">
-                    <p><span class=" font-bold">Categoria: </span>{{$categoria->nombre}}</p>
-                    <p><span class=" font-bold">Ganancia: </span>{{$categoria->ganancia}}</p>
+    <div class="swiper slider mb-10"> <!-- Swiper principal -->
+        <div class="swiper-wrapper" id="categorias-registros"> <!-- Swiper secundario -->
 
-                    <div class="categoria__contenedor-boton categoria__contenedor-boton--sm">
-                        <a class="categoria__boton categoria__boton--modificar" href="{{ route('categoria.edit', $categoria) }}">Ver / Editar</a>
-                        <form action="{{ route('categoria.destroy', $categoria) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="categoria__boton categoria__boton--eliminar">Eliminar</button>
-                        </form>
-                    </div>
-                </div>
-            @endforeach
-        </div>
+        </div> <!-- Swiper secundario -->
 
-        <div class=" my-5 bg-gray-500 p-4 text-black" >
-            {{ $categorias->links() }}
-        </div>
+        <div class="swiper-pagination"></div> <!-- Pagination -->
 
-    @else
-        <p class="mensaje__vacio">No se encontraron categorias</p>
-    @endif
+        <!-- Navigation buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+
+    </div> <!-- Swiper principal -->
+
+    <div id="mensaje-vacio">
+        {{-- Js --}}
+    </div>
 @endsection

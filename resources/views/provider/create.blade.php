@@ -4,22 +4,24 @@
 @endsection
 
 
+
+
 @section('contenido')
-    <div class="provider__contenedor-boton">
+    <div class="formulario__contenedor-boton">
         <a href="{{ route('providers') }}" class="provider__boton">&laquo; Volver</a>
-        <a href="#" class="provider__boton">Buscar Proveedor</a>
     </div>
 
-    <div class="proveedor-formulario__grid">
+    <div class="provider-formulario__grid">
         <form action="{{ route('provider.store') }}" method="POST">
             @csrf
 
-            <div class="proveedor-formulario__contenedor">
+            <div class="provider-formulario__contenedor">
 
-                <div class="proveedor-formulario__contenedor-sm">
+                <div class="provider-formulario__contenedor-sm">
                     <div class="formulario__campo-contenedor">
                         <label for="name" class="formulario__label">Nombre del Proveedor</label>
-                        <input required type="text" id="name" name="nombre" placeholder="Arcuri, Lepore, Panacea, etc"
+                        <input required type="text" id="name" name="nombre"
+                            placeholder="Nombre del proveedor"
                             class="formulario__campo @error('nombre') borde__error @enderror" value="{{ old('nombre') }}">
                         @error('nombre')
                             <p class=" alerta__error">{{ $message }}</p>
@@ -34,9 +36,9 @@
                         @enderror
                     </div>
                     <div class="formulario__campo-contenedor">
-                        <label for="telefono" class="formulario__label">Telefono</label>
+                        <label for="telefono" class="formulario__label">Teléfono</label>
                         <input type="tel" id="telefono" name="telefono"
-                            placeholder="Telefono del Laboratorio o Fabricante"
+                            placeholder="Teléfono de contacto"
                             class="formulario__campo @error('telefono') borde__error @enderror"
                             value="{{ old('telefono') }}">
                         @error('telefono')
@@ -45,7 +47,7 @@
                     </div>
 
                 </div>
-                <div class="proveedor-formulario__contenedor-sm">
+                <div class="provider-formulario__contenedor-sm">
 
 
                     <div class="formulario__campo-contenedor">
@@ -59,7 +61,7 @@
                     </div>
                     <div class="formulario__campo-contenedor">
                         <label for="web" class="formulario__label">Sitio Web</label>
-                        <input type="text" id="web" name="web" placeholder="www.arcuri.com.ar"
+                        <input type="text" id="web" name="web" placeholder="www.ejemplo.com.ar"
                             class="formulario__campo @error('web') borde__error @enderror" value="{{ old('web') }}">
                         @error('web')
                             <p class=" alerta__error">{{ $message }}</p>
@@ -67,7 +69,8 @@
                     </div>
                     <div class="formulario__campo-contenedor">
                         <label for="ganancia" class="formulario__label">Ganancia</label>
-                        <input required type="number" step="0.01" min="0.01" max="9.99" id="ganancia" name="ganancia" placeholder="1.5, 1.8, 1.9"
+                        <input required type="number" step="0.01" min="0.01" max="9.99" id="ganancia"
+                            name="ganancia" placeholder="1.5, 1.8, 1.9"
                             class="formulario__campo @error('ganancia') borde__error @enderror"
                             value="{{ old('ganancia') }}">
                         @error('ganancia')

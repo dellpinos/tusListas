@@ -25,17 +25,23 @@ class ProductoController extends Controller
     {
 
         $codigo = generarCodigo(); // helper
+        $precio = Precio::orderBy('dolar', 'desc')->first();
+        $dolar_pred = '';
 
+
+        if($precio !== null) { // En caso del primer producto
+            $dolar_pred = (old('dolar') === null) ? $precio->dolar : old('dolar');
+        }
         $categorias = Categoria::orderBy('nombre', 'asc')->get();
-        $proveedores = Provider::orderBy('nombre', 'asc')->get();
+        $providers = Provider::orderBy('nombre', 'asc')->get();
         $fabricantes = Fabricante::orderBy('nombre', 'asc')->get();
-
 
         return view('producto.create', [
             'codigo' => $codigo,
             'categorias' => $categorias,
             'fabricantes' => $fabricantes,
-            'proveedores' => $proveedores
+            'providers' => $providers,
+            'dolar_pred' => $dolar_pred
         ]);
     }
     public function store(Request $request)
@@ -45,64 +51,75 @@ class ProductoController extends Controller
             'codigo' => Str::lower($request->codigo),
         ]);
 
-
         $ganancia = $request->ganancia;
         $ganancia_tipo = '';
 
-        if ($ganancia === 'proveedor') {
-            $ganancia_tipo = 'proveedor';
+        /// Ver edit y update
+
+        // ganancia_numero
+        if ($ganancia === 'provider') {
+            $ganancia_tipo = 'provider';
             $ganancia_prod = null;
+
         } elseif ($ganancia === 'categoria') {
             $ganancia_tipo = 'categoria';
             $ganancia_prod = null;
-        } else {
-            $ganancia_prod = $ganancia;
+
+        } elseif ($ganancia === 'personalizada' && !empty($request->ganancia_numero)) {
             $ganancia_tipo = 'producto';
+            $ganancia_prod = $request->ganancia_numero;
         }
 
 
-        if (!$ganancia) {
-            return redirect()->refresh();
+        if(empty($request->ganancia) || (!is_numeric($ganancia_prod) && $ganancia_prod !== null)) { // $ganancia_prod debe ser un numero
+            return redirect()->route('buscador')->with('mensaje', "Ganancia no válida");
         }
+
 
 
         $this->validate($request, [
             'codigo' => 'required|max:4|min:4|unique:productos',
             'nombre' => 'required|max:60|unique:productos',
-            'categoria_id' => 'required|integer|max:1',
-            'fabricante_id' => 'required|integer|max:1',
-            'provider_id' => 'required|integer|max:1',
+            'categoria_id' => 'required|integer',
+            'fabricante_id' => 'required|integer',
+            'provider_id' => 'required|integer',
             'dolar' => 'numeric|required',
             'precio' => 'numeric|required',
-            'ganancia' => 'string|required',
-            'codigo_fraccionado' => 'nullable|max:4|min:4|unique:productos',
-            'unidad_fraccionado' => 'nullable|string|max:60',
-            'contenido_total' => 'nullable|numeric',
-            'ganancia_fraccion' => 'required|numeric', 'between:0.01,9.99'
+            'ganancia' => 'required'
 
         ]);
 
+        if ($request->codigo_fraccionado !== null) {
+            // Producto fraccionado
 
+            $this->validate($request, [ // Da error con cualquiera, el problema puede ser la referencia a "this"
 
+                'codigo_fraccionado' => 'required|max:4|min:4|unique:productos,codigo',
+                'unidad_fraccion' => 'required|string|max:60', // <<<<<< dice fraccionado!!!!!
+                'contenido_total' => 'required|numeric',
+                'ganancia_fraccion' => 'required|numeric|between:0.01,9.99'
+
+            ]);
+        }
 
         $precio = Precio::create([
             'precio' => $request->precio,
             'dolar' => $request->dolar,
-            'fabricante_id' => $request->fabricante_id,
-            'categoria_id' => $request->categoria_id,
-            'provider_id' => $request->provider_id
+            'fabricante_id' => intval($request->fabricante_id),
+            'categoria_id' => intval($request->categoria_id),
+            'provider_id' => intval($request->provider_id)
         ]);
 
         // Primero tengo que crear el fabircante, la categoria, provider 
         $producto = Producto::create([
             'nombre' => $request->nombre,
             'codigo' => $request->codigo,
-            'categoria_id' => $request->categoria_id,
-            'fabricante_id' => $request->fabricante_id,
-            'provider_id' => $request->provider_id,
+            'categoria_id' => intval($request->categoria_id),
+            'fabricante_id' => intval($request->fabricante_id),
+            'provider_id' => intval($request->provider_id),
             'ganancia_prod' => $ganancia_prod,
             'ganancia_tipo' => $ganancia_tipo,
-            'precio_id' => $precio->id,
+            'precio_id' => intval($precio->id),
             'unidad_fraccion' => null,
             'contenido_total' => null,
             'ganancia_fraccion' => null
@@ -111,25 +128,15 @@ class ProductoController extends Controller
         if ($request->codigo_fraccionado !== null) {
             // Producto fraccionado
 
-            $this->validate($request, [
-
-                'codigo_fraccionado' => 'required|max:4|min:4|unique:productos',
-                'unidad_fraccionado' => 'required|string|max:60',
-                'contenido_total' => 'required|numberic',
-                'ganancia_fraccion' => 'required|numeric', 'between:0.01,9.99'
-    
-            ]);
-
-
             Producto::create([
-                'nombre' => $request->name . " - Fraccionado",
+                'nombre' => $request->nombre . " - Fraccionado",
                 'codigo' => strtolower($request->codigo_fraccionado),
-                'categoria_id' => $request->categoria_id,
-                'fabricante_id' => $request->fabricante_id,
-                'provider_id' => $request->provider_id,
+                'categoria_id' => intval($request->categoria_id),
+                'fabricante_id' => intval($request->fabricante_id),
+                'provider_id' => intval($request->provider_id),
                 'ganancia_prod' => $ganancia_prod,
                 'ganancia_tipo' => $ganancia_tipo,
-                'precio_id' => $precio->id,
+                'precio_id' => intval($precio->id),
                 'unidad_fraccion' => $request->unidad_fraccion,
                 'contenido_total' => $request->contenido_total,
                 'ganancia_fraccion' => $request->ganancia_fraccion
@@ -153,10 +160,10 @@ class ProductoController extends Controller
         $precio->updated_at = $precio->updated_at->subHours(3);
 
         // Que ganancia aplica a este producto
-        if (!$producto->ganancia_prod) {
-            if ($producto->ganancia_tipo === 'proveedor') {
+        if (empty($producto->ganancia_prod)) {
+            if ($producto->ganancia_tipo === 'provider') {
                 $producto->ganancia = $provider->ganancia;
-                $producto->ganancia_tipo = 'proveedor';
+                $producto->ganancia_tipo = 'proveedor'; // Este cambio es por como se imprime en pantalla
             } else {
                 $producto->ganancia = $categoria->ganancia;
                 $producto->ganancia_tipo = 'categoria';
@@ -165,6 +172,7 @@ class ProductoController extends Controller
             $producto->ganancia = $producto->ganancia_prod;
             $producto->ganancia_tipo = 'producto';
         }
+
 
         $producto->venta = $producto->ganancia * ($precio->precio * 1.21);
         $producto->venta = redondear($producto->venta);
@@ -191,46 +199,45 @@ class ProductoController extends Controller
     public function edit(Producto $producto)
     {
 
+        // Cargar datos para los <select>
+        $categorias = Categoria::orderBy('nombre', 'asc')->get();
+        $providers = Provider::orderBy('nombre', 'asc')->get();
+        $fabricantes = Fabricante::orderBy('nombre', 'asc')->get();
         $precio = Precio::find($producto->precio_id);
 
-        // Consulto si existe otro registro relacionado a esta instancia de Precio (existe fraccionado)
+        // Cargo 1 o 2 productos relacionados a este precio
         $productos = Producto::where('precio_id', $precio->id)->get();
-
+        // En caso de haber otro registro relacionado
         $producto_secundario = '';
+        // Este es un producto fraccionado
         $producto_fraccionado = false;
 
-
-        // Agregar validaciones y eliminar elemento fraccionado de ser necesario
-
-
+        /** Consulto si existe otro registro relacionado a esta instancia de Precio (existe fraccionado) */
 
         // Hay 3 opciones:
-        // 1_ Si no es un producto fraccionado y no existe el mismo voy a permitir crearlo con el checkbox
-        // 2_ Si no es un producto fraccionado y existe un producto relacionado voy a reemplazar el checkbox por un enlace
-        // 3_ Si es un producto fraccionado voy a desplegar el segundo formulario para que pueda ser modificado
+        // 1_ No es un producto fraccionado y no existe un fraccionado
+        // 2_ No es un producto fraccionado y existe un producto relacionado
+        // 3_ Si es un producto fraccionado 
 
-        // _1_ voy a permitir crearlo con el checkbox, mismas instrucciones de create (modificar store)
-
-        // _2_ reemplazo checkbox por boton-enlace (este mismo metodo con otro $producto)
-
-        // _3_ formulario desplegado para ser modificado, boton-enlace en el precio (este mismo metodo con otro $producto)
+        // _1_ Permito crear fraccionado con el checkbox, mismas instrucciones de create (modificar store)
+        // _2_ Reemplazo checkbox por boton-enlace (este mismo metodo con un producto, opción 3)
+        // _3_ Formulario secundario desplegado para ser modificado, boton-enlace en el precio (este mismo metodo con un producto, opción 2)
 
         if ($productos->count() > 1) {
             // Existe fraccionado
 
             if ($producto->unidad_fraccion !== null && $producto->contenido_total !== null && $producto->ganancia_fraccion !== null) {
-                // Es un producto fraccionado Opt _3_
 
+                // Es un producto fraccionado Opt _3
                 $producto_fraccionado = true;
                 foreach ($productos as $elemento) {
                     if ($elemento->id !== $producto->id) {
                         $producto_secundario = $elemento;
                     }
                 }
-
             } else {
 
-                // No es un producto fraccionado Opt _2_
+                // No es un producto fraccionado Opt _2
                 $producto_fraccionado = false;
                 foreach ($productos as $elemento) {
                     if ($elemento->id !== $producto->id) {
@@ -238,21 +245,21 @@ class ProductoController extends Controller
                     }
                 }
             }
-        } 
+        }
+        // 1_ No es un producto fraccionado y no existe un fraccionado 
+
+        $categoria = '';
+        $provider = '';
+        $fabricante = '';
 
 
-        $categorias = Categoria::orderBy('nombre', 'asc')->get();
-        $proveedores = Provider::orderBy('nombre', 'asc')->get();
-        $fabricantes = Fabricante::orderBy('nombre', 'asc')->get();
-
-
-        $precio->updated_at = $precio->updated_at->subHours(3);
+        // Consultar categoria, provider y fabricante del producto actual 
         foreach ($categorias as $elemento) {
             if ($producto->categoria_id  === $elemento->id) {
                 $categoria = $elemento;
             }
         }
-        foreach ($proveedores as $elemento) {
+        foreach ($providers as $elemento) {
             if ($producto->provider_id  === $elemento->id) {
                 $provider = $elemento;
             }
@@ -263,11 +270,12 @@ class ProductoController extends Controller
             }
         }
 
+
         // Que ganancia aplica a este producto
         if (!$producto->ganancia_prod) {
-            if ($producto->ganancia_tipo === 'proveedor') {
+            if ($producto->ganancia_tipo === 'provider') {
                 $producto->ganancia = $provider->ganancia;
-                $producto->ganancia_tipo = 'proveedor';
+                $producto->ganancia_tipo = 'provider';
             } else {
                 $producto->ganancia = $categoria->ganancia;
                 $producto->ganancia_tipo = 'categoria';
@@ -287,60 +295,189 @@ class ProductoController extends Controller
             'provider' => $provider,
             'categorias' => $categorias,
             'fabricantes' => $fabricantes,
-            'proveedores' => $proveedores,
+            'providers' => $providers,
 
-            'producto_fraccionado' => $producto_fraccionado,
-            'producto_secundario' => $producto_secundario
+            'producto_fraccionado' => $producto_fraccionado, // bool
+            'producto_secundario' => $producto_secundario // instancia producto
 
         ]);
     }
     public function update(Request $request)
     {
 
-
         $producto = Producto::find($request->id);
         $precio = Precio::find($producto->precio_id);
 
+
+        /// <<<<<<<
+
+        // Cargo 1 o 2 productos relacionados a este precio
+        $productos = Producto::where('precio_id', $precio->id)->get();
+
+        // En caso de haber otro registro relacionado
+        $producto_secundario = '';
+        // Este es un producto fraccionado
+        $producto_fraccionado = false;
+        if ($productos->count() > 1) {
+            // Existe fraccionado
+
+            if ($producto->unidad_fraccion !== null && $producto->contenido_total !== null && $producto->ganancia_fraccion !== null) {
+
+                // Es un producto fraccionado Opt _3
+                $producto_fraccionado = true;
+                foreach ($productos as $elemento) {
+                    if ($elemento->id !== $producto->id) {
+                        $producto_secundario = $elemento; // secundario es no-fraccionado
+                    }
+                }
+            } else {
+
+                // No es un producto fraccionado Opt _2
+                $producto_fraccionado = false;
+                foreach ($productos as $elemento) {
+                    if ($elemento->id !== $producto->id) {
+                        $producto_secundario = $elemento;
+                    }
+                }
+            }
+        }
+        // 1_ No es un producto fraccionado y no existe un fraccionado 
+
+
+        // <<<<<<<<<<<
+
+
+
+        // Acumulador
         if (number_format($request->precio, 2, '.', '') !== $precio->precio) { // formato decimal
             $precio->increment('contador_update');
         }
 
+        // Ganancia aplicada
         $ganancia = $request->ganancia;
         $ganancia_tipo = '';
 
-        if ($ganancia === 'proveedor') {
-            $ganancia_tipo = 'proveedor';
+        if ($ganancia === 'provider') {
+            $ganancia_tipo = 'provider';
             $ganancia_prod = null;
         } elseif ($ganancia === 'categoria') {
             $ganancia_tipo = 'categoria';
             $ganancia_prod = null;
-        } else {
-            $ganancia_prod = $ganancia;
+        } elseif ($ganancia === 'personalizada' && !empty($request->ganancia_numero)) {
             $ganancia_tipo = 'producto';
+            $ganancia_prod = $request->ganancia_numero;
+        }
+        if(empty($request->ganancia) || (!is_numeric($ganancia_prod) && $ganancia_prod !== null)) { // $ganancia_prod debe ser un numero
+            return redirect()->route('buscador')->with('mensaje', "Ganancia no válida");
         }
 
-        if (!$ganancia) {
-            return redirect()->refresh();
-        }
+        $this->validate($request, [
+            // Validacion de formulario principal
+            'codigo' => 'required|max:4|min:4|unique:productos,codigo,' . $producto->id,
+            'nombre' => 'required|max:60|unique:productos,nombre,' . $producto->id,
+            'categoria_id' => 'required|integer',
+            'fabricante_id' => 'required|integer',
+            'provider_id' => 'required|integer',
+            'dolar' => 'numeric|required',
+            'precio' => 'numeric|required',
+            'ganancia' => 'required'
 
-        $producto->nombre = $request->name;
-        $producto->categoria_id = intval($request->categoria_id);
-        $producto->fabricante_id = intval($request->fabricante_id);
-        $producto->provider_id = intval($request->provider_id);
-        $producto->ganancia_prod = $ganancia_prod;
-        $producto->ganancia_tipo = $ganancia_tipo;
-
+        ]);
 
         $precio->categoria_id = intval($request->categoria_id);
         $precio->fabricante_id = intval($request->fabricante_id);
         $precio->provider_id = intval($request->provider_id);
         $precio->precio = $request->precio;
         $precio->dolar = $request->dolar;
+        $precio->save();
 
+
+        if ($producto_secundario === '') {
+            // No existe secundario, es un producto normal
+
+            // Almacenar cambios
+            $producto->nombre = $request->nombre;
+            $producto->categoria_id = intval($request->categoria_id);
+            $producto->fabricante_id = intval($request->fabricante_id);
+            $producto->provider_id = intval($request->provider_id);
+            $producto->ganancia_prod = $ganancia_prod;
+            $producto->ganancia_tipo = $ganancia_tipo;
+
+            $producto->save();
+
+        } else {
+
+            if ($producto_fraccionado === false) {
+                // Existe secundario, este producto no es fraccionado
+
+                // Si este no es fraccionado debo validar el formulario principal y almacenar la info en ambos productos
+
+                // Almacenar cambios
+                $producto->nombre = $request->nombre;
+                $producto->categoria_id = intval($request->categoria_id);
+                $producto->fabricante_id = intval($request->fabricante_id);
+                $producto->provider_id = intval($request->provider_id);
+                $producto->ganancia_prod = $ganancia_prod;
+                $producto->ganancia_tipo = $ganancia_tipo;
+
+                $producto->save();
+
+                $producto_secundario->nombre = $request->nombre . " - Fraccionado";
+                $producto_secundario->categoria_id = intval($request->categoria_id);
+                $producto_secundario->fabricante_id = intval($request->fabricante_id);
+                $producto_secundario->provider_id = intval($request->provider_id);
+                $producto_secundario->ganancia_prod = $ganancia_prod;
+                $producto_secundario->ganancia_tipo = $ganancia_tipo;
+
+                $producto_secundario->save();
+
+
+            } else {
+                // Existe secundario, este producto es fraccionado
+
+                // Si este es fraccionado debo validar todos los campos y almacenar solo este producto
+
+                $this->validate($request, [
+                    'codigo' => 'required|max:4|min:4|unique:productos,codigo,' . $producto->id,
+                    'unidad_fraccion' => 'required|string|max:60',
+                    'contenido_total' => 'required|numeric',
+                    'ganancia_fraccion' => 'required|numeric', 'between:0.01,9.99'
+
+                ]);
+
+                $producto->nombre = $request->nombre;
+                $producto->categoria_id = intval($request->categoria_id);
+                $producto->fabricante_id = intval($request->fabricante_id);
+                $producto->provider_id = intval($request->provider_id);
+                $producto->ganancia_prod = $ganancia_prod;
+                $producto->ganancia_tipo = $ganancia_tipo;
+
+                $producto->unidad_fraccion = $request->unidad_fraccion;
+                $producto->contenido_total = $request->contenido_total;
+                $producto->ganancia_fraccion = $request->ganancia_fraccion;
+
+                $producto->save();
+            }
+        }
+
+        // El usuario quiere crear un fraccionado
         if ($request->codigo_fraccionado !== null) {
+
+            // <<<<<
+
+            /// <<< ???
+
+            $this->validate($request, [
+                'codigo_fraccionado' => 'required|max:4|min:4|unique:productos,codigo',
+                'unidad_fraccion' => 'required|string|max:60',
+                'contenido_total' => 'required|numeric',
+                'ganancia_fraccion' => 'required|numeric', 'between:0.01,9.99'
+
+            ]);
+
             // Producto fraccionado
-            $producto_secundario = Producto::create([
-                'nombre' => $request->name . " - Fraccionado",
+            Producto::create([
+                'nombre' => $request->nombre . " - Fraccionado",
                 'codigo' => strtolower($request->codigo_fraccionado),
                 'categoria_id' => $request->categoria_id,
                 'fabricante_id' => $request->fabricante_id,
@@ -352,18 +489,25 @@ class ProductoController extends Controller
                 'contenido_total' => $request->contenido_total,
                 'ganancia_fraccion' => $request->ganancia_fraccion
             ]);
-            $producto_secundario->save();
+
+
         }
 
-        $producto->save();
-        $precio->save();
 
         return redirect()->route('producto.show', ['producto' => $producto]);
     }
+
+
+
+
+
     public function destroy(Producto $producto)
     {
+
         $producto->delete();
 
         return redirect()->route('buscador');
+
+        // Deben eliminarse ambas versiones, no fraccionado y fraccionado
     }
 }
