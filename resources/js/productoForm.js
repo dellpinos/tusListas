@@ -242,10 +242,13 @@ import * as helpers from './helpers';
         // Contiene una llamada a filtrarVirtualDOM(), es un helper
         // Contiene una llamada a destroy(), es un helper (id y tipo son pasados a destroy())
 
-        btnDestroy.onclick = function () {
-            console.log(idHidden.value);
-            alertaDelete(idHidden.value, "producto", tokenCSRF);
+        if(btnDestroy) {
+            btnDestroy.onclick = function () {
+                console.log(idHidden.value);
+                alertaDelete(idHidden.value, "producto", tokenCSRF);
+            }
         }
+
 
         async function alertaDelete(id, tipo, token = null) {
 
