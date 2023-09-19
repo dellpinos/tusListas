@@ -24,21 +24,42 @@
 
         <a class="formulario__boton" id="btn-dolar">Buscar Desactualizados</a>
     </div>
-        <div class="swiper slider mb-10"> <!-- Swiper principal -->
-            <div id="aumento-dolar-registros" class="swiper-wrapper"> <!-- Swiper secundario -->
+    <p class="mensaje__info" id="desactualizados-info">Los 5 productos con el dolar mas bajo o desactualizado</p>
+
+    <div class="mensaje__contenedor" id="desactualizados-mensaje"></div>
+
+    <table class="table" id="" > {{-- <<< --}}
+        <thead class="table__thead">
+            <tr>
+                <th scope="col" class="table__th">Dolar</th>
+                <th scope="col" class="table__th">Código</th>
+                <th scope="col" class="table__th">Nombre</th>
+                <th scope="col" class="table__th">Precio Costo</th>
+                <th scope="col" class="table__th">Precio Venta</th>
+                <th scope="col" class="table__th">Fecha</th>
+                <th scope="col" class="table__th">Enlace</th>
+            </tr>
+        </thead>
+        <tbody class="table__tbody" id="aumento-dolar-registros"> <!-- Tabla Body -->
 
 
-                {{-- Generado con Js --}}
+            {{--  --}}
+            
+    </tbody> <!-- Fin Tabla Body -->
 
+</table>
 
-            </div> <!-- Swiper secundario -->
-            <div class="swiper-pagination"></div> <!-- Pagination -->
+<div id="table-paginacion">
 
-            <!-- Navigation buttons -->
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
+</div>
 
-        </div> <!-- Swiper principal -->
-
-    <a class="formulario__boton" id="btn-dolar-actualizar">Actualizar todos</a>
 @endsection
+
+{{--  --}}
+
+
+
+
+
+
+
