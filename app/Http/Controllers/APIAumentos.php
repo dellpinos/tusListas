@@ -203,13 +203,7 @@ class APIAumentos extends Controller
                 $precio = $resultado['precio'];
             }
         }
-        
-
-
-        // Puedo enviar el html de la paginacion (anterior/siguiente y numero de paginas)
-        // envio todos los precios y productos que correspondan
-
-
+    
         echo json_encode([
             'paginacion' => $paginacion->paginacion(),
             'productos' => $productos,
@@ -255,6 +249,53 @@ class APIAumentos extends Controller
             'precios' => $precios, 
             'productos' => $productos]
         );
+    }
+
+    public function dolar_count(Request $request)
+    {
+        // Cuantos registros serán afectados
+        $input = $request->valor;
+        $resultado = Precio::where('dolar', "<" ,$input)->count();
+
+        echo json_encode($resultado);
+    }
+
+    public function dolar_update(Request $request)
+    {
+        
+        $input = $request->valor;
+        $afectados = $request->afectados;
+
+        $input = filter_var($input, FILTER_VALIDATE_INT);
+        $afectados = filter_var($afectados, FILTER_VALIDATE_INT);
+
+        if(!$input || !$afectados) {
+            echo json_encode(false);
+            return;
+        }
+
+
+        $precios = Precio::where('dolar', "<" ,$input)->get();
+
+        foreach($precios as $precio) {
+
+            $porc_aumento = $input / $precio->dolar; 
+            $precio->precio = $porc_aumento * $precio->precio;
+            $precio->dolar = $input;
+
+
+            $precio->save();
+            $precio->increment('contador_update');
+        }
+        Aumento::create([
+            'porcentaje' => 0,
+            'tipo' => 'Dolar',
+            'nombre' => 'Varios',
+            'username' => auth()->user()->username,
+            'afectados' => $afectados
+        ]);
+
+        echo json_encode(true);
     }
 
 }

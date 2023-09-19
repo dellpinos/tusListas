@@ -10,9 +10,10 @@
         border-radius: .5rem;
         display: block;
         padding: 1.5rem 2rem;
+        white-space: nowrap;
 
         @include m.tablet {
-            width: 15%;
+            width: auto;
         }
         
         &--eliminar {

@@ -87,11 +87,11 @@ Route::get('/api/codigo-unico', [APICodigo::class, 'generar_codigo']);
 Route::post('/api/aumentos/categoria', [APIAumentos::class, 'aumento_categoria']);
 Route::post('/api/aumentos/fabricante', [APIAumentos::class, 'aumento_fabricante']);
 Route::post('/api/aumentos/provider', [APIAumentos::class, 'aumento_provider']);
+Route::get('/api/aumentos/dolar-listado', [APIAumentos::class, 'dolar_listado']);
+Route::post('/api/aumentos/dolar-busqueda', [APIAumentos::class, 'dolar_busqueda']);
 
-Route::get('/api/aumentos/dolar-listado', [APIAumentos::class, 'dolar_listado']); // Los 10 mas desactualizados
-
-
-Route::post('/api/aumentos/dolar-busqueda', [APIAumentos::class, 'dolar_busqueda']); // Segun busqueda
+Route::post('/api/aumentos/dolar-count', [APIAumentos::class, 'dolar_count']);
+Route::post('/api/aumentos/dolar-update', [APIAumentos::class, 'dolar_update']);
 
 
 // API Categoria

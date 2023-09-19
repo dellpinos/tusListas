@@ -1,9 +1,5 @@
-
-// Consulto todos los productos y precios - productosDolar
-// Asigno los elementos consultados en los array globales
-// Recorro los array globales generando el código con scripting
-// Al utilizar scripting tengo acceso a los eventos como el click sobre los botones
 import * as helpers from './helpers';
+import Swal from 'sweetalert2';
 
 (function () {
 
@@ -12,11 +8,12 @@ import * as helpers from './helpers';
         const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         const dolarInput = document.querySelector('#aumento-dolar');
         const btnDolar = document.querySelector('#btn-dolar');
-        const contRegistros = document.querySelector('#aumento-dolar-registros'); // El DIV del paginador
+        const contRegistros = document.querySelector('#aumento-dolar-registros');
         const contPaginacion = document.querySelector('#table-paginacion');
         const table = document.querySelector('.table');
         const mensajeNoResult = document.querySelector('#desactualizados-mensaje');
         const mensajeInfo = document.querySelector('#desactualizados-info');
+        const btnDolarAct = document.querySelector('#btn-dolar-actualizar');
 
         // Virtual DOM
         let productosArray = [];
@@ -31,14 +28,11 @@ import * as helpers from './helpers';
         // valor a comparar
         let valor = 0;
 
+        // mensaje Info
+        mensajeInfo.textContent = "Los 5 productos con el dolar mas bajo o desactualizado";
+
         // Obtener elementos
         listadoDesactualizados();
-
-        // mensaje.innerHTML = `<p class="mensaje__info--my">
-        // Los 5 productos con el dolar mas bajo.
-        // </p>`
-
-
 
         btnDolar.addEventListener('click', function () {
             // Busqueda con el boton
@@ -49,10 +43,12 @@ import * as helpers from './helpers';
             preciosArray = [];
             table.classList.remove('display-none');
 
+
             // Consultar DB
             paginadorDesactualizados();
 
         });
+
 
         async function paginadorDesactualizados() {
             try {
@@ -78,6 +74,8 @@ import * as helpers from './helpers';
                     return;
                 }
 
+                mensajeInfo.classList.remove('display-none');
+                btnDolarAct.classList.remove('display-none');
                 mensajeInfo.textContent = "Productos con un valor dolar inferior a U$S " + valor;
 
                 productosArray = resultado.productos;
@@ -87,13 +85,59 @@ import * as helpers from './helpers';
                 // Generar elementos
                 mostrarElementos();
 
-                // Generar boton actualizar
+                btnDolarAct.addEventListener('click', () => {
+                    console.log(valor);
+                    // Alerta sweet Alert
+                    actualizarPrecios();
 
-                // <a class="formulario__boton" id="btn-dolar-actualizar">Actualizar todos</a>
+                    // POST a la DB
+
+                    // Alerta por cambio realizado
+                });
+
 
             } catch (error) {
                 console.log(error);
             }
+        }
+
+        // dentro del try/catch
+        // envio al servidor el valor para que retorne la cantidad de registros que seran afectados
+        // Alerta para confirmar operacion con el numero de registros afectados
+        // Si confirma
+        // Toma el valor ingresado por el usuario
+        // Envia este valor y el servidor debe consultar todos los precios con el dolar por debajo de este valor
+        // En cada Precio divide el valor (nuevo) por el dolar almacenado (porcentaje de aumento)
+        // multiplica este porcentaje por el precio de costo sin iva
+        // el servidor retorna la cantidad de resultados afectados
+        // se dispara la alerta de exito
+
+
+
+        async function actualizarPrecios() {
+            try {
+
+                const url = '/api/aumentos/dolar-count';
+                const datos = new FormData();
+                datos.append('valor', valor);
+
+                const respuesta = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': tokenCSRF
+                    },
+                    body: datos
+                });
+        
+                const resultado = await respuesta.json();
+
+                await alertaUpdate(valor, resultado);
+
+
+            } catch (error) {
+                console.log('El servidor no responde' + error);
+            }
+
         }
 
         // Consultar todos los elementos
@@ -106,8 +150,6 @@ import * as helpers from './helpers';
 
                 productosArray = resultado.productos; // array de productos
                 preciosArray = resultado.precios; // array de precios
-
-                
 
                 // <<< Mostrar Elementos
                 mostrarElementos();
@@ -122,9 +164,11 @@ import * as helpers from './helpers';
 
             mensajeNoResult.innerHTML = `<p class="mensaje__info--my">
             No hay productos desactualizados
-        </p>`
+            </p>`
 
+            mensajeInfo.classList.add('display-none');
             table.classList.add('display-none');
+            btnDolarAct.classList.add('display-none');
 
         }
 
@@ -168,7 +212,7 @@ import * as helpers from './helpers';
                         <td class="table__td">$ ${precio.precio}</td>
                         <td class="table__td">$ ${producto.venta} ${producto.unidad_fraccion}</td>
                         <td class="table__td">${fechaFormateada}</td>
-                        <td class="table__td"><a href="/producto/producto-show/${producto.id}">Ver</a></td>
+                        <td class="table__td"><a class="table__accion table__accion--editar" href="/producto/producto-show/${producto.id}">Editar</a></td>
                         </tr>
                     `;
 
@@ -213,6 +257,81 @@ import * as helpers from './helpers';
             }); // Fin cada producto
         }
 
+        async function alertaUpdate(valor, afectados) {
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            });
+
+            swalWithBootstrapButtons.fire({
+                title: 'Estas seguro?',
+                text: "No hay vuelta atras, seran afectados " + afectados + " precios.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si!',
+                cancelButtonText: 'No, era una prueba!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    (async function () {
+                        const resultado = await update(valor, afectados);
+
+                        if (resultado) {
+                            swalWithBootstrapButtons.fire(
+                                'Precios actualizados',
+                                afectados + " precios han sido actualizados",
+                                'success'
+                            );
+                            // Recargar en pantalla y reiniciar VirtualDOM
+
+                            reiniciarPagina();
+
+                        } else {
+
+                            swalWithBootstrapButtons.fire(
+                                'Ups!',
+                                'Surgió un error, no se realizaron cambios',
+                                'error'
+                            );
+                        }
+                    })();
+                } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Cancelado',
+                        'No se realizaron cambios',
+                        'error'
+                    );
+                }
+            });
+        }
+
+        async function update(valor, afectados) {
+
+            const url = '/api/aumentos/dolar-update';
+            const datos = new FormData();
+
+            datos.append('valor', valor);
+            datos.append('afectados', afectados);
+
+            const respuesta = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': tokenCSRF
+                },
+                body: datos
+            });
+    
+            const resultado = await respuesta.json();
+            return resultado;
+        }
+
         function limpiarProductos() {
             while (contRegistros.firstChild) {
                 contRegistros.removeChild(contRegistros.firstChild);
@@ -223,32 +342,20 @@ import * as helpers from './helpers';
             while (mensajeNoResult.firstChild) {
                 mensajeNoResult.removeChild(mensajeNoResult.firstChild);
             }
-
-
         }
+        function reiniciarPagina() {
 
+            dolarInput.value = '';
+            valor = 0;
+            preciosArray = [];
+            productosArray = [];
+            limpiarProductos();
+            mensajeInfo.classList.remove('display-none');
+            mensajeInfo.textContent = "Los 5 productos con el dolar mas bajo o desactualizado";
+
+            btnDolarAct.classList.add('display-none');
+            listadoDesactualizados();
+            
+        }
     }
-
 })();
-
-// Ciclos combinados, un ciclo va a generar cada tabla para el paginador, se generan todos los titlulos y
-// los slides del paginados
-// Un segundo ciclo para completar esta tabla
-
-
-
-
-
-
-
-
-
-
-
-// los slides son los registros del body de la tabla, no los titulos. Cuando el usuario presiona el boton de
-// consulta a la DB se genera la tabla y el thead, luego se itera la respuesta para generar el tbody y la paginación
-// del mismo
-
-
-// La tabla no debe ser generada, ya esta creada en el HTML. Se elimina el mensaje "10 productos mas desactualizados"
-// y se reemplazan los registros por la devolución de la base de datos.

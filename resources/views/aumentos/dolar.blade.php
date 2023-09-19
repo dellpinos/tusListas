@@ -11,7 +11,6 @@
 @endsection
 
 @section('contenido')
-
     <div class="aumento-formulario__contenedor">
 
         <h3>Dolar al dia de la fecha</h3>
@@ -24,11 +23,15 @@
 
         <a class="formulario__boton" id="btn-dolar">Buscar Desactualizados</a>
     </div>
-    <p class="mensaje__info" id="desactualizados-info">Los 5 productos con el dolar mas bajo o desactualizado</p>
+    <div class="aumento-formulario__contenedor-actualizar">
+        <p class="mensaje__info aumento-formulario__mensaje--act" id="desactualizados-info"></p>
+
+        <a class="formulario__boton aumento-formulario__boton--act display-none" id="btn-dolar-actualizar">Actualizar Todos</a>
+    </div>
 
     <div class="mensaje__contenedor" id="desactualizados-mensaje"></div>
 
-    <table class="table" id="" > {{-- <<< --}}
+    <table class="table" id=""> {{-- <<< --}}
         <thead class="table__thead">
             <tr>
                 <th scope="col" class="table__th">Dolar</th>
@@ -44,22 +47,12 @@
 
 
             {{--  --}}
-            
-    </tbody> <!-- Fin Tabla Body -->
 
-</table>
+        </tbody> <!-- Fin Tabla Body -->
 
-<div id="table-paginacion">
+    </table>
 
-</div>
+    <div id="table-paginacion">
 
+    </div>
 @endsection
-
-{{--  --}}
-
-
-
-
-
-
-
