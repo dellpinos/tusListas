@@ -11,10 +11,28 @@ import * as helpers from './helpers';
         let arrayCoincidencias = []; // Aqui se almacena el resultado de la DB
         let coincidenciasPantalla = []; // Aqui se almacena el resultado de la DB filtrado
 
-        let productoSelect = '';
-        let precioSelect = '';
 
-        document.addEventListener('DOMContentLoaded', generarForm);
+        document.addEventListener('DOMContentLoaded', app);
+
+        function app () {
+            const obj = generarForm();
+
+            const { checkbox, codigo, nombre, precio, descuento, semanas } = obj;
+
+            nombre.addEventListener('click', (e) => {
+                generarHTML(e, obj);
+
+            });
+            codigo.addEventListener('click', (e) => {
+                generarHTML(e);
+
+            });
+
+            // Añadir funcionalidad Código: Busca el código y autocompleta todos los campos, no genera HTML. El código existe o no
+
+            // Añadfir funcionalidad Guardar: Almacena la información, bloquea los campos, cambia boton ,crea un nuevo formulario
+
+        }
 
 
         function generarForm() {
@@ -32,8 +50,8 @@ import * as helpers from './helpers';
             contenedorCodigo.classList.add('relative');
 
             const codigo = document.createElement('INPUT');
-            codigo.type = 'number';
-            codigo.classList.add('formulario__campo');
+            codigo.type = 'text';
+            codigo.classList.add('formulario__campo', 'height-full');
             codigo.placeholder = "Código";
 
             contenedorCodigo.appendChild(codigo);
@@ -43,7 +61,7 @@ import * as helpers from './helpers';
 
             const nombre = document.createElement('INPUT');
             nombre.type = 'text';
-            nombre.classList.add('formulario__campo');
+            nombre.classList.add('formulario__campo', 'height-full');
             nombre.placeholder = "Nombre del producto";
 
             contenedorNombre.appendChild(nombre);
@@ -85,22 +103,21 @@ import * as helpers from './helpers';
             grid.appendChild(semanas);
             grid.appendChild(btnGuardar);
 
-            nombre.addEventListener('click', (e) => {
+            const obj = {
+                checkbox: checkbox,
+                codigo: codigo,
+                nombre: nombre,
+                precio: precio,
+                descuento: descuento,
+                semanas: semanas
+            }
 
-                generarHTML(e, codigo);
+            return obj;
+        };
 
-                console.log(productoSelect, precioSelect);
-
-                /// Puedo enviar un objeto con todos los campos a completar
-            });
-
-
-
-        }
 
         //////////
-        function generarHTML(e) {
-
+        function generarHTML(e, obj) {
 
             // Contenedor
             const contenedorOpciones = document.createElement('DIV');
@@ -109,9 +126,7 @@ import * as helpers from './helpers';
             // input real
             const inputProducto = document.createElement('INPUT');
             inputProducto.type = 'text';
-            inputProducto.name = 'producto-nombre';
             inputProducto.classList.add('buscador__campo', 'buscador__campo-focus');
-            inputProducto.placeholder = 'Nombre del Producto';
 
             if (e.target.value !== '') {
                 inputProducto.value = e.target.value;
@@ -123,23 +138,21 @@ import * as helpers from './helpers';
             const lista = document.createElement('UL');
 
             contenedorOpciones.appendChild(lista);
-
-
             e.target.parentNode.appendChild(contenedorOpciones);
 
             inputProducto.focus(); // cursor sobre el input
 
             // realizar busqueda
-            inputProducto.addEventListener('input', function (element) {
+            inputProducto.addEventListener('input', async function (element) {
 
                 if (flag === 1 && e.target.value.length < 3) { // Reinicio el flag para volver a realizar la busqueda
                     flag = 0;
                 }
 
-                filtrarResultado(element, lista);
+                filtrarResultado(element, lista, obj, inputProducto);
             });
 
-            e.target.parentNode.addEventListener('mouseleave', function () {
+            e.target.parentNode.addEventListener('mouseleave', function () { /// sobreescribe el nombre
 
                 e.target.value = inputProducto.value;
                 // eliminar html
@@ -149,14 +162,12 @@ import * as helpers from './helpers';
                 contenedorOpciones.remove();
 
             });
-
-
         }
 
 
         /// <<<< Separar
 
-        async function filtrarResultado(element, lista) {
+        async function filtrarResultado(element, lista, obj, inputProducto) {
             try {
                 if (!flag) {
                     arrayCoincidencias = await findDB(element.target.value); // Almaceno la respuesta en memoria
@@ -167,7 +178,9 @@ import * as helpers from './helpers';
             }
             if (flag) { // aqui puedo filtrar el array en memoria
 
-                buscarCoincidenciasMemoria(element, lista);
+                const resultado = buscarCoincidenciasMemoria(element, lista, obj, inputProducto);
+                
+                return resultado;
             }
         }
 
@@ -201,7 +214,7 @@ import * as helpers from './helpers';
 
         //// <<< Separar
 
-        function buscarCoincidenciasMemoria(element, lista) {
+        function buscarCoincidenciasMemoria(element, lista, obj, inputProducto) {
             const busqueda = element.target.value;
             const Regex = new RegExp(busqueda, 'i'); // la "i" es para ser insensible a mayusculas/minusculas
 
@@ -211,37 +224,62 @@ import * as helpers from './helpers';
                 }
             });
 
-            generarHTMLcoincidencia(lista)
+            generarHTMLcoincidencia(lista, obj, inputProducto);
+
+
         }
 
 
         //// <<< Separar
 
-        function generarHTMLcoincidencia(lista) {
+        function generarHTMLcoincidencia(lista, obj, inputProducto) {
 
             while (lista.firstChild) {
                 lista.removeChild(lista.firstChild);
             }
 
             let acu = 0; // Cantidad de coincidencias
-
             coincidenciasPantalla.forEach(coincidencia => {
 
                 acu++;
                 if (acu <= 4) {
-
                     const sugerenciaBusqueda = document.createElement('LI');
                     sugerenciaBusqueda.textContent = coincidencia.nombre;
                     lista.appendChild(sugerenciaBusqueda);
 
-                    sugerenciaBusqueda.addEventListener('click', function (e) {
+                    sugerenciaBusqueda.addEventListener('click', async function (e) {
 
-                        let resultado = buscarProducto(coincidencia.id);
-                        return resultado;
+                        const respuesta = await buscarProducto(coincidencia.id);
+                        
+                        const { checkbox, codigo, nombre, precio, descuento, semanas } = obj;
+
+
+                        codigo.value = respuesta.producto.codigo.toUpperCase();
+
+                        nombre.value = respuesta.producto.nombre;
+
+                        // Bloquear nombre y codigo una vez cargados, el usuario solo puede modificar el precio y descuentos
+
+
+                        inputProducto.value = respuesta.producto.nombre;
+
+                        precio.value = respuesta.precio.precio;
+                        if(!respuesta.precio.descuento) {
+                            descuento.value = 0;
+                        } else {
+                            descuento.value = respuesta.precio.descuento;
+                        }
+                        if(!respuesta.precio.semanas) {
+                            descuento.value = 0;
+                        } else {
+                            descuento.value = respuesta.precio.semanas;
+                        }
+                        
                     });
                 }
             });
         }
+
 
         //// <<< Separar
 
@@ -265,15 +303,6 @@ import * as helpers from './helpers';
                 resultado.producto.venta = helpers.redondear(resultado.producto.venta);
 
                 return resultado;
-
-                // precioSelect = resultado.precio;
-                // productoSelect = resultado.producto;
-
-                // console.log(productoSelect, precioSelect);
-
-
-
-                console.log(resultado.producto.codigo + " <<< codigo resultado");
 
 
 
