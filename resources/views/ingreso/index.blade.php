@@ -5,22 +5,133 @@
 @endsection
 
 @section('contenido')
+    <div class="formulario-contenedor">
 
-<div class="formulario__contenedor">
+        <h3>Productos</h3>
 
-    <h3>Ingresar Prducto</h3>
+        <div class="formulario__grid">
 
-    <div class="aumento-formulario__campo-flex">
+                <label class="formulario__label text-center" for="">Pendiente</label>
+                <label class="formulario__label text-center" for="">Código</label>
+                <label class="formulario__label text-center" for="">Nombre</label>
+                <label class="formulario__label text-center" for="">Costo sin IVA</label>
+                <label class="formulario__label text-center" for="">Descuento</label>
+                <label class="formulario__label text-center" for="">Duración</label>
+                <label class="formulario__label text-center" for="">Guardar</label>
 
 
-        <input type="number" id="aumento-dolar" placeholder="Dolar" class="formulario__campo">
-        <input type="number" id="aumento-dolar" placeholder="Dolar" class="formulario__campo">
-        <input type="number" id="aumento-dolar" placeholder="Dolar" class="formulario__campo">
-        <input type="number" id="aumento-dolar" placeholder="Dolar" class="formulario__campo">
-        <input type="number" id="aumento-dolar" placeholder="Dolar" class="formulario__campo">
+                <div class="formulario__contenedor-checkbox">
+                    <input type="checkbox" class="formulario__checkbox">
+                </div>
+                <input type="number" id="aumento-dolar" placeholder="Código" class="formulario__campo">
+                <input type="number" id="aumento-dolar" placeholder="Nombre" class="formulario__campo">
+                <input type="number" id="aumento-dolar" placeholder="Precio sin IVA" class="formulario__campo">
+                <input type="number" id="aumento-dolar" placeholder="% Descuento" class="formulario__campo">
+                <select class="formulario__campo">
+                    <option selected>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                </select>
+                <button class="boton">Guardar</button>
+
+
+                <div class="formulario__contenedor-checkbox">
+                    <input type="checkbox" class="formulario__checkbox">
+                </div>
+                <input type="number" id="aumento-dolar" placeholder="Código" class="formulario__campo">
+                <input type="number" id="aumento-dolar" placeholder="Nombre" class="formulario__campo">
+                <input type="number" id="aumento-dolar" placeholder="Precio sin IVA" class="formulario__campo">
+                <input type="number" id="aumento-dolar" placeholder="% Descuento" class="formulario__campo">
+                <select class="formulario__campo">
+                    <option selected>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                </select>
+                <button class="boton">Guardar</button>
+
+
+                <div class="formulario__contenedor-checkbox">
+                    <input type="checkbox" class="formulario__checkbox">
+                </div>
+                <input type="number" id="aumento-dolar" placeholder="Código" class="formulario__campo">
+                <input type="number" id="aumento-dolar" placeholder="Nombre" class="formulario__campo">
+                <input type="number" id="aumento-dolar" placeholder="Precio sin IVA" class="formulario__campo">
+                <input type="number" id="aumento-dolar" placeholder="% Descuento" class="formulario__campo">
+                <select class="formulario__campo">
+                    <option selected>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                </select>
+                <button class="boton">Guardar</button>
+
+                <div class="formulario__contenedor-checkbox">
+                    <input type="checkbox" class="formulario__checkbox">
+                </div>
+                <input type="number" id="aumento-dolar" placeholder="Código" class="formulario__campo">
+                <input type="number" id="aumento-dolar" placeholder="Nombre" class="formulario__campo">
+                <input type="number" id="aumento-dolar" placeholder="Precio sin IVA" class="formulario__campo">
+                <input type="number" id="aumento-dolar" placeholder="% Descuento" class="formulario__campo">
+                <select class="formulario__campo">
+                    <option selected>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                </select>
+                <button class="boton">Guardar</button>
+
+
+                <div class="formulario__contenedor-checkbox">
+                    <input type="checkbox" class="formulario__checkbox">
+                </div>
+                <input type="number" id="aumento-dolar" placeholder="Código" class="formulario__campo">
+                <input type="number" id="aumento-dolar" placeholder="Nombre" class="formulario__campo">
+                <input type="number" id="aumento-dolar" placeholder="Precio sin IVA" class="formulario__campo">
+                <input type="number" id="aumento-dolar" placeholder="% Descuento" class="formulario__campo">
+                <select class="formulario__campo">
+                    <option selected>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                </select>
+                <button class="boton">Guardar</button>
+
+                
+
+
+
+
+
+
+        </div>
+
+
     </div>
-
-    <a class="formulario__boton" id="btn-dolar">Esto es una mierda</a>
-</div>
-
 @endsection
