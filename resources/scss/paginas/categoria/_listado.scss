@@ -13,6 +13,7 @@
         white-space: nowrap;
 
         @include m.tablet {
+            max-width: 20%;
             width: auto;
         }
         

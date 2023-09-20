@@ -89,10 +89,8 @@ Route::post('/api/aumentos/fabricante', [APIAumentos::class, 'aumento_fabricante
 Route::post('/api/aumentos/provider', [APIAumentos::class, 'aumento_provider']);
 Route::get('/api/aumentos/dolar-listado', [APIAumentos::class, 'dolar_listado']);
 Route::post('/api/aumentos/dolar-busqueda', [APIAumentos::class, 'dolar_busqueda']);
-
 Route::post('/api/aumentos/dolar-count', [APIAumentos::class, 'dolar_count']);
 Route::post('/api/aumentos/dolar-update', [APIAumentos::class, 'dolar_update']);
-
 
 // API Categoria
 Route::get('/api/categorias/all', [APICategorias::class, 'all']);
@@ -105,7 +103,6 @@ Route::post('/api/fabricantes/destroy', [APIFabricantes::class, 'destroy']);
 // API Provider
 Route::get('/api/providers/all', [APIProviders::class, 'all']);
 Route::post('/api/providers/destroy', [APIProviders::class, 'destroy']);
-
 
 // API Producto
 Route::get('/api/productos/all', [APIProductos::class, 'all']);
