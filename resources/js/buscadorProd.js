@@ -1,3 +1,4 @@
+import * as helpers from './helpers';
 (function () {
 
     if (document.querySelector('#contenedor-input')) {
@@ -40,7 +41,7 @@
             inputProducto.type = 'text';
             inputProducto.name = 'producto-nombre';
             inputProducto.classList.add('buscador__campo', 'buscador__campo-focus');
-            inputProducto.placeholder = 'Pipeta power, Pecera 60x20, Collar Cuero, etc';
+            inputProducto.placeholder = 'Nombre del Producto';
 
             if (inputProductoFalso.value !== '') {
                 inputProducto.value = inputProductoFalso.value;
@@ -53,7 +54,6 @@
 
             contenedorOpciones.appendChild(lista);
             contenedorInput.appendChild(contenedorOpciones);
-
 
             inputProducto.focus(); // cursor sobre el input
 
@@ -80,7 +80,6 @@
 
             async function filtrarResultado(e) {
                 try {
-
                     if (!flag) {
                         arrayCoincidencias = await findDB(e.target.value); // Almaceno la respuesta en memoria
                     }
@@ -88,7 +87,6 @@
                 } catch (error) {
                     console.log(error);
                 }
-
                 if (flag) { // aqui puedo filtrar el array en memoria
 
                     buscarCoincidenciasMemoria(e);
@@ -177,7 +175,7 @@
 
                     let resultado = await respuesta.json();
 
-                    resultado.producto.venta = redondear(resultado.producto.venta);
+                    resultado.producto.venta = helpers.redondear(resultado.producto.venta);
 
 
                     // Formatear fecha (se obtiene tal cual esta almacenada en la DB)
@@ -227,10 +225,6 @@
                     console.log('El servidor no responde');
                 }
             }
-        }
-
-        function redondear(numero) {
-            return Math.ceil(numero / 10) * 10;
         }
     }
 })();
