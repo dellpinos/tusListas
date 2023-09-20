@@ -110,17 +110,13 @@ import * as helpers from './helpers';
                     }
                 });
 
-
-
                 contenedorSM.appendChild(catEnlace);
                 contenedorSM.appendChild(catBtn);
-
                 contenedor.appendChild(catHeading);
                 contenedor.appendChild(catParrafo);
                 contenedor.appendChild(catParrafo2);
                 contenedor.appendChild(catParrafo3);
                 contenedor.appendChild(contenedorSM);
-
                 contRegistros.appendChild(contenedor);
 
                 swiper.update();
