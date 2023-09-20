@@ -11,7 +11,6 @@
 @endsection
 
 @section('contenido')
-
     <div class="aumento-formulario__contenedor">
 
         <h3>Dolar al dia de la fecha</h3>
@@ -24,21 +23,36 @@
 
         <a class="formulario__boton" id="btn-dolar">Buscar Desactualizados</a>
     </div>
-        <div class="swiper slider mb-10"> <!-- Swiper principal -->
-            <div id="aumento-dolar-registros" class="swiper-wrapper"> <!-- Swiper secundario -->
+    <div class="aumento-formulario__contenedor-actualizar">
+        <p class="mensaje__info aumento-formulario__mensaje--act" id="desactualizados-info"></p>
+
+        <a class="formulario__boton aumento-formulario__boton--act display-none" id="btn-dolar-actualizar">Actualizar Todos</a>
+    </div>
+
+    <div class="mensaje__contenedor" id="desactualizados-mensaje"></div>
+
+    <table class="table" id=""> {{-- <<< --}}
+        <thead class="table__thead">
+            <tr>
+                <th scope="col" class="table__th">Dolar</th>
+                <th scope="col" class="table__th">Código</th>
+                <th scope="col" class="table__th">Nombre</th>
+                <th scope="col" class="table__th">Precio Costo</th>
+                <th scope="col" class="table__th">Precio Venta</th>
+                <th scope="col" class="table__th">Fecha</th>
+                <th scope="col" class="table__th">Enlace</th>
+            </tr>
+        </thead>
+        <tbody class="table__tbody" id="aumento-dolar-registros"> <!-- Tabla Body -->
 
 
-                {{-- Generado con Js --}}
+            {{--  --}}
 
+        </tbody> <!-- Fin Tabla Body -->
 
-            </div> <!-- Swiper secundario -->
-            <div class="swiper-pagination"></div> <!-- Pagination -->
+    </table>
 
-            <!-- Navigation buttons -->
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
+    <div id="table-paginacion">
 
-        </div> <!-- Swiper principal -->
-
-    <a class="formulario__boton" id="btn-dolar-actualizar">Actualizar todos</a>
+    </div>
 @endsection

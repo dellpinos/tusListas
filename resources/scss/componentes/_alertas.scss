@@ -40,6 +40,12 @@
 
     padding: 1rem;
 
+    &__contenedor {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
     &__vacio {
         @extend .mensaje;
         border: .5px solid v.$grisBlanco;
@@ -56,6 +62,11 @@
         @extend .mensaje;
         border: .5px solid v.$grisBlanco;
         color: v.$grisClaro;
+
+        &--my{
+            @extend .mensaje__info;
+            margin: 0 0 2rem 0;
+        }
     }
 }
 

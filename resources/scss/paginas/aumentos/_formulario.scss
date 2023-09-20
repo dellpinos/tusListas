@@ -72,5 +72,30 @@
 
         
     }
+    &__boton--act {
+        width: 20%;
+        white-space: nowrap;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        background-color: v.$amarillo;
+
+        &:hover {
+            background-color: darken(v.$amarillo, 8%);
+        }
+        
+
+    }
+    &__mensaje--act {
+        width: 100%;
+        margin: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    &__contenedor-actualizar {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+    }
 
 }

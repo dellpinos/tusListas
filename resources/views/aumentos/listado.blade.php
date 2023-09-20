@@ -28,7 +28,9 @@
             <td class="table__td">{{ $registro->nombre }}</td>
             <td class="table__td">{{ $registro->afectados }}</td>
             <td class="table__td">{{ $registro->created_at }}</td>
-            <td class="table__td">{{ ($registro->porcentaje - 1) * 100}} %</td>
+            <td class="table__td">
+                {{ ((($registro->porcentaje - 1) * 100) < 1 ) ? "Varios" : ($registro->porcentaje - 1) * 100 . " %"}}
+            </td>
             <td class="table__td">{{ $registro->username }}</td>
         </tr>
         @endforeach
@@ -37,6 +39,7 @@
 </table>
 
 @endsection
+
 
 
 
