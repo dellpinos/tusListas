@@ -15,50 +15,176 @@ import * as helpers from './helpers';
 
         document.addEventListener('DOMContentLoaded', app);
 
-        function app () {
-            if(contForms > 30) {
+        function app() {
+            if (contForms > 30) {
                 window.location.reload();
             }
-            if(contForms > 29) {
+            if (contForms > 29) {
                 alert('Último producto, la página será actualizada.');
             }
 
             const obj = generarForm();
-            
+
             const { checkbox, cantidad, codigo, nombre, precio, descuento, semanas, btnGuardar, btnEliminar } = obj;
-            
+
             nombre.addEventListener('click', (e) => {
                 generarHTML(e, obj);
-                
+
             });
             codigo.addEventListener('click', (e) => {
                 generarHTML(e);
-                
+
             });
             btnGuardar.addEventListener('click', (e) => {
-                
-                desactivarCampos(obj);
-                btnGuardar.disabled = true;
 
                 // Validar datos
-                validarCampos(obj);
+                const validado = validarCampos(obj);
+
+                if (!validado) {
+                    return;
+                } else {
+                    descuento.classList.remove('b-red', 'b-green');
+                    semanas.classList.remove('b-red', 'b-green');
+                    codigo.classList.remove('b-red', 'b-green');
+                    nombre.classList.remove('b-red', 'b-green');
+                    precio.classList.remove('b-red', 'b-green');
+                    descuento.classList.remove('b-red', 'b-green');
+                    semanas.classList.remove('b-red', 'b-green');
+                }
+
+                desactivarCampos(obj);
+                btnGuardar.disabled = true;
 
                 // Almacenar informacion
 
                 app();
-                
+
             });
             btnEliminar.addEventListener('click', (e) => {
-                
+                // Vaciar campos
                 vaciarCampos(obj);
-                
+
             });
-            
+
             // Añadir funcionalidad Código: Busca el código y autocompleta todos los campos, no genera HTML. El código existe o no
-            
+
             // Añadfir funcionalidad Guardar: Almacena la información, bloquea los campos, cambia boton ,crea un nuevo formulario
-            
+
             contForms++;
+        }
+
+        function validarCampos(obj) {
+
+            const { checkbox, cantidad, codigo, nombre, precio, descuento, semanas, btnGuardar, btnEliminar } = obj;
+
+            let flagValidacion = [];
+            let flagValidacionGral = true;
+            const regexCodigo = /^[a-zA-Z0-9]{4}$/;
+            const regexDescuento = /^[0-9]{1,3}(\.[0-9]{1,3})?$/;
+            const regexPrecio = /^[0-9]+(\.[0-9]+)?$/;
+
+            descuento.classList.remove('b-red', 'b-green');
+            semanas.classList.remove('b-red', 'b-green');
+            codigo.classList.remove('b-red', 'b-green');
+            nombre.classList.remove('b-red', 'b-green');
+            precio.classList.remove('b-red', 'b-green');
+            descuento.classList.remove('b-red', 'b-green');
+            semanas.classList.remove('b-red', 'b-green');
+
+            // Si utilizo ejemplo.value siempre esta tomando el valor del input, debo almacenar el dato en una variable para modificar el tipo de dato
+
+            // const precioNumber = parseFloat(precio.value);
+            // const cantidadNumber = parseInt(cantidad.value);
+            // const descuentoNumber = parseInt(descuento.value);
+            // const semanasNumber = parseInt(semanas.value);
+
+            // console.log(typeof(precioNumber), typeof(semanasNumber));
+            console.log('Hola');
+            console.log((descuento.value !== '' && !regexDescuento.test(descuento.value)));
+
+            if ((descuento.value !== '' && semanas.value === '0') || (descuento.value === '' && semanas.value !== '0') || 
+            (descuento.value === '0' && semanas.value === '0') || (descuento.value === '0' && semanas.value !== '0') || 
+            (descuento.value !== '' && !regexDescuento.test(descuento.value)) ) {
+                descuento.classList.add('b-red');
+                semanas.classList.add('b-red');
+                descuento.classList.remove('b-green');
+                semanas.classList.remove('b-green');
+                flagValidacion[0] = false;
+            } else {
+                descuento.classList.remove('b-red');
+                semanas.classList.remove('b-red');
+                descuento.classList.add('b-green');
+                semanas.classList.add('b-green');
+                flagValidacion[0] = true;
+            }
+
+            if (checkbox.checked) {
+
+                // Es pendiente
+                if (codigo.value !== '') {
+                    // El código debe estar vacio
+                    codigo.classList.add('b-red');
+                    flagValidacion[1] = false;
+                    console.log('No!');
+                } else {
+                    codigo.classList.add('b-green');
+                    flagValidacion[1] = true;
+                }
+                if (nombre.value === '' || typeof (nombre.value) !== 'string') {
+                    // Nombre no puede estar vacio y debe ser un string
+                    nombre.classList.add('b-red');
+                    flagValidacion[2] = false;
+                } else {
+                    nombre.classList.add('b-green');
+                    flagValidacion[2] = true;
+                }
+                if (precio.value === '' || !regexPrecio.test(precio.value)) {
+                    // Precio no puede estar vacio y debe ser un numero
+                    precio.classList.add('b-red');
+                    flagValidacion[3] = false;
+                } else {
+                    precio.classList.add('b-green');
+                    flagValidacion[3] = true;
+                }
+
+            } else {
+                // No es pendiente
+                if (codigo.value === '' || !regexCodigo.test(codigo.value)) {
+                    // El código debe estar vacio
+                    codigo.classList.add('b-red');
+                    flagValidacion[1] = false;
+                } else {
+                    codigo.classList.add('b-green');
+                    flagValidacion[1] = true;
+                }
+                if (nombre.value === '' || typeof (nombre.value) !== 'string') {
+                    // Nombre no puede estar vacio y debe ser un string
+                    nombre.classList.add('b-red');
+                    flagValidacion[2] = false;
+                } else {
+                    nombre.classList.add('b-green');
+                    flagValidacion[2] = true;
+                }
+                if (precio.value === '' || !regexPrecio.test(precio.value)) {
+                    // Precio no puede estar vacio y debe ser un numero
+                    precio.classList.add('b-red');
+                    flagValidacion[3] = false;
+                } else {
+                    precio.classList.add('b-green');
+                    flagValidacion[3] = true;
+                }
+            }
+
+            flagValidacion.forEach(e => {
+                if(e === false) {
+                    flagValidacionGral = false;
+                }
+            });
+            if (flagValidacionGral) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         function desactivarCampos(obj) {
@@ -141,12 +267,12 @@ import * as helpers from './helpers';
             contenedorNombre.appendChild(nombre);
 
             const precio = document.createElement('INPUT');
-            precio.type = 'number';
+            precio.type = 'text';
             precio.classList.add('formulario__campo');
             precio.placeholder = "Precio sin IVA";
 
             const descuento = document.createElement('INPUT');
-            descuento.type = 'number';
+            descuento.type = 'text';
             descuento.classList.add('formulario__campo');
             descuento.placeholder = "0%";
 
@@ -266,7 +392,7 @@ import * as helpers from './helpers';
             if (flag) { // aqui puedo filtrar el array en memoria
 
                 const resultado = buscarCoincidenciasMemoria(element, lista, obj, inputProducto);
-                
+
                 return resultado;
             }
         }
@@ -337,7 +463,7 @@ import * as helpers from './helpers';
                     sugerenciaBusqueda.addEventListener('click', async function (e) {
 
                         const respuesta = await buscarProducto(coincidencia.id);
-                        
+
                         const { checkbox, codigo, nombre, precio, descuento, semanas } = obj;
 
 
@@ -351,17 +477,17 @@ import * as helpers from './helpers';
                         inputProducto.value = respuesta.producto.nombre;
 
                         precio.value = respuesta.precio.precio;
-                        if(!respuesta.precio.descuento) {
-                            descuento.value = 0;
+                        if (!respuesta.precio.descuento) {
+                            descuento.value = '';
                         } else {
                             descuento.value = respuesta.precio.descuento;
                         }
-                        if(!respuesta.precio.semanas) {
-                            descuento.value = 0;
+                        if (!respuesta.precio.semanas) {
+                            descuento.value = '';
                         } else {
                             descuento.value = respuesta.precio.semanas;
                         }
-                        
+
                     });
                 }
             });
