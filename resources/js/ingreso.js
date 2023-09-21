@@ -10,28 +10,96 @@ import * as helpers from './helpers';
         let flag = 0; // Saber cuando se obtuvo el primer resultado de la DB
         let arrayCoincidencias = []; // Aqui se almacena el resultado de la DB
         let coincidenciasPantalla = []; // Aqui se almacena el resultado de la DB filtrado
+        let contForms = 0;
 
 
         document.addEventListener('DOMContentLoaded', app);
 
         function app () {
+            if(contForms > 30) {
+                window.location.reload();
+            }
+            if(contForms > 29) {
+                alert('Último producto, la página será actualizada.');
+            }
+
             const obj = generarForm();
-
-            const { checkbox, codigo, nombre, precio, descuento, semanas } = obj;
-
+            
+            const { checkbox, cantidad, codigo, nombre, precio, descuento, semanas, btnGuardar, btnEliminar } = obj;
+            
             nombre.addEventListener('click', (e) => {
                 generarHTML(e, obj);
-
+                
             });
             codigo.addEventListener('click', (e) => {
                 generarHTML(e);
-
+                
             });
+            btnGuardar.addEventListener('click', (e) => {
+                
+                desactivarCampos(obj);
+                btnGuardar.disabled = true;
 
+                // Validar datos
+                validarCampos(obj);
+
+                // Almacenar informacion
+
+                app();
+                
+            });
+            btnEliminar.addEventListener('click', (e) => {
+                
+                vaciarCampos(obj);
+                
+            });
+            
             // Añadir funcionalidad Código: Busca el código y autocompleta todos los campos, no genera HTML. El código existe o no
-
+            
             // Añadfir funcionalidad Guardar: Almacena la información, bloquea los campos, cambia boton ,crea un nuevo formulario
+            
+            contForms++;
+        }
 
+        function desactivarCampos(obj) {
+
+            const { checkbox, cantidad, codigo, nombre, precio, descuento, semanas, btnGuardar, btnEliminar } = obj;
+
+            btnEliminar.innerHTML = `
+            <i class="fa-solid fa-circle-check"></i>
+            `;
+            btnEliminar.classList.remove('ingreso__icono--delete');
+            btnGuardar.classList.remove('ingreso__icono--delete');
+            btnEliminar.classList.add('ingreso__icono--confirm');
+            btnGuardar.classList.add('ingreso__icono--confirm');
+            btnGuardar.innerHTML = `
+            <i class="fa-solid fa-circle-check"></i>
+            `;
+
+            checkbox.disabled = true;
+            cantidad.disabled = true;
+            codigo.disabled = true;
+            nombre.disabled = true;
+            precio.disabled = true;
+            descuento.disabled = true;
+            semanas.disabled = true;
+
+            checkbox.classList.add('no-pointer');
+            semanas.classList.add('no-pointer');
+
+
+        }
+
+        function vaciarCampos(obj) {
+            const { checkbox, cantidad, codigo, nombre, precio, descuento, semanas, btnGuardar, btnEliminar } = obj;
+
+            checkbox.checked = false;
+            cantidad.value = '';
+            codigo.value = '';
+            nombre.value = '';
+            precio.value = '';
+            descuento.value = '';
+            semanas.value = 0;
         }
 
 
@@ -45,6 +113,12 @@ import * as helpers from './helpers';
             checkbox.classList.add('formulario__checkbox');
 
             contenedorCheck.appendChild(checkbox);
+
+            const cantidad = document.createElement('INPUT');
+            cantidad.type = 'number';
+            cantidad.classList.add('formulario__campo', 'height-full');
+            cantidad.placeholder = "0";
+
 
             const contenedorCodigo = document.createElement('DIV');
             contenedorCodigo.classList.add('relative');
@@ -74,7 +148,7 @@ import * as helpers from './helpers';
             const descuento = document.createElement('INPUT');
             descuento.type = 'number';
             descuento.classList.add('formulario__campo');
-            descuento.placeholder = "% Descuento";
+            descuento.placeholder = "0%";
 
             const semanas = document.createElement('SELECT');
             semanas.classList.add('formulario__campo');
@@ -92,24 +166,37 @@ import * as helpers from './helpers';
             }
 
             const btnGuardar = document.createElement('BUTTON');
-            btnGuardar.classList.add('boton');
-            btnGuardar.textContent = "Guardar"
+            btnGuardar.classList.add('boton', 'ingreso__icono', 'ingreso__icono--save');
+            btnGuardar.innerHTML = `
+            <i class="fa-solid fa-floppy-disk"></i>
+            `;
+
+            const btnEliminar = document.createElement('BUTTON');
+            btnEliminar.classList.add('boton', 'ingreso__icono', 'ingreso__icono--delete');
+            btnEliminar.innerHTML = `
+            <i class="fa-solid fa-trash"></i>
+            `;
 
             grid.appendChild(contenedorCheck);
+            grid.appendChild(cantidad);
             grid.appendChild(contenedorCodigo);
             grid.appendChild(contenedorNombre);
             grid.appendChild(precio);
             grid.appendChild(descuento);
             grid.appendChild(semanas);
             grid.appendChild(btnGuardar);
+            grid.appendChild(btnEliminar);
 
             const obj = {
                 checkbox: checkbox,
+                cantidad: cantidad,
                 codigo: codigo,
                 nombre: nombre,
                 precio: precio,
                 descuento: descuento,
-                semanas: semanas
+                semanas: semanas,
+                btnGuardar: btnGuardar,
+                btnEliminar: btnEliminar
             }
 
             return obj;

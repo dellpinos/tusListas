@@ -34,7 +34,9 @@
 .relative {
     position: relative;
 }
-
+.no-opacity {
+    opacity: 0;
+}
 .display-none {
     display: none;
 }
@@ -55,4 +57,10 @@
 }
 .mb-10 {
     margin-bottom: 10rem;
+}
+.no-pointer {
+    cursor: default !important;
+}
+.b-red {
+    border: solid 1px v.$rojo;
 }
