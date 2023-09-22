@@ -25,7 +25,8 @@ class Producto extends Model
         'contador_show',
         'unidad_fraccion',
         'contenido_total',
-        'ganancia_fraccion'
+        'ganancia_fraccion',
+        'stock'
     ];
 
 

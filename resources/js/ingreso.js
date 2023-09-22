@@ -9,11 +9,18 @@ import * as helpers from './helpers';
         let flag = 0; // Saber cuando se obtuvo el primer resultado de la DB
         let arrayCoincidencias = []; // Aqui se almacena el resultado de la DB
         let coincidenciasPantalla = []; // Aqui se almacena el resultado de la DB filtrado
+        let precioId = ''; // Precio seleccionado que será almacenado
+        let productoId = ''; // Producto seleccionado que será almacenado
         let contForms = 0;
 
         document.addEventListener('DOMContentLoaded', app);
 
         function app() {
+
+            // Limpiar variables en memoria
+            precioId = '';
+            productoId = '';
+
             if (contForms > 100) {
                 window.location.reload();
             }
@@ -37,6 +44,9 @@ import * as helpers from './helpers';
 
                     const resultadoCompleto = await buscarProducto(resultado[0].id);
                     completarCampos(resultadoCompleto.producto, resultadoCompleto.precio, obj);
+
+                    precioId = resultadoCompleto.precio.id; // Precio seleccionado que será almacenado
+                    productoId = resultadoCompleto.producto.id; // Producto seleccionado que será almacenado
                 }
             });
 
@@ -53,18 +63,18 @@ import * as helpers from './helpers';
                     codigo.classList.remove('b-red', 'b-green');
                     nombre.classList.remove('b-red', 'b-green');
                     precio.classList.remove('b-red', 'b-green');
-                    descuento.classList.remove('b-red', 'b-green');
-                    semanas.classList.remove('b-red', 'b-green');
+                    cantidad.classList.remove('b-red', 'b-green');
                 }
 
+                console.log(precioId, productoId);
                 // Almacenar informacion<<<<
                 const resultado = almacenarDatos(objV);
-                
-                if(resultado) {
+
+                if (resultado) {
                     desactivarCampos(obj);
+                    app();
                 }
 
-                app();
 
             });
             btnEliminar.addEventListener('click', (e) => {
@@ -83,33 +93,66 @@ import * as helpers from './helpers';
 
             contForms++;
         }
-        
-        function almacenarDatos(objV) {
+
+        async function almacenarDatos(objV) {
 
             /// Tengo un objeto con todos los datos validados por Js, debo almacenarlo en la DB
+            // En viar objeto con fetch
 
-            console.log(objV);
+            console.log(productoId);
 
-            return;
+            const { cantidad, precio, descuento, semanas, pendiente } = objV;
+
+            if(pendiente) {
+                // Es pendiente, se almacena en "pendientes"
+            } else {
+                // No es pendiente, se almacena en "productos"
+                try {
+                    const datos = new FormData();
+                    datos.append('producto_id', productoId); // global
+                    datos.append('cantidad', cantidad);
+                    datos.append('precio', precio);
+                    datos.append('descuento', descuento);
+                    datos.append('semanas', semanas);
+    
+                    const url = '/api/productos/update';
+                    const respuesta = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': tokenCSRF
+                        },
+                        body: datos
+                    });
+    
+                    let resultado = await respuesta.json();
+                    return resultado;
+    
+                } catch (error) {
+                    console.log('El servidor no responde');
+                }
+            }
+
+
         }
 
         function validarCampos(obj) {
 
             const { checkbox, cantidad, codigo, nombre, precio, descuento, semanas, btnGuardar, btnEliminar } = obj;
+            let objV = {};
 
             let flagValidacion = [];
             let flagValidacionGral = true;
             const regexCodigo = /^[a-zA-Z0-9]{4}$/;
             const regexDescuento = /^[0-9]{1,3}(\.[0-9]{1,3})?$/;
             const regexPrecio = /^[0-9]+(\.[0-9]+)?$/;
+            const regexCantidad = /^(0|[1-9]\d*)$/; // <<<<<<
 
             descuento.classList.remove('b-red', 'b-green');
             semanas.classList.remove('b-red', 'b-green');
             codigo.classList.remove('b-red', 'b-green');
             nombre.classList.remove('b-red', 'b-green');
             precio.classList.remove('b-red', 'b-green');
-            descuento.classList.remove('b-red', 'b-green');
-            semanas.classList.remove('b-red', 'b-green');
+            cantidad.classList.remove('b-red', 'b-green');
 
             if ((descuento.value !== '' && semanas.value === '0') || (descuento.value === '' && semanas.value !== '0') ||
                 (descuento.value === '0' && semanas.value === '0') || (descuento.value === '0' && semanas.value !== '0') ||
@@ -127,7 +170,19 @@ import * as helpers from './helpers';
                 flagValidacion[0] = true;
             }
 
+            if (cantidad.value !== '' && !regexCantidad.test(cantidad.value)) {
+                cantidad.classList.add('b-red');
+                flagValidacion[4] = false;
+            } else {
+                cantidad.classList.add('b-green');
+                flagValidacion[4] = true;
+            }
+
             if (checkbox.checked) {
+
+                objV = {
+                    pendiente: true
+                }
 
                 // Es pendiente
                 if (codigo.value !== '') {
@@ -138,7 +193,7 @@ import * as helpers from './helpers';
                     codigo.classList.add('b-green');
                     flagValidacion[1] = true;
                 }
-                if (nombre.value === '' || typeof (nombre.value) !== 'string') {
+                if (nombre.value === '') {
                     // Nombre no puede estar vacio y debe ser un string
                     nombre.classList.add('b-red');
                     flagValidacion[2] = false;
@@ -156,6 +211,10 @@ import * as helpers from './helpers';
                 }
 
             } else {
+
+                objV = {
+                    pendiente: false
+                }
                 // No es pendiente
                 if (codigo.value === '' || !regexCodigo.test(codigo.value)) {
                     // El código debe estar vacio
@@ -165,7 +224,7 @@ import * as helpers from './helpers';
                     codigo.classList.add('b-green');
                     flagValidacion[1] = true;
                 }
-                if (nombre.value === '' || typeof (nombre.value) !== 'string') {
+                if (nombre.value === '') {
                     // Nombre no puede estar vacio y debe ser un string
                     nombre.classList.add('b-red');
                     flagValidacion[2] = false;
@@ -189,18 +248,39 @@ import * as helpers from './helpers';
                 }
             });
             if (flagValidacionGral) {
+
                 // Sanitaizando datos que serán almacenados
-                let objV = {
-                    cantidad: parseInt(cantidad.value),
+                precioId = parseInt(precioId);
+                productoId = parseInt(productoId);
+                let cantidadDB = '';
+                let descuentoDB = '';
+
+                // Reemplazo NaN por null
+                if (isNaN(parseInt(cantidad.value))) {
+                    cantidadDB = '';
+                } else {
+                    cantidadDB = parseInt(cantidad.value);
+                }
+                if (isNaN(parseInt(descuento.value))) {
+                    descuentoDB = '';
+                } else {
+                    descuentoDB = parseInt(descuento.value);
+                }
+
+                objV = {
+                    cantidad: cantidadDB,
                     precio: parseFloat(precio.value),
-                    descuento: parseFloat(descuento.value),
+                    descuento: descuentoDB,
                     semanas: parseInt(semanas.value),
-                    validado: true
+                    validado: true,
                 }
                 return objV;
 
             } else {
-                return false;
+                objV = {
+                    validado: false
+                }
+                return objV;
             }
         }
         function desactivarCampos(obj) {
@@ -263,7 +343,7 @@ import * as helpers from './helpers';
             contenedorCheck.appendChild(checkbox);
 
             const cantidad = document.createElement('INPUT');
-            cantidad.type = 'number';
+            cantidad.type = 'text';
             cantidad.classList.add('formulario__campo', 'height-full');
             cantidad.placeholder = "0";
 
@@ -487,10 +567,14 @@ import * as helpers from './helpers';
                     sugerenciaBusqueda.addEventListener('click', async function (e) {
 
                         const respuesta = await buscarProducto(coincidencia.id);
+
                         const DBproducto = respuesta.producto;
                         const DBprecio = respuesta.precio;
 
-                        completarCampos(DBproducto, DBprecio, obj, inputProducto); /////<<<<< Tengo que llevar este codigo a una funcion para reutilizarla (el código de 512-534 completa el formulario)
+                        precioId = respuesta.precio.id; // Precio seleccionado que será almacenado
+                        productoId = respuesta.producto.id; // Producto seleccionado que será almacenado
+
+                        completarCampos(DBproducto, DBprecio, obj, inputProducto);
 
                     });
                 }
@@ -520,6 +604,7 @@ import * as helpers from './helpers';
             } else {
                 descuento.value = DBprecio.semanas;
             }
+
         }
         async function buscarProducto(id) {
 

@@ -30,7 +30,7 @@ class ProductoController extends Controller
 
 
         if($precio !== null) { // En caso del primer producto
-            $dolar_pred = (old('dolar') === null) ? $precio->dolar : old('dolar');
+            $dolar_pred = (old('dolar') === null) ? intval($precio->dolar) : old('dolar');
         }
         $categorias = Categoria::orderBy('nombre', 'asc')->get();
         $providers = Provider::orderBy('nombre', 'asc')->get();
@@ -308,9 +308,6 @@ class ProductoController extends Controller
         $producto = Producto::find($request->id);
         $precio = Precio::find($producto->precio_id);
 
-
-        /// <<<<<<<
-
         // Cargo 1 o 2 productos relacionados a este precio
         $productos = Producto::where('precio_id', $precio->id)->get();
 
@@ -342,11 +339,6 @@ class ProductoController extends Controller
             }
         }
         // 1_ No es un producto fraccionado y no existe un fraccionado 
-
-
-        // <<<<<<<<<<<
-
-
 
         // Acumulador
         if (number_format($request->precio, 2, '.', '') !== $precio->precio) { // formato decimal
@@ -462,10 +454,6 @@ class ProductoController extends Controller
 
         // El usuario quiere crear un fraccionado
         if ($request->codigo_fraccionado !== null) {
-
-            // <<<<<
-
-            /// <<< ???
 
             $this->validate($request, [
                 'codigo_fraccionado' => 'required|max:4|min:4|unique:productos,codigo',

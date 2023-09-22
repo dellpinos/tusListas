@@ -85,8 +85,7 @@
                     </div>
 
                     <div class="formulario__campo-contenedor">
-                        <label for="fabricante" class="formulario__label">Laboratorio -
-                            Fabricante</label>
+                        <label for="fabricante" class="formulario__label">Fabricante</label>
                         <select
                             class="formulario__campo @if ($producto_fraccionado) formulario__campo--no-activo @endif @error('fabricante') borde__error @enderror"
                             id="fabricante" name="fabricante_id" @if ($producto_fraccionado) readonly @endif>
@@ -106,7 +105,7 @@
                     <div class="formulario__campo-contenedor">
                         <label for="dolar" class="formulario__label">Cotización dolar Blue
                             (compra)</label>
-                        <input type="number" id="dolar" name="dolar" placeholder="0" value="{{ $precio->dolar }}" required
+                        <input type="number" id="dolar" name="dolar" placeholder="0" value="{{ intval($precio->dolar) }}" required
                             class="formulario__campo text-right @error('dolar') borde__error @enderror">
                         @error('dolar')
                             <p class="alerta__error">{{ $message }}</p>

@@ -107,6 +107,8 @@ Route::post('/api/providers/destroy', [APIProviders::class, 'destroy']);
 // API Producto
 Route::get('/api/productos/all', [APIProductos::class, 'all']);
 Route::post('/api/productos/destroy', [APIProductos::class, 'destroy']);
+Route::post('/api/productos/update', [APIProductos::class, 'update']);
+
 
 
 
