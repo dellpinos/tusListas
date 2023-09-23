@@ -524,6 +524,7 @@ import * as helpers from './helpers';
             if (inputProducto.length === 3) {
                 try {
                     const datos = new FormData();
+                    datos.append('filtro_frac', true);
                     datos.append('input_producto', inputProducto);
 
                     const url = '/api/buscador/producto';
@@ -549,6 +550,7 @@ import * as helpers from './helpers';
             if (codigo.length === 4) {
                 try {
                     const datos = new FormData();
+                    datos.append('filtro_frac', true);
                     datos.append('codigo_producto', codigo);
 
                     const url = '/api/buscador/producto-codigo';

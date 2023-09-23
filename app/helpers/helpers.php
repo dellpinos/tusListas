@@ -30,11 +30,11 @@ function debuguear($elemento)
     die();
 }
 
-// Recibe 1 precio y 1 producto, retorna un array con 1 precio y 1 producto
+// Recibe 1 precio y 1 producto, retorna un array con 1 precio, 1 producto, 1 categoria y 1 provider
+// Consulta y retorna el provider y la categoria del producto
 // Identifica la ganancia aplicada al producto en base a provider, categoria o producto
 // Sobreescribe el timestamp del precio (Hora - 03 UTH)
 // Calcula y añade precio de venta a producto (+ 21% IVA, + indice ganancia - descuento temporal)
-// Incrementa Producto "veces mostrado"
 // Consulta-Elimina descuento temporal
 // Redondea el precio de venta
 function precioVenta(Producto $producto, Precio $precio)
@@ -60,6 +60,8 @@ function precioVenta(Producto $producto, Precio $precio)
     }
 
     $precio_costo = descuentoTemporal($precio);
+
+    $precio->semanas_restantes = duracionDescuento($precio);
     $producto->venta = $producto->ganancia * ($precio_costo * 1.21);
 
     // Producto fraccionado
@@ -71,7 +73,9 @@ function precioVenta(Producto $producto, Precio $precio)
 
     $resultado = [
         'producto' => $producto,
-        'precio' => $precio
+        'precio' => $precio,
+        'categoria' => $categoria,
+        'provider' => $provider
     ];
 
     return $resultado;
@@ -80,22 +84,20 @@ function precioVenta(Producto $producto, Precio $precio)
 // Descuentos Temporales
 // Recibe una instancia de Precio
 // Retorna un precio de costo
-
 // Evalua un precio, si este precio tiene un descuento calcula la fecha del mismo con relacion a la fecha actual
 // Si esta diferencia supera la duracion del descuento elimina estas columnas de "precios"
 // Si esta fecha no supera la duracion, aplica el descuento al precio (no modifica la DB en este caso)
 
-
-function descuentoTemporal (Precio $precio)
+function descuentoTemporal(Precio $precio)
 {
 
     $precio_costo = $precio->precio;
 
-    if($precio->desc_porc) {
+    if ($precio->desc_porc) {
         // Tiene un descuento
         $semanas_restantes = duracionDescuento($precio);
-    
-        if($semanas_restantes < 0) {
+
+        if ($semanas_restantes < 0) {
             // eliminar descuento
             $precio->desc_duracion = 0;
             $precio->desc_porc = null;
@@ -113,11 +115,16 @@ function descuentoTemporal (Precio $precio)
 // Recibe un Precio y retorna un int (cuantas semanas restan de descuento)
 function duracionDescuento(Precio $precio)
 {
-    $fecha_actual = now();
-    $fecha_descuento = $precio->updated_at;
-    $duracion_descuento = $precio->desc_duracion;
-    $diferencia_semanas = $fecha_descuento->diffInWeeks($fecha_actual);
-    $semanas_restantes = $duracion_descuento - $diferencia_semanas;
+    if ($precio->desc_porc) {
 
-    return $semanas_restantes;
+        $fecha_actual = now();
+        $fecha_descuento = $precio->updated_at;
+        $duracion_descuento = $precio->desc_duracion;
+        $diferencia_semanas = $fecha_descuento->diffInWeeks($fecha_actual);
+        $semanas_restantes = $duracion_descuento - $diferencia_semanas;
+
+        return $semanas_restantes;
+    } else {
+        return false;
+    }
 }

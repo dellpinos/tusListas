@@ -168,38 +168,15 @@ class ProductoController extends Controller
 
         $precio = Precio::find($producto->precio_id);
         $fabricante = Fabricante::find($producto->fabricante_id);
-        $categoria = Categoria::find($producto->categoria_id);
-        $provider = Provider::find($producto->provider_id);
 
-        $precio->updated_at = $precio->updated_at->subHours(3);
+        $resultado = precioVenta($producto, $precio);
 
-        // Que ganancia aplica a este producto
-        if (empty($producto->ganancia_prod)) {
-            if ($producto->ganancia_tipo === 'provider') {
-                $producto->ganancia = $provider->ganancia;
-                $producto->ganancia_tipo = 'proveedor'; // Este cambio es por como se imprime en pantalla
-            } else {
-                $producto->ganancia = $categoria->ganancia;
-                $producto->ganancia_tipo = 'categoria';
-            }
-        } else {
-            $producto->ganancia = $producto->ganancia_prod;
-            $producto->ganancia_tipo = 'producto';
-        }
+        $producto = $resultado['producto'];
+        $precio = $resultado['precio'];
+        $provider = $resultado['provider'];
+        $categoria = $resultado['categoria'];
 
-
-        $producto->venta = $producto->ganancia * ($precio->precio * 1.21);
-        $producto->venta = redondear($producto->venta);
-
-
-        // Producto fraccionado
-        if ($producto->unidad_fraccion !== null && $producto->contenido_total !== null && $producto->ganancia_fraccion !== null) {
-            $producto->venta = $producto->ganancia * ($precio->precio * 1.21);
-            $producto->venta = ($producto->venta * $producto->ganancia_fraccion) / $producto->contenido_total;
-            $producto->venta = redondear($producto->venta);
-        }
-
-        // Paso el producto consultado en web.php (el routing)
+        $precio->desc_restante = duracionDescuento($precio);
 
         return view('producto.show', [
             'producto' => $producto,
