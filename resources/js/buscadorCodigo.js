@@ -2,8 +2,6 @@
 
     if (document.querySelector('#producto-codigo')) {
 
-
-
         const inputCodigo = document.querySelector('#producto-codigo');
         const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         const btnCodigo = document.querySelector('#btn-codigo');

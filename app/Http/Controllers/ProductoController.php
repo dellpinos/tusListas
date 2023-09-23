@@ -6,6 +6,7 @@ use App\Models\Precio;
 use App\Models\Producto;
 use App\Models\Provider;
 use App\Models\Categoria;
+use App\Models\Pendiente;
 use App\Models\Fabricante;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -28,9 +29,8 @@ class ProductoController extends Controller
         $precio = Precio::orderBy('dolar', 'desc')->first();
         $dolar_pred = '';
 
-
         if($precio !== null) { // En caso del primer producto
-            $dolar_pred = (old('dolar') === null) ? $precio->dolar : old('dolar');
+            $dolar_pred = (old('dolar') === null) ? intval($precio->dolar) : old('dolar');
         }
         $categorias = Categoria::orderBy('nombre', 'asc')->get();
         $providers = Provider::orderBy('nombre', 'asc')->get();
@@ -51,10 +51,17 @@ class ProductoController extends Controller
             'codigo' => Str::lower($request->codigo),
         ]);
 
+        $desc_dur = 0;
+        $stock = 0;
+        if($request->desc_duracion) {
+            $desc_dur = $request->desc_duracion;
+        }
+        if($request->stock) {
+            $stock = $request->stock;
+        }
+        
         $ganancia = $request->ganancia;
         $ganancia_tipo = '';
-
-        /// Ver edit y update
 
         // ganancia_numero
         if ($ganancia === 'provider') {
@@ -70,7 +77,6 @@ class ProductoController extends Controller
             $ganancia_prod = $request->ganancia_numero;
         }
 
-
         if(empty($request->ganancia) || (!is_numeric($ganancia_prod) && $ganancia_prod !== null)) { // $ganancia_prod debe ser un numero
             return redirect()->route('buscador')->with('mensaje', "Ganancia no válida");
         }
@@ -78,15 +84,17 @@ class ProductoController extends Controller
 
 
         $this->validate($request, [
-            'codigo' => 'required|max:4|min:4|unique:productos',
-            'nombre' => 'required|max:60|unique:productos',
+            'codigo' => 'required|string|max:4|min:4|unique:productos',
+            'nombre' => 'required|string|max:60|unique:productos',
             'categoria_id' => 'required|integer',
             'fabricante_id' => 'required|integer',
             'provider_id' => 'required|integer',
             'dolar' => 'numeric|required',
             'precio' => 'numeric|required',
-            'ganancia' => 'required'
-
+            'ganancia' => 'required',
+            'stock' => 'integer|nullable',
+            "desc_porc" => 'numeric|nullable',
+            "desc_duracion" => 'integer|nullable'
         ]);
 
         if ($request->codigo_fraccionado !== null) {
@@ -107,8 +115,13 @@ class ProductoController extends Controller
             'dolar' => $request->dolar,
             'fabricante_id' => intval($request->fabricante_id),
             'categoria_id' => intval($request->categoria_id),
-            'provider_id' => intval($request->provider_id)
+            'provider_id' => intval($request->provider_id),
+            'desc_porc' => $request->desc_porc,
+            'desc_duracion' => $desc_dur
         ]);
+        if($request->desc_porc) {
+            $precio->increment('desc_acu');
+        }
 
         // Primero tengo que crear el fabircante, la categoria, provider 
         $producto = Producto::create([
@@ -120,6 +133,7 @@ class ProductoController extends Controller
             'ganancia_prod' => $ganancia_prod,
             'ganancia_tipo' => $ganancia_tipo,
             'precio_id' => intval($precio->id),
+            'stock' => $stock,
             'unidad_fraccion' => null,
             'contenido_total' => null,
             'ganancia_fraccion' => null
@@ -296,7 +310,6 @@ class ProductoController extends Controller
             'categorias' => $categorias,
             'fabricantes' => $fabricantes,
             'providers' => $providers,
-
             'producto_fraccionado' => $producto_fraccionado, // bool
             'producto_secundario' => $producto_secundario // instancia producto
 
@@ -307,9 +320,6 @@ class ProductoController extends Controller
 
         $producto = Producto::find($request->id);
         $precio = Precio::find($producto->precio_id);
-
-
-        /// <<<<<<<
 
         // Cargo 1 o 2 productos relacionados a este precio
         $productos = Producto::where('precio_id', $precio->id)->get();
@@ -343,11 +353,6 @@ class ProductoController extends Controller
         }
         // 1_ No es un producto fraccionado y no existe un fraccionado 
 
-
-        // <<<<<<<<<<<
-
-
-
         // Acumulador
         if (number_format($request->precio, 2, '.', '') !== $precio->precio) { // formato decimal
             $precio->increment('contador_update');
@@ -373,8 +378,8 @@ class ProductoController extends Controller
 
         $this->validate($request, [
             // Validacion de formulario principal
-            'codigo' => 'required|max:4|min:4|unique:productos,codigo,' . $producto->id,
-            'nombre' => 'required|max:60|unique:productos,nombre,' . $producto->id,
+            'codigo' => 'required|string|max:4|min:4|unique:productos,codigo,' . $producto->id,
+            'nombre' => 'required|string|max:60|unique:productos,nombre,' . $producto->id,
             'categoria_id' => 'required|integer',
             'fabricante_id' => 'required|integer',
             'provider_id' => 'required|integer',
@@ -463,10 +468,6 @@ class ProductoController extends Controller
         // El usuario quiere crear un fraccionado
         if ($request->codigo_fraccionado !== null) {
 
-            // <<<<<
-
-            /// <<< ???
-
             $this->validate($request, [
                 'codigo_fraccionado' => 'required|max:4|min:4|unique:productos,codigo',
                 'unidad_fraccion' => 'required|string|max:60',
@@ -489,25 +490,8 @@ class ProductoController extends Controller
                 'contenido_total' => $request->contenido_total,
                 'ganancia_fraccion' => $request->ganancia_fraccion
             ]);
-
-
         }
 
-
         return redirect()->route('producto.show', ['producto' => $producto]);
-    }
-
-
-
-
-
-    public function destroy(Producto $producto)
-    {
-
-        $producto->delete();
-
-        return redirect()->route('buscador');
-
-        // Deben eliminarse ambas versiones, no fraccionado y fraccionado
     }
 }

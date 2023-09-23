@@ -34,19 +34,36 @@
 .relative {
     position: relative;
 }
-
+.no-opacity {
+    opacity: 0;
+}
 .display-none {
     display: none;
 }
 .width-full {
     width: 100%;
 }
+.height-full {
+    height: 100%;
+}
 .text-right {
     text-align: end;
+}
+.text-center {
+    text-align: center;
 }
 .font-bold {
     font-weight: v.$bold;
 }
 .mb-10 {
     margin-bottom: 10rem;
+}
+.no-pointer {
+    cursor: default !important;
+}
+.b-red {
+    border: solid 1px v.$rojo;
+}
+.b-green {
+    border: solid 1px v.$verde;
 }

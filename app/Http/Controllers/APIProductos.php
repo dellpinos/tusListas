@@ -46,7 +46,6 @@ class APIProductos extends Controller
         $precio = Precio::find($producto->precio_id);
         $productos = Producto::where('precio_id', $precio->id)->get();
 
-        
         if ($request->confirm === "true") {
             
             foreach ($productos as $elemento) {
@@ -119,4 +118,53 @@ class APIProductos extends Controller
             }
         }
     }
+    public function update(Request $request)
+    {
+
+        $this->validate($request, [
+            'producto_id' => 'integer|required',
+            'cantidad' => 'integer|nullable',
+            'precio' => 'numeric|required',
+            'descuento' => 'numeric|nullable',
+            'semanas' => 'integer',
+            'dolar' => 'numeric|required',
+        ]);
+
+        $producto = Producto::find($request->producto_id);
+        $precio = Precio::find($producto->precio_id);
+
+        $precio->increment('contador_update');
+        $precio->dolar = $request->dolar;
+        $precio->precio = $request->precio;
+        $precio->desc_porc = $request->descuento;
+        $precio->desc_duracion = $request->semanas;
+        
+        if(!is_null($request->descuento)) {
+            $precio->increment('desc_acu');
+
+        }
+
+
+        if(!is_null($request->cantidad)) {
+            $producto->stock += $request->cantidad;
+
+        }
+        
+        $resultado = $producto->save();
+        if($resultado) {
+            $respuesta = $precio->save();
+
+            if($respuesta) {
+                echo json_encode($respuesta);
+            }
+        } else {
+            echo json_encode($resultado);
+        }
+
+    }
 }
+
+
+
+
+
