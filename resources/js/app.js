@@ -9,6 +9,7 @@ import './productoForm';
 import './listadoCategoria';
 import './listadoFabricante';
 import './listadoProvider';
+import './ingreso';
 import './helpers';
 
 

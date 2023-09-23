@@ -59,8 +59,8 @@ function precioVenta(Producto $producto, Precio $precio)
         $producto->ganancia_tipo = 'Producto';
     }
 
-    $producto->venta = $producto->ganancia * ($precio->precio * 1.21);
-    $producto->increment('contador_show');
+    $precio_costo = descuentoTemporal($precio);
+    $producto->venta = $producto->ganancia * ($precio_costo * 1.21);
 
     // Producto fraccionado
     if ($producto->unidad_fraccion !== null && $producto->contenido_total !== null && $producto->ganancia_fraccion !== null) {
@@ -75,4 +75,49 @@ function precioVenta(Producto $producto, Precio $precio)
     ];
 
     return $resultado;
+}
+
+// Descuentos Temporales
+// Recibe una instancia de Precio
+// Retorna un precio de costo
+
+// Evalua un precio, si este precio tiene un descuento calcula la fecha del mismo con relacion a la fecha actual
+// Si esta diferencia supera la duracion del descuento elimina estas columnas de "precios"
+// Si esta fecha no supera la duracion, aplica el descuento al precio (no modifica la DB en este caso)
+
+
+function descuentoTemporal (Precio $precio)
+{
+
+    $precio_costo = $precio->precio;
+
+    if($precio->desc_porc) {
+        // Tiene un descuento
+        $semanas_restantes = duracionDescuento($precio);
+    
+        if($semanas_restantes < 0) {
+            // eliminar descuento
+            $precio->desc_duracion = 0;
+            $precio->desc_porc = null;
+            $precio->updated_at = now();
+            $precio->save();
+        } else {
+            // aplicar descuento
+            $precio_costo = $precio->precio * (1 - $precio->desc_porc / 100);
+        }
+    }
+
+    return $precio_costo;
+}
+
+// Recibe un Precio y retorna un int (cuantas semanas restan de descuento)
+function duracionDescuento(Precio $precio)
+{
+    $fecha_actual = now();
+    $fecha_descuento = $precio->updated_at;
+    $duracion_descuento = $precio->desc_duracion;
+    $diferencia_semanas = $fecha_descuento->diffInWeeks($fecha_actual);
+    $semanas_restantes = $duracion_descuento - $diferencia_semanas;
+
+    return $semanas_restantes;
 }

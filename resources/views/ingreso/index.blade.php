@@ -1,26 +1,34 @@
 @extends('layouts.dashboard')
 
+@section('meta')
+    {{-- Esta etiqueta me permite leer el token csrf desde Js --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
+
 @section('titulo')
     Ingreso de Mercaderia
 @endsection
 
 @section('contenido')
+<p class="mensaje__info">Dolar aplicado a esta mercaderia (el mas alto registrado): U$S <span class="ingreso__numero">{{intval($dolar)}}</span></p>
+    <div class="ingreso__contenedor">
 
-<div class="formulario__contenedor">
+        <h3>Productos</h3>
 
-    <h3>Ingresar Prducto</h3>
+        <div class="ingreso__grid" id="mercaderia-grid">
+            
+            <label class="formulario__label text-center" for="mercaderia-checkbox">Pendiente</label>
+            <label class="formulario__label text-center" for="mercaderia-checkbox">Cant</label>
+            <label class="formulario__label text-center" for="mercaderia-codigo">Código</label>
+            <label class="formulario__label text-center" for="mercaderia-nombre">Nombre</label>
+            <label class="formulario__label text-center" for="mercaderia-precio">Costo sin IVA</label>
+            <label class="formulario__label text-center" for="mercaderia-descuento">% Descuento</label>
+            <label class="formulario__label text-center" for="mercaderia-semanas">Semanas</label>
+            <label class="formulario__label text-center" for="mercaderia-guardar"></label>
+            <label class="formulario__label text-center" for="mercaderia-guardar"></label>
 
-    <div class="aumento-formulario__campo-flex">
+            {{-- Js --}}
 
-
-        <input type="number" id="aumento-dolar" placeholder="Dolar" class="formulario__campo">
-        <input type="number" id="aumento-dolar" placeholder="Dolar" class="formulario__campo">
-        <input type="number" id="aumento-dolar" placeholder="Dolar" class="formulario__campo">
-        <input type="number" id="aumento-dolar" placeholder="Dolar" class="formulario__campo">
-        <input type="number" id="aumento-dolar" placeholder="Dolar" class="formulario__campo">
+        </div>
     </div>
-
-    <a class="formulario__boton" id="btn-dolar">Esto es una mierda</a>
-</div>
-
 @endsection

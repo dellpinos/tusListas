@@ -18,6 +18,8 @@
         box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     }
 
+
+
     &__campo-contenedor {
         margin: 0 0 3rem 0;
         &--checkbox {
@@ -135,9 +137,22 @@
         margin-bottom: 2rem;
     }
 
+    &__contenedor-checkbox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__checkbox {
+        width: 3rem;
+        height: 3rem;
+
+    }
+
     &__contenedor-enlaces {
 
     }
+    
 }
 
 

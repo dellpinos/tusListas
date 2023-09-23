@@ -68,5 +68,22 @@
             margin: 0 0 2rem 0;
         }
     }
+
+    &__pendientes {
+
+        background-color: lighten(v.$naranja, 40%);
+        border: none;
+        border-left: 4px solid v.$naranja;
+        border-radius: 0;
+        color: v.$naranja;
+        transition: all 1s ease-out;
+
+        &:hover {
+            background-color: lighten(v.$naranja, 30%);
+            color: darken(v.$naranja, 5%);
+            border-left: 4px solid v.$naranja;
+            cursor: pointer;
+        }
+    }
 }
 

@@ -9,6 +9,10 @@
 @endsection
 
 @section('contenido')
+<div id="contenedor-pendientes">
+    {{-- Js --}}
+</div>
+
     <form action="{{ route('producto.store') }}" method="POST" class="producto-formulario__grid">
         @csrf
         <div class="formulario__campo-contenedor">
@@ -138,6 +142,12 @@
                     @enderror
                 </div>
                 <input type="hidden" id="ganancia-numero" name="ganancia_numero" value="">
+
+                {{-- Si el producto era un "pendiente", descuento, duracion y stock --}}
+                <input type="hidden" name="desc_porc" value="">
+                <input type="hidden" name="desc_duracion" value="">
+                <input type="hidden" name="stock" value="">
+
 
                 <div class="formulario__campo-contenedor">
                     <label for="precio" class="formulario__label">Precio Venta</label>
