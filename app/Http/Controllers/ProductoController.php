@@ -27,10 +27,7 @@ class ProductoController extends Controller
 
         $codigo = generarCodigo(); // helper
         $precio = Precio::orderBy('dolar', 'desc')->first();
-        $pendientes = Pendiente::all()->count();
         $dolar_pred = '';
-
-
 
         if($precio !== null) { // En caso del primer producto
             $dolar_pred = (old('dolar') === null) ? intval($precio->dolar) : old('dolar');
@@ -44,8 +41,7 @@ class ProductoController extends Controller
             'categorias' => $categorias,
             'fabricantes' => $fabricantes,
             'providers' => $providers,
-            'dolar_pred' => $dolar_pred,
-            'pendientes' => $pendientes
+            'dolar_pred' => $dolar_pred
         ]);
     }
     public function store(Request $request)
@@ -55,10 +51,17 @@ class ProductoController extends Controller
             'codigo' => Str::lower($request->codigo),
         ]);
 
+        $desc_dur = 0;
+        $stock = 0;
+        if($request->desc_duracion) {
+            $desc_dur = $request->desc_duracion;
+        }
+        if($request->stock) {
+            $stock = $request->stock;
+        }
+        
         $ganancia = $request->ganancia;
         $ganancia_tipo = '';
-
-        /// Ver edit y update
 
         // ganancia_numero
         if ($ganancia === 'provider') {
@@ -74,7 +77,6 @@ class ProductoController extends Controller
             $ganancia_prod = $request->ganancia_numero;
         }
 
-
         if(empty($request->ganancia) || (!is_numeric($ganancia_prod) && $ganancia_prod !== null)) { // $ganancia_prod debe ser un numero
             return redirect()->route('buscador')->with('mensaje', "Ganancia no válida");
         }
@@ -89,8 +91,10 @@ class ProductoController extends Controller
             'provider_id' => 'required|integer',
             'dolar' => 'numeric|required',
             'precio' => 'numeric|required',
-            'ganancia' => 'required'
-
+            'ganancia' => 'required',
+            'stock' => 'integer|nullable',
+            "desc_porc" => 'numeric|nullable',
+            "desc_duracion" => 'integer|nullable'
         ]);
 
         if ($request->codigo_fraccionado !== null) {
@@ -111,8 +115,13 @@ class ProductoController extends Controller
             'dolar' => $request->dolar,
             'fabricante_id' => intval($request->fabricante_id),
             'categoria_id' => intval($request->categoria_id),
-            'provider_id' => intval($request->provider_id)
+            'provider_id' => intval($request->provider_id),
+            'desc_porc' => $request->desc_porc,
+            'desc_duracion' => $desc_dur
         ]);
+        if($request->desc_porc) {
+            $precio->increment('desc_acu');
+        }
 
         // Primero tengo que crear el fabircante, la categoria, provider 
         $producto = Producto::create([
@@ -124,6 +133,7 @@ class ProductoController extends Controller
             'ganancia_prod' => $ganancia_prod,
             'ganancia_tipo' => $ganancia_tipo,
             'precio_id' => intval($precio->id),
+            'stock' => $stock,
             'unidad_fraccion' => null,
             'contenido_total' => null,
             'ganancia_fraccion' => null

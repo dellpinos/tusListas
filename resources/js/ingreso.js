@@ -92,9 +92,8 @@ import * as helpers from './helpers';
             const { cantidad, precio, descuento, semanas, pendiente, nombre, dolar } = objV;
 
             if (pendiente) {
-                // Es pendiente, se almacena en "pendientes"
 
-                console.log('Pendiente!');
+                // Es pendiente, se almacena en "pendientes"
                 try {
                     const datos = new FormData();
                     datos.append('nombre', nombre);

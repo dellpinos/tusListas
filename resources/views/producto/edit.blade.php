@@ -12,6 +12,9 @@
 
 
 @section('contenido')
+<div id="contenedor-pendientes">
+    {{-- Js --}}
+</div>
     @if ($producto_fraccionado)
         <p class="mensaje__info">Hay opciones que no pueden modificarse en un producto 'fraccionado'. Para realizar
             modificaciones, este debe ser eliminado y luego recreado como una versión 'fraccionada' del producto original.

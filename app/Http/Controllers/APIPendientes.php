@@ -8,12 +8,20 @@ use Illuminate\Http\Request;
 class APIPendientes extends Controller
 {
 
-    public function index ()
+    public function index()
     {
         // Pendiente mas antiguo
-        dd("Cargar primer pendiente");
+        $pendiente = Pendiente::orderBy('created_at', 'asc')->first();
+
+        echo json_encode($pendiente);
     }
-    public function create (Request $request)
+    public function count()
+    {
+        $pendientes = Pendiente::all()->count();
+
+        echo json_encode($pendientes);
+    }
+    public function create(Request $request)
     {
         // Nuevo pendiente
         $this->validate($request, [
@@ -33,9 +41,13 @@ class APIPendientes extends Controller
 
         echo json_encode($pendiente);
     }
-    public function destroy ()
+    public function destroy(Request $request)
     {
         // Eliminar pendiente
+        $pendiente = Pendiente::find($request->id);
+        $resultado = $pendiente->delete();
+
+        echo json_encode($resultado);
+
     }
 }
-

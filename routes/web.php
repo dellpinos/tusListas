@@ -112,6 +112,7 @@ Route::post('/api/productos/update', [APIProductos::class, 'update']);
 
 // Pendientes
 Route::get('/api/pendientes/index', [APIPendientes::class, 'index']);
+Route::get('/api/pendientes/count', [APIPendientes::class, 'count']);
 Route::post('/api/pendientes/create', [APIPendientes::class, 'create']);
 Route::post('/api/pendientes/destroy', [APIPendientes::class, 'destroy']);
 

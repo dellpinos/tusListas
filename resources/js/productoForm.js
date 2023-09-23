@@ -5,13 +5,13 @@ import * as helpers from './helpers';
 
     if (document.querySelector('#precio')) {
 
-        const pendientes = document.querySelector('#pendientes');
         const campoPersonalizado = document.querySelector('#ganancia');
         const campoSinIva = document.querySelector('#precio');
         const campoConIva = document.querySelector('#precio-iva');
         const btnVenta = document.querySelector('#btn-venta'); // calcular precio venta
         const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+        const campoNombre = document.querySelector('#name');
         const campoVenta = document.querySelector('#precio-venta');
         const checkFraccion = document.querySelector('#check-fraccion'); // abre formulario secundario
         const contenedorOculto = document.querySelector('#producto-contenedor-oculto');
@@ -34,14 +34,15 @@ import * as helpers from './helpers';
         const btnDestroy = document.querySelector('#producto-destroy');
         const idHidden = document.querySelector('#producto-id');
 
-        // Carga datos de un penidente en el formulario
-        pendientes.addEventListener('click', cargarPendiente);
+        const descHidden = document.querySelector('input[name="desc_porc"]');
+        const durHidden = document.querySelector('input[name="desc_duracion"]');
+        const stockHidden = document.querySelector('input[name="stock"]');
+
 
         radiobtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
 
                 habilitarCampo(e);
-
                 calcularGanancia();
                 campoVenta.value = '';
             });
@@ -54,8 +55,13 @@ import * as helpers from './helpers';
 
                     calcularGanancia();
                 }
-
             }
+
+            (async () => {
+                const resultado = await contadorPenidente();
+
+                mensajePendiente(resultado);
+            })();
         });
 
         campoSinIva.addEventListener('input', function () {
@@ -77,25 +83,63 @@ import * as helpers from './helpers';
             calcularGanancia(click);
 
         });
+        function mensajePendiente(contador) {
+            const contenedor = document.querySelector('#contenedor-pendientes');
+            if (contador > 0) {
+                const mensaje = document.createElement('P');
+                mensaje.classList.add('mensaje__info', 'mensaje__pendientes');
+                mensaje.textContent = `Productos Pendientes: ${contador}`;
 
-        function cargarPendiente() {
+                contenedor.appendChild(mensaje);
+                // Carga datos de un penidente en el formulario
+                mensaje.addEventListener('click', cargarPendiente);
 
-            // consultar si hay pendientes
+            } else {
+                while (contenedor.firstChild) {
+                    contenedor.removeChild(contenedor.firstChild);
+                }
+            }
+        }
 
-            // crear alerta pendientes
-            
+        async function cargarPendiente() {
+
             // Consultar DB por el penidente mas antiguo
-            console.log("Pendiente");
-            const pendiente = consultarPenidente();
-            // Generar código
-            console.log(pendiente);
-                
+            const pendiente = await consultarPenidente();
+
+            if (pendiente.desc_porc) {
+                descHidden.value = pendiente.desc_porc;
+                durHidden.value = pendiente.desc_duracion;
+            }
+            if (pendiente.stock) {
+                stockHidden.value = pendiente.stock;
+            }
 
             // Completar los campos con este pendiente
+            campoSinIva.value = pendiente.precio;
+            campoNombre.value = pendiente.nombre;
+            campoConIva.value = helpers.redondear(pendiente.precio * 1.21);
 
             // Eliminar pendiente, alerta "pendiente eliminado/cargado"
+            const resultado = await deletePendiente(pendiente.id);
 
             // Recargar alerta, eliminar si no hay mas pendientes
+            if (resultado) {
+                const respuesta = await contadorPenidente();
+                mensajePendiente(respuesta);
+            }
+
+        }
+        async function contadorPenidente() {
+            try {
+                const url = '/api/pendientes/count';
+                const respuesta = await fetch(url);
+                const resultado = await respuesta.json();
+
+                return resultado;
+
+            } catch (error) {
+                console.log(error);
+            }
         }
         async function consultarPenidente() {
             try {
@@ -109,6 +153,30 @@ import * as helpers from './helpers';
                 console.log(error);
             }
         }
+        async function deletePendiente(id) {
+
+            try {
+                const datos = new FormData();
+                datos.append('id', id)
+
+                const url = '/api/pendientes/destroy';
+
+                const respuesta = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': tokenCSRF
+                    },
+                    body: datos
+                });
+
+                const resultado = await respuesta.json();
+                return resultado;
+
+            } catch (error) {
+                console.log('El servidor no responde');
+            }
+        }
+
 
         // Habilitar / Deshabilitar campo opcional
         function habilitarCampo(e) {
@@ -236,6 +304,7 @@ import * as helpers from './helpers';
                     }
                 } else {
                     // Deseleccionado
+                    codigoFraccionado.value = '';
                     deseleccionarFraccionado();
                 }
             });

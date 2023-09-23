@@ -46,7 +46,6 @@ class APIProductos extends Controller
         $precio = Precio::find($producto->precio_id);
         $productos = Producto::where('precio_id', $precio->id)->get();
 
-        
         if ($request->confirm === "true") {
             
             foreach ($productos as $elemento) {
