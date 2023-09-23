@@ -66,6 +66,7 @@
         border-radius: 1rem;
         overflow: hidden;
         white-space: nowrap;
+        border-left: 20px solid v.$verde;
 
         
         p {
@@ -101,6 +102,10 @@
             }
         }
     }
+    &__contenedor--descuento {
+
+        border-left: 20px solid v.$rojo;
+    }
 
 
     &__card-contenedor {
@@ -123,6 +128,9 @@
         span {
             font-size: 2rem;
             color: v.$blanco;
+        }
+        &--oferta {
+            color: v.$rojo;
         }
     }
 

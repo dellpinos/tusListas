@@ -29,7 +29,6 @@ class APIProductos extends Controller
     public function destroy(Request $request)
     {
 
-
         // Debo recibir un id a eliminar y tengo que validar si es un fraccionado. Un fraccionado puede eliminarse
         // Un producto principal puede eliminarse pero debe eliminarse el fraccionado y debe informarse al usuario
 
@@ -74,7 +73,6 @@ class APIProductos extends Controller
 
                 if ($producto->id === $prod_fraccionado->id) {
                     // Es fraccionado, eliminar producto y precio
-                    // dd('es fraccionado, eliminar');
                     $respuesta = $producto->delete();
                     if ($respuesta) {
                         $precio->delete();
@@ -91,7 +89,6 @@ class APIProductos extends Controller
                     }
                 } else if ($producto->id === $prod_no_fraccionado->id) {
                     // No es fraccionado, consultar al usuario
-                    // dd('no es fraccionado, consultar');
                     echo json_encode([
                         'eliminado' => false,
                         'eliminar_doble' => true
@@ -99,7 +96,6 @@ class APIProductos extends Controller
                     return;
                 }
             } else {
-                // dd('no es fraccionado ni existe uno - DELETE');
                 // No hay fraccionado, eliminar producto y precio
                 $respuesta = $producto->delete();
                 if ($respuesta) {
@@ -141,13 +137,10 @@ class APIProductos extends Controller
         
         if(!is_null($request->descuento)) {
             $precio->increment('desc_acu');
-
         }
-
 
         if(!is_null($request->cantidad)) {
             $producto->stock += $request->cantidad;
-
         }
         
         $resultado = $producto->save();

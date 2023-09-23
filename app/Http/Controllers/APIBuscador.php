@@ -23,14 +23,18 @@ class APIBuscador extends Controller
         // Busqueda segun coincidencia de 3 caracteres
         $patron = $request->input('input_producto');
 
-        $resultado = Producto::where('nombre', 'LIKE', '%' . $patron . '%')->get();
+        if ($request->filtro_frac) {
+            // No retorna fraccionados, esto es util en buscadores que modifican registros
+            $resultado = Producto::where('nombre', 'LIKE', '%' . $patron . '%')->whereNull('ganancia_fraccion')->get();
+        } else {
 
+            $resultado = Producto::where('nombre', 'LIKE', '%' . $patron . '%')->get();
+        }
 
         echo json_encode($resultado);
     }
     public function producto_individual(Request $request)
     {
-
         $id = $request->input('id');
 
         $producto = Producto::find($id);
@@ -39,13 +43,22 @@ class APIBuscador extends Controller
         // Calcular precio de venta
         $resultado = precioVenta($producto, $precio);
 
+
         echo json_encode($resultado);
     }
 
     public function codigo_producto(Request $request)
     {
-        $resultado = Producto::where('codigo', $request->codigo_producto)->get();
+        // Filtra fraccionados
+        if ($request->filtro_frac) {
+            // No retorna fraccionados, esto es util en buscadores que modifican registros
+            $resultado = Producto::where('codigo', $request->codigo_producto)->whereNull('ganancia_fraccion')->get();
+            
+        } else {
 
+            $resultado = Producto::where('codigo', $request->codigo_producto)->get();
+        }
+        
         if ($resultado->isEmpty()) {
             echo json_encode(false);
             return;
