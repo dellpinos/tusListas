@@ -310,7 +310,6 @@ class ProductoController extends Controller
             'categorias' => $categorias,
             'fabricantes' => $fabricantes,
             'providers' => $providers,
-
             'producto_fraccionado' => $producto_fraccionado, // bool
             'producto_secundario' => $producto_secundario // instancia producto
 

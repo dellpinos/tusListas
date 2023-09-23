@@ -625,15 +625,16 @@ import * as helpers from './helpers';
             }
 
             precio.value = DBprecio.precio;
-            if (!DBprecio.descuento) {
+
+            if (!DBprecio.desc_porc) {
                 descuento.value = '';
             } else {
-                descuento.value = DBprecio.descuento;
+                descuento.value = DBprecio.desc_porc;
             }
-            if (!DBprecio.semanas) {
-                descuento.value = '';
+            if (!DBprecio.desc_duracion) {
+                semanas.value = 0;
             } else {
-                descuento.value = DBprecio.semanas;
+                semanas.value = DBprecio.desc_duracion;
             }
 
         }

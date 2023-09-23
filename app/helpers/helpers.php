@@ -99,6 +99,7 @@ function descuentoTemporal (Precio $precio)
             // eliminar descuento
             $precio->desc_duracion = 0;
             $precio->desc_porc = null;
+            $precio->updated_at = now();
             $precio->save();
         } else {
             // aplicar descuento
