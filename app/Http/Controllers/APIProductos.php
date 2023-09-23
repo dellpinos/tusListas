@@ -122,23 +122,20 @@ class APIProductos extends Controller
     public function update(Request $request)
     {
 
-        // Dolar mas alto registrado en la DB
-        $precio_dolar = Precio::orderBy('dolar', 'desc')->first();
-        $dolar = $precio_dolar->dolar;
-
         $this->validate($request, [
             'producto_id' => 'integer|required',
             'cantidad' => 'integer|nullable',
             'precio' => 'numeric|required',
             'descuento' => 'numeric|nullable',
-            'semanas' => 'integer'
+            'semanas' => 'integer',
+            'dolar' => 'numeric|required',
         ]);
 
         $producto = Producto::find($request->producto_id);
         $precio = Precio::find($producto->precio_id);
 
         $precio->increment('contador_update');
-        $precio->dolar = $dolar;
+        $precio->dolar = $request->dolar;
         $precio->precio = $request->precio;
         $precio->desc_porc = $request->descuento;
         $precio->desc_duracion = $request->semanas;

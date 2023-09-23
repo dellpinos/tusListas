@@ -3,11 +3,9 @@ import * as helpers from './helpers';
 
 (function () {
 
-
-    /// Siempre almacena como ganancia del producto
-
     if (document.querySelector('#precio')) {
 
+        const pendientes = document.querySelector('#pendientes');
         const campoPersonalizado = document.querySelector('#ganancia');
         const campoSinIva = document.querySelector('#precio');
         const campoConIva = document.querySelector('#precio-iva');
@@ -36,6 +34,8 @@ import * as helpers from './helpers';
         const btnDestroy = document.querySelector('#producto-destroy');
         const idHidden = document.querySelector('#producto-id');
 
+        // Carga datos de un penidente en el formulario
+        pendientes.addEventListener('click', cargarPendiente);
 
         radiobtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -77,6 +77,38 @@ import * as helpers from './helpers';
             calcularGanancia(click);
 
         });
+
+        function cargarPendiente() {
+
+            // consultar si hay pendientes
+
+            // crear alerta pendientes
+            
+            // Consultar DB por el penidente mas antiguo
+            console.log("Pendiente");
+            const pendiente = consultarPenidente();
+            // Generar código
+            console.log(pendiente);
+                
+
+            // Completar los campos con este pendiente
+
+            // Eliminar pendiente, alerta "pendiente eliminado/cargado"
+
+            // Recargar alerta, eliminar si no hay mas pendientes
+        }
+        async function consultarPenidente() {
+            try {
+                const url = '/api/pendientes/index';
+                const respuesta = await fetch(url);
+                const resultado = await respuesta.json();
+
+                return resultado;
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
 
         // Habilitar / Deshabilitar campo opcional
         function habilitarCampo(e) {
@@ -242,7 +274,7 @@ import * as helpers from './helpers';
         // Contiene una llamada a filtrarVirtualDOM(), es un helper
         // Contiene una llamada a destroy(), es un helper (id y tipo son pasados a destroy())
 
-        if(btnDestroy) {
+        if (btnDestroy) {
             btnDestroy.onclick = function () {
                 console.log(idHidden.value);
                 alertaDelete(idHidden.value, "producto", tokenCSRF);
@@ -351,7 +383,6 @@ import * as helpers from './helpers';
             });
         }
 
-
         // Toma un id a eliminar y un tipo, este puede ser "fabricante, provider o fabricante". El tipo es parte de la URL hacia la API
         // tokenCSRF debe estar definido como variable global dentro del archivo que importa estas funciones
         async function destroy(id, tipo, token, confirm = false) {
@@ -378,7 +409,6 @@ import * as helpers from './helpers';
             }
         }
 
-        //////////
     }
 })();
 

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\APIProductos;
 use App\Http\Controllers\APIProviders;
 use App\Http\Controllers\APICategorias;
+use App\Http\Controllers\APIPendientes;
 use App\Http\Controllers\APIFabricantes;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
@@ -109,12 +110,9 @@ Route::get('/api/productos/all', [APIProductos::class, 'all']);
 Route::post('/api/productos/destroy', [APIProductos::class, 'destroy']);
 Route::post('/api/productos/update', [APIProductos::class, 'update']);
 
-
-
-
-
-
-
-
+// Pendientes
+Route::get('/api/pendientes/index', [APIPendientes::class, 'index']);
+Route::post('/api/pendientes/create', [APIPendientes::class, 'create']);
+Route::post('/api/pendientes/destroy', [APIPendientes::class, 'destroy']);
 
 

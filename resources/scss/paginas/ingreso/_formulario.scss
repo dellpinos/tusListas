@@ -48,6 +48,9 @@
                 background-color: inherit;
             }
         }
-
+    }
+    &__numero {
+        color: v.$negro;
+        font-size: 1.9rem;
     }
 }

@@ -6,6 +6,7 @@ import * as helpers from './helpers';
 
         const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         const grid = document.querySelector('#mercaderia-grid');
+        const dolarPrevio = document.querySelector('.ingreso__numero');
         let flag = 0; // Saber cuando se obtuvo el primer resultado de la DB
         let arrayCoincidencias = []; // Aqui se almacena el resultado de la DB
         let coincidenciasPantalla = []; // Aqui se almacena el resultado de la DB filtrado
@@ -17,10 +18,6 @@ import * as helpers from './helpers';
 
         function app() {
 
-            // Limpiar variables en memoria
-            precioId = '';
-            productoId = '';
-
             if (contForms > 100) {
                 window.location.reload();
             }
@@ -29,7 +26,7 @@ import * as helpers from './helpers';
             }
 
             const obj = generarForm();
-            const { checkbox, cantidad, codigo, nombre, precio, descuento, semanas, btnGuardar, btnEliminar } = obj;
+            const {cantidad, codigo, nombre, precio, descuento, semanas, btnGuardar, btnEliminar } = obj;
 
             nombre.addEventListener('click', (e) => {
                 generarHTML(e, obj);
@@ -66,45 +63,65 @@ import * as helpers from './helpers';
                     cantidad.classList.remove('b-red', 'b-green');
                 }
 
-                console.log(precioId, productoId);
-                // Almacenar informacion<<<<
+                // Almacenar informacion
                 const resultado = almacenarDatos(objV);
 
                 if (resultado) {
+                    // Limpiar variables en memoria
+                    precioId = '';
+                    productoId = '';
                     desactivarCampos(obj);
                     app();
                 }
-
-
             });
+
             btnEliminar.addEventListener('click', (e) => {
                 // Vaciar campos
                 vaciarCampos(obj);
-
-
-
-
+                // Limpiar variables en memoria
+                precioId = '';
+                productoId = '';
 
             });
-
-            // Añadir funcionalidad Código: Busca el código y autocompleta todos los campos, no genera HTML. El código existe o no
-
-            // Añadfir funcionalidad Guardar: Almacena la información, bloquea los campos, cambia boton ,crea un nuevo formulario
 
             contForms++;
         }
 
         async function almacenarDatos(objV) {
 
-            /// Tengo un objeto con todos los datos validados por Js, debo almacenarlo en la DB
-            // En viar objeto con fetch
+            const { cantidad, precio, descuento, semanas, pendiente, nombre, dolar } = objV;
 
-            console.log(productoId);
-
-            const { cantidad, precio, descuento, semanas, pendiente } = objV;
-
-            if(pendiente) {
+            if (pendiente) {
                 // Es pendiente, se almacena en "pendientes"
+
+                console.log('Pendiente!');
+                try {
+                    const datos = new FormData();
+                    datos.append('nombre', nombre);
+                    datos.append('cantidad', cantidad);
+                    datos.append('precio', precio);
+                    datos.append('descuento', descuento);
+                    datos.append('semanas', semanas);
+                    datos.append('dolar', dolar);
+
+                    const url = '/api/pendientes/create';
+                    const respuesta = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': tokenCSRF
+                        },
+                        body: datos
+                    });
+
+                    let resultado = await respuesta.json();
+
+                    return resultado;
+
+                } catch (error) {
+                    console.log('El servidor no responde');
+                }
+
+
             } else {
                 // No es pendiente, se almacena en "productos"
                 try {
@@ -114,7 +131,8 @@ import * as helpers from './helpers';
                     datos.append('precio', precio);
                     datos.append('descuento', descuento);
                     datos.append('semanas', semanas);
-    
+                    datos.append('dolar', dolar);
+
                     const url = '/api/productos/update';
                     const respuesta = await fetch(url, {
                         method: 'POST',
@@ -123,10 +141,10 @@ import * as helpers from './helpers';
                         },
                         body: datos
                     });
-    
+
                     let resultado = await respuesta.json();
                     return resultado;
-    
+
                 } catch (error) {
                     console.log('El servidor no responde');
                 }
@@ -183,7 +201,6 @@ import * as helpers from './helpers';
                 objV = {
                     pendiente: true
                 }
-
                 // Es pendiente
                 if (codigo.value !== '') {
                     // El código debe estar vacio
@@ -214,6 +231,13 @@ import * as helpers from './helpers';
 
                 objV = {
                     pendiente: false
+                }
+                if (productoId === '' || precioId === '') {
+                    flagValidacion[5] = false;
+                    codigo.classList.add('b-red');
+                } else {
+                    flagValidacion[5] = true;
+                    codigo.classList.add('b-green');
                 }
                 // No es pendiente
                 if (codigo.value === '' || !regexCodigo.test(codigo.value)) {
@@ -247,6 +271,7 @@ import * as helpers from './helpers';
                     flagValidacionGral = false;
                 }
             });
+
             if (flagValidacionGral) {
 
                 // Sanitaizando datos que serán almacenados
@@ -254,6 +279,9 @@ import * as helpers from './helpers';
                 productoId = parseInt(productoId);
                 let cantidadDB = '';
                 let descuentoDB = '';
+                const pendiente = objV.pendiente;
+
+                let dolar = parseInt(dolarPrevio.textContent);
 
                 // Reemplazo NaN por null
                 if (isNaN(parseInt(cantidad.value))) {
@@ -268,12 +296,16 @@ import * as helpers from './helpers';
                 }
 
                 objV = {
+                    dolar: dolar,
+                    nombre: nombre.value,
+                    pendiente: pendiente,
                     cantidad: cantidadDB,
                     precio: parseFloat(precio.value),
                     descuento: descuentoDB,
                     semanas: parseInt(semanas.value),
                     validado: true,
                 }
+
                 return objV;
 
             } else {
@@ -629,10 +661,5 @@ import * as helpers from './helpers';
                 console.log('El servidor no responde');
             }
         }
-
-
-
-
-
     }
 })();

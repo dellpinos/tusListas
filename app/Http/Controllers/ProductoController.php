@@ -6,6 +6,7 @@ use App\Models\Precio;
 use App\Models\Producto;
 use App\Models\Provider;
 use App\Models\Categoria;
+use App\Models\Pendiente;
 use App\Models\Fabricante;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -26,7 +27,9 @@ class ProductoController extends Controller
 
         $codigo = generarCodigo(); // helper
         $precio = Precio::orderBy('dolar', 'desc')->first();
+        $pendientes = Pendiente::all()->count();
         $dolar_pred = '';
+
 
 
         if($precio !== null) { // En caso del primer producto
@@ -41,7 +44,8 @@ class ProductoController extends Controller
             'categorias' => $categorias,
             'fabricantes' => $fabricantes,
             'providers' => $providers,
-            'dolar_pred' => $dolar_pred
+            'dolar_pred' => $dolar_pred,
+            'pendientes' => $pendientes
         ]);
     }
     public function store(Request $request)
@@ -78,8 +82,8 @@ class ProductoController extends Controller
 
 
         $this->validate($request, [
-            'codigo' => 'required|max:4|min:4|unique:productos',
-            'nombre' => 'required|max:60|unique:productos',
+            'codigo' => 'required|string|max:4|min:4|unique:productos',
+            'nombre' => 'required|string|max:60|unique:productos',
             'categoria_id' => 'required|integer',
             'fabricante_id' => 'required|integer',
             'provider_id' => 'required|integer',
@@ -365,8 +369,8 @@ class ProductoController extends Controller
 
         $this->validate($request, [
             // Validacion de formulario principal
-            'codigo' => 'required|max:4|min:4|unique:productos,codigo,' . $producto->id,
-            'nombre' => 'required|max:60|unique:productos,nombre,' . $producto->id,
+            'codigo' => 'required|string|max:4|min:4|unique:productos,codigo,' . $producto->id,
+            'nombre' => 'required|string|max:60|unique:productos,nombre,' . $producto->id,
             'categoria_id' => 'required|integer',
             'fabricante_id' => 'required|integer',
             'provider_id' => 'required|integer',
@@ -477,25 +481,8 @@ class ProductoController extends Controller
                 'contenido_total' => $request->contenido_total,
                 'ganancia_fraccion' => $request->ganancia_fraccion
             ]);
-
-
         }
 
-
         return redirect()->route('producto.show', ['producto' => $producto]);
-    }
-
-
-
-
-
-    public function destroy(Producto $producto)
-    {
-
-        $producto->delete();
-
-        return redirect()->route('buscador');
-
-        // Deben eliminarse ambas versiones, no fraccionado y fraccionado
     }
 }

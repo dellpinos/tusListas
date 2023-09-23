@@ -60,7 +60,6 @@ function precioVenta(Producto $producto, Precio $precio)
     }
 
     $producto->venta = $producto->ganancia * ($precio->precio * 1.21);
-    $producto->increment('contador_show');
 
     // Producto fraccionado
     if ($producto->unidad_fraccion !== null && $producto->contenido_total !== null && $producto->ganancia_fraccion !== null) {

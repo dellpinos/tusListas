@@ -43,7 +43,6 @@ import Swal from 'sweetalert2';
             preciosArray = [];
             table.classList.remove('display-none');
 
-
             // Consultar DB
             paginadorDesactualizados();
 
@@ -86,34 +85,15 @@ import Swal from 'sweetalert2';
                 mostrarElementos();
 
                 btnDolarAct.addEventListener('click', () => {
-                    console.log(valor);
-                    // Alerta sweet Alert
+
                     actualizarPrecios();
 
-                    // POST a la DB
-
-                    // Alerta por cambio realizado
                 });
-
 
             } catch (error) {
                 console.log(error);
             }
         }
-
-        // dentro del try/catch
-        // envio al servidor el valor para que retorne la cantidad de registros que seran afectados
-        // Alerta para confirmar operacion con el numero de registros afectados
-        // Si confirma
-        // Toma el valor ingresado por el usuario
-        // Envia este valor y el servidor debe consultar todos los precios con el dolar por debajo de este valor
-        // En cada Precio divide el valor (nuevo) por el dolar almacenado (porcentaje de aumento)
-        // multiplica este porcentaje por el precio de costo sin iva
-        // el servidor retorna la cantidad de resultados afectados
-        // se dispara la alerta de exito
-
-
-
         async function actualizarPrecios() {
             try {
 
@@ -137,7 +117,6 @@ import Swal from 'sweetalert2';
             } catch (error) {
                 console.log('El servidor no responde' + error);
             }
-
         }
 
         // Consultar todos los elementos
@@ -151,7 +130,6 @@ import Swal from 'sweetalert2';
                 productosArray = resultado.productos; // array de productos
                 preciosArray = resultado.precios; // array de precios
 
-                // <<< Mostrar Elementos
                 mostrarElementos();
 
             } catch (error) {
@@ -169,13 +147,11 @@ import Swal from 'sweetalert2';
             mensajeInfo.classList.add('display-none');
             table.classList.add('display-none');
             btnDolarAct.classList.add('display-none');
-
         }
 
         /// Recorre el Virtual DOM
         function mostrarElementos() {
 
-            // <<<< Limpiar elementos
             limpiarProductos();
 
             productosArray.forEach(producto => { // Cada producto
@@ -236,14 +212,12 @@ import Swal from 'sweetalert2';
                                 boton.addEventListener('click', (e) => {
                                     console.log(e.target.dataset.btn);
                                     if (e.target.dataset.btn === 'siguiente') {
-                                        // modificar page ++
                                         // regenerar HTML
                                         page++;
                                         paginadorDesactualizados();
                                         return;
 
                                     } else {
-                                        // modificar page --
                                         // regenerar HTML
                                         page--;
                                         paginadorDesactualizados();
@@ -287,8 +261,8 @@ import Swal from 'sweetalert2';
                                 afectados + " precios han sido actualizados",
                                 'success'
                             );
+                            
                             // Recargar en pantalla y reiniciar VirtualDOM
-
                             reiniciarPagina();
 
                         } else {

@@ -9,6 +9,9 @@
 @endsection
 
 @section('contenido')
+@if($pendientes > 0)
+<p class="mensaje__info mensaje__pendientes" id="pendientes">Productos Pendientes: {{$pendientes}}</p>
+@endif
     <form action="{{ route('producto.store') }}" method="POST" class="producto-formulario__grid">
         @csrf
         <div class="formulario__campo-contenedor">
