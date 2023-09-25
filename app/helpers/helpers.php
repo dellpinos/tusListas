@@ -66,7 +66,7 @@ function precioVenta(Producto $producto, Precio $precio)
 
     // Producto fraccionado
     if ($producto->unidad_fraccion !== null && $producto->contenido_total !== null && $producto->ganancia_fraccion !== null) {
-        $producto->venta = $producto->ganancia * ($precio->precio * 1.21);
+        $producto->venta = $producto->ganancia * ($precio_costo * 1.21);
         $producto->venta = ($producto->venta * $producto->ganancia_fraccion) / $producto->contenido_total;
         $producto->venta = redondear($producto->venta);
     }

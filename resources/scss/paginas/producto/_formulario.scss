@@ -17,6 +17,7 @@
         justify-content: space-between;
         gap: 2rem;
     }
+
     &__contenedor {
         display: flex;
         width: 100%;
@@ -36,6 +37,7 @@
             margin: 0;
             font-size: 1.6rem;
         }
+
         input {
             width: 2.5rem;
             height: 2.5rem;
@@ -45,13 +47,40 @@
     &__venta {
         display: flex;
         justify-content: space-between;
+
     }
-    &__venta-campo {
-        width: 50%;
+
+    &__venta-precio {
+        color: v.$verde;
+        text-align: center;
+
+        width: 90%;
+        font-size: 8rem;
+        font-weight: v.$bold;
     }
+
     &__venta-boton {
-        @include m.boton(v.$verde, v.$blanco);
-        border-radius: .5rem;
+
+        transform: rotate(0);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        padding: .5rem;
+        font-size: 2rem;
+        color: v.$blanco;
+        background-color: v.$verde;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: all 3s ease-out;
+
+        &:hover {
+            transform: rotate(2turn);
+            color: v.$verde;
+            background-color: v.$blanco;
+
+
+        }
     }
 
     &__contenedor-oculto {
@@ -61,8 +90,9 @@
         visibility: hidden;
         transition: opacity 2s, height 2s, overflow 2s, visibility 2s;
 
-        
+
     }
+
     &__contenedor-visible {
         opacity: 1;
         height: auto;

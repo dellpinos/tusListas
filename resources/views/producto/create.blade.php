@@ -91,11 +91,16 @@
                     <label for="dolar" class="formulario__label">Cotización dolar Blue
                         (compra)</label>
                     <input required type="number" id="dolar" name="dolar" placeholder="0"
-                        class="formulario__campo text-right @error('dolar') borde__error @enderror" value="{{ $dolar_pred }}">
+                        class="formulario__campo  @error('dolar') borde__error @enderror" value="{{ $dolar_pred }}">
                     @error('dolar')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror
                     <a class="enlace__normal" href="https://dolarhoy.com/cotizaciondolarblue" target="_blank">Consultar Dolar Hoy</a>
+                </div>
+                
+                <div class="producto-formulario__flex producto-formulario__contenedor-checkbox">
+                    <input type="checkbox" id="check-fraccion"/>
+                    <label for="check-fraccion" class="formulario__label" >Venta fraccionado</label>
                 </div>
 
             </div>
@@ -105,7 +110,7 @@
                 <div class="formulario__campo-contenedor">
                     <label for="precio" class="formulario__label">Precio Costo sin IVA</label>
                     <input required type="number" step="any" id="precio" name="precio" placeholder="0"
-                        class="formulario__campo text-right @error('precio') borde__error @enderror" value="{{ old('precio') }}">
+                        class="formulario__campo  @error('precio') borde__error @enderror" value="{{ old('precio') }}">
                     @error('precio')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror
@@ -114,7 +119,7 @@
                 <div class="formulario__campo-contenedor">
                     <label for="precio-iva" class="formulario__label">Precio Costo con IVA</label>
                     <input type="number" step="any" id="precio-iva" placeholder="0"
-                        class="formulario__campo text-right @error('precio') borde__error @enderror">
+                        class="formulario__campo  @error('precio') borde__error @enderror">
                     @error('precio')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror
@@ -136,32 +141,32 @@
                 <div class="formulario__campo-contenedor">
                     <input type="number" step="0.1" min="1" id="ganancia" {{-- elimino el name --}}
                         placeholder="1.2, 1.7, 1.9" readonly
-                        class=" formulario__campo formulario__campo--no-activo text-right @error('ganancia') borde__error @enderror">
+                        class=" formulario__campo formulario__campo--no-activo  @error('ganancia') borde__error @enderror">
                     @error('ganancia')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror
                 </div>
                 <input type="hidden" id="ganancia-numero" name="ganancia_numero" value="">
 
-                {{-- Si el producto era un "pendiente", descuento, duracion y stock --}}
+                {{-- Si el producto era un "pendiente": descuento, duracion y stock --}}
                 <input type="hidden" name="desc_porc" value="">
                 <input type="hidden" name="desc_duracion" value="">
                 <input type="hidden" name="stock" value="">
 
 
+
                 <div class="formulario__campo-contenedor">
-                    <label for="precio" class="formulario__label">Precio Venta</label>
                     <div class="producto-formulario__venta">
-                        <input type="number" id="precio-venta" placeholder="0" readonly
-                            class="formulario__campo producto-formulario__venta-campo formulario__campo--no-activo text-right">
-                        <a id="btn-venta" class="producto-formulario__venta-boton">Calcular Precio</a>
+                        <p class="producto-formulario__venta-precio" id="precio-venta">$ ?</p>
+                        <a id="btn-venta" class="producto-formulario__venta-boton">
+                            <i class="fa-solid fa-rotate-right"></i>
+                        </a>
                     </div>
                 </div>
 
-                <div class="producto-formulario__flex producto-formulario__contenedor-checkbox">
-                    <input type="checkbox" id="check-fraccion"/>
-                    <label for="check-fraccion" class="formulario__label" >Venta fraccionado</label>
-                </div>
+
+
+
 
             </div>
         </div>
@@ -194,7 +199,7 @@
                 <div class="formulario__campo-contenedor width-full">
                     <label for="contenido-total" class="formulario__label">Total de Unidades</label>
                     <input type="number" id="contenido-total" name="contenido_total" placeholder="25, 3, 500"
-                        class="formulario__campo text-right @error('contenido_total') borde__error @enderror" value="{{ old('contenido_total') }}">
+                        class="formulario__campo  @error('contenido_total') borde__error @enderror" value="{{ old('contenido_total') }}">
                     @error('contenido_total')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror
@@ -203,7 +208,7 @@
                 <div class="formulario__campo-contenedor width-full">
                     <label for="ganancia-fraccion" class="formulario__label">Ganancia Extra Fracción</label>
                     <input type="number" step="any" min="1" max="10" id="ganancia-fraccion" name="ganancia_fraccion" placeholder="1.1, 1.2, 1.4"
-                        class="formulario__campo text-right @error('ganancia_fraccion') borde__error @enderror" value="{{ old('ganancia_fraccion') }}">
+                        class="formulario__campo  @error('ganancia_fraccion') borde__error @enderror" value="{{ old('ganancia_fraccion') }}">
                     @error('ganancia_fraccion')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror
@@ -214,13 +219,23 @@
 
 
             <div class="formulario__campo-contenedor">
-                <label for="precio-fraccionado" class="formulario__label">Precio Venta Fraccionado</label>
                 <div class="producto-formulario__venta">
-                    <input type="number" id="precio-fraccionado" placeholder="0" readonly
-                        class="text-right formulario__campo producto-formulario__venta-campo formulario__campo--no-activo ">
-                    <a id="btn-fraccionado" class="producto-formulario__venta-boton">Calcular Precio Fraccionado</a>
+                    <p class="producto-formulario__venta-precio" id="precio-fraccionado">$ ?</p>
+                    <a id="btn-fraccionado" class="producto-formulario__venta-boton">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </a>
                 </div>
             </div>
+
+
+
+
+            {{-- <label for="precio-fraccionado" class="formulario__label">Precio Venta Fraccionado</label>
+            <div class="producto-formulario__venta">
+                <input type="number" id="precio-fraccionado" placeholder="0" readonly
+                    class=" formulario__campo producto-formulario__venta-campo formulario__campo--no-activo ">
+                <a id="btn-fraccionado" class="producto-formulario__venta-boton">Calcular Precio Fraccionado</a>
+            </div> --}}
 
 
 

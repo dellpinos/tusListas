@@ -129,7 +129,6 @@
                     <a href="/producto/producto-edit/${resultado.producto.id}" class="producto__card-contenedor-boton producto__boton producto__boton--verde">Modificar</a>
                 </a>
                 `;
-
                     } else {
                         // No tiene descuento
 

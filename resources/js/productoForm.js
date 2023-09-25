@@ -25,8 +25,6 @@ import * as helpers from './helpers';
 
         const radiobtns = document.querySelectorAll('input[type="radio"]');
         let radioChecked = document.querySelector('input[type="radio"]:checked');
-        let precioVenta = 0;
-        const click = true;
 
         const selectCat = document.querySelector('#categoria');
         const selectProv = document.querySelector('#provider');
@@ -38,13 +36,16 @@ import * as helpers from './helpers';
         const durHidden = document.querySelector('input[name="desc_duracion"]');
         const stockHidden = document.querySelector('input[name="stock"]');
 
+        let precioVenta = '';
+        const click = true;
+
 
         radiobtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
 
                 habilitarCampo(e);
                 calcularGanancia();
-                campoVenta.value = '';
+                campoVenta.textContent = '$ 0';
             });
         });
 
@@ -58,7 +59,7 @@ import * as helpers from './helpers';
             }
 
             (async () => {
-                const resultado = await contadorPenidente();
+                const resultado = await contadorPendiente();
 
                 mensajePendiente(resultado);
             })();
@@ -66,8 +67,8 @@ import * as helpers from './helpers';
 
         campoSinIva.addEventListener('input', function () {
 
-            precioFraccionado.value = 0;
-            campoVenta.value = 0;
+            precioFraccionado.textContent = '$ 0';
+            campoVenta.textContent = '$ 0';
             calcularGanancia(click);
             campoConIva.value = Math.round(campoSinIva.value * 1.21);
         });
@@ -124,12 +125,12 @@ import * as helpers from './helpers';
 
             // Recargar alerta, eliminar si no hay mas pendientes
             if (resultado) {
-                const respuesta = await contadorPenidente();
+                const respuesta = await contadorPendiente();
                 mensajePendiente(respuesta);
             }
 
         }
-        async function contadorPenidente() {
+        async function contadorPendiente() {
             try {
                 const url = '/api/pendientes/count';
                 const respuesta = await fetch(url);
@@ -196,7 +197,7 @@ import * as helpers from './helpers';
 
         async function calcularGanancia(click) {
 
-            if (selectCat.value !== null && selectProv.value !== null) { // Debe escoger categoria y provider primero
+            if (selectCat.value !== '' && selectProv.value !== '') { // Debe escoger categoria y provider primero
 
                 radioChecked = document.querySelector('input[type="radio"]:checked');
 
@@ -223,7 +224,7 @@ import * as helpers from './helpers';
                 }
 
                 if (click) { // Solo cambio el "precio venta" si es presionado el btn de calcular
-                    campoVenta.value = helpers.redondear(precioVenta);
+                    campoVenta.textContent = "$ " + helpers.redondear(precioVenta);
                 }
 
                 if (checkFraccion) {
@@ -234,6 +235,12 @@ import * as helpers from './helpers';
 
                     }
                 }
+            } else {
+                Swal.fire(
+                    'Error',
+                    'Debes escoger Categoria y Provider primero',
+                    'error'
+                  );
             }
         }
 
@@ -312,11 +319,15 @@ import * as helpers from './helpers';
 
         async function calcularGananciaFraccionado() {
 
-            if (precioVenta) {
+            if (precioVenta && gananciaFraccion.value !== '') { // <<<<<<<<<<
                 // Calculo leyendo el formulario
-                precioFraccionado.value = helpers.redondear((precioVenta / totalFraccionado.value) * gananciaFraccion.value);
+                precioFraccionado.textContent = "$ " + helpers.redondear((precioVenta / totalFraccionado.value) * gananciaFraccion.value);
             } else {
-                console.log('Debes calcular el precio No Fraccionado primero');
+                Swal.fire(
+                    'Error',
+                    'Debes calcular el precio no-fraccionado e indicar una ganancia fraccionado',
+                    'error'
+                  );
             }
         }
 
@@ -330,11 +341,11 @@ import * as helpers from './helpers';
             totalFraccionado.required = false;
             gananciaFraccion.required = false;
 
-            precioFraccionado.value = '';
+            precioFraccionado.textContent = '$ 0';
             unidadFraccion.value = null; // Cambio de '' a null
             totalFraccionado.value = null;
             gananciaFraccion.value = null;
-            codigoFraccionado = null;
+            codigoFraccionado.value = '';
         }
 
         // Toma un id a eliminar, un tipo (fabricante, provider o fabricante) que será parte de la url hacia la API

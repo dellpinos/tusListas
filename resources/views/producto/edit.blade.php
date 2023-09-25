@@ -56,7 +56,7 @@
                         <label for="categoria" class="formulario__label">Categoria</label>
                         <select
                             class="formulario__campo @if ($producto_fraccionado) formulario__campo--no-activo @endif @error('categoria') borde__error @enderror"
-                            id="categoria" name="categoria_id" @if ($producto_fraccionado) readonly @endif>
+                            id="categoria" name="categoria_id" @if ($producto_fraccionado) disabled @endif>
                             <option value="{{ $categoria->id }}" selected>{{ $categoria->nombre }}</option>
 
                             @foreach ($categorias as $elemento)
@@ -73,7 +73,7 @@
                         <label for="provider" class="formulario__label">Proveedor</label>
                         <select
                             class="formulario__campo @if ($producto_fraccionado) formulario__campo--no-activo @endif @error('provider') borde__error @enderror"
-                            id="provider" name="provider_id" @if ($producto_fraccionado) readonly @endif>
+                            id="provider" name="provider_id" @if ($producto_fraccionado) disabled @endif>
 
                             <option value="{{ $provider->id }}" selected>{{ $provider->nombre }}</option>
 
@@ -91,7 +91,7 @@
                         <label for="fabricante" class="formulario__label">Fabricante</label>
                         <select
                             class="formulario__campo @if ($producto_fraccionado) formulario__campo--no-activo @endif @error('fabricante') borde__error @enderror"
-                            id="fabricante" name="fabricante_id" @if ($producto_fraccionado) readonly @endif>
+                            id="fabricante" name="fabricante_id" @if ($producto_fraccionado) disabled @endif>
 
                             <option value="{{ $fabricante->id }}" selected>{{ $fabricante->nombre }}</option>
 
@@ -109,7 +109,7 @@
                         <label for="dolar" class="formulario__label">Cotización dolar Blue
                             (compra)</label>
                         <input type="number" id="dolar" name="dolar" placeholder="0" value="{{ intval($precio->dolar) }}" required
-                            class="formulario__campo text-right @error('dolar') borde__error @enderror">
+                        @if ($producto_fraccionado) disabled @endif class="formulario__campo  @if ($producto_fraccionado) formulario__campo--no-activo @endif @error('dolar') borde__error @enderror">
                         @error('dolar')
                             <p class="alerta__error">{{ $message }}</p>
                         @enderror
@@ -123,7 +123,7 @@
                     <div class="formulario__campo-contenedor">
                         <label for="precio" class="formulario__label">Precio Costo sin IVA</label>
                         <input type="number" step="any" id="precio" name="precio" placeholder="0" value="{{ $precio->precio }}" required
-                            class="formulario__campo text-right @error('precio') borde__error @enderror">
+                        @if ($producto_fraccionado) disabled @endif class="formulario__campo  @if ($producto_fraccionado) formulario__campo--no-activo @endif @error('precio') borde__error @enderror">
                         @error('precio')
                             <p class="alerta__error">{{ $message }}</p>
                         @enderror
@@ -131,8 +131,8 @@
 
                     <div class="formulario__campo-contenedor">
                         <label for="precio-iva" class="formulario__label">Precio Costo con IVA</label>
-                        <input type="number" id="precio-iva" placeholder="0"
-                            class="formulario__campo text-right @error('precio') borde__error @enderror">
+                        <input type="number" id="precio-iva" placeholder="0" @if ($producto_fraccionado) disabled @endif
+                            class="formulario__campo  @if ($producto_fraccionado) formulario__campo--no-activo @endif @error('precio') borde__error @enderror">
                     </div>
 
                     <label for="ganancia" class="formulario__label">Ganancia</label>
@@ -140,20 +140,20 @@
 
                         <label for="ganancia-categoria" class="formulario__label--small">Categoria</label>
                         <input type="radio" value="categoria" name="ganancia" class="cursor-pointer"
-                            id="ganancia-categoria" @if ($producto->ganancia_tipo === 'categoria') checked @endif />
+                            id="ganancia-categoria" @if ($producto_fraccionado) disabled @endif @if ($producto->ganancia_tipo === 'categoria') checked @endif />
 
                         <label for="ganancia-provider" class="formulario__label--small">Proveedor</label>
                         <input type="radio" value="provider" name="ganancia" class="cursor-pointer"
-                            id="ganancia-provider" @if ($producto->ganancia_tipo === 'provider') checked @endif />
+                            id="ganancia-provider" @if ($producto_fraccionado) disabled @endif @if ($producto->ganancia_tipo === 'provider') checked @endif />
 
                         <label for="ganancia-personalizada" class="formulario__label--small">Personalizada</label>
                         <input type="radio" value="personalizada" name="ganancia" class="cursor-pointer"
-                            id="ganancia-personalizada" @if ($producto->ganancia_tipo === 'producto') checked @endif />
+                            id="ganancia-personalizada" @if ($producto_fraccionado) disabled @endif @if ($producto->ganancia_tipo === 'producto') checked @endif />
                     </div>
                     <div class="formulario__campo-contenedor">
                         <input type="number" step="0.1" min="0" id="ganancia"
-                            placeholder="1.2, 1.7, 1.9" value="{{ $producto->ganancia }}" readonly
-                            class=" formulario__campo formulario__campo--no-activo text-right @error('ganancia') borde__error @enderror">
+                            placeholder="1.2, 1.7, 1.9" value="{{ $producto->ganancia }}" readonly @if ($producto_fraccionado) disabled @endif
+                            class=" formulario__campo formulario__campo--no-activo  @error('ganancia') borde__error @enderror">
                         @error('ganancia')
                             <p class="alerta__error">{{ $message }}</p>
                         @enderror
@@ -164,7 +164,7 @@
                         <label for="precio" class="formulario__label">Precio Venta</label>
                         <div class="producto-formulario__venta">
                             <input type="number" id="precio-venta" placeholder="0" readonly
-                                class="formulario__campo producto-formulario__venta-campo formulario__campo--no-activo text-right">
+                                class="formulario__campo producto-formulario__venta-campo formulario__campo--no-activo ">
                             <a id="btn-venta" class="producto-formulario__venta-boton">Calcular Precio</a>
                         </div>
                     </div>
@@ -224,7 +224,7 @@
                         <label for="contenido-total" class="formulario__label ">Total de Unidades</label>
                         <input type="number" id="contenido-total" name="contenido_total" placeholder="3, 25, 500"
                             value="{{ $producto->contenido_total }}" @if ($producto_fraccionado) required @endif
-                            class="formulario__campo text-right @error('contenido-total') borde__error @enderror">
+                            class="formulario__campo  @error('contenido-total') borde__error @enderror">
                         @error('contenido-total')
                             <p class="alerta__error">{{ $message }}</p>
                         @enderror
@@ -234,7 +234,7 @@
                         <label for="ganancia-fraccion" class="formulario__label">Ganancia Extra Fracción</label>
                         <input type="number" id="ganancia-fraccion" step="any" name="ganancia_fraccion"
                             placeholder="1.1, 1.2, 1.4" value="{{ $producto->ganancia_fraccion }}" @if ($producto_fraccionado) required @endif
-                            class="formulario__campo text-right @error('ganancia-fraccion') borde__error @enderror">
+                            class="formulario__campo  @error('ganancia-fraccion') borde__error @enderror">
                         @error('ganancia-fraccion')
                             <p class="alerta__error">{{ $message }}</p>
                         @enderror
@@ -248,7 +248,7 @@
                     <label for="precio-fraccionado" class="formulario__label">Precio Venta Fraccionado</label>
                     <div class="producto-formulario__venta">
                         <input type="number" id="precio-fraccionado" placeholder="0" readonly
-                            class="formulario__campo producto-formulario__venta-campo formulario__campo--no-activo text-right">
+                            class="formulario__campo producto-formulario__venta-campo formulario__campo--no-activo ">
                         <a id="btn-fraccionado" class="producto-formulario__venta-boton">Calcular Precio Fraccionado</a>
                     </div>
                 </div>
