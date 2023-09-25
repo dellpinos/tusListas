@@ -19,7 +19,6 @@
     @endif
     <div class="producto-formulario__grid">
 
-
         <form action="{{ route('producto.update') }}" method="POST">
             @csrf
             <input type="hidden" name="id" value="{{ $producto->id }}" id="producto-id" />
@@ -180,7 +179,6 @@
                         <label for="check-fraccion" class="formulario__label">Venta fraccionado</label>
 
                     </div>
-
                 </div>
             </div>
 
