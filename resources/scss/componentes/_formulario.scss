@@ -98,6 +98,7 @@
     }
     &__boton--rojo {
         background-color: v.$rojo;
+        transition: all .5s ease;
 
         &:hover {
             background-color: v.$negro;

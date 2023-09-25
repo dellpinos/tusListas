@@ -16,8 +16,7 @@ class IngresoController extends Controller
     {
         // Dolar mas alto registrado en la DB
         $precio = Precio::orderBy('dolar', 'desc')->first();
-        $dolar = $precio->dolar;
-
+        $dolar = $precio->dolar ?? 1;
 
         return view('ingreso.index', [
             'dolar' => $dolar
