@@ -154,7 +154,6 @@
                 <input type="hidden" name="stock" value="">
 
 
-
                 <div class="formulario__campo-contenedor">
                     <div class="producto-formulario__venta">
                         <p class="producto-formulario__venta-precio" id="precio-venta">$ ?</p>
@@ -163,10 +162,6 @@
                         </a>
                     </div>
                 </div>
-
-
-
-
 
             </div>
         </div>
@@ -217,7 +212,6 @@
             </div> {{-- Fin contenedor Flex --}}
 
 
-
             <div class="formulario__campo-contenedor">
                 <div class="producto-formulario__venta">
                     <p class="producto-formulario__venta-precio" id="precio-fraccionado">$ ?</p>
@@ -226,18 +220,6 @@
                     </a>
                 </div>
             </div>
-
-
-
-
-            {{-- <label for="precio-fraccionado" class="formulario__label">Precio Venta Fraccionado</label>
-            <div class="producto-formulario__venta">
-                <input type="number" id="precio-fraccionado" placeholder="0" readonly
-                    class=" formulario__campo producto-formulario__venta-campo formulario__campo--no-activo ">
-                <a id="btn-fraccionado" class="producto-formulario__venta-boton">Calcular Precio Fraccionado</a>
-            </div> --}}
-
-
 
         </div> {{-- Fin contenedor oculto --}}
         <input type="submit" value="Crear Producto" class="formulario__boton">
