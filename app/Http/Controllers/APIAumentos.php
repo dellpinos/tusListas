@@ -95,36 +95,33 @@ class APIAumentos extends Controller
     }
     public function dolar_busqueda(Request $request)
     {
+        
+        $registros_por_pagina = 10;
 
         $input = $request->valor;
         $pagina_actual = $request->page;
 
         $pagina_actual = filter_var($pagina_actual, FILTER_VALIDATE_INT);
+        $total_registros = Precio::where('dolar', "<" ,$input)->count();
 
         if (!$pagina_actual || $pagina_actual < 1) {
-            return dd('error');
+            return json_encode("error");
         }
 
-        $total_registros = Precio::where('dolar', "<" ,$input)->count();
 
         if($total_registros < 1) {
             echo json_encode([
-                'productos' => false,
-                'precios' => false
+                'productos' => [],
+                'precios' => []
             ]);
             return;
         }
 
-        $registros_por_pagina = 10;
-
         $paginacion = new Paginacion($pagina_actual, $registros_por_pagina, $total_registros); // creo la instancia con "la forma de una paginacion"
-
 
         if ($paginacion->totalPaginas() < $pagina_actual) {
             return json_encode("error");
         }
-
-        $productos = [];
 
         $precios = Precio::where('dolar', "<", $input)->orderBy('dolar', 'ASC')->offset($paginacion->offset())->limit($registros_por_pagina)->get();
 

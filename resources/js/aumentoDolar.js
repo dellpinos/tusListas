@@ -48,8 +48,7 @@ import Swal from 'sweetalert2';
             // Consultar DB
             const resultado = await paginadorDesactualizados();
 
-
-            if (resultado.productos === false || resultado.precios === false) {
+            if (resultado.productos.length === 0 || resultado.precios.length === 0) {
 
                 sinResultados();
                 return;
@@ -82,7 +81,7 @@ import Swal from 'sweetalert2';
                 const datos = new FormData();
                 datos.append('valor', valor);
                 datos.append('page', page);
-                
+
                 const respuesta = await fetch(url, {
                     method: 'POST',
                     headers: {
@@ -90,7 +89,7 @@ import Swal from 'sweetalert2';
                     },
                     body: datos
                 });
-                
+
                 const resultado = await respuesta.json();
 
                 return resultado;
@@ -236,9 +235,6 @@ import Swal from 'sweetalert2';
         }
 
         async function alertaUpdate(valor, afectados) {
-
-            console.log("Hola");
-            console.log(("<<  < <> >  >>"));
 
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
