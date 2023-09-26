@@ -8,7 +8,7 @@ use App\Models\Producto;
 use App\Models\Provider;
 use App\Models\Categoria;
 use App\Models\Fabricante;
-use App\Helpers\Paginacion;
+use App\Models\Paginacion;
 use Illuminate\Http\Request;
 
 

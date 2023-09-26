@@ -35,7 +35,7 @@
                 <nav class="header__nav">
 
                     @if (auth()->user()->user_type === 'admin')
-                        <a class="header__enlace" href="{{ route('register') }}">- Test 04 - User <span
+                        <a class="header__enlace" href="{{ route('register') }}">- Test 05 - User <span
                                 class="font-regular">Admin</span></a>
                     @endif
                     <a class="header__enlace" href="#">Hola: <span
