@@ -15,8 +15,6 @@ import Swal from 'sweetalert2';
         const mensajeInfo = document.querySelector('#desactualizados-info');
         const btnDolarAct = document.querySelector('#btn-dolar-actualizar');
 
-        let flagAlerta = true;
-
         // Virtual DOM
         let productosArray = [];
         let preciosArray = [];
@@ -50,7 +48,8 @@ import Swal from 'sweetalert2';
             // Consultar DB
             const resultado = await paginadorDesactualizados();
 
-            if (!resultado.productos || !resultado.precios) {
+
+            if (resultado.productos === false || resultado.precios === false) {
 
                 sinResultados();
                 return;
@@ -83,7 +82,7 @@ import Swal from 'sweetalert2';
                 const datos = new FormData();
                 datos.append('valor', valor);
                 datos.append('page', page);
-
+                
                 const respuesta = await fetch(url, {
                     method: 'POST',
                     headers: {
@@ -91,7 +90,7 @@ import Swal from 'sweetalert2';
                     },
                     body: datos
                 });
-
+                
                 const resultado = await respuesta.json();
 
                 return resultado;

@@ -121,7 +121,7 @@ class APIAumentos extends Controller
 
 
         if ($paginacion->totalPaginas() < $pagina_actual) {
-            return dd('error');
+            return json_encode("error");
         }
 
         $productos = [];
@@ -162,8 +162,6 @@ class APIAumentos extends Controller
         ]);
     }
 
-
-    ///////////////
     public function dolar_listado()
     {
         // 10 precios - productos con "dolar" mas bajo
