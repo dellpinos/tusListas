@@ -1,8 +1,13 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Models;
 
-class Paginacion {
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Paginacion extends Model
+{
+    use HasFactory;
 
     public $pagina_actual;
     public $registros_por_pagina;
@@ -74,3 +79,6 @@ class Paginacion {
         return $html;
     }
 }
+
+
+
