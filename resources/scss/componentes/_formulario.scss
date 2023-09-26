@@ -43,6 +43,7 @@
         text-transform: uppercase;
         color: v.$grisClaro;
         font-weight: v.$bold;
+        white-space: nowrap;
 
         // Crear producto
         &--small {

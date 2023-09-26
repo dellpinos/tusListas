@@ -86,6 +86,9 @@ import * as helpers from './helpers';
         });
         function mensajePendiente(contador) {
             const contenedor = document.querySelector('#contenedor-pendientes');
+            while (contenedor.firstChild) {
+                contenedor.removeChild(contenedor.firstChild);
+            }
             if (contador > 0) {
                 const mensaje = document.createElement('P');
                 mensaje.classList.add('mensaje__info', 'mensaje__pendientes');
@@ -95,10 +98,6 @@ import * as helpers from './helpers';
                 // Carga datos de un penidente en el formulario
                 mensaje.addEventListener('click', cargarPendiente);
 
-            } else {
-                while (contenedor.firstChild) {
-                    contenedor.removeChild(contenedor.firstChild);
-                }
             }
         }
 

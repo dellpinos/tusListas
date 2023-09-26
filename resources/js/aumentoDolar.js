@@ -15,6 +15,8 @@ import Swal from 'sweetalert2';
         const mensajeInfo = document.querySelector('#desactualizados-info');
         const btnDolarAct = document.querySelector('#btn-dolar-actualizar');
 
+        let flagAlerta = true;
+
         // Virtual DOM
         let productosArray = [];
         let preciosArray = [];
@@ -34,9 +36,11 @@ import Swal from 'sweetalert2';
         // Obtener elementos
         listadoDesactualizados();
 
-        btnDolar.addEventListener('click', function () {
+        btnDolar.addEventListener('click', async function () {
             // Busqueda con el boton
-            valor = dolarInput.value;
+            if (dolarInput.value) {
+                valor = parseInt(dolarInput.value);
+            }
 
             // limpiar virtual DOM
             productosArray = [];
@@ -44,12 +48,35 @@ import Swal from 'sweetalert2';
             table.classList.remove('display-none');
 
             // Consultar DB
-            paginadorDesactualizados();
+            const resultado = await paginadorDesactualizados();
+
+            if (!resultado.productos || !resultado.precios) {
+
+                sinResultados();
+                return;
+
+            } else {
+                mensajeInfo.classList.remove('display-none');
+                btnDolarAct.classList.remove('display-none');
+                mensajeInfo.textContent = "Productos con un valor dolar inferior a U$S " + valor;
+
+                productosArray = resultado.productos;
+                preciosArray = resultado.precios;
+                paginacion = resultado.paginacion;
+
+                // Generar elementos
+                mostrarElementos();
+            }
+
+        });
+        btnDolarAct.addEventListener('click', () => {
+
+            actualizarPrecios();
 
         });
 
-
         async function paginadorDesactualizados() {
+
             try {
                 const url = '/api/aumentos/dolar-busqueda';
 
@@ -67,28 +94,7 @@ import Swal from 'sweetalert2';
 
                 const resultado = await respuesta.json();
 
-                if (!resultado.productos || !resultado.precios) {
-
-                    sinResultados();
-                    return;
-                }
-
-                mensajeInfo.classList.remove('display-none');
-                btnDolarAct.classList.remove('display-none');
-                mensajeInfo.textContent = "Productos con un valor dolar inferior a U$S " + valor;
-
-                productosArray = resultado.productos;
-                preciosArray = resultado.precios;
-                paginacion = resultado.paginacion;
-
-                // Generar elementos
-                mostrarElementos();
-
-                btnDolarAct.addEventListener('click', () => {
-
-                    actualizarPrecios();
-
-                });
+                return resultado;
 
             } catch (error) {
                 console.log(error);
@@ -108,11 +114,10 @@ import Swal from 'sweetalert2';
                     },
                     body: datos
                 });
-        
+
                 const resultado = await respuesta.json();
 
-                await alertaUpdate(valor, resultado);
-
+                alertaUpdate(valor, resultado);
 
             } catch (error) {
                 console.log('El servidor no responde' + error);
@@ -233,6 +238,9 @@ import Swal from 'sweetalert2';
 
         async function alertaUpdate(valor, afectados) {
 
+            console.log("Hola");
+            console.log(("<<  < <> >  >>"));
+
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -261,7 +269,7 @@ import Swal from 'sweetalert2';
                                 afectados + " precios han sido actualizados",
                                 'success'
                             );
-                            
+
                             // Recargar en pantalla y reiniciar VirtualDOM
                             reiniciarPagina();
 
@@ -301,7 +309,7 @@ import Swal from 'sweetalert2';
                 },
                 body: datos
             });
-    
+
             const resultado = await respuesta.json();
             return resultado;
         }
@@ -329,7 +337,7 @@ import Swal from 'sweetalert2';
 
             btnDolarAct.classList.add('display-none');
             listadoDesactualizados();
-            
+
         }
     }
 })();
