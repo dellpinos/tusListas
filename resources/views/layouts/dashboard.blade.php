@@ -42,8 +42,7 @@
                             class="font-regular ">{{ auth()->user()->username }}</span></a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="header__button">Cerrar
-                            sesión</button>
+                        <button type="submit" class="header__button">Cerrar sesión</button>
                     </form>
                 </nav>
             @endauth
@@ -73,7 +72,7 @@
                         class="fa-solid fa-plus sidebar__icono"></i>Nuevo Producto</a>
                 <a href="{{ route('aumentos') }}"
                     class="sidebar__enlace @if (request()->path() === 'aumentos') activo @endif""><i
-                        class="fa-solid fa-dollar-sign sidebar__icono"></i>Cambiar Precios</a>
+                        class="fa-solid fa-dollar-sign sidebar__icono"></i>Aumentos Generales</a>
 
                 <a href="{{ route('providers') }}"
                     class="sidebar__enlace @if (request()->path() === 'providers') activo @endif"><i
