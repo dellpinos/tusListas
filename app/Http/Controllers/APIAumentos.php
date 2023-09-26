@@ -141,14 +141,14 @@ class APIAumentos extends Controller
                         // No es el fraccionado
                         $resultado = precioVenta($producto, $precio);
                         $productos[] = $resultado['producto'];
-                        $precio = $resultado['precio'];
+                        $precio = $resultado['precio']; //????
                     }
                 }
             } else {
                 // No existe fraccionado
                 $resultado = precioVenta($productosTodos->first(), $precio);
                 $productos[] = $resultado['producto'];
-                $precio = $resultado['precio'];
+                $precio = $resultado['precio']; //????
             }
         }
     

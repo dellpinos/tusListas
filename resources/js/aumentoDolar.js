@@ -41,8 +41,8 @@ import Swal from 'sweetalert2';
             }
 
             // limpiar virtual DOM
-            productosArray = [];
-            preciosArray = [];
+            productosArray = {};
+            preciosArray = {};
             table.classList.remove('display-none');
 
             // Consultar DB
@@ -58,15 +58,16 @@ import Swal from 'sweetalert2';
                 btnDolarAct.classList.remove('display-none');
                 mensajeInfo.textContent = "Productos con un valor dolar inferior a U$S " + valor;
 
+                
                 productosArray = resultado.productos;
                 preciosArray = resultado.precios;
-                paginacion = resultado.paginacion;
+                paginacion = resultado.paginacion;  
 
                 // Generar elementos
                 mostrarElementos();
             }
-
         });
+
         btnDolarAct.addEventListener('click', () => {
 
             actualizarPrecios();
