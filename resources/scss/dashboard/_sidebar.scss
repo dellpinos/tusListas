@@ -1,11 +1,8 @@
 @use '../base/variables' as v;
 
-
-
 .sidebar {
-
     padding: 1rem;
-    background-color: v.$grisOscuro;
+    background-color: v.$grisOscuroVerde;
     width: 12%;
     max-height: 100%;
     overflow-y: hidden;
@@ -27,16 +24,17 @@
         transition-duration: 300ms;
         text-transform: uppercase;
         font-weight: bold;
-
         font-size: 1.3rem;
         padding: 1.5rem;
         gap: 1rem;
         width: auto;
+        transition: all .5s ease;
 
         &:hover,
         &.activo {
-            background-color: darken(v.$grisOscuro, 10%);
+            background-color: darken(v.$grisOscuroVerde, 5%);
             border-radius: .5rem;
+            box-shadow: v.$blanco 0px 3px 7px;
         }
 
     }

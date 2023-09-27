@@ -61,7 +61,7 @@ import Swal from 'sweetalert2';
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Si, aumentar ' + porcentaje + "%",
-                cancelButtonText: 'No, era una prueba!',
+                cancelButtonText: 'Cancelar',
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
