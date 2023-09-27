@@ -20,9 +20,12 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" as="style"
         onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
 
     @vite('resources/scss/app.scss')
-    
+
 </head>
 
 <body class=" bg-dashboard">
@@ -56,24 +59,21 @@
 
     <main class="dashboard__grid">
 
-        
         <aside class="sidebar">
             <nav class=" sidebar__nav">
 
                 <a href="{{ route('buscador') }}"
                     class="sidebar__enlace @if (request()->path() === '/') activo @endif"><i
                         class="fa-solid fa-magnifying-glass sidebar__icono"></i>Buscador</a>
-
                 <a href="{{ route('ingreso') }}"
                     class="sidebar__enlace @if (request()->path() === 'ingreso') activo @endif"><i
-                        class="fa-solid fa-clipboard sidebar__icono"></i>Ingreso Mercaderia</a>
+                        class="fa-solid fa-clipboard sidebar__icono"></i>Ingreso</a>
                 <a href="{{ route('producto.create') }}"
                     class="sidebar__enlace @if (request()->path() === 'producto/nuevo-producto') activo @endif"><i
-                        class="fa-solid fa-plus sidebar__icono"></i>Nuevo Producto</a>
+                        class="fa-solid fa-plus sidebar__icono"></i>Producto</a>
                 <a href="{{ route('aumentos') }}"
                     class="sidebar__enlace @if (request()->path() === 'aumentos') activo @endif""><i
-                        class="fa-solid fa-dollar-sign sidebar__icono"></i>Aumentos Generales</a>
-
+                        class="fa-solid fa-dollar-sign sidebar__icono"></i>Aumentos</a>
                 <a href="{{ route('providers') }}"
                     class="sidebar__enlace @if (request()->path() === 'providers') activo @endif"><i
                         class="fa-solid fa-shop sidebar__icono"></i>Proveedores</a>

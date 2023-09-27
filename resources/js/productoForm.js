@@ -376,8 +376,8 @@ import * as helpers from './helpers';
                 text: "No hay vuelta atras",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Si, muerte!',
-                cancelButtonText: 'No, era una prueba!',
+                confirmButtonText: 'Eliminar',
+                cancelButtonText: 'Cancelar',
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -410,7 +410,7 @@ import * as helpers from './helpers';
                                 text: "No hay vuelta atras!",
                                 icon: 'warning',
                                 showCancelButton: true,
-                                confirmButtonText: 'Si, muerte!',
+                                confirmButtonText: 'Eliminar',
                                 cancelButtonText: 'No, no... mejor no.',
                                 reverseButtons: true
                             }).then((result) => {

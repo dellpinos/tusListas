@@ -1,22 +1,26 @@
 @use '../base/variables' as v;
 
 h1, h2, h3 {
-    font-family: v.$fuente_headings;
     margin: 0 0 calc(v.$separacion / 2) 0 ;
-    font-weight: v.$black;
+    font-weight: v.$bold;
+    
 }
 h1 {
     font-size: 5rem;
+    font-family: v.$fuente_logo;
+    
 }
 h2 {
     font-size: 8rem;
     text-align: center;
     margin: 0 0 3rem 0;
-    color: v.$negro;
+    color: darken(v.$grisOscuroVerde, 8%);
+    font-family: v.$fuente_headings;
 
 }
 h3 {
     font-size: 4rem;
+    font-family: v.$fuente_headings;
 }
 
 p {
