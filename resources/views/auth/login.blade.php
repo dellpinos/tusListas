@@ -21,14 +21,14 @@
                 <label for="email" class="formulario__label">Email</label>
                 <input type="email" id="email" name="email" placeholder="Tu email"
                     class="formulario__campo @error('email') borde__error @enderror"
-                    value="{{ old('email') }}">
+                    value="{{ old('email') }}" required>
                 @error('email')
                     <p class=" alerta__error">{{ $message }}</p>
                 @enderror
             </div>
             <div class="formulario__campo-contenedor">
                 <label for="password" class="formulario__label">Password</label>
-                <input type="password" id="password" name="password" placeholder="Tu password"
+                <input type="password" id="password" name="password" placeholder="Tu password" required
                     class="formulario__campo @error('password') borde__error @enderror">
                 @error('password')
                     <p class=" alerta__error">{{ $message }}</p>

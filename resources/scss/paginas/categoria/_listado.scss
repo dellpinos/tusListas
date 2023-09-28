@@ -52,7 +52,7 @@
 
     &__contenedor {
         color: v.$blanco;
-        background-color: v.$grisOscuro;
+        background-color: v.$grisOscuroVerde;
         padding: 2rem; // Este padding provoca que no se vea el utlimo elemento adecuadamente, loop
         margin: 3rem 0 3rem 0;
         border-radius: 1rem;
@@ -63,6 +63,8 @@
             text-align: center;
             margin-bottom: 1.5rem;
             font-size: 6rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         p {

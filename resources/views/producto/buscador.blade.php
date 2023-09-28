@@ -38,7 +38,7 @@
                 <div id="contenedor-input" class="relative">
 
                     <input type="text" id="producto-nombre-falso"
-                        placeholder="Pipeta power, Pecera 60x20, Collar Cuero, etc" class="buscador__campo">
+                        placeholder="Nombre del producto" class="buscador__campo">
                 </div>
 
             </div>

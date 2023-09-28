@@ -43,6 +43,7 @@
         text-transform: uppercase;
         color: v.$grisClaro;
         font-weight: v.$bold;
+        white-space: nowrap;
 
         // Crear producto
         &--small {
@@ -98,6 +99,7 @@
     }
     &__boton--rojo {
         background-color: v.$rojo;
+        transition: all .8s ease;
 
         &:hover {
             background-color: v.$negro;

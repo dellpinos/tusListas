@@ -8,9 +8,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 
-
-
-
 @section('contenido')
 <div id="contenedor-pendientes">
     {{-- Js --}}
@@ -21,7 +18,6 @@
         </p>
     @endif
     <div class="producto-formulario__grid">
-
 
         <form action="{{ route('producto.update') }}" method="POST">
             @csrf
@@ -35,8 +31,6 @@
                     <p class="alerta__error">{{ $message }}</p>
                 @enderror
             </div>
-
-
 
             <div class="producto-formulario__contenedor">
                 <div class="producto-formulario__contenedor-sm">
@@ -161,11 +155,11 @@
                     <input type="hidden" id="ganancia-numero" name="ganancia_numero" value="">
 
                     <div class="formulario__campo-contenedor">
-                        <label for="precio" class="formulario__label">Precio Venta</label>
                         <div class="producto-formulario__venta">
-                            <input type="number" id="precio-venta" placeholder="0" readonly
-                                class="formulario__campo producto-formulario__venta-campo formulario__campo--no-activo ">
-                            <a id="btn-venta" class="producto-formulario__venta-boton">Calcular Precio</a>
+                            <p class="producto-formulario__venta-precio" id="precio-venta">$ ?</p>
+                            <a id="btn-venta" class="producto-formulario__venta-boton">
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </a>
                         </div>
                     </div>
 
@@ -173,10 +167,10 @@
 
                         @if ($producto_secundario !== '' && $producto_fraccionado)
                             <a href="{{ route('producto.show', $producto_secundario) }}"
-                                class="producto-formulario__venta-boton">Producto No Fraccionado</a>
+                                class="producto-formulario__enlace-fraccionado">Ir a Producto No-Fraccionado</a>
                         @elseif ($producto_secundario !== '' && !$producto_fraccionado)
                             <a href="{{ route('producto.show', $producto_secundario) }}"
-                                class="producto-formulario__venta-boton">Producto Fraccionado</a>
+                                class="producto-formulario__enlace-fraccionado">Ir a Producto Fraccionado</a>
                         @else
                             <input type="checkbox" id="check-fraccion"
                                 class="  @error('ganancia') borde__error @enderror">
@@ -185,10 +179,8 @@
                         <label for="check-fraccion" class="formulario__label">Venta fraccionado</label>
 
                     </div>
-
                 </div>
             </div>
-
 
             <div id="producto-contenedor-oculto"
                 class="@if (!$producto_fraccionado) producto-formulario__contenedor-oculto @endif">
@@ -205,8 +197,6 @@
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror
                 </div>
-
-                
 
                 <div class="producto-formulario__flex"> {{-- <<< Definir esta clase --}}
 
@@ -242,32 +232,20 @@
 
                 </div> {{-- Fin contenedor Flex --}}
 
-
-
                 <div class="formulario__campo-contenedor">
-                    <label for="precio-fraccionado" class="formulario__label">Precio Venta Fraccionado</label>
                     <div class="producto-formulario__venta">
-                        <input type="number" id="precio-fraccionado" placeholder="0" readonly
-                            class="formulario__campo producto-formulario__venta-campo formulario__campo--no-activo ">
-                        <a id="btn-fraccionado" class="producto-formulario__venta-boton">Calcular Precio Fraccionado</a>
+                        <p class="producto-formulario__venta-precio" id="precio-fraccionado">$ ?</p>
+                        <a id="btn-fraccionado" class="producto-formulario__venta-boton">
+                            <i class="fa-solid fa-rotate-right"></i>
+                        </a>
                     </div>
                 </div>
-
-
 
             </div> {{-- Fin contenedor oculto --}}
             <input type="submit" value="Guardar Cambios" class="formulario__boton">
         </form>
 
-
-{{--         <form method="POST" action="{{ route('producto.destroy', $producto) }}">
-            @csrf
-            @method('DELETE')
-            <input type="submit" value="Eliminar Producto" class="formulario__boton formulario__boton--rojo">
-        </form> --}}
-
         <button id="producto-destroy" class="formulario__boton formulario__boton--rojo">Eliminar Producto</button>
 
-        
     </div>
 @endsection

@@ -6,14 +6,14 @@
 @endsection
 
 @section('titulo')
-    Cambiar Precios
+    Aumentos Generales
 @endsection
 
 @section('contenido')
-<div class="formulario__contenedor-boton" >
-    <a href="{{ route('aumento.dolar') }}" class="categoria__boton">Aumento Dolar</a>
-    <a href="{{ route('aumento.listado')}}" class="categoria__boton">Registro de Aumentos</a>
-</div>
+    <div class="formulario__contenedor-boton">
+        <a href="{{ route('aumento.dolar') }}" class="categoria__boton">Aumento Dolar</a>
+        <a href="{{ route('aumento.listado') }}" class="categoria__boton">Registro de Aumentos</a>
+    </div>
     <div class="aumento-formulario__contenedor-sm">
         <div class="aumento-formulario__flex">
             <div class="aumento-formulario__contenedor-xs ">
@@ -33,7 +33,7 @@
                         class="formulario__campo">
                 </div>
             </div>
-            <button class="formulario__boton aumento-formulario__boton" id="btn-aumentos-cat" >Aplicar Aumento</button>
+            <button class="formulario__boton aumento-formulario__boton" id="btn-aumentos-cat">Aplicar Aumento</button>
         </div>
     </div>
 
@@ -44,7 +44,7 @@
                     <label for="aumentos-provider" class="formulario__label">Proveedor</label>
                     <select class="formulario__campo" id="aumentos-provider">
                         <option value="" selected disabled>- Seleccionar -</option>
-        
+
                         @foreach ($providers as $provider)
                             <option value="{{ $provider->id }}">{{ $provider->nombre }}</option>
                         @endforeach
@@ -56,7 +56,7 @@
                         class="formulario__campo">
                 </div>
             </div>
-            <button class="formulario__boton aumento-formulario__boton" id="btn-aumentos-pro" >Aplicar Aumento</button>
+            <button class="formulario__boton aumento-formulario__boton" id="btn-aumentos-pro">Aplicar Aumento</button>
         </div>
     </div>
 
@@ -67,7 +67,7 @@
                     <label for="aumentos-fabricantes" class="formulario__label">Fabricante</label>
                     <select class="formulario__campo" id="aumentos-fabricantes">
                         <option value="" selected disabled>- Seleccionar -</option>
-    
+
                         @foreach ($fabricantes as $fabricante)
                             <option value="{{ $fabricante->id }}">{{ $fabricante->nombre }}</option>
                         @endforeach
@@ -79,46 +79,8 @@
                         class="formulario__campo">
                 </div>
             </div>
-            <button class="formulario__boton aumento-formulario__boton" id="btn-aumentos-fab" >Aplicar Aumento</button>
+            <button class="formulario__boton aumento-formulario__boton" id="btn-aumentos-fab">Aplicar Aumento</button>
         </div>
     </div>
 
-    <h3>Aumentos Individuales</h3>
-
-    <div class="buscador__grid">
-        <div class=" buscador__contenedor">
-
-            <div class="buscador__campo-contenedor">
-                <label for="producto-codigo" class="formulario__label">Código del producto</label>
-                <input type="text" id="producto-codigo" name="producto-codigo" placeholder="C4GT, F320, 44G2, etc"
-                    class="buscador__campo">
-            </div>
-            <div class="buscador__boton-contenedor">
-                <a class="buscador__boton" id="btn-codigo">Buscar por Código</a>
-            </div>
-
-        </div>
-        <div class=" buscador__contenedor">
-
-            <div class="buscador__campo-contenedor">
-                <label for="producto-nombre" class="formulario__label">Nombre del producto</label>
-                <div id="contenedor-input" class="relative">
-
-                    <input type="text" id="producto-nombre-falso"
-                        placeholder="Pipeta power, Pecera 60x20, Collar Cuero, etc" class="buscador__campo">
-                </div>
-
-            </div>
-            <div class="buscador__boton-contenedor">
-                <button class="buscador__boton" id="btn-nombre">Buscar por Nombre</button>
-            </div>
-
-        </div>
-
-    </div>
-    <div class=" producto__grid producto__card-contenedor" id="card-producto">
-        {{-- Este contenido se genera con Js --}}
-    </div>
-
-    </div>
 @endsection

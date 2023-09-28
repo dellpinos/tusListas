@@ -83,6 +83,23 @@
         }
     }
 
+    &__enlace-fraccionado {
+        margin-bottom: 1rem;
+        font-size: 1.6rem;
+        color: v.$amarillo;
+        text-transform: uppercase;
+        font-weight: v.$bold;
+        padding: .7rem;
+        border-radius: .5rem;
+        transition: all .7s ease;
+        background-color: lighten(v.$amarillo, 40%);
+
+        &:hover {
+            color: v.$blanco;
+            background-color: lighten(v.$amarillo, 20%);
+        }
+    }
+
     &__contenedor-oculto {
         opacity: 0;
         height: 0;
