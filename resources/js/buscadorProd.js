@@ -3,11 +3,12 @@ import * as helpers from './helpers';
 
     if (document.querySelector('#contenedor-input')) {
 
+        const contenedorTabs = document.querySelector('#dashboard__contenedor-tabs');
+        const tabs = document.querySelector('#dashboard__tabs');
 
         const contenedorInput = document.querySelector('#contenedor-input');
         const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         const inputProductoFalso = document.querySelector('#producto-nombre-falso');
-        const btnNombre = document.querySelector('#btn-nombre');
         const cardProducto = document.querySelector('#card-producto');
         const inputCodigo = document.querySelector('#producto-codigo');
         let flag = 0; // Saber cuando se obtuvo el primer resultado de la DB
@@ -15,15 +16,18 @@ import * as helpers from './helpers';
         let coincidenciasPantalla = []; // Aqui se almacena el resultado de la DB filtrado
 
 
-        // Buscar por codigo - producto se cambian con un paginador, se gira (como el ejemplo del cubo)
+        contenedorTabs.addEventListener('mouseenter', () => {
+            console.log('Hello!');
+            tabs.classList.add('dashboard__tabs--activo');
+        });
+        contenedorTabs.addEventListener('mouseleave', () => {
+            console.log('Hello!');
+            tabs.classList.remove('dashboard__tabs--activo');
+        });
+
+        // Buscar por codigo - producto se cambian con un paginador
         // El usuario puede escoger uno u otro metodo de busqueda
 
-
-        btnNombre.addEventListener('click', function (e) {
-            e.preventDefault();
-            generarHTML();
-
-        });
 
         inputProductoFalso.addEventListener('click', function () {
             // insertar html
@@ -36,18 +40,32 @@ import * as helpers from './helpers';
             const contenedorOpciones = document.createElement('DIV');
             contenedorOpciones.classList.add('buscador__opciones-contenedor');
 
+            
+            
+            const iconoBuscador = document.createElement('DIV');
+            iconoBuscador.innerHTML = '<i class="formulario__icono-busqueda fa-solid fa-magnifying-glass"></i>';
+            iconoBuscador.classList.add('formulario__icono-busqueda', 'buscador__icono-busqueda');
+            
+            
             // input real
             const inputProducto = document.createElement('INPUT');
             inputProducto.type = 'text';
             inputProducto.name = 'producto-nombre';
             inputProducto.classList.add('buscador__campo', 'buscador__campo-focus');
-            inputProducto.placeholder = 'Nombre del Producto';
-
+            inputProducto.placeholder = 'Nombre del producto';
+            
             if (inputProductoFalso.value !== '') {
                 inputProducto.value = inputProductoFalso.value;
             }
 
-            contenedorOpciones.appendChild(inputProducto);
+            const contenedorBusqueda = document.createElement('DIV');
+            contenedorBusqueda.classList.add('buscador__opciones-contenedor--busqueda')
+
+            contenedorBusqueda.appendChild(iconoBuscador);
+            contenedorBusqueda.appendChild(inputProducto);
+            
+            contenedorOpciones.appendChild(contenedorBusqueda);
+
 
             // listado de coincidencias
             const lista = document.createElement('UL');
@@ -143,7 +161,7 @@ import * as helpers from './helpers';
                 coincidenciasPantalla.forEach(coincidencia => {
 
                     acu++;
-                    if (acu <= 4) {
+                    if (acu <= 6) {
 
                         const sugerenciaBusqueda = document.createElement('LI');
                         sugerenciaBusqueda.textContent = coincidencia.nombre;
@@ -154,6 +172,7 @@ import * as helpers from './helpers';
                         });
 
                         lista.appendChild(sugerenciaBusqueda);
+                        contenedorOpciones.classList.add('buscador__opciones-contenedor--activo');
                     }
                 });
             }
