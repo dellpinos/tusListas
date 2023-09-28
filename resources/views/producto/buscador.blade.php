@@ -8,12 +8,12 @@
 @section('tabs')
     <div id="dashboard__contenedor-tabs" class="dashboard__contenedor-tabs">
         <div class="dashboard__tabs" id="dashboard__tabs">
-            <p class="dashboard__tab">Todos</p>
-            <p class="dashboard__tab">Producto</p>
-            <p class="dashboard__tab">Código</p>
-            <p class="dashboard__tab">Categoria</p>
-            <p class="dashboard__tab">Fabricante</p>
-            <p class="dashboard__tab">Proveedor</p>
+            <p class="dashboard__tab" id="dashboard__tab-todos">Todos</p>
+            <p class="dashboard__tab" id="dashboard__tab-producto">Producto</p>
+            <p class="dashboard__tab" id="dashboard__tab-codigo">Código</p>
+            <p class="dashboard__tab" id="dashboard__tab-categoria">Categoria</p>
+            <p class="dashboard__tab" id="dashboard__tab-fabricante">Fabricante</p>
+            <p class="dashboard__tab" id="dashboard__tab-provider">Proveedor</p>
         </div>
         <i class="dashboard__tab-icono fa-solid fa-chevron-down"></i>
     </div>
