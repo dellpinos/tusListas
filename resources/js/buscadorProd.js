@@ -9,8 +9,8 @@ import * as helpers from './helpers';
 
         /* Paginación */
         // Virtual DOM
-        let productosArray = [];
-        let preciosArray = [];
+        let productosArray = {};
+        let preciosArray = {};
 
         // pagina actual
         let page = 1;
@@ -55,10 +55,14 @@ import * as helpers from './helpers';
                 contenedorPrincipal.removeChild(contenedorPrincipal.firstChild);
             }
 
+            // Generar table y thead
+            const tbody = generarTabla();
+            
 
             // Consultar todos los productos de la DB
-
             const resultado = await paginadorTodos();
+
+            return;
 
             if (resultado.productos.length === 0 || resultado.precios.length === 0) {
 
@@ -67,20 +71,41 @@ import * as helpers from './helpers';
 
             } else {
 
-                // Elimino mensaje "sin resultados"
+                recargarPaginacion(resultado);
 
-
-                productosArray = resultado.productos;
-                preciosArray = resultado.precios;
-                paginacion = resultado.paginacion;
-
-                // Generar elementos
-                mostrarElementos();
             }
 
             // Renderizar productos paginados
 
         });
+
+
+        function generarTabla() {
+
+            const tabla = document.createElement('TABLE');
+            tabla.classList.add('table');
+            tabla.innerHTML = `
+            <thead class="table__thead">
+                <tr>
+                    <th scope="col" class="table__th">Código</th>
+                    <th scope="col" class="table__th">Nombre</th>
+                    <th scope="col" class="table__th">Precio Costo</th>
+                    <th scope="col" class="table__th">Precio Venta</th>
+                    <th scope="col" class="table__th">Enlace</th>
+                </tr>
+            </thead>
+            `;
+
+            const tablaBody = document.createElement('TBODY');
+            tablaBody.classList.add('table__tbody');
+
+            tabla.appendChild(tablaBody);
+
+            contenedorPrincipal.appendChild(tabla);
+
+            return tablaBody;
+
+        }
 
 
 
@@ -89,7 +114,7 @@ import * as helpers from './helpers';
         async function paginadorTodos() {
 
             try {
-                const url = '/api/aumentos/dolar-busqueda'; /// <<<<< Cambiar endpoint
+                const url = '/api/buscador/todos'; /// <<<<< Cambiar endpoint
 
                 const datos = new FormData();
                 datos.append('page', page);
@@ -110,6 +135,106 @@ import * as helpers from './helpers';
                 console.log(error);
             }
         }
+        ///////
+
+        function recargarPaginacion(resultado) {
+            // Eliminar mensaje de "no hay resultados"
+            // mensajeInfo.classList.remove('display-none');
+            // btnDolarAct.classList.remove('display-none');
+            // mensajeInfo.textContent = "Productos con un valor dolar inferior a U$S " + valor;
+
+            productosArray = resultado.productos;
+            preciosArray = resultado.precios;
+            paginacion = resultado.paginacion;  
+
+            // Generar elementos
+            mostrarElementos();
+        }
+
+        ///////////////////////////////////////// <<<>>>>> //////////////
+
+        function mostrarElementos() {
+
+            limpiarProductos();
+
+            productosArray.forEach(producto => { // Cada producto
+                preciosArray.forEach(precio => { // Cada precio
+                    if (precio.id === producto.precio_id) {
+
+                        producto.venta = helpers.redondear(producto.venta);
+
+                        // Formatear fecha (se obtiene tal cual esta almacenada en la DB)
+                        const fechaObj = new Date(precio.updated_at);
+                        const mes = fechaObj.getMonth();
+                        const dia = fechaObj.getDate() + 1; // Corrijo desfasaje
+                        const year = fechaObj.getFullYear();
+
+                        const fechaUTC = new Date(Date.UTC(year, mes, dia));
+
+                        const opciones = {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        }
+                        const fechaFormateada = fechaUTC.toLocaleDateString('es-AR', opciones);
+
+                        if (producto.unidad_fraccion === null) {
+                            producto.unidad_fraccion = '';
+                        }
+
+                        contRegistros.innerHTML += `                        
+                        <tr class="table__tr">
+                        <td class="table__td">${precio.dolar}</td>
+                        <td class="table__td">${producto.codigo.toUpperCase()}</td>
+                        <td class="table__td">${producto.nombre}</td>
+                        <td class="table__td">$ ${precio.precio}</td>
+                        <td class="table__td">$ ${producto.venta} ${producto.unidad_fraccion}</td>
+                        <td class="table__td">${fechaFormateada}</td>
+                        <td class="table__td"><a class="table__accion table__accion--editar" href="/producto/producto-show/${producto.id}">Editar</a></td>
+                        </tr>
+                    `;
+
+                        if (paginacion !== '') {
+                            contPaginacion.innerHTML = paginacion;
+
+                            const enlaceNumero = document.querySelectorAll('[data-page]');
+                            enlaceNumero.forEach(numero => {
+                                numero.addEventListener('click', async (e) => {
+                                    // modificar page
+                                    page = e.target.dataset.page;
+                                    const resultado = await paginadorDesactualizados();
+                                    recargarPaginacion(resultado);
+                                    // regenerar HTML
+                                });
+                            });
+
+                            const enlaceBtn = document.querySelectorAll('[data-btn]');
+                            enlaceBtn.forEach(boton => {
+                                boton.addEventListener('click', async (e) => {
+
+                                    if (e.target.dataset.btn === 'siguiente') {
+                                        // regenerar HTML
+                                        page++;
+                                        const resultado = await paginadorDesactualizados();
+                                        recargarPaginacion(resultado);
+                                        
+                                        return;
+
+                                    } else {
+                                        // regenerar HTML
+                                        page--;
+                                        const resultado = await paginadorDesactualizados();
+                                        recargarPaginacion(resultado);
+                                        return;
+                                    }
+                                });
+                            });
+                        }
+                    }
+                }); // Fin cada precio
+            }); // Fin cada producto
+        }
 
 
 
@@ -117,8 +242,7 @@ import * as helpers from './helpers';
 
 
 
-
-
+        /*  */
         /////////// Buscador por codigo
 
 
