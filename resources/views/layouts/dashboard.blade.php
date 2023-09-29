@@ -89,13 +89,12 @@
 
         <div class="dashboard__contenedor-principal">
 
-
             @yield('tabs')
 
             
             <div class="dashboard__contenedor-secundario">
                 
-                <h2 class="">
+                <h2>
                     @yield('titulo')
                 </h2>
                 

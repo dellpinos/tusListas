@@ -5,14 +5,30 @@ import * as helpers from './helpers';
 
         const contenedorTabs = document.querySelector('#dashboard__contenedor-tabs');
         const tabs = document.querySelector('#dashboard__tabs');
+        const contenedorPrincipal = document.querySelector('#buscador__contenedor-principal');
 
+        /* Paginación */
+        // Virtual DOM
+        let productosArray = [];
+        let preciosArray = [];
+
+        // pagina actual
+        let page = 1;
+
+        // paginacion
+        let paginacion = '';
+
+        /* Opciones de busqueda */
         const tabTodos = document.querySelector('#dashboard__tab-todos');
         const tabProrducto = document.querySelector('#dashboard__tab-producto');
         const tabCodigo = document.querySelector('#dashboard__tab-codigo');
         const tabCategoria = document.querySelector('#dashboard__tab-categoria');
         const tabFabricante = document.querySelector('#dashboard__tab-fabricante');
         const tabProvider = document.querySelector('#dashboard__tab-provider');
+        
+        let tipoBusqueda = 'producto';
 
+        /* Buscador */
         const contenedorInput = document.querySelector('#contenedor-input');
         const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         const inputProductoFalso = document.querySelector('#producto-nombre-falso');
@@ -22,7 +38,90 @@ import * as helpers from './helpers';
         let arrayCoincidencias = []; // Aqui se almacena el resultado de la DB
         let coincidenciasPantalla = []; // Aqui se almacena el resultado de la DB filtrado
 
-        let tipoBusqueda = 'producto';
+        // let flagExisteBarra = // La barra se elimina cuando el usuario lista "todos los productos", cuando presione otra
+        // opcion de busqueda esta barra debe volver a generarse. Utilizo esta variable para comprobar si existe actualmente la barra o si debo generarla
+
+
+        // El usuario presiona en un tab y esto modifica la variable "tipoBusqueda", modifica el placeholder
+        // El listener del click dentro del campo de busqueda llama a "generarHTML" a menos que la busqueda sea por codigo o todos
+        // Todos elimina la barra de busqueda y la reemplaza por la paginacion de todos los registros
+        // Codigo hace una busqueda pero sin renderizar "coincidencias" - solo responde "existe" o "no existe"
+
+        tabTodos.addEventListener('click', async () => {
+            console.log('Mostrar Todos');
+
+            // Eliminar la barra de busqueda
+            while (contenedorPrincipal.firstChild) {
+                contenedorPrincipal.removeChild(contenedorPrincipal.firstChild);
+            }
+
+
+            // Consultar todos los productos de la DB
+
+            const resultado = await paginadorTodos();
+
+            if (resultado.productos.length === 0 || resultado.precios.length === 0) {
+
+                sinResultados(); /// Mensaje "sin resultados"
+                return;
+
+            } else {
+
+                // Elimino mensaje "sin resultados"
+
+
+                productosArray = resultado.productos;
+                preciosArray = resultado.precios;
+                paginacion = resultado.paginacion;
+
+                // Generar elementos
+                mostrarElementos();
+            }
+
+            // Renderizar productos paginados
+
+        });
+
+
+
+        ////////////
+
+        async function paginadorTodos() {
+
+            try {
+                const url = '/api/aumentos/dolar-busqueda'; /// <<<<< Cambiar endpoint
+
+                const datos = new FormData();
+                datos.append('page', page);
+
+                const respuesta = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': tokenCSRF
+                    },
+                    body: datos
+                });
+
+                const resultado = await respuesta.json();
+
+                return resultado;
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+
+
+
+
+
+
+
+
+        /////////// Buscador por codigo
+
+
 
         tabCodigo.addEventListener('click', () => {
 
@@ -54,6 +153,8 @@ import * as helpers from './helpers';
         contenedorTabs.addEventListener('mouseleave', () => {
             tabs.classList.remove('dashboard__tabs--activo');
         });
+
+        /////////
 
         // DOM scripting
         function generarHTML() {
