@@ -16,8 +16,8 @@ import Swal from 'sweetalert2';
         const btnDolarAct = document.querySelector('#btn-dolar-actualizar');
 
         // Virtual DOM
-        let productosArray = [];
-        let preciosArray = [];
+        let productosArray = {};
+        let preciosArray = {};
 
         // pagina actual
         let page = 1;
@@ -54,24 +54,26 @@ import Swal from 'sweetalert2';
                 return;
 
             } else {
-                mensajeInfo.classList.remove('display-none');
-                btnDolarAct.classList.remove('display-none');
-                mensajeInfo.textContent = "Productos con un valor dolar inferior a U$S " + valor;
+                recargarPaginacion(resultado);
 
-                
-                productosArray = resultado.productos;
-                preciosArray = resultado.precios;
-                paginacion = resultado.paginacion;  
-
-                // Generar elementos
-                mostrarElementos();
             }
         });
+
+        function recargarPaginacion(resultado) {
+            mensajeInfo.classList.remove('display-none');
+            btnDolarAct.classList.remove('display-none');
+            mensajeInfo.textContent = "Productos con un valor dolar inferior a U$S " + valor;
+            productosArray = resultado.productos;
+            preciosArray = resultado.precios;
+            paginacion = resultado.paginacion;  
+
+            // Generar elementos
+            mostrarElementos();
+        }
 
         btnDolarAct.addEventListener('click', () => {
 
             actualizarPrecios();
-
         });
 
         async function paginadorDesactualizados() {
@@ -99,6 +101,7 @@ import Swal from 'sweetalert2';
                 console.log(error);
             }
         }
+
         async function actualizarPrecios() {
             try {
 
@@ -137,7 +140,7 @@ import Swal from 'sweetalert2';
                 mostrarElementos();
 
             } catch (error) {
-                console.log('No carga el listado');
+                console.log('No carga el listado' + error);
             }
         }
 
@@ -201,30 +204,32 @@ import Swal from 'sweetalert2';
 
                             const enlaceNumero = document.querySelectorAll('[data-page]');
                             enlaceNumero.forEach(numero => {
-                                numero.addEventListener('click', (e) => {
-                                    console.log(e.target.dataset.page);
+                                numero.addEventListener('click', async (e) => {
                                     // modificar page
                                     page = e.target.dataset.page;
-                                    paginadorDesactualizados();
-                                    return;
+                                    const resultado = await paginadorDesactualizados();
+                                    recargarPaginacion(resultado);
                                     // regenerar HTML
                                 });
                             });
 
                             const enlaceBtn = document.querySelectorAll('[data-btn]');
                             enlaceBtn.forEach(boton => {
-                                boton.addEventListener('click', (e) => {
-                                    console.log(e.target.dataset.btn);
+                                boton.addEventListener('click', async (e) => {
+
                                     if (e.target.dataset.btn === 'siguiente') {
                                         // regenerar HTML
                                         page++;
-                                        paginadorDesactualizados();
+                                        const resultado = await paginadorDesactualizados();
+                                        recargarPaginacion(resultado);
+                                        
                                         return;
 
                                     } else {
                                         // regenerar HTML
                                         page--;
-                                        paginadorDesactualizados();
+                                        const resultado = await paginadorDesactualizados();
+                                        recargarPaginacion(resultado);
                                         return;
                                     }
                                 });
@@ -251,7 +256,7 @@ import Swal from 'sweetalert2';
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Si!',
-                cancelButtonText: 'No, era una prueba!',
+                cancelButtonText: 'Cancelar',
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -330,10 +335,8 @@ import Swal from 'sweetalert2';
             limpiarProductos();
             mensajeInfo.classList.remove('display-none');
             mensajeInfo.textContent = "Los 5 productos con el dolar mas bajo o desactualizado";
-
             btnDolarAct.classList.add('display-none');
             listadoDesactualizados();
-
         }
     }
 })();
