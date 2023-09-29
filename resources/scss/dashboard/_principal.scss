@@ -4,12 +4,71 @@
 .dashboard {
 
     &__contenedor-principal {
-        
-        overflow-y: scroll;
         width: 100%;
-        padding: 3rem 8rem 8rem 8rem;
-        margin-left: auto;
-        margin-right: auto;
+        overflow-y: scroll;
+        position: relative;
+    }
+    &__contenedor-tabs {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    &__tabs {
+        background-color: v.$azul;
+        display: flex;
+        justify-content: space-between;
+        color: v.$blanco;
+        height: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease, height 1s ease;
+
+        p {
+            opacity: 0;
+            transition: opacity 1.5s ease;
+        }
+
+        &--activo {
+
+            height: auto;
+            max-height: 3rem;
+            padding: .5rem 3rem 0rem 3rem;
+
+            p {
+                opacity: 1;
+            }
+        }
+    }
+
+    &__tab {
+        cursor: pointer;
+        text-transform: uppercase;
+        font-size: 1.4rem;
+        padding-top: .5rem;
+        font-weight: v.$bold;
+
+        &:hover {
+            color: v.$negro;
+        }
+    }
+    
+    &__tab-icono {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        padding: .2rem;
+        color: v.$blanco;
+        background-color: v.$azul;
+        cursor: pointer;
+    }
+
+    &__contenedor-secundario {
         
+        margin: 4rem auto;
+        padding: 3rem 8rem 8rem 8rem;
+
     }
 }

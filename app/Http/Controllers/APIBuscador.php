@@ -16,6 +16,9 @@ class APIBuscador extends Controller
     }
     public function index()
     {
+        // Listar todos los productos paginados
+        
+
     }
     public function nombre_producto(Request $request)
     {

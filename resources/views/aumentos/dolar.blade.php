@@ -31,6 +31,7 @@
 
     <div class="mensaje__contenedor" id="desactualizados-mensaje"></div>
 
+    
     <table class="table" id=""> {{-- <<< --}}
         <thead class="table__thead">
             <tr>
@@ -52,7 +53,6 @@
 
     </table>
 
-    <div id="table-paginacion">
+    <div id="table-paginacion"></div>
 
-    </div>
 @endsection

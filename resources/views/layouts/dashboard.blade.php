@@ -89,13 +89,19 @@
 
         <div class="dashboard__contenedor-principal">
 
-            <h2 class="">
-                @yield('titulo')
-            </h2>
+            @yield('tabs')
 
-            @yield('contenido')
+            
+            <div class="dashboard__contenedor-secundario">
+                
+                <h2>
+                    @yield('titulo')
+                </h2>
+                
+                @yield('contenido')
+            </div>
         </div>
-
+            
     </main>
 
     @vite('resources/js/app.js')
