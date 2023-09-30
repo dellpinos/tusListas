@@ -51,9 +51,8 @@ class APIBuscador extends Controller
         $resultado = [];
         
         foreach($productos as $producto) {
+            
             $precio = Precio::find($producto->precio_id);
-
-
             $resultado = precioVenta($producto, $precio);
             
             $precios[] = $resultado['precio'];

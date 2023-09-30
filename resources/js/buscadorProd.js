@@ -25,7 +25,7 @@ import * as helpers from './helpers';
         const tabCategoria = document.querySelector('#dashboard__tab-categoria');
         const tabFabricante = document.querySelector('#dashboard__tab-fabricante');
         const tabProvider = document.querySelector('#dashboard__tab-provider');
-        
+
         let tipoBusqueda = 'producto';
 
         /* Buscador */
@@ -50,19 +50,11 @@ import * as helpers from './helpers';
         tabTodos.addEventListener('click', async () => {
             console.log('Mostrar Todos');
 
-            // Eliminar la barra de busqueda
-            while (contenedorPrincipal.firstChild) {
-                contenedorPrincipal.removeChild(contenedorPrincipal.firstChild);
-            }
-
-            // Generar table y thead
-            const tbody = generarTabla();
-            
+            // Eliminar contenido
+            limpiarContenedor();
 
             // Consultar todos los productos de la DB
             const resultado = await paginadorTodos();
-
-            return;
 
             if (resultado.productos.length === 0 || resultado.precios.length === 0) {
 
@@ -71,13 +63,18 @@ import * as helpers from './helpers';
 
             } else {
 
-                recargarPaginacion(resultado);
-
+                // Generar table y thead
+                const tbody = generarTabla();
+                // Renderizar productos paginados
+                recargarPaginacion(resultado, tbody);
             }
 
-            // Renderizar productos paginados
 
         });
+
+        function generarPaginacion() {
+            
+        }
 
 
         function generarTabla() {
@@ -137,25 +134,21 @@ import * as helpers from './helpers';
         }
         ///////
 
-        function recargarPaginacion(resultado) {
-            // Eliminar mensaje de "no hay resultados"
-            // mensajeInfo.classList.remove('display-none');
-            // btnDolarAct.classList.remove('display-none');
-            // mensajeInfo.textContent = "Productos con un valor dolar inferior a U$S " + valor;
+        function recargarPaginacion(resultado, tbody) {
 
             productosArray = resultado.productos;
             preciosArray = resultado.precios;
-            paginacion = resultado.paginacion;  
+            paginacion = resultado.paginacion;
 
             // Generar elementos
-            mostrarElementos();
+            mostrarElementos(tbody);
         }
 
         ///////////////////////////////////////// <<<>>>>> //////////////
 
-        function mostrarElementos() {
+        function mostrarElementos(tbody, tablaPaginacion) {
 
-            limpiarProductos();
+            limpiarTabla(tbody);
 
             productosArray.forEach(producto => { // Cada producto
                 preciosArray.forEach(precio => { // Cada precio
@@ -163,48 +156,29 @@ import * as helpers from './helpers';
 
                         producto.venta = helpers.redondear(producto.venta);
 
-                        // Formatear fecha (se obtiene tal cual esta almacenada en la DB)
-                        const fechaObj = new Date(precio.updated_at);
-                        const mes = fechaObj.getMonth();
-                        const dia = fechaObj.getDate() + 1; // Corrijo desfasaje
-                        const year = fechaObj.getFullYear();
-
-                        const fechaUTC = new Date(Date.UTC(year, mes, dia));
-
-                        const opciones = {
-                            weekday: 'long',
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                        }
-                        const fechaFormateada = fechaUTC.toLocaleDateString('es-AR', opciones);
-
-                        if (producto.unidad_fraccion === null) {
-                            producto.unidad_fraccion = '';
-                        }
-
-                        contRegistros.innerHTML += `                        
+                        tbody.innerHTML += `                        
                         <tr class="table__tr">
-                        <td class="table__td">${precio.dolar}</td>
                         <td class="table__td">${producto.codigo.toUpperCase()}</td>
                         <td class="table__td">${producto.nombre}</td>
                         <td class="table__td">$ ${precio.precio}</td>
                         <td class="table__td">$ ${producto.venta} ${producto.unidad_fraccion}</td>
-                        <td class="table__td">${fechaFormateada}</td>
                         <td class="table__td"><a class="table__accion table__accion--editar" href="/producto/producto-show/${producto.id}">Editar</a></td>
                         </tr>
                     `;
 
                         if (paginacion !== '') {
-                            contPaginacion.innerHTML = paginacion;
+
+                            ///// Cuando elimino la paginacion y cuando la creo ???
+
+                            tablaPaginacion.innerHTML = paginacion;
 
                             const enlaceNumero = document.querySelectorAll('[data-page]');
                             enlaceNumero.forEach(numero => {
                                 numero.addEventListener('click', async (e) => {
                                     // modificar page
                                     page = e.target.dataset.page;
-                                    const resultado = await paginadorDesactualizados();
-                                    recargarPaginacion(resultado);
+                                    const resultado = await paginadorTodos();
+                                    recargarPaginacion(resultado, tbody);
                                     // regenerar HTML
                                 });
                             });
@@ -218,7 +192,7 @@ import * as helpers from './helpers';
                                         page++;
                                         const resultado = await paginadorDesactualizados();
                                         recargarPaginacion(resultado);
-                                        
+
                                         return;
 
                                     } else {
@@ -237,6 +211,38 @@ import * as helpers from './helpers';
         }
 
 
+        function limpiarContenedor() {
+
+            // Eliminar la barra de busqueda
+            while (contenedorPrincipal.firstChild) {
+                contenedorPrincipal.removeChild(contenedorPrincipal.firstChild);
+            }
+        }
+
+        function limpiarTabla(tbody, paginacion = '') {
+            while (tbody.firstChild) {
+                tbody.removeChild(tbody.firstChild);
+            }
+            if(paginacion) {
+                while (paginacion.firstChild) {
+                    paginacion.removeChild(paginacion.firstChild);
+                }
+            }
+
+        }
+        function sinResultados() {
+
+            limpiarContenedor();
+
+            const mensajeNoResult = document.createElement('DIV');
+
+            mensajeNoResult.innerHTML = `<p class="mensaje__info--my">
+            No hay productos, deberias crear el primero
+            </p>`;
+
+            contenedorPrincipal.appendChild(mensajeNoResult);
+
+        }
 
 
 
