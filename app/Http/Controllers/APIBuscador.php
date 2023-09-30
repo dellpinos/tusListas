@@ -20,7 +20,7 @@ class APIBuscador extends Controller
     {
 
         // Listar todos los productos paginados
-        $registros_por_pagina = 10;
+        $registros_por_pagina = 15;
 
         $pagina_actual = $request->page;
 
@@ -51,7 +51,7 @@ class APIBuscador extends Controller
         $resultado = [];
         
         foreach($productos as $producto) {
-            
+
             $precio = Precio::find($producto->precio_id);
             $resultado = precioVenta($producto, $precio);
             

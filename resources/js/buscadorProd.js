@@ -1,7 +1,7 @@
 import * as helpers from './helpers';
 (function () {
 
-    if (document.querySelector('#contenedor-input')) {
+    if (document.querySelector('#dashboard__contenedor-tabs')) {
 
         const contenedorTabs = document.querySelector('#dashboard__contenedor-tabs');
         const tabs = document.querySelector('#dashboard__tabs');
@@ -29,14 +29,31 @@ import * as helpers from './helpers';
         let tipoBusqueda = 'producto';
 
         /* Buscador */
-        const contenedorInput = document.querySelector('#contenedor-input');
+        let contenedorInput = '';
+        let inputProductoFalso = '';
+        let cardProducto = '';
+        let contenedorSecundario = '';
+
         const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const inputProductoFalso = document.querySelector('#producto-nombre-falso');
-        const cardProducto = document.querySelector('#card-producto');
         const inputCodigo = document.querySelector('#producto-codigo');
         let flag = 0; // Saber cuando se obtuvo el primer resultado de la DB
         let arrayCoincidencias = []; // Aqui se almacena el resultado de la DB
         let coincidenciasPantalla = []; // Aqui se almacena el resultado de la DB filtrado
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Mostrar / Ocultar tabs
+            contenedorTabs.addEventListener('mouseenter', () => {
+                tabs.classList.add('dashboard__tabs--activo');
+            });
+            contenedorTabs.addEventListener('mouseleave', () => {
+                tabs.classList.remove('dashboard__tabs--activo');
+            });
+
+            generarBuscador();
+
+        });
+
 
         // let flagExisteBarra = // La barra se elimina cuando el usuario lista "todos los productos", cuando presione otra
         // opcion de busqueda esta barra debe volver a generarse. Utilizo esta variable para comprobar si existe actualmente la barra o si debo generarla
@@ -47,8 +64,48 @@ import * as helpers from './helpers';
         // Todos elimina la barra de busqueda y la reemplaza por la paginacion de todos los registros
         // Codigo hace una busqueda pero sin renderizar "coincidencias" - solo responde "existe" o "no existe"
 
+        tabProrducto.addEventListener('click', () => {
+
+            tipoBusqueda = "producto";
+
+            // recargar archivo
+            limpiarContenedor();
+
+            generarBuscador();
+        });
+
+        function generarBuscador() {
+
+            contenedorInput = document.createElement('DIV');
+            contenedorInput.classList.add('formulario__contenedor-busqueda', 'buscador__input', 'relative');
+
+            const iconoBuscador = document.createElement('I');
+            iconoBuscador.classList.add('formulario__icono-busqueda', 'fa-solid', 'fa-magnifying-glass');
+
+            inputProductoFalso = document.createElement('INPUT');
+            inputProductoFalso.classList.add('formulario__campo-busqueda');
+            inputProductoFalso.type = 'text';
+            inputProductoFalso.placeholder = 'Nombre del producto';
+
+            cardProducto = document.createElement('DIV');
+
+            contenedorInput.appendChild(iconoBuscador);
+            contenedorInput.appendChild(inputProductoFalso);
+
+            contenedorPrincipal.appendChild(contenedorInput);
+            contenedorPrincipal.appendChild(cardProducto);
+
+            inputProductoFalso.addEventListener('click', function () {
+
+                // insertar html
+                generarHTML();
+
+
+            });
+
+        }
+
         tabTodos.addEventListener('click', async () => {
-            console.log('Mostrar Todos');
 
             // Eliminar contenido
             limpiarContenedor();
@@ -65,17 +122,19 @@ import * as helpers from './helpers';
 
                 // Generar table y thead
                 const tbody = generarTabla();
+                const tablaPaginacion = generarPaginacion();
                 // Renderizar productos paginados
-                recargarPaginacion(resultado, tbody);
+                recargarPaginacion(resultado, tbody, tablaPaginacion);
             }
-
-
         });
 
         function generarPaginacion() {
-            
-        }
 
+            const tablaPaginacion = document.createElement('DIV');
+            contenedorPrincipal.appendChild(tablaPaginacion);
+
+            return tablaPaginacion;
+        }
 
         function generarTabla() {
 
@@ -104,10 +163,6 @@ import * as helpers from './helpers';
 
         }
 
-
-
-        ////////////
-
         async function paginadorTodos() {
 
             try {
@@ -132,43 +187,59 @@ import * as helpers from './helpers';
                 console.log(error);
             }
         }
-        ///////
 
-        function recargarPaginacion(resultado, tbody) {
+        function recargarPaginacion(resultado, tbody, tablaPaginacion) {
 
             productosArray = resultado.productos;
             preciosArray = resultado.precios;
             paginacion = resultado.paginacion;
 
             // Generar elementos
-            mostrarElementos(tbody);
+            mostrarElementos(tbody, tablaPaginacion);
         }
-
-        ///////////////////////////////////////// <<<>>>>> //////////////
 
         function mostrarElementos(tbody, tablaPaginacion) {
 
-            limpiarTabla(tbody);
+            limpiarTabla(tbody, tablaPaginacion);
+            console.log(preciosArray.length + "PreciosArray");
+            console.log(productosArray.length + "PreciosArray");
+
+
 
             productosArray.forEach(producto => { // Cada producto
+
+                let iteracion = 0;
                 preciosArray.forEach(precio => { // Cada precio
+
+                    let unidadFraccion = '';
+                    if (producto.unidad_fraccion) {
+                        unidadFraccion = producto.unidad_fraccion;
+                    }
+
+                    let claseDescuento = '';
+                    if (precio.desc_porc) {
+                        claseDescuento = "c-red";
+                    }
+
                     if (precio.id === producto.precio_id) {
 
-                        producto.venta = helpers.redondear(producto.venta);
+                        if (iteracion >= 1) { // Evita duplicar registros en la tabla (los fraccionados iteran doble)
+                            return;
+                        }
+                        iteracion++;
 
+                        producto.venta = helpers.redondear(producto.venta);
                         tbody.innerHTML += `                        
                         <tr class="table__tr">
                         <td class="table__td">${producto.codigo.toUpperCase()}</td>
                         <td class="table__td">${producto.nombre}</td>
                         <td class="table__td">$ ${precio.precio}</td>
-                        <td class="table__td">$ ${producto.venta} ${producto.unidad_fraccion}</td>
+                        <td class="table__td ${claseDescuento}">$ ${producto.venta} ${unidadFraccion}</td>
                         <td class="table__td"><a class="table__accion table__accion--editar" href="/producto/producto-show/${producto.id}">Editar</a></td>
                         </tr>
                     `;
 
                         if (paginacion !== '') {
-
-                            ///// Cuando elimino la paginacion y cuando la creo ???
 
                             tablaPaginacion.innerHTML = paginacion;
 
@@ -178,7 +249,7 @@ import * as helpers from './helpers';
                                     // modificar page
                                     page = e.target.dataset.page;
                                     const resultado = await paginadorTodos();
-                                    recargarPaginacion(resultado, tbody);
+                                    recargarPaginacion(resultado, tbody, tablaPaginacion);
                                     // regenerar HTML
                                 });
                             });
@@ -190,16 +261,16 @@ import * as helpers from './helpers';
                                     if (e.target.dataset.btn === 'siguiente') {
                                         // regenerar HTML
                                         page++;
-                                        const resultado = await paginadorDesactualizados();
-                                        recargarPaginacion(resultado);
+                                        const resultado = await paginadorTodos();
+                                        recargarPaginacion(resultado, tbody, tablaPaginacion);
 
                                         return;
 
                                     } else {
                                         // regenerar HTML
                                         page--;
-                                        const resultado = await paginadorDesactualizados();
-                                        recargarPaginacion(resultado);
+                                        const resultado = await paginadorTodos();
+                                        recargarPaginacion(resultado, tbody, tablaPaginacion);
                                         return;
                                     }
                                 });
@@ -223,7 +294,7 @@ import * as helpers from './helpers';
             while (tbody.firstChild) {
                 tbody.removeChild(tbody.firstChild);
             }
-            if(paginacion) {
+            if (paginacion) {
                 while (paginacion.firstChild) {
                     paginacion.removeChild(paginacion.firstChild);
                 }
@@ -244,11 +315,6 @@ import * as helpers from './helpers';
 
         }
 
-
-
-
-
-        /*  */
         /////////// Buscador por codigo
 
 
@@ -268,21 +334,6 @@ import * as helpers from './helpers';
         // Buscar por codigo - producto se cambian con un paginador
         // El usuario puede escoger uno u otro metodo de busqueda
 
-
-        inputProductoFalso.addEventListener('click', function () {
-
-            // insertar html
-            generarHTML();
-
-        });
-
-        // Mostrar / Ocultar tabs
-        contenedorTabs.addEventListener('mouseenter', () => {
-            tabs.classList.add('dashboard__tabs--activo');
-        });
-        contenedorTabs.addEventListener('mouseleave', () => {
-            tabs.classList.remove('dashboard__tabs--activo');
-        });
 
         /////////
 
@@ -314,6 +365,7 @@ import * as helpers from './helpers';
                     console.log("Error en tipo de busqueda");
                     break;
             }
+
 
             // Contenedor
             const contenedorOpciones = document.createElement('DIV');
@@ -357,6 +409,30 @@ import * as helpers from './helpers';
                 }
 
                 filtrarResultado(e, lista, contenedorOpciones);
+            });
+
+            inputProducto.addEventListener('keyup', (e) => {
+
+                if (e.key === 'Enter') {
+
+                    if(coincidenciasPantalla[0]) {
+                        buscarProducto(coincidenciasPantalla[0].id);
+
+                    } else {
+
+                        while (cardProducto.lastChild) {
+                            cardProducto.removeChild(cardProducto.lastChild);
+                        }
+                        cardProducto.classList.remove('producto__card-contenedor');
+
+                        const mensajeSinResult = document.createElement('P');
+                        mensajeSinResult.classList.add('mensaje__info');
+                        mensajeSinResult.textContent = "No hay resultados";
+                        
+                        cardProducto.appendChild(mensajeSinResult);
+                    }
+                    
+                }
             });
 
             contenedorInput.addEventListener('mouseleave', function () {
@@ -440,7 +516,7 @@ import * as helpers from './helpers';
             coincidenciasPantalla.forEach(coincidencia => {
 
                 acu++;
-                if (acu <= 6) {
+                if (acu <= 6) { // Cantidad de coincidencias en pantalla
 
                     const sugerenciaBusqueda = document.createElement('LI');
                     sugerenciaBusqueda.textContent = coincidencia.nombre;
@@ -544,7 +620,6 @@ import * as helpers from './helpers';
                 }
 
                 inputProductoFalso.value = '';
-
 
             } catch (error) {
                 console.log('El servidor no responde' + error);

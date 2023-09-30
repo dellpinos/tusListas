@@ -32,18 +32,16 @@
     @endif --}}
     <div id="buscador__contenedor-principal">
 
-        <div id="contenedor-input" class="formulario__contenedor-busqueda buscador__input relative">
+        {{-- <div id="contenedor-input" class="formulario__contenedor-busqueda buscador__input relative">
             <i class="formulario__icono-busqueda fa-solid fa-magnifying-glass"></i>
             <input class="formulario__campo-busqueda" id="producto-nombre-falso" type="text"
                 placeholder="Nombre del producto">
         </div>
     
-    
         <div class="" id="card-producto">
             {{-- Este contenido se genera con Js --}}
-    
-            <p class="mensaje__info">No se ha realizado una busqueda</p>
-        </div>
+            {{-- <p class="mensaje__info">No se ha realizado una busqueda</p>
+        </div> --}}
 
 
     </div>
