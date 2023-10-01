@@ -50,7 +50,14 @@ import * as helpers from './helpers';
                 tabs.classList.remove('dashboard__tabs--activo');
             });
 
+            // Buscador Producto
             generarBuscador();
+
+            inputProductoFalso.addEventListener('click', function () {
+
+                // insertar html
+                generarHTML();
+            });
 
         });
 
@@ -64,6 +71,50 @@ import * as helpers from './helpers';
         // Todos elimina la barra de busqueda y la reemplaza por la paginacion de todos los registros
         // Codigo hace una busqueda pero sin renderizar "coincidencias" - solo responde "existe" o "no existe"
 
+
+        /////////// Buscador por codigo
+
+
+
+        tabCodigo.addEventListener('click', () => {
+
+            // recargar archivo
+            tipoBusqueda = "codigo";
+
+            limpiarContenedor();
+
+            generarBuscador();
+
+            inputProductoFalso.placeholder = "Código del producto";
+
+
+
+            // Cambiar el buscador
+            // Cambiar placeholder y almacenar un "flag" para el momento en que el usuario presione en el input falso
+
+
+
+            console.log('Buscar por Código');
+        });
+
+
+        // Buscar por codigo - producto se cambian con un paginador
+        // El usuario puede escoger uno u otro metodo de busqueda
+
+        // inputCodigo.addEventListener('keydown', function (e) {
+        //     if (e.key === 'Enter') {
+        //         if (inputCodigo.value.length >= 4) {
+
+        //             let codigo = inputCodigo.value; // Los códigos estan escritos en minusculas
+        //             findDB(codigo.toLowerCase());
+        //         }
+        //     }
+        // });
+
+
+        /////////
+
+
         tabProrducto.addEventListener('click', () => {
 
             tipoBusqueda = "producto";
@@ -72,6 +123,12 @@ import * as helpers from './helpers';
             limpiarContenedor();
 
             generarBuscador();
+
+            inputProductoFalso.addEventListener('click', function () {
+
+                // insertar html
+                generarHTML();
+            });
         });
 
         function generarBuscador() {
@@ -94,14 +151,6 @@ import * as helpers from './helpers';
 
             contenedorPrincipal.appendChild(contenedorInput);
             contenedorPrincipal.appendChild(cardProducto);
-
-            inputProductoFalso.addEventListener('click', function () {
-
-                // insertar html
-                generarHTML();
-
-
-            });
 
         }
 
@@ -166,7 +215,7 @@ import * as helpers from './helpers';
         async function paginadorTodos() {
 
             try {
-                const url = '/api/buscador/todos'; /// <<<<< Cambiar endpoint
+                const url = '/api/buscador/todos';
 
                 const datos = new FormData();
                 datos.append('page', page);
@@ -201,10 +250,6 @@ import * as helpers from './helpers';
         function mostrarElementos(tbody, tablaPaginacion) {
 
             limpiarTabla(tbody, tablaPaginacion);
-            console.log(preciosArray.length + "PreciosArray");
-            console.log(productosArray.length + "PreciosArray");
-
-
 
             productosArray.forEach(producto => { // Cada producto
 
@@ -315,27 +360,7 @@ import * as helpers from './helpers';
 
         }
 
-        /////////// Buscador por codigo
 
-
-
-        tabCodigo.addEventListener('click', () => {
-
-            // Cambiar el buscador
-            // Cambiar placeholder y almacenar un "flag" para el momento en que el usuario presione en el input falso
-
-            inputProductoFalso.placeholder = "Código del producto";
-            tipoBusqueda = 'codigo';
-
-            console.log('Buscar por Código');
-        });
-
-
-        // Buscar por codigo - producto se cambian con un paginador
-        // El usuario puede escoger uno u otro metodo de busqueda
-
-
-        /////////
 
         // DOM scripting
         function generarHTML() {
@@ -382,7 +407,7 @@ import * as helpers from './helpers';
             inputProducto.classList.add('buscador__campo', 'buscador__campo-focus');
             inputProducto.placeholder = 'Nombre del producto';
 
-            if (inputProductoFalso.value !== '') {
+            if(inputProductoFalso.value) {
                 inputProducto.value = inputProductoFalso.value;
             }
 
@@ -415,8 +440,12 @@ import * as helpers from './helpers';
 
                 if (e.key === 'Enter') {
 
-                    if(coincidenciasPantalla[0]) {
+                    if (coincidenciasPantalla[0]) {
                         buscarProducto(coincidenciasPantalla[0].id);
+
+                        inputProductoFalso.value = coincidenciasPantalla[0].nombre;
+                        
+                        eliminarCoincidencias(contenedorOpciones);
 
                     } else {
 
@@ -428,21 +457,16 @@ import * as helpers from './helpers';
                         const mensajeSinResult = document.createElement('P');
                         mensajeSinResult.classList.add('mensaje__info');
                         mensajeSinResult.textContent = "No hay resultados";
-                        
+
                         cardProducto.appendChild(mensajeSinResult);
                     }
-                    
+
                 }
             });
 
             contenedorInput.addEventListener('mouseleave', function () {
 
-                inputProductoFalso.value = inputProducto.value;
-                // eliminar html
-                while (contenedorOpciones.firstChild) {
-                    contenedorOpciones.removeChild(contenedorOpciones.firstChild);
-                }
-                contenedorOpciones.remove();
+                eliminarCoincidencias(contenedorOpciones);
 
             });
 
@@ -521,15 +545,29 @@ import * as helpers from './helpers';
                     const sugerenciaBusqueda = document.createElement('LI');
                     sugerenciaBusqueda.textContent = coincidencia.nombre;
 
+                    lista.appendChild(sugerenciaBusqueda);
+                    contenedorOpciones.classList.add('buscador__opciones-contenedor--activo');
+                    
                     sugerenciaBusqueda.addEventListener('click', function (e) {
 
                         buscarProducto(coincidencia.id);
-                    });
 
-                    lista.appendChild(sugerenciaBusqueda);
-                    contenedorOpciones.classList.add('buscador__opciones-contenedor--activo');
+                        inputProductoFalso.value = coincidencia.nombre;
+
+                        eliminarCoincidencias(contenedorOpciones);
+                    });
                 }
             });
+        }
+
+        function eliminarCoincidencias(contenedorOpciones) {
+
+            // eliminar html
+            while (contenedorOpciones.firstChild) {
+                contenedorOpciones.removeChild(contenedorOpciones.firstChild);
+            }
+            contenedorOpciones.remove();
+
         }
 
         async function buscarProducto(id) {
@@ -618,8 +656,6 @@ import * as helpers from './helpers';
                 </a>
                 `;
                 }
-
-                inputProductoFalso.value = '';
 
             } catch (error) {
                 console.log('El servidor no responde' + error);
