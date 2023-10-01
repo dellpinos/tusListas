@@ -2,7 +2,7 @@
 
 .sidebar {
     padding: 1rem;
-    background-color: v.$grisOscuroVerde;
+    background-color: v.$grisOscuroAzul;
     width: 12%;
     max-height: 100%;
     overflow-y: hidden;
@@ -32,9 +32,10 @@
 
         &:hover,
         &.activo {
-            background-color: darken(v.$grisOscuroVerde, 5%);
+            background-color: darken(v.$grisOscuroAzul, 5%);
             border-radius: .5rem;
-            box-shadow: v.$blanco 0px 3px 7px;
+            box-shadow: lighten(v.$grisOscuroAzul, 10%) 0px 3px 7px;
+
         }
 
     }
