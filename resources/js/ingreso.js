@@ -398,10 +398,33 @@ import * as helpers from './helpers';
 
             contenedorNombre.appendChild(nombre);
 
+
+
+            const contenedorPrecio = document.createElement('DIV');
+            contenedorPrecio.classList.add('ingreso__contenedor-precio');
+
+            const contenedorCheckIVA = document.createElement('DIV');
+            contenedorCheckIVA.classList.add('ingreso__contenedor-checkboxIVA');
+
+            const indicadorCheckIVA = document.createElement('SPAN');
+            indicadorCheckIVA.classList.add('ingreso__indicador-checkboxIVA');
+
             const precio = document.createElement('INPUT');
             precio.type = 'text';
             precio.classList.add('formulario__campo');
             precio.placeholder = "Precio sin IVA";
+
+            const checkboxIVA = document.createElement('INPUT');
+            checkboxIVA.type = "checkbox";
+            checkboxIVA.classList.add('ingreso__checkbox-IVA');
+
+            contenedorPrecio.appendChild(precio);
+            contenedorCheckIVA.appendChild(checkboxIVA);
+            contenedorCheckIVA.appendChild(indicadorCheckIVA);
+            contenedorPrecio.appendChild(contenedorCheckIVA);
+
+
+
 
             const descuento = document.createElement('INPUT');
             descuento.type = 'text';
@@ -439,7 +462,8 @@ import * as helpers from './helpers';
             grid.appendChild(cantidad);
             grid.appendChild(contenedorCodigo);
             grid.appendChild(contenedorNombre);
-            grid.appendChild(precio);
+            grid.appendChild(contenedorPrecio);
+            // grid.appendChild(precio);
             grid.appendChild(descuento);
             grid.appendChild(semanas);
             grid.appendChild(btnGuardar);
