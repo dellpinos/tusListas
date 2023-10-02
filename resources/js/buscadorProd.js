@@ -6,6 +6,7 @@ import * as helpers from './helpers';
         const contenedorTabs = document.querySelector('#dashboard__contenedor-tabs');
         const tabs = document.querySelector('#dashboard__tabs');
         const contenedorPrincipal = document.querySelector('#buscador__contenedor-principal');
+        const headingPrincipal = document.querySelector('.dashboard__heading');
 
         /* Paginación */
         // Virtual DOM
@@ -41,6 +42,12 @@ import * as helpers from './helpers';
         let coincidenciasPantalla = []; // Aqui se almacena el resultado de la DB filtrado
 
         document.addEventListener('DOMContentLoaded', () => {
+
+            tabs.classList.add('dashboard__tabs--activo');
+
+            setTimeout(() => {
+                tabs.classList.remove('dashboard__tabs--activo');
+            }, 5000);
 
             // Mostrar / Ocultar tabs
             contenedorTabs.addEventListener('mouseenter', () => {
@@ -80,14 +87,13 @@ import * as helpers from './helpers';
 
             // recargar archivo
             tipoBusqueda = "codigo";
+            headingPrincipal.textContent = "Buscar código";
 
             limpiarContenedor();
 
             generarBuscador();
 
-            inputProductoFalso.placeholder = "Código del producto";
-
-
+            busquedaCodigo();
 
             // Cambiar el buscador
             // Cambiar placeholder y almacenar un "flag" para el momento en que el usuario presione en el input falso
@@ -101,15 +107,111 @@ import * as helpers from './helpers';
         // Buscar por codigo - producto se cambian con un paginador
         // El usuario puede escoger uno u otro metodo de busqueda
 
-        // inputCodigo.addEventListener('keydown', function (e) {
-        //     if (e.key === 'Enter') {
-        //         if (inputCodigo.value.length >= 4) {
 
-        //             let codigo = inputCodigo.value; // Los códigos estan escritos en minusculas
-        //             findDB(codigo.toLowerCase());
-        //         }
-        //     }
-        // });
+        function busquedaCodigo() {
+
+            // Crear boton "busqueda"
+            const btnBusqueda = document.createElement('BUTTON');
+            btnBusqueda.classList.add('buscador__btn-busqueda');
+            btnBusqueda.textContent = "Buscar";
+            contenedorInput.appendChild(btnBusqueda);
+
+            inputProductoFalso.placeholder = "Ingresa un código válido";
+            contenedorInput.classList.add('buscador__input--no-valido');
+
+            inputProductoFalso.addEventListener('input', function (e) {
+
+                const regex = /^[a-zA-Z0-9]+$/;
+
+
+
+                if (inputProductoFalso.value.length === 4 && regex.test(inputProductoFalso.value)) {
+
+                    // cambiar la vista (color del box-shadow - verde)
+                    btnBusqueda.classList.add('buscador__btn-busqueda--mostrar');
+                    contenedorInput.classList.remove('buscador__input--no-valido');
+                    contenedorInput.classList.add('buscador__input--valido');
+
+                    console.log('valido para busqueda, apreta enter');
+
+                    inputProductoFalso.addEventListener('keydown', function (e) {
+
+                        console.log(inputProductoFalso.value.length);
+
+                        if (e.key === 'Enter' && inputProductoFalso.value.length === 4) {
+                            // cuando el usuario presiona Enter hago la busqueda
+
+                            const codigo = inputProductoFalso.value; // Los códigos estan escritos en minusculas
+                            findDBCodigo(codigo.toLowerCase());
+
+                        }
+
+                    });
+
+
+                    btnBusqueda.addEventListener('click', () => {
+
+                        if (inputProductoFalso.value.length === 4 && regex.test(inputProductoFalso.value)) {
+
+                            const codigo = inputProductoFalso.value; // Los códigos estan escritos en minusculas
+                            findDBCodigo(codigo.toLowerCase());
+                        }
+
+                        // buscar
+                    });
+                } else {
+                    contenedorInput.classList.remove('buscador__input--valido');
+                    contenedorInput.classList.add('buscador__input--no-valido');
+
+                    btnBusqueda.classList.remove('buscador__btn-busqueda--mostrar');
+                }
+            });
+        }
+        // cambiar la vista (color del box-shadow - rojo)
+
+
+        async function findDBCodigo(codigo) {
+            try {
+                const datos = new FormData();
+                datos.append('codigo_producto', codigo);
+
+                const url = '/api/buscador/producto-codigo';
+                const respuesta = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': tokenCSRF
+                    },
+                    body: datos
+                });
+
+                const resultado = await respuesta.json();
+
+                if (!resultado) {
+
+                    while (cardProducto.lastChild) {
+                        cardProducto.removeChild(cardProducto.lastChild);
+                    }
+                    cardProducto.classList.remove('producto__card-contenedor');
+
+                    const mensajeSinResult = document.createElement('P');
+                    mensajeSinResult.classList.add('mensaje__info');
+                    mensajeSinResult.textContent = "El código no existe";
+
+                    cardProducto.appendChild(mensajeSinResult);
+
+                    inputProductoFalso.value = '';
+
+                    return;
+                }
+
+                buscarProducto(resultado[0].id);
+
+            } catch (error) {
+                console.log('El servidor no responde');
+            }
+        }
+
+
 
 
         /////////
@@ -118,6 +220,7 @@ import * as helpers from './helpers';
         tabProrducto.addEventListener('click', () => {
 
             tipoBusqueda = "producto";
+            headingPrincipal.textContent = "Buscador";
 
             // recargar archivo
             limpiarContenedor();
@@ -134,13 +237,13 @@ import * as helpers from './helpers';
         function generarBuscador() {
 
             contenedorInput = document.createElement('DIV');
-            contenedorInput.classList.add('formulario__contenedor-busqueda', 'buscador__input', 'relative');
+            contenedorInput.classList.add('buscador__input', 'relative');
 
             const iconoBuscador = document.createElement('I');
-            iconoBuscador.classList.add('formulario__icono-busqueda', 'fa-solid', 'fa-magnifying-glass');
+            iconoBuscador.classList.add('buscador__icono-busqueda', 'fa-solid', 'fa-magnifying-glass');
 
             inputProductoFalso = document.createElement('INPUT');
-            inputProductoFalso.classList.add('formulario__campo-busqueda');
+            inputProductoFalso.classList.add('buscador__campo-busqueda');
             inputProductoFalso.type = 'text';
             inputProductoFalso.placeholder = 'Nombre del producto';
 
@@ -158,6 +261,8 @@ import * as helpers from './helpers';
 
             // Eliminar contenido
             limpiarContenedor();
+
+            headingPrincipal.textContent = "Todos los productos";
 
             // Consultar todos los productos de la DB
             const resultado = await paginadorTodos();
@@ -365,40 +470,12 @@ import * as helpers from './helpers';
         // DOM scripting
         function generarHTML() {
 
-
-            // Evaluar el tab con un switch ????
-            switch (tipoBusqueda) {
-                case "producto":
-                    console.log('Buscar Producto');
-                    break;
-                case "codigo":
-                    console.log("Buscar Código");
-                    break;
-                case "todos":
-                    console.log('Buscar Todos');
-                    break;
-                case "categoria":
-                    console.log("Buscar Categoria");
-                    break;
-                case "fabricante":
-                    console.log("Buscar Fabricante");
-                    break;
-                case "provider":
-                    console.log("Buscar Provider");
-                    break;
-                default:
-                    console.log("Error en tipo de busqueda");
-                    break;
-            }
-
-
             // Contenedor
             const contenedorOpciones = document.createElement('DIV');
             contenedorOpciones.classList.add('buscador__opciones-contenedor');
 
-            const iconoBuscador = document.createElement('DIV');
-            iconoBuscador.innerHTML = '<i class="formulario__icono-busqueda fa-solid fa-magnifying-glass"></i>';
-            iconoBuscador.classList.add('formulario__icono-busqueda', 'buscador__icono-busqueda');
+            const iconoBuscador = document.createElement('I');
+            iconoBuscador.classList.add('buscador__icono-busqueda', 'fa-solid', 'fa-magnifying-glass');
 
             // input real
             const inputProducto = document.createElement('INPUT');
@@ -407,7 +484,8 @@ import * as helpers from './helpers';
             inputProducto.classList.add('buscador__campo', 'buscador__campo-focus');
             inputProducto.placeholder = 'Nombre del producto';
 
-            if(inputProductoFalso.value) {
+
+            if (inputProductoFalso.value) {
                 inputProducto.value = inputProductoFalso.value;
             }
 
@@ -441,10 +519,11 @@ import * as helpers from './helpers';
                 if (e.key === 'Enter') {
 
                     if (coincidenciasPantalla[0]) {
+
                         buscarProducto(coincidenciasPantalla[0].id);
 
                         inputProductoFalso.value = coincidenciasPantalla[0].nombre;
-                        
+
                         eliminarCoincidencias(contenedorOpciones);
 
                     } else {
@@ -547,11 +626,12 @@ import * as helpers from './helpers';
 
                     lista.appendChild(sugerenciaBusqueda);
                     contenedorOpciones.classList.add('buscador__opciones-contenedor--activo');
-                    
+
                     sugerenciaBusqueda.addEventListener('click', function (e) {
 
                         buscarProducto(coincidencia.id);
 
+                        coincidenciasPantalla[0] = coincidencia;
                         inputProductoFalso.value = coincidencia.nombre;
 
                         eliminarCoincidencias(contenedorOpciones);
@@ -567,6 +647,9 @@ import * as helpers from './helpers';
                 contenedorOpciones.removeChild(contenedorOpciones.firstChild);
             }
             contenedorOpciones.remove();
+
+            productosArray = {};
+            preciosArray = {};
 
         }
 
