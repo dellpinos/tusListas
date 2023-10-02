@@ -68,21 +68,6 @@ import * as helpers from './helpers';
 
         });
 
-
-        // let flagExisteBarra = // La barra se elimina cuando el usuario lista "todos los productos", cuando presione otra
-        // opcion de busqueda esta barra debe volver a generarse. Utilizo esta variable para comprobar si existe actualmente la barra o si debo generarla
-
-
-        // El usuario presiona en un tab y esto modifica la variable "tipoBusqueda", modifica el placeholder
-        // El listener del click dentro del campo de busqueda llama a "generarHTML" a menos que la busqueda sea por codigo o todos
-        // Todos elimina la barra de busqueda y la reemplaza por la paginacion de todos los registros
-        // Codigo hace una busqueda pero sin renderizar "coincidencias" - solo responde "existe" o "no existe"
-
-
-        /////////// Buscador por codigo
-
-
-
         tabCodigo.addEventListener('click', () => {
 
             // recargar archivo
@@ -98,15 +83,7 @@ import * as helpers from './helpers';
             // Cambiar el buscador
             // Cambiar placeholder y almacenar un "flag" para el momento en que el usuario presione en el input falso
 
-
-
-            console.log('Buscar por Código');
         });
-
-
-        // Buscar por codigo - producto se cambian con un paginador
-        // El usuario puede escoger uno u otro metodo de busqueda
-
 
         function busquedaCodigo() {
 
@@ -122,8 +99,6 @@ import * as helpers from './helpers';
             inputProductoFalso.addEventListener('input', function (e) {
 
                 const regex = /^[a-zA-Z0-9]+$/;
-
-
 
                 if (inputProductoFalso.value.length === 4 && regex.test(inputProductoFalso.value)) {
 
@@ -145,9 +120,7 @@ import * as helpers from './helpers';
                             findDBCodigo(codigo.toLowerCase());
 
                         }
-
                     });
-
 
                     btnBusqueda.addEventListener('click', () => {
 
@@ -157,7 +130,6 @@ import * as helpers from './helpers';
                             findDBCodigo(codigo.toLowerCase());
                         }
 
-                        // buscar
                     });
                 } else {
                     contenedorInput.classList.remove('buscador__input--valido');
@@ -167,8 +139,6 @@ import * as helpers from './helpers';
                 }
             });
         }
-        // cambiar la vista (color del box-shadow - rojo)
-
 
         async function findDBCodigo(codigo) {
             try {
@@ -210,12 +180,6 @@ import * as helpers from './helpers';
                 console.log('El servidor no responde');
             }
         }
-
-
-
-
-        /////////
-
 
         tabProrducto.addEventListener('click', () => {
 
@@ -545,14 +509,12 @@ import * as helpers from './helpers';
 
             contenedorInput.addEventListener('mouseleave', function () {
 
+                inputProductoFalso.value = '';
+
                 eliminarCoincidencias(contenedorOpciones);
 
             });
-
-
-
         }
-
 
         async function filtrarResultado(e, lista, contenedorOpciones) {
             try {
