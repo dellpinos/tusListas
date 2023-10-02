@@ -94,7 +94,7 @@
             
             <div class="dashboard__contenedor-secundario">
                 
-                <h2>
+                <h2 class="dashboard__heading">
                     @yield('titulo')
                 </h2>
                 

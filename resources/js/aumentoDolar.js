@@ -149,7 +149,7 @@ import Swal from 'sweetalert2';
 
             mensajeNoResult.innerHTML = `<p class="mensaje__info--my">
             No hay productos desactualizados
-            </p>`
+            </p>`;
 
             mensajeInfo.classList.add('display-none');
             table.classList.add('display-none');

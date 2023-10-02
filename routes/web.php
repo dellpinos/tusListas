@@ -74,6 +74,7 @@ Route::post('/categoria/categoria-update', [CategoriaController::class, 'update'
 /* APIs */
 
 // API buscador
+Route::post('/api/buscador/todos', [APIBuscador::class, 'index']);
 Route::post('/api/buscador/producto', [APIBuscador::class, 'nombre_producto']);
 Route::post('/api/buscador/producto-codigo', [APIBuscador::class, 'codigo_producto']);
 Route::post('/api/buscador/producto-individual', [APIBuscador::class, 'producto_individual']);

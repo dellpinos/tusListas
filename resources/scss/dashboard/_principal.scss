@@ -16,9 +16,11 @@
     }
 
     &__tabs {
+
+
         background-color: v.$azul;
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         color: v.$blanco;
         height: 0;
         max-height: 0;
@@ -50,7 +52,7 @@
         font-weight: v.$bold;
 
         &:hover {
-            color: v.$negro;
+            color: v.$grisOscuroAzul;
         }
     }
     
