@@ -101,9 +101,9 @@ class ProductoController extends Controller
             $this->validate($request, [ // Da error con cualquiera, el problema puede ser la referencia a "this"
 
                 'codigo_fraccionado' => 'required|max:4|min:4|unique:productos,codigo',
-                'unidad_fraccion' => 'required|string|max:60', // <<<<<< dice fraccionado!!!!!
+                'unidad_fraccion' => 'required|string|max:60',
                 'contenido_total' => 'required|numeric',
-                'ganancia_fraccion' => 'required|numeric|between:0.01,9.99'
+                'ganancia_fraccion' => 'required|numeric|between:0.01,19.9'
 
             ]);
         }
@@ -445,9 +445,11 @@ class ProductoController extends Controller
                     'codigo' => 'required|max:4|min:4|unique:productos,codigo,' . $producto->id,
                     'unidad_fraccion' => 'required|string|max:60',
                     'contenido_total' => 'required|numeric',
-                    'ganancia_fraccion' => 'required|numeric', 'between:0.01,9.99'
+                    'ganancia_fraccion' => 'required|numeric|between:0.01,19.9'
 
                 ]);
+
+
 
                 $producto->unidad_fraccion = $request->unidad_fraccion;
                 $producto->contenido_total = $request->contenido_total;
