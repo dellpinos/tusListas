@@ -62,10 +62,10 @@
     cursor: default !important;
 }
 .b-red {
-    border: solid 1px v.$rojo;
+    border: solid 1px v.$rojo!important;
 }
 .b-green {
-    border: solid 1px v.$verde;
+    border: solid 1px v.$verde!important;
 }
 .c-red {
     color: v.$rojo;

@@ -8,7 +8,7 @@
         grid-template-columns: 1fr 2fr 4fr 9fr 5fr 3fr 3fr 1fr 1fr;
         column-gap: 1rem;
         row-gap: 1.5rem;
-        
+
     }
 
     &__contenedor {
@@ -49,8 +49,59 @@
             }
         }
     }
+
     &__numero {
         color: v.$negro;
         font-size: 1.9rem;
     }
+
+    &__contenedor-precio {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__campo-precio {
+        border-radius: 1rem 1rem 0 0;
+
+        &--checked {
+            border-color: v.$azul;
+        }
+    }
+
+    &__contenedor-checkboxIVA {
+
+        height: 1.3rem;
+    }
+
+    &__checkbox-IVA {
+        width: 100%;
+        border: 0.5px solid v.$gris;
+        height: 100%;
+        color: v.$negro;
+        font-size: 1.1rem;
+        font-weight: v.$bold;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 0rem 0rem .5rem .5rem;
+
+        &:hover {
+            background-color: darken(v.$blanco, 5%);
+        }
+
+    }
+    &__checkbox-IVA--checked {
+
+        color: v.$blanco;
+        background-color: v.$azul;;
+
+        &:hover {
+            background-color: darken(v.$azul, 5%);
+        }
+
+    }
+
+
 }

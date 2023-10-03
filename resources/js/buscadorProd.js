@@ -47,7 +47,7 @@ import * as helpers from './helpers';
 
             setTimeout(() => {
                 tabs.classList.remove('dashboard__tabs--activo');
-            }, 5000);
+            }, 7000);
 
             // Mostrar / Ocultar tabs
             contenedorTabs.addEventListener('mouseenter', () => {
@@ -80,9 +80,6 @@ import * as helpers from './helpers';
 
             busquedaCodigo();
 
-            // Cambiar el buscador
-            // Cambiar placeholder y almacenar un "flag" para el momento en que el usuario presione en el input falso
-
         });
 
         function busquedaCodigo() {
@@ -107,11 +104,7 @@ import * as helpers from './helpers';
                     contenedorInput.classList.remove('buscador__input--no-valido');
                     contenedorInput.classList.add('buscador__input--valido');
 
-                    console.log('valido para busqueda, apreta enter');
-
                     inputProductoFalso.addEventListener('keydown', function (e) {
-
-                        console.log(inputProductoFalso.value.length);
 
                         if (e.key === 'Enter' && inputProductoFalso.value.length === 4) {
                             // cuando el usuario presiona Enter hago la busqueda
@@ -134,7 +127,6 @@ import * as helpers from './helpers';
                 } else {
                     contenedorInput.classList.remove('buscador__input--valido');
                     contenedorInput.classList.add('buscador__input--no-valido');
-
                     btnBusqueda.classList.remove('buscador__btn-busqueda--mostrar');
                 }
             });
