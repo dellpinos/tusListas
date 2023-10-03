@@ -102,19 +102,18 @@
 
     &__contenedor-oculto {
         opacity: 0;
-        height: 0;
+        max-height: 0;
         overflow: hidden;
         visibility: hidden;
-        transition: opacity 2s, height 2s, overflow 2s, visibility 2s;
-
+        transition: opacity 2s, max-height 1s, overflow 2s, visibility 2s;
 
     }
 
     &__contenedor-visible {
         opacity: 1;
-        height: auto;
+        max-height: 40rem;
         overflow: visible;
-        transition: opacity 2s, height 2s, overflow 2s, visibility 2s;
+        transition: opacity 2s, max-height 1s, overflow 2s, visibility 2s;
         visibility: visible;
 
     }
