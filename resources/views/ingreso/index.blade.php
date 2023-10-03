@@ -21,7 +21,7 @@
             <label class="formulario__label text-center" for="mercaderia-checkbox">Cant</label>
             <label class="formulario__label text-center" for="mercaderia-codigo">Código</label>
             <label class="formulario__label text-center" for="mercaderia-nombre">Nombre</label>
-            <label class="formulario__label text-center" for="mercaderia-precio">Costo sin IVA</label>
+            <label class="formulario__label text-center" for="mercaderia-precio">Precio</label>
             <label class="formulario__label text-center" for="mercaderia-descuento">% Descuento</label>
             <label class="formulario__label text-center" for="mercaderia-semanas">Semanas</label>
             <label class="formulario__label text-center" for="mercaderia-guardar"></label>

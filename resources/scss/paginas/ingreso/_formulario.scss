@@ -57,51 +57,51 @@
 
     &__contenedor-precio {
         display: flex;
-        align-items: center;
+        flex-direction: column;
     }
 
+    &__campo-precio {
+        border-radius: 1rem 1rem 0 0;
 
-    /// Esto no funciona
+        &--checked {
+            border-color: v.$azul;
+        }
+    }
 
-    &__contenedor-checkboxIVA::before {
-        display: inline-block;
-        position: relative;
-        width: 40px;
-        height: 20px;
-        background-color: #ccc;
-        border-radius: 20px;
-        cursor: pointer;
-        transition: background-color 0.3s;
+    &__contenedor-checkboxIVA {
+
+        height: 1.3rem;
     }
 
     &__checkbox-IVA {
+        width: 100%;
+        border: 0.5px solid v.$gris;
+        height: 100%;
+        color: v.$negro;
+        font-size: 1.1rem;
+        font-weight: v.$bold;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 0rem 0rem .5rem .5rem;
 
-        position: absolute;
-        opacity: 0;
-
-
-        &:checked .ingreso__contenedor-checkboxIVA {
-
-            background-color: #4CAF50;
+        &:hover {
+            background-color: darken(v.$blanco, 5%);
         }
 
-        &:checked .ingreso__contenedor-checkboxIVA::before{
+    }
+    &__checkbox-IVA--checked {
 
-            transform: translateX(30px);
+        color: v.$blanco;
+        background-color: v.$azul;;
+
+        &:hover {
+            background-color: darken(v.$azul, 5%);
         }
+
     }
 
 
-    &__indicador-checkboxIVA {
-        content: "";
-        position: absolute;
-        top: 2px;
-        left: 2px;
-        width: 16px;
-        height: 16px;
-        background-color: #fff;
-        border-radius: 50%;
-        transition: transform 0.3s;
-        transform: translateX(0);
-    }
 }
