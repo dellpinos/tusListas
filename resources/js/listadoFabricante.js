@@ -8,6 +8,8 @@ import * as helpers from './helpers';
     if (document.querySelector('#fabricantes-registros')) {
 
         let fabricantesArray = [];
+        let fabricantesArrayFiltrado = [];
+        let busquedaLength = 0;
         const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         const contRegistros = document.querySelector('#fabricantes-registros'); // contenedor
         const inputBusqueda = document.querySelector('#fabricante-formulario');
@@ -20,13 +22,22 @@ import * as helpers from './helpers';
         campoBuscador.onclick = function() {
             inputBusqueda.focus();
         }
-        
+
         inputBusqueda.addEventListener('input', (e) => {
-            if (e.target.value.length >= 3) {
-                buscarCoincidenciasMemoria(e);
-            } else if (e.target.value.length < 3) {
-                listadofabricantes();
+
+            if(busquedaLength > e.target.value.length) {
+
+                // El usuario esta borrando 
+                fabricantesArrayFiltrado = fabricantesArray;
+                mostrarElementos();
             }
+            
+            busquedaLength = e.target.value.length;
+    
+            if(e.target.value.length >= 2) {
+                buscarCoincidenciasMemoria(e);
+            }
+
         });
 
         // Vacia el campo de busqueda
@@ -43,6 +54,8 @@ import * as helpers from './helpers';
                 const resultado = await respuesta.json();
 
                 fabricantesArray = resultado.fabricantes; // array de fabricantes
+                fabricantesArrayFiltrado = resultado.fabricantes;
+
                 mostrarElementos();
 
             } catch (error) {
@@ -56,7 +69,7 @@ import * as helpers from './helpers';
             limpiarElementos(contRegistros);
             limpiarElementos(contenedorVacio);
 
-            if (fabricantesArray.length === 0) {
+            if (fabricantesArrayFiltrado.length === 0) {
 
                 const textoNoCat = document.createElement('P');
 
@@ -68,7 +81,7 @@ import * as helpers from './helpers';
                 return;
             }
 
-            fabricantesArray.forEach(fabricante => {
+            fabricantesArrayFiltrado.forEach(fabricante => {
 
                 const contenedor = document.createElement('DIV');
                 contenedor.classList.add('fabricante__contenedor', 'swiper-slide');
@@ -167,6 +180,7 @@ import * as helpers from './helpers';
                             );
                             if (flag) {
                                 fabricantesArray = filtrarVirtualDOM(fabricantesArray, id); // si hay un array va a filtrarlo
+                                fabricantesArrayFiltrado = fabricantesArray;
                                 mostrarElementos();
                             }
                         } else {
@@ -226,7 +240,7 @@ import * as helpers from './helpers';
             const busqueda = e.target.value; // input del usuario
             const Regex = new RegExp(busqueda, 'i'); // la "i" es para ser insensible a mayusculas/minusculas
 
-            fabricantesArray = fabricantesArray.filter(fabricante => { // filtra elementos en memoria
+            fabricantesArrayFiltrado = fabricantesArrayFiltrado.filter(fabricante => { // filtra elementos en memoria
                 if (fabricante.nombre.toLowerCase().search(Regex) !== -1) {
                     return fabricante;
                 }

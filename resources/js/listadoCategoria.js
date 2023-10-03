@@ -7,6 +7,8 @@ import * as helpers from './helpers';
     if (document.querySelector('#categorias-registros')) {
 
         let categoriasArray = [];
+        let categoriasArrayFiltrado = [];
+        let busquedaLength = 0;
         const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         const contRegistros = document.querySelector('#categorias-registros'); // contenedor
         const inputBusqueda = document.querySelector('#categoria-formulario');
@@ -19,14 +21,29 @@ import * as helpers from './helpers';
         campoBuscador.onclick = function() {
             inputBusqueda.focus();
         }
+
+
+
         
         inputBusqueda.addEventListener('input', (e) => {
-            if (e.target.value.length >= 3) {
+
+            if(busquedaLength > e.target.value.length) {
+
+                // El usuario esta borrando 
+                categoriasArrayFiltrado = categoriasArray;
+                mostrarElementos();
+            }
+            
+            busquedaLength = e.target.value.length;
+
+            if(e.target.value.length >= 2) {
                 buscarCoincidenciasMemoria(e);
-            } else if (e.target.value.length < 3) {
-                listadoCategorias();
             }
         });
+
+
+
+
 
         // Vacia el campo de busqueda
         inputBusqueda.addEventListener('blur', (e) => {
@@ -42,10 +59,12 @@ import * as helpers from './helpers';
                 const resultado = await respuesta.json();
 
                 categoriasArray = resultado.categorias; // array de categorias
+                categoriasArrayFiltrado = resultado.categorias;
+
                 mostrarElementos();
 
             } catch (error) {
-                console.log('No carga el listado');
+                console.log('No carga el listado' + error);
             }
         }
 
@@ -56,7 +75,7 @@ import * as helpers from './helpers';
             limpiarElementos(contenedorVacio);
             
 
-            if (categoriasArray.length === 0) {
+            if (categoriasArrayFiltrado.length === 0) {
 
                 const textoNoCat = document.createElement('P');
 
@@ -68,7 +87,7 @@ import * as helpers from './helpers';
                 return;
             }
 
-            categoriasArray.forEach(categoria => {
+            categoriasArrayFiltrado.forEach(categoria => {
 
                 const contenedor = document.createElement('DIV');
                 contenedor.classList.add('categoria__contenedor', 'swiper-slide');
@@ -159,6 +178,7 @@ import * as helpers from './helpers';
                             );
                             if (flag) {
                                 categoriasArray = filtrarVirtualDOM(categoriasArray, id); // si hay un array va a filtrarlo
+                                categoriasArrayFiltrado = categoriasArray;
                                 mostrarElementos();
                             }
                         } else {
@@ -218,7 +238,7 @@ import * as helpers from './helpers';
             const busqueda = e.target.value; // input del usuario
             const Regex = new RegExp(busqueda, 'i'); // la "i" es para ser insensible a mayusculas/minusculas
 
-            categoriasArray = categoriasArray.filter(categoria => { // filtra elementos en memoria
+            categoriasArrayFiltrado = categoriasArrayFiltrado.filter(categoria => { // filtra elementos en memoria
                 if (categoria.nombre.toLowerCase().search(Regex) !== -1) {
                     return categoria;
                 }
