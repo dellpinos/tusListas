@@ -8,6 +8,8 @@ import * as helpers from './helpers';
     if (document.querySelector('#providers-registros')) {
 
         let providersArray = [];
+        let providersArrayFiltrado = [];
+        let busquedaLength = 0;
         const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         const contRegistros = document.querySelector('#providers-registros'); // contenedor
         const inputBusqueda = document.querySelector('#provider-formulario');
@@ -17,17 +19,34 @@ import * as helpers from './helpers';
         // Obtener todas las providers
         listadoproviders();
 
-        campoBuscador.onclick = function() {
+        campoBuscador.onclick = function () {
             inputBusqueda.focus();
         }
-        
+
+
+
+
         inputBusqueda.addEventListener('input', (e) => {
-            if (e.target.value.length >= 3) {
-                buscarCoincidenciasMemoria(e);
-            } else if (e.target.value.length < 3) {
-                listadoproviders();
+
+
+            if (busquedaLength > e.target.value.length) {
+
+                // El usuario esta borrando 
+                providersArrayFiltrado = providersArray;
+                mostrarElementos();
             }
+
+            busquedaLength = e.target.value.length;
+
+            if (e.target.value.length >= 2) {
+                buscarCoincidenciasMemoria(e);
+            }
+
+
         });
+
+
+
 
         // Vacia el campo de busqueda
         inputBusqueda.addEventListener('blur', (e) => {
@@ -43,6 +62,9 @@ import * as helpers from './helpers';
                 const resultado = await respuesta.json();
 
                 providersArray = resultado.providers; // array de providers
+
+                providersArrayFiltrado = resultado.providers;
+
                 mostrarElementos();
 
             } catch (error) {
@@ -56,7 +78,7 @@ import * as helpers from './helpers';
             limpiarElementos(contRegistros);
             limpiarElementos(contenedorVacio);
 
-            if (providersArray.length === 0) {
+            if (providersArrayFiltrado.length === 0) {
 
                 const textoNoCat = document.createElement('P');
 
@@ -69,7 +91,7 @@ import * as helpers from './helpers';
             }
 
 
-            providersArray.forEach(provider => {
+            providersArrayFiltrado.forEach(provider => {
 
                 const contenedor = document.createElement('DIV');
                 contenedor.classList.add('provider__contenedor', 'swiper-slide');
@@ -184,6 +206,7 @@ import * as helpers from './helpers';
                             );
                             if (flag) {
                                 providersArray = filtrarVirtualDOM(providersArray, id); // si hay un array va a filtrarlo
+                                providersArrayFiltrado = providersArray;
                                 mostrarElementos();
                             }
                         } else {
@@ -243,7 +266,7 @@ import * as helpers from './helpers';
             const busqueda = e.target.value; // input del usuario
             const Regex = new RegExp(busqueda, 'i'); // la "i" es para ser insensible a mayusculas/minusculas
 
-            providersArray = providersArray.filter(provider => { // filtra elementos en memoria
+            providersArrayFiltrado = providersArrayFiltrado.filter(provider => { // filtra elementos en memoria
                 if (provider.nombre.toLowerCase().search(Regex) !== -1) {
                     return provider;
                 }
