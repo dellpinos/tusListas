@@ -50,6 +50,12 @@
         }
     }
 
+    &__opciones-contenedor {
+        flex-direction: column;
+        padding: 2rem 0 0 2rem;
+        font-size: 1.6rem;
+    }
+
     &__numero {
         color: v.$negro;
         font-size: 1.9rem;
