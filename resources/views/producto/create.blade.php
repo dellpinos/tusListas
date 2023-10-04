@@ -139,7 +139,7 @@
                         id="ganancia-personalizada" />
                 </div>
                 <div class="formulario__campo-contenedor">
-                    <input type="number" step="0.1" min="1" max="19.9" id="ganancia" {{-- elimino el name --}}
+                    <input type="number" step="0.01" min="1" max="19.9" id="ganancia" {{-- elimino el name --}}
                         placeholder="1.2, 1.7, 1.9" readonly
                         class=" formulario__campo formulario__campo--no-activo  @error('ganancia') borde__error @enderror">
                     @error('ganancia')
@@ -202,7 +202,7 @@
 
                 <div class="formulario__campo-contenedor width-full">
                     <label for="ganancia-fraccion" class="formulario__label">Ganancia Extra Fracción</label>
-                    <input type="number" step="0.1" min="1" max="19.9" id="ganancia-fraccion" name="ganancia_fraccion" placeholder="1.1, 1.2, 1.4"
+                    <input type="number" step="0.01" min="1" max="19.9" id="ganancia-fraccion" name="ganancia_fraccion" placeholder="1.1, 1.2, 1.4"
                         class="formulario__campo  @error('ganancia_fraccion') borde__error @enderror" value="{{ old('ganancia_fraccion') }}">
                     @error('ganancia_fraccion')
                         <p class="alerta__error">{{ $message }}</p>

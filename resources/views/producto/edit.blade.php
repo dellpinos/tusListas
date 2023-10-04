@@ -145,7 +145,7 @@
                             id="ganancia-personalizada" @if ($producto_fraccionado) disabled @endif @if ($producto->ganancia_tipo === 'producto') checked @endif />
                     </div>
                     <div class="formulario__campo-contenedor">
-                        <input type="number" step="0.1" min="1" max="19.9" id="ganancia"
+                        <input type="number" step="0.01" min="1" max="19.9" id="ganancia"
                             placeholder="1.2, 1.7, 1.9" value="{{ $producto->ganancia }}" readonly @if ($producto_fraccionado) disabled @endif
                             class=" formulario__campo formulario__campo--no-activo  @error('ganancia') borde__error @enderror">
                         @error('ganancia')
@@ -222,7 +222,7 @@
 
                     <div class="formulario__campo-contenedor width-full">
                         <label for="ganancia-fraccion" class="formulario__label">Ganancia Extra Fracción</label>
-                        <input type="number" id="ganancia-fraccion" step="0.1" min="1" max="19.9" name="ganancia_fraccion"
+                        <input type="number" id="ganancia-fraccion" step="0.01" min="1" max="19.9" name="ganancia_fraccion"
                             placeholder="1.1, 1.2, 1.4" value="{{ $producto->ganancia_fraccion }}" @if ($producto_fraccionado) required @endif
                             class="formulario__campo  @error('ganancia-fraccion') borde__error @enderror">
                         @error('ganancia-fraccion')
