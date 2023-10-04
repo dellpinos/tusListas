@@ -12,9 +12,7 @@
     "src": "resources/js/app.js"
   },
   "resources/scss/app.scss": {
-
-    "file": "assets/app-e13ad74c.css",
-
+    "file": "assets/app-2b60e562.css",
     "isEntry": true,
     "src": "resources/scss/app.scss"
   }
