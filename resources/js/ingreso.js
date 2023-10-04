@@ -191,7 +191,7 @@ import * as helpers from './helpers';
                 flagValidacion[0] = true;
             }
 
-            if (cantidad.value !== '' && !regexCantidad.test(cantidad.value)) {
+            if (cantidad.value !== '' && !regexCantidad.test(cantidad.value) || cantidad.value.length > 6) {
                 cantidad.classList.add('b-red');
                 flagValidacion[4] = false;
             } else {
@@ -402,8 +402,6 @@ import * as helpers from './helpers';
 
             contenedorNombre.appendChild(nombre);
 
-
-
             const contenedorPrecio = document.createElement('DIV');
             contenedorPrecio.classList.add('ingreso__contenedor-precio');
 
@@ -503,7 +501,7 @@ import * as helpers from './helpers';
 
             // Contenedor
             const contenedorOpciones = document.createElement('DIV');
-            contenedorOpciones.classList.add('buscador__opciones-contenedor');
+            contenedorOpciones.classList.add('buscador__opciones-contenedor', 'ingreso__opciones-contenedor');
 
             // input real
             const inputProducto = document.createElement('INPUT');
