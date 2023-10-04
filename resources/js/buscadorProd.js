@@ -7,6 +7,7 @@ import * as helpers from './helpers';
         const tabs = document.querySelector('#dashboard__tabs');
         const contenedorPrincipal = document.querySelector('#buscador__contenedor-principal');
         const headingPrincipal = document.querySelector('.dashboard__heading');
+        const tabsIcono = document.querySelector('.dashboard__tab-icono');
 
         /* Paginación */
         // Virtual DOM
@@ -23,9 +24,6 @@ import * as helpers from './helpers';
         const tabTodos = document.querySelector('#dashboard__tab-todos');
         const tabProrducto = document.querySelector('#dashboard__tab-producto');
         const tabCodigo = document.querySelector('#dashboard__tab-codigo');
-        const tabCategoria = document.querySelector('#dashboard__tab-categoria');
-        const tabFabricante = document.querySelector('#dashboard__tab-fabricante');
-        const tabProvider = document.querySelector('#dashboard__tab-provider');
 
         let tipoBusqueda = 'producto';
 
@@ -36,7 +34,6 @@ import * as helpers from './helpers';
         let contenedorSecundario = '';
 
         const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const inputCodigo = document.querySelector('#producto-codigo');
         let flag = 0; // Saber cuando se obtuvo el primer resultado de la DB
         let arrayCoincidencias = []; // Aqui se almacena el resultado de la DB
         let coincidenciasPantalla = []; // Aqui se almacena el resultado de la DB filtrado
@@ -44,17 +41,23 @@ import * as helpers from './helpers';
         document.addEventListener('DOMContentLoaded', () => {
 
             tabs.classList.add('dashboard__tabs--activo');
+            tabsIcono.classList.add('dashboard__tab-icono--activo');
 
             setTimeout(() => {
                 tabs.classList.remove('dashboard__tabs--activo');
-            }, 7000);
+                tabsIcono.classList.remove('dashboard__tab-icono--activo');
+            }, 5000);
 
             // Mostrar / Ocultar tabs
             contenedorTabs.addEventListener('mouseenter', () => {
                 tabs.classList.add('dashboard__tabs--activo');
+                tabsIcono.classList.add('dashboard__tab-icono--activo');
+
             });
             contenedorTabs.addEventListener('mouseleave', () => {
-                tabs.classList.remove('dashboard__tabs--activo');
+               tabs.classList.remove('dashboard__tabs--activo');
+                tabsIcono.classList.remove('dashboard__tab-icono--activo');
+
             });
 
             // Buscador Producto
@@ -418,10 +421,7 @@ import * as helpers from './helpers';
             </p>`;
 
             contenedorPrincipal.appendChild(mensajeNoResult);
-
         }
-
-
 
         // DOM scripting
         function generarHTML() {
