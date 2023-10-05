@@ -96,7 +96,7 @@ class ProductoController extends Controller
         if ($request->codigo_fraccionado !== null) {
             // Producto fraccionado
 
-            $this->validate($request, [ // Da error con cualquiera, el problema puede ser la referencia a "this"
+            $this->validate($request, [
 
                 'codigo_fraccionado' => 'required|max:4|min:4|unique:productos,codigo',
                 'unidad_fraccion' => 'required|string|max:60',
