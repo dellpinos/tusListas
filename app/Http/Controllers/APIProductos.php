@@ -46,6 +46,8 @@ class APIProductos extends Controller
         $productos = Producto::where('precio_id', $precio->id)->get();
 
         if ($request->confirm === "true") {
+
+            // 3_ con confirmación, elimino ambos productos y el precio
             
             foreach ($productos as $elemento) {
                 $elemento->delete();
@@ -72,10 +74,11 @@ class APIProductos extends Controller
                 }
 
                 if ($producto->id === $prod_fraccionado->id) {
-                    // Es fraccionado, eliminar producto y precio
+
+                    // Es fraccionado, eliminar producto (precio no)
                     $respuesta = $producto->delete();
+
                     if ($respuesta) {
-                        $precio->delete();
 
                         echo json_encode([
                             'eliminado' => true,
@@ -88,7 +91,7 @@ class APIProductos extends Controller
                         return;
                     }
                 } else if ($producto->id === $prod_no_fraccionado->id) {
-                    // No es fraccionado, consultar al usuario
+                    // No es fraccionado, solicito confirmación del usuario
                     echo json_encode([
                         'eliminado' => false,
                         'eliminar_doble' => true
