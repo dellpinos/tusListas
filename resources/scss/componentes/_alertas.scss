@@ -68,9 +68,8 @@
             margin: 0 0 2rem 0;
         }
     }
-
-    &__pendientes {
-
+    &__warning {
+        
         background-color: lighten(v.$naranja, 40%);
         border: none;
         border-left: 4px solid v.$naranja;
@@ -78,12 +77,19 @@
         color: v.$naranja;
         transition: all 1s ease-out;
 
+    }
+
+    &__pendientes {
+        @extend .mensaje__warning;
+        cursor: pointer;
+
         &:hover {
             background-color: lighten(v.$naranja, 30%);
             color: darken(v.$naranja, 5%);
             border-left: 4px solid v.$naranja;
-            cursor: pointer;
+            
         }
     }
+
 }
 

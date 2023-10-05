@@ -16,8 +16,8 @@
             <input type="hidden" name="id" value="{{ $fabricante->id }}" />
             <div class="fabricante-formulario__contenedor-sm">
                 <div class="formulario__campo-contenedor">
-                    <label for="name" class="formulario__label">Nombre del Fabricante</label>
-                    <input required type="text" id="name" name="nombre"
+                    <label for="name" class="formulario__label">Nombre del Fabricante *</label>
+                    <input required type="text" id="name" name="nombre" maxlength="60"
                         placeholder="Nombre del fabricante"
                         class="formulario__campo @error('nombre') borde__error @enderror" value="{{ $fabricante->nombre }}">
                     @error('nombre')
@@ -35,7 +35,7 @@
                 </div>
                 <div class="formulario__campo-contenedor">
                     <label for="vendedor" class="formulario__label">Nombre del vendendor</label>
-                    <input type="text" id="vendedor" name="vendedor" placeholder="Nombre del vendedor"
+                    <input type="text" id="vendedor" name="vendedor" placeholder="Nombre del vendedor" maxlength="60"
                         class="formulario__campo @error('vendedor') borde__error @enderror"
                         value="{{ $fabricante->vendedor }}">
                     @error('vendedor')
@@ -45,7 +45,7 @@
 
                 <div class="formulario__campo-contenedor">
                     <label for="descripcion" class="formulario__label">Descripción</label>
-                    <textarea id="descripcion" name="descripcion" placeholder="Notas o descripción"
+                    <textarea id="descripcion" name="descripcion" placeholder="Notas o descripción" maxlength="500"
                         class="formulario__campo @error('descripcion') borde__error @enderror">{{ $fabricante->descripcion }}</textarea>
                     @error('descripcion')
                         <p class="alerta__error">{{ $message }}</p>
