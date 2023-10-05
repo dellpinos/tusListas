@@ -39,7 +39,6 @@ import * as helpers from './helpers';
         let precioVenta = '';
         const click = true;
 
-
         radiobtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
 
@@ -67,16 +66,34 @@ import * as helpers from './helpers';
 
         campoSinIva.addEventListener('input', function () {
 
+            if(campoSinIva.value.length >= 10) {
+                campoVenta.textContent = "#Error";
+                return;
+            }
+
             precioFraccionado.textContent = '$ 0';
             campoVenta.textContent = '$ 0';
             calcularGanancia(click);
-            campoConIva.value = Math.round(campoSinIva.value * 1.21);
+
+            // Redondea los decimas y luego convierte el string a float
+            campoConIva.value = parseFloat((campoSinIva.value * 1.21).toFixed(2));
+
         });
 
         campoConIva.addEventListener('input', function () {
-            campoSinIva.value = Math.round(campoConIva.value / 1.21);
+
+            if(campoConIva.value.length >= 10) {
+                campoVenta.textContent = "#Error";
+                return;
+            }
+
+            calcularGanancia(click);
+
+            // Redondea los decimas y luego convierte el string a float
+            campoSinIva.value = parseFloat((campoConIva.value / 1.21).toFixed(2));
 
         });
+
 
         // Consultar precio venta
         btnVenta.addEventListener('click', function () {
@@ -234,11 +251,23 @@ import * as helpers from './helpers';
 
                     }
                 }
+
+                // Evita que se desborde el Precio de Venta
+                if(campoVenta.textContent.length > 10) {
+                    campoVenta.classList.add('font-sm');
+                } else {
+                    campoVenta.classList.remove('font-sm');
+                }
+                if(campoVenta.textContent.length > 20) {
+                    campoVenta.classList.remove('font-sm');
+                    campoVenta.textContent = "#Error";
+                }
+
             } else {
                 Swal.fire(
-                    'Error',
-                    'Debes escoger Categoria y Provider primero',
-                    'error'
+                    'Oops!',
+                    'Aún no has escogido la categoria y el proveedor.',
+                    'info'
                   );
             }
         }
@@ -272,7 +301,6 @@ import * as helpers from './helpers';
         btnFraccionado.addEventListener('click', calcularGananciaFraccionado);
 
         if (checkFraccion) {
-
             checkFraccion.addEventListener('click', function () {
 
                 if (checkFraccion.checked === true) {
@@ -316,16 +344,27 @@ import * as helpers from './helpers';
             });
         }
 
+
+
+
+
+
+
+        //// <<<<<<<
         async function calcularGananciaFraccionado() {
 
-            if (precioVenta && gananciaFraccion.value !== '') { // <<<<<<<<<<
+            if (precioVenta && gananciaFraccion.value !== '') {
                 // Calculo leyendo el formulario
                 precioFraccionado.textContent = "$ " + helpers.redondear((precioVenta / totalFraccionado.value) * gananciaFraccion.value);
+
+                if(precioFraccionado.textContent.length > 10) {
+                    precioFraccionado.textContent = "#Error";
+                }
             } else {
                 Swal.fire(
-                    'Error',
-                    'Debes calcular el precio no-fraccionado e indicar una ganancia fraccionado',
-                    'error'
+                    'Oops!',
+                    'Aún no has calculado el precio no fraccionado, ¡también debes indicar la ganancia del fraccionado!',
+                    'info'
                   );
             }
         }

@@ -84,19 +84,19 @@
     }
 
     &__enlace-fraccionado {
-        margin-bottom: 1rem;
+
         font-size: 1.6rem;
-        color: v.$amarillo;
+        color: v.$naranja;
         text-transform: uppercase;
         font-weight: v.$bold;
-        padding: .7rem;
+        padding: 1.5rem;
         border-radius: .5rem;
-        transition: all .7s ease;
-        background-color: lighten(v.$amarillo, 40%);
+        transition: all 1.5s ease;
+        background-color: lighten(v.$naranja, 40%);
 
         &:hover {
             color: v.$blanco;
-            background-color: lighten(v.$amarillo, 20%);
+            background-color: lighten(v.$naranja, 30%);
         }
     }
 

@@ -3,9 +3,6 @@
     Nuevo Fabricante
 @endsection
 
-
-
-
 @section('contenido')
     <div class="formulario__contenedor-boton">
         <a href="{{ route('fabricantes') }}" class="fabricante__boton">&laquo; Volver</a>
@@ -17,9 +14,9 @@
 
             <div class="fabricante-formulario__contenedor-sm">
                 <div class="formulario__campo-contenedor">
-                    <label for="name" class="formulario__label">Nombre del Fabricante</label>
+                    <label for="name" class="formulario__label">Nombre del Fabricante *</label>
                     <input required type="text" id="name" name="nombre"
-                        placeholder="Nombre del fabricante"
+                        placeholder="Nombre del fabricante" maxlength="60"
                         class="formulario__campo @error('nombre') borde__error @enderror" value="{{ old('nombre') }}">
                     @error('nombre')
                         <p class=" alerta__error">{{ $message }}</p>
@@ -35,7 +32,7 @@
                 </div>
                 <div class="formulario__campo-contenedor">
                     <label for="vendedor" class="formulario__label">Nombre del vendendor</label>
-                    <input type="text" id="vendedor" name="vendedor" placeholder="Nombre del vendedor"
+                    <input type="text" id="vendedor" name="vendedor" placeholder="Nombre del vendedor" maxlength="60"
                         class="formulario__campo @error('vendedor') borde__error @enderror" value="{{ old('vendedor') }}">
                     @error('vendedor')
                         <p class="alerta__error">{{ $message }}</p>
@@ -43,15 +40,13 @@
                 </div>
 
                 <div class="formulario__campo-contenedor">
-                    <label for="descripcion" class="formulario__label">Descripción</label>
-                    <textarea id="descripcion" name="descripcion" placeholder="Notas o descripción"
+                    <label for="descripcion" class="formulario__label">Descripción</label> 
+                    <textarea id="descripcion" name="descripcion" placeholder="Notas o descripción" maxlength="500"
                         class="formulario__campo @error('descripcion') borde__error @enderror"></textarea>
                     @error('descripcion')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror
                 </div>
-
-
 
             </div>
             <input type="submit" value="Nuevo Fabricante" class="formulario__boton">

@@ -15,7 +15,6 @@ class CategoriaController extends Controller
     {
         $categorias = Categoria::orderBy('nombre', 'asc')->get();
 
-
         return view('categoria.index', [
             'categorias' => $categorias
         ]);
@@ -29,8 +28,8 @@ class CategoriaController extends Controller
     {
 
         $this->validate($request, [
-            'nombre' => 'required|unique:categorias|max:60',
-            'ganancia' => 'required|numeric', 'between:0.01,9.99'
+            'nombre' => 'required|unique:categorias|max:60|min:3',
+            'ganancia' => 'required|numeric|between:1,19.99'
         ]);
 
         Categoria::create([
@@ -40,8 +39,6 @@ class CategoriaController extends Controller
 
         return redirect()->route('categorias');
     }
-
-
 
     public function edit(Categoria $categoria)
     {
@@ -55,21 +52,16 @@ class CategoriaController extends Controller
         $categoria = Categoria::find($request->id);
         
         $this->validate($request, [
-            'nombre' => 'required|max:60|unique:categorias,nombre,' . $categoria->id,
-            'ganancia' => 'required|numeric', 'between:0.01,9.99'
+            'nombre' => 'required|max:60|min:3|unique:categorias,nombre,' . $categoria->id,
+            'ganancia' => 'required|numeric|between:1,19.99'
         ]);
-
-        // Falta agregar validaciones, por ejemplo el nombre debe ser unique
-
 
         $categoria->nombre = $request->nombre;
         $categoria->ganancia = $request->ganancia;
-
 
         $categoria->save();
 
         return redirect()->route('categorias');
 
     }
-
 }

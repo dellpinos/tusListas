@@ -55,18 +55,30 @@
 .font-bold {
     font-weight: v.$bold;
 }
+.mb-4 {
+    margin-bottom: 4rem;
+}
 .mb-10 {
     margin-bottom: 10rem;
 }
 .no-pointer {
     cursor: default !important;
 }
+.pointer {
+    cursor: pointer;
+}
 .b-red {
     border: solid 1px v.$rojo!important;
+}
+.b-yellow {
+    border: solid 1px v.$naranja!important;
 }
 .b-green {
     border: solid 1px v.$verde!important;
 }
 .c-red {
-    color: v.$rojo;
+    color: v.$rojo!important;
+}
+.font-sm {
+    font-size: 4rem!important;
 }
