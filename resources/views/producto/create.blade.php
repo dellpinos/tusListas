@@ -93,7 +93,7 @@
                 <div class="formulario__campo-contenedor">
                     <label for="dolar" class="formulario__label">Cotización dolar Blue
                         (compra) *</label>
-                    <input required type="number" id="dolar" name="dolar" placeholder="0" min="1"
+                    <input required type="number" id="dolar" name="dolar" placeholder="0" min="1" step="any"
                         class="formulario__campo  @error('dolar') borde__error @enderror" value="{{ $dolar_pred }}">
                     @error('dolar')
                         <p class="alerta__error">{{ $message }}</p>

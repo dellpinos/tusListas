@@ -34,7 +34,8 @@
         &.activo {
             background-color: darken(v.$grisOscuroAzul, 5%);
             border-radius: .5rem;
-            box-shadow: lighten(v.$grisOscuroAzul, 10%) 0px 3px 7px;
+            box-shadow: lighten(v.$azul, 20%) 0px 2px 5px;
+            color: lighten(v.$azul, 45%);
 
         }
 

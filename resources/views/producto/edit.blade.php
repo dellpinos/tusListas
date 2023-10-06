@@ -102,7 +102,7 @@
                     <div class="formulario__campo-contenedor">
                         <label for="dolar" class="formulario__label">Cotización dolar Blue
                             (compra) *</label>
-                        <input type="number" id="dolar" name="dolar" placeholder="0" min="1"
+                        <input type="number" id="dolar" name="dolar" placeholder="0" min="1" step="any"
                             value="{{ intval($precio->dolar) }}" required @if ($producto_fraccionado) disabled @endif
                             class="formulario__campo  @if ($producto_fraccionado) formulario__campo--no-activo b-yellow @endif @error('dolar') borde__error @enderror">
                         @error('dolar')
@@ -154,7 +154,7 @@
 
                     <div class="formulario__campo-contenedor">
                         <label for="precio-iva" class="formulario__label">Precio Costo con IVA *</label>
-                        <input type="number" id="precio-iva" placeholder="0"
+                        <input type="number" step="any" id="precio-iva" placeholder="0"
                             @if ($producto_fraccionado) disabled @endif
                             class="formulario__campo  @if ($producto_fraccionado) formulario__campo--no-activo b-yellow @endif @error('precio') borde__error @enderror">
                     </div>
