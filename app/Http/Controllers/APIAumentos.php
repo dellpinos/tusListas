@@ -10,7 +10,7 @@ use App\Models\Categoria;
 use App\Models\Fabricante;
 use App\Models\Paginacion;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Validator;
 
 class APIAumentos extends Controller
 {
@@ -19,9 +19,23 @@ class APIAumentos extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     public function aumento_categoria(Request $request)
     {
+
+        // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
+        $validator = Validator::make($request->all(), [
+            'categoria_id' => 'integer|required|min:1',
+            'porcentaje' => 'integer|required|min:1|max:500'
+        ]);
+
+        // La instancia de Validator me permite enviar al Frontend los resultados de la validación fallida
+        if ($validator->fails()) {
+            return json_encode([
+                'errors' => $validator->errors(),
+                'tipo' => 'categoria'
+            ]);
+        }
 
         // Consultar Todos los productos que corresponden a esta categoria
         $precios = Precio::where('categoria_id', $request->categoria_id)->get();
@@ -43,10 +57,28 @@ class APIAumentos extends Controller
             'afectados' => $preciosAfectados
         ]);
 
-        echo json_encode($preciosAfectados);
+        return json_encode([
+            'afectados' => $preciosAfectados,
+            'errors' => null
+        ]);
     }
+
     public function aumento_provider(Request $request)
     {
+
+        // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
+        $validator = Validator::make($request->all(), [
+            'provider_id' => 'integer|required|min:1',
+            'porcentaje' => 'integer|required|min:1|max:500'
+        ]);
+
+        // La instancia de Validator me permite enviar al Frontend los resultados de la validación fallida
+        if ($validator->fails()) {
+            return json_encode([
+                'errors' => $validator->errors(),
+                'tipo' => 'provider'
+            ]);
+        }
 
         $precios = Precio::where('provider_id', $request->provider_id)->get();
         $provider = Provider::find($request->provider_id);
@@ -72,6 +104,20 @@ class APIAumentos extends Controller
     public function aumento_fabricante(Request $request)
     {
 
+        // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
+        $validator = Validator::make($request->all(), [
+            'fabricante_id' => 'integer|required|min:1',
+            'porcentaje' => 'integer|required|min:1|max:500'
+        ]);
+
+        // La instancia de Validator me permite enviar al Frontend los resultados de la validación fallida
+        if ($validator->fails()) {
+            return json_encode([
+                'errors' => $validator->errors(),
+                'tipo' => 'fabricante'
+            ]);
+        }
+
         $precios = Precio::where('fabricante_id', $request->fabricante_id)->get();
         $fabricante = Fabricante::find($request->fabricante_id);
 
@@ -95,21 +141,33 @@ class APIAumentos extends Controller
     }
     public function dolar_busqueda(Request $request)
     {
-        
+
+        // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
+        $validator = Validator::make($request->all(), [
+            'page' => 'integer|required|min:1',
+            'valor' => 'integer|required|min:0|max:10000'
+        ]);
+
+        // La instancia de Validator me permite enviar al Frontend los resultados de la validación fallida
+        if ($validator->fails()) {
+            return json_encode([
+                'errors' => $validator->errors()
+            ]);
+        }
+
         $registros_por_pagina = 10;
 
         $input = $request->valor;
         $pagina_actual = $request->page;
 
         $pagina_actual = filter_var($pagina_actual, FILTER_VALIDATE_INT);
-        $total_registros = Precio::where('dolar', "<" ,$input)->count();
+        $total_registros = Precio::where('dolar', "<", $input)->count();
 
         if (!$pagina_actual || $pagina_actual < 1) {
             return json_encode("error");
         }
 
-
-        if($total_registros < 1) {
+        if ($total_registros < 1) {
             echo json_encode([
                 'productos' => [],
                 'precios' => []
@@ -130,7 +188,7 @@ class APIAumentos extends Controller
         foreach ($precios as $precio) {
             $productosTodos = Producto::where('precio_id', $precio->id)->get();
 
-            if($productosTodos->count() === 0) {
+            if ($productosTodos->count() === 0) {
                 $precio->delete(); //// PROVISORIO, elimina un precio sin producto. Resolver al trabajar en delete() de registros
                 return; // retorna, hay que recargar la página para volver a ejecutar hasta que no queden precios sin producto
             }
@@ -151,7 +209,7 @@ class APIAumentos extends Controller
                 $precio = $resultado['precio']; //????
             }
         }
-    
+
         echo json_encode([
             'paginacion' => $paginacion->paginacion(),
             'productos' => $productos,
@@ -170,7 +228,7 @@ class APIAumentos extends Controller
         foreach ($precios as $precio) {
             $productosTodos = Producto::where('precio_id', $precio->id)->get();
 
-            if($productosTodos->count() === 0) {
+            if ($productosTodos->count() === 0) {
                 $precio->delete(); //// PROVISORIO, elimina un precio sin producto. Resolver al trabajar en delete() de registros
                 return; // retorna, hay que recargar la página para volver a ejecutar hasta que no queden precios sin producto
             }
@@ -191,9 +249,11 @@ class APIAumentos extends Controller
                 $precio = $resultado['precio'];
             }
         }
-        echo json_encode([
-            'precios' => $precios, 
-            'productos' => $productos]
+        echo json_encode(
+            [
+                'precios' => $precios,
+                'productos' => $productos
+            ]
         );
     }
 
@@ -201,31 +261,31 @@ class APIAumentos extends Controller
     {
         // Cuantos registros serán afectados
         $input = $request->valor;
-        $resultado = Precio::where('dolar', "<" ,$input)->count();
+        $resultado = Precio::where('dolar', "<", $input)->count();
 
         echo json_encode($resultado);
     }
 
     public function dolar_update(Request $request)
     {
-        
+
         $input = $request->valor;
         $afectados = $request->afectados;
 
         $input = filter_var($input, FILTER_VALIDATE_INT);
         $afectados = filter_var($afectados, FILTER_VALIDATE_INT);
 
-        if(!$input || !$afectados) {
+        if (!$input || !$afectados) {
             echo json_encode(false);
             return;
         }
 
 
-        $precios = Precio::where('dolar', "<" ,$input)->get();
+        $precios = Precio::where('dolar', "<", $input)->get();
 
-        foreach($precios as $precio) {
+        foreach ($precios as $precio) {
 
-            $porc_aumento = $input / $precio->dolar; 
+            $porc_aumento = $input / $precio->dolar;
             $precio->precio = $porc_aumento * $precio->precio;
             $precio->dolar = $input;
 
@@ -243,5 +303,4 @@ class APIAumentos extends Controller
 
         echo json_encode(true);
     }
-
 }

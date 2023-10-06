@@ -48,6 +48,29 @@ import Swal from 'sweetalert2';
             // Consultar DB
             const resultado = await paginadorDesactualizados();
 
+
+
+            if (resultado.errors) {
+                // Evalua el array "errors" dentro del resultado, identificando el campo y el mensaje
+                for (let campo in resultado.errors) {
+                    if (resultado.errors.hasOwnProperty(campo)) {
+                        let mensajesDeError = resultado.errors[campo];
+
+                        for (let i = 0; i < mensajesDeError.length; i++) {
+
+                            // Mensaje de error, recibe el campo, el mensaje y el tipo (categoria, provider o fabricante)
+                                Swal.fire(
+                                    'Oops!',
+                                    mensajesDeError[i],
+                                    'info'
+                                );
+                                return;
+
+                        }
+                    }
+                }
+            }
+
             if (resultado.productos.length === 0 || resultado.precios.length === 0) {
 
                 sinResultados();
@@ -55,7 +78,6 @@ import Swal from 'sweetalert2';
 
             } else {
                 recargarPaginacion(resultado);
-
             }
         });
 
@@ -65,7 +87,7 @@ import Swal from 'sweetalert2';
             mensajeInfo.textContent = "Productos con un valor dolar inferior a U$S " + valor;
             productosArray = resultado.productos;
             preciosArray = resultado.precios;
-            paginacion = resultado.paginacion;  
+            paginacion = resultado.paginacion;
 
             // Generar elementos
             mostrarElementos();
@@ -77,6 +99,15 @@ import Swal from 'sweetalert2';
         });
 
         async function paginadorDesactualizados() {
+
+            if(valor < 0 || valor > 10000) {
+                Swal.fire(
+                    'Oops!',
+                    'El valor debe ser entre 0 y 10.000.',
+                    'info'
+                );
+                return;
+            }
 
             try {
                 const url = '/api/aumentos/dolar-busqueda';
@@ -94,7 +125,6 @@ import Swal from 'sweetalert2';
                 });
 
                 const resultado = await respuesta.json();
-
                 return resultado;
 
             } catch (error) {
@@ -222,7 +252,7 @@ import Swal from 'sweetalert2';
                                         page++;
                                         const resultado = await paginadorDesactualizados();
                                         recargarPaginacion(resultado);
-                                        
+
                                         return;
 
                                     } else {
