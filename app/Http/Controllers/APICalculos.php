@@ -13,16 +13,13 @@ class APICalculos extends Controller
     {
         $this->middleware('auth');
     }
-    
-    public function index()
-    {
-    }
-
 
     public function calculo_ganancia(Request $request)
     {
 
+        /// Sanitizar estos datos?
 
+        
         $request->ganancia; // string
         $request->id; // id
         $respuesta = 0;

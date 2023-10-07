@@ -38,6 +38,17 @@ import Swal from 'sweetalert2';
             // Busqueda con el boton
             if (dolarInput.value) {
                 valor = parseInt(dolarInput.value);
+
+                if(valor < 0 || valor > 10000) {
+
+                    Swal.fire(
+                        'Oops!',
+                        "El valor debe ser entre 0 y 10.000.",
+                        'info'
+                    );
+                    return;
+
+                }
             }
 
             // limpiar virtual DOM
@@ -48,8 +59,6 @@ import Swal from 'sweetalert2';
             // Consultar DB
             const resultado = await paginadorDesactualizados();
 
-
-
             if (resultado.errors) {
                 // Evalua el array "errors" dentro del resultado, identificando el campo y el mensaje
                 for (let campo in resultado.errors) {
@@ -58,14 +67,13 @@ import Swal from 'sweetalert2';
 
                         for (let i = 0; i < mensajesDeError.length; i++) {
 
-                            // Mensaje de error, recibe el campo, el mensaje y el tipo (categoria, provider o fabricante)
-                                Swal.fire(
-                                    'Oops!',
-                                    mensajesDeError[i],
-                                    'info'
-                                );
-                                return;
-
+                            // Mensaje de error
+                            Swal.fire(
+                                'Oops!',
+                                mensajesDeError[i],
+                                'info'
+                            );
+                            return;
                         }
                     }
                 }
@@ -100,15 +108,6 @@ import Swal from 'sweetalert2';
 
         async function paginadorDesactualizados() {
 
-            if(valor < 0 || valor > 10000) {
-                Swal.fire(
-                    'Oops!',
-                    'El valor debe ser entre 0 y 10.000.',
-                    'info'
-                );
-                return;
-            }
-
             try {
                 const url = '/api/aumentos/dolar-busqueda';
 
@@ -125,6 +124,7 @@ import Swal from 'sweetalert2';
                 });
 
                 const resultado = await respuesta.json();
+
                 return resultado;
 
             } catch (error) {
@@ -137,7 +137,7 @@ import Swal from 'sweetalert2';
 
                 const url = '/api/aumentos/dolar-count';
                 const datos = new FormData();
-                datos.append('valor', valor);
+                datos.append('valor', valor);       /// <<<<<<<< <<<< <<<< <<<<<< <<<<
 
                 const respuesta = await fetch(url, {
                     method: 'POST',
@@ -148,6 +148,15 @@ import Swal from 'sweetalert2';
                 });
 
                 const resultado = await respuesta.json();
+
+                if(resultado.errors) {
+                    Swal.fire(
+                        'Oops!',
+                        "Algo salío mal",
+                        'info'
+                    );
+                    return;
+                }
 
                 alertaUpdate(valor, resultado);
 
@@ -225,7 +234,7 @@ import Swal from 'sweetalert2';
                         <td class="table__td">$ ${precio.precio}</td>
                         <td class="table__td">$ ${producto.venta} ${producto.unidad_fraccion}</td>
                         <td class="table__td">${fechaFormateada}</td>
-                        <td class="table__td"><a class="table__accion table__accion--editar" href="/producto/producto-show/${producto.id}">Editar</a></td>
+                        <td class="table__td"><a class="table__accion table__accion--editar" href="/producto/producto-show/${producto.id}">Ver</a></td>
                         </tr>
                     `;
 
@@ -270,7 +279,7 @@ import Swal from 'sweetalert2';
             }); // Fin cada producto
         }
 
-        async function alertaUpdate(valor, afectados) {
+        async function alertaUpdate(valor, resultado) {
 
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
@@ -282,7 +291,7 @@ import Swal from 'sweetalert2';
 
             swalWithBootstrapButtons.fire({
                 title: 'Estas seguro?',
-                text: "No hay vuelta atras, seran afectados " + afectados + " precios.",
+                text: "No hay vuelta atras, seran afectados " + resultado.afectados + " precios.",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Si!',
@@ -292,12 +301,12 @@ import Swal from 'sweetalert2';
                 if (result.isConfirmed) {
 
                     (async function () {
-                        const resultado = await update(valor, afectados);
+                        const respuesta = await update(valor, resultado.afectados);
 
-                        if (resultado) {
+                        if (respuesta) {
                             swalWithBootstrapButtons.fire(
                                 'Precios actualizados',
-                                afectados + " precios han sido actualizados",
+                                resultado.afectados + " precios han sido actualizados",
                                 'success'
                             );
 

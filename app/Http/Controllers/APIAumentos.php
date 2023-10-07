@@ -137,7 +137,10 @@ class APIAumentos extends Controller
             'afectados' => $preciosAfectados
         ]);
 
-        echo json_encode($preciosAfectados);
+        return json_encode([
+            'afectados' => $preciosAfectados,
+            'errors' => false
+        ]);
     }
     public function dolar_busqueda(Request $request)
     {
@@ -213,7 +216,8 @@ class APIAumentos extends Controller
         echo json_encode([
             'paginacion' => $paginacion->paginacion(),
             'productos' => $productos,
-            'precios' => $precios
+            'precios' => $precios,
+            'errors' => false
         ]);
     }
 
@@ -259,15 +263,43 @@ class APIAumentos extends Controller
 
     public function dolar_count(Request $request)
     {
+
+        // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
+        $validator = Validator::make($request->all(), [
+            'valor' => 'integer|required|min:0|max:10000'
+        ]);
+
+        // La instancia de Validator me permite enviar al Frontend los resultados de la validación fallida
+        if ($validator->fails()) {
+            return json_encode([
+                'errors' => $validator->errors()
+            ]);
+        }
+
         // Cuantos registros serán afectados
         $input = $request->valor;
         $resultado = Precio::where('dolar', "<", $input)->count();
 
-        echo json_encode($resultado);
+        return json_encode([
+            'afectados' => $resultado,
+            'errors' => false
+        ]);
     }
 
     public function dolar_update(Request $request)
     {
+
+        // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
+        $validator = Validator::make($request->all(), [
+            'valor' => 'integer|required|min:0|max:10000'
+        ]);
+
+        // La instancia de Validator me permite enviar al Frontend los resultados de la validación fallida
+        if ($validator->fails()) {
+            return json_encode([
+                'errors' => $validator->errors()
+            ]);
+        }
 
         $input = $request->valor;
         $afectados = $request->afectados;
@@ -289,12 +321,12 @@ class APIAumentos extends Controller
             $precio->precio = $porc_aumento * $precio->precio;
             $precio->dolar = $input;
 
-
             $precio->save();
             $precio->increment('contador_update');
         }
+
         Aumento::create([
-            'porcentaje' => 0,
+            'porcentaje' => 0, // Este porcentaje depende del desfasaje de cada producto, solo podria calcularse un promedio
             'tipo' => 'Dolar',
             'nombre' => 'Varios',
             'username' => auth()->user()->username,
