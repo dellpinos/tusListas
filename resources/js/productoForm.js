@@ -107,7 +107,6 @@ import * as helpers from './helpers';
 
         });
 
-
         // Consultar precio venta
         btnVenta.addEventListener('click', function () {
 
@@ -206,7 +205,6 @@ import * as helpers from './helpers';
                 console.log('El servidor no responde');
             }
         }
-
 
         // Habilitar / Deshabilitar campo opcional
         function habilitarCampo(e) {
