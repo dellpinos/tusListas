@@ -27,15 +27,18 @@ class APICategorias extends Controller
 
     public function destroy(Request $request)
     {
-        // Verifico que no haya productos ni precios relacionados a esta categoria
-        $productos = Producto::where('categoria_id', $request->id)->get();
+        
+        $id = filter_var($request->id, FILTER_VALIDATE_INT);
 
-        if ($productos->count() === 0) {
-            $precios = Precio::where('categoria_id', $request->id)->get();
+        // Verifico que no haya productos ni precios relacionados a esta categoria
+        $productos = Producto::where('categoria_id', $id)->get();
+
+        if ($productos->count() === 0 && $id !== false) {
+            $precios = Precio::where('categoria_id', $id)->get();
             if ($precios->count() === 0) {
 
                 // Eliminar
-                $categoria = Categoria::find($request->id);
+                $categoria = Categoria::find($id);
 
                 $respuesta = $categoria->delete();
                 if ($respuesta) {

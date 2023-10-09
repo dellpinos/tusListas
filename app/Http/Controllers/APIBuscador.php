@@ -7,6 +7,7 @@ use App\Models\Producto;
 use App\Models\Paginacion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class APIBuscador extends Controller
 {
@@ -31,7 +32,7 @@ class APIBuscador extends Controller
             return json_encode("error");
         }
 
-        if($total_registros < 1) {
+        if ($total_registros < 1) {
             echo json_encode([
                 'productos' => [],
                 'precios' => []
@@ -49,15 +50,14 @@ class APIBuscador extends Controller
 
         $precios = [];
         $resultado = [];
-        
-        foreach($productos as $producto) {
+
+        foreach ($productos as $producto) {
 
             $precio = Precio::find($producto->precio_id);
             $resultado = precioVenta($producto, $precio);
-            
+
             $precios[] = $resultado['precio'];
             $producto = $resultado['producto'];
-            
         }
 
         echo json_encode([
@@ -65,19 +65,25 @@ class APIBuscador extends Controller
             'productos' => $productos,
             'precios' => $precios
         ]);
-
-        /// Ya deberia estar devolviendo el JSON adecuadamente, probar esto
-
     }
 
-
-
-    
     public function nombre_producto(Request $request)
     {
 
+        // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
+        $validator = Validator::make($request->all(), [
+            'input_producto' => 'required|string|max:90|min:3'
+        ]);
+
+        // La instancia de Validator me permite enviar al Frontend los resultados de la validación fallida
+        if ($validator->fails()) {
+            return json_encode([
+                'errors' => $validator->errors(),
+            ]);
+        }
+
         // Busqueda segun coincidencia de 3 caracteres
-        $patron = $request->input('input_producto');
+        $patron = $request->input_producto;
 
         if ($request->filtro_frac) {
             // No retorna fraccionados, esto es util en buscadores que modifican registros
@@ -91,7 +97,21 @@ class APIBuscador extends Controller
     }
     public function producto_individual(Request $request)
     {
-        $id = $request->input('id');
+
+        // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|min:1'
+        ]);
+
+        // La instancia de Validator me permite enviar al Frontend los resultados de la validación fallida
+        if ($validator->fails()) {
+            return json_encode([
+                'errors' => $validator->errors(),
+            ]);
+        }
+
+        $id = $request->id;
+        $id = filter_var($id, FILTER_VALIDATE_INT);
 
         $producto = Producto::find($id);
         $precio = Precio::find($producto->precio_id);
@@ -105,16 +125,30 @@ class APIBuscador extends Controller
 
     public function codigo_producto(Request $request)
     {
+
+        // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
+        $validator = Validator::make($request->all(), [
+            'codigo_producto' => 'required|string|min:4|max:4'
+        ]);
+
+        // La instancia de Validator me permite enviar al Frontend los resultados de la validación fallida
+        if ($validator->fails()) {
+            return json_encode([
+                'errors' => $validator->errors(),
+            ]);
+        }
+
+        $codigo = strtolower($request->codigo_producto);
+
         // Filtra fraccionados
         if ($request->filtro_frac) {
             // No retorna fraccionados, esto es util en buscadores que modifican registros
-            $resultado = Producto::where('codigo', $request->codigo_producto)->whereNull('ganancia_fraccion')->get();
-            
+            $resultado = Producto::where('codigo', $codigo)->whereNull('ganancia_fraccion')->get();
         } else {
 
-            $resultado = Producto::where('codigo', $request->codigo_producto)->get();
+            $resultado = Producto::where('codigo', $codigo)->get();
         }
-        
+
         if ($resultado->isEmpty()) {
             echo json_encode(false);
             return;

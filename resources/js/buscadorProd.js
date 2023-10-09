@@ -502,7 +502,6 @@ import * as helpers from './helpers';
             contenedorInput.addEventListener('mouseleave', function () {
 
                 inputProductoFalso.value = '';
-
                 eliminarCoincidencias(contenedorOpciones);
 
             });
