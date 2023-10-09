@@ -85,9 +85,9 @@ class ProductoController extends Controller
             'categoria_id' => 'required|integer',
             'fabricante_id' => 'required|integer',
             'provider_id' => 'required|integer',
-            'dolar' => 'numeric|required|max:999999|min:1',
-            'precio' => 'numeric|required|max:99999999|min:1',
-            'ganancia' => 'required',
+            'dolar' => 'numeric|required|max:999999|min:0',
+            'precio' => 'numeric|required|max:99999999|min:0',
+            'ganancia' => 'required|min:0',
             'stock' => 'integer|nullable|max:99999|min:1',
             "desc_porc" => 'numeric|nullable|max:999|min:0',
             "desc_duracion" => 'integer|nullable|max:8|min:1'
@@ -100,7 +100,7 @@ class ProductoController extends Controller
 
                 'codigo_fraccionado' => 'required|max:4|min:4|unique:productos,codigo',
                 'unidad_fraccion' => 'required|string|max:60',
-                'contenido_total' => 'required|numeric|max:9999',
+                'contenido_total' => 'required|numeric|max:9999|min:0',
                 'ganancia_fraccion' => 'required|numeric|between:1,19.9'
 
             ]);
@@ -356,12 +356,12 @@ class ProductoController extends Controller
                 // Validacion de formulario principal
                 'codigo' => 'required|string|max:4|min:4|unique:productos,codigo,' . $producto->id,
                 'nombre' => 'required|string|max:60|min:3|unique:productos,nombre,' . $producto->id,
-                'ganancia' => 'required',
+                'ganancia' => 'required|min:0',
                 'categoria_id' => 'required|integer',
                 'fabricante_id' => 'required|integer',
                 'provider_id' => 'required|integer',
-                'dolar' => 'numeric|required|max:999999',
-                'precio' => 'numeric|required|max:99999999'
+                'dolar' => 'numeric|required|max:999999|min:0',
+                'precio' => 'numeric|required|max:99999999|min:0'
             ]);
 
             // Almacenar cambios
@@ -396,12 +396,12 @@ class ProductoController extends Controller
                     // Validacion de formulario principal
                     'codigo' => 'required|string|max:4|min:4|unique:productos,codigo,' . $producto->id,
                     'nombre' => 'required|string|max:60|min:3|unique:productos,nombre,' . $producto->id,
-                    'ganancia' => 'required',
+                    'ganancia' => 'required|min:0',
                     'categoria_id' => 'required|integer',
                     'fabricante_id' => 'required|integer',
                     'provider_id' => 'required|integer',
-                    'dolar' => 'numeric|required|max:999999',
-                    'precio' => 'numeric|required|max:99999999',
+                    'dolar' => 'numeric|required|max:999999|min:0',
+                    'precio' => 'numeric|required|max:99999999|min:0',
                 ]);
 
                 $precio->categoria_id = intval($request->categoria_id);
@@ -440,7 +440,7 @@ class ProductoController extends Controller
                 $this->validate($request, [
                     'codigo' => 'required|max:4|min:4|unique:productos,codigo,' . $producto->id,
                     'unidad_fraccion' => 'required|string|max:60',
-                    'contenido_total' => 'required|numeric',
+                    'contenido_total' => 'required|numeric|min:0',
                     'ganancia_fraccion' => 'required|numeric|between:0.01,19.9'
 
                 ]);
@@ -459,7 +459,7 @@ class ProductoController extends Controller
             $this->validate($request, [
                 'codigo_fraccionado' => 'required|max:4|min:4|unique:productos,codigo',
                 'unidad_fraccion' => 'required|string|max:60',
-                'contenido_total' => 'required|numeric|max:9999',
+                'contenido_total' => 'required|numeric|max:9999|min:0',
                 'ganancia_fraccion' => 'required|numeric|between:1,19.9'
 
             ]);

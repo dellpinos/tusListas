@@ -27,15 +27,18 @@ class APIProviders extends Controller
         
             public function destroy(Request $request)
             {
+                $id = filter_var($request->id, FILTER_VALIDATE_INT);
+
                 // Verifico que no haya productos ni precios relacionados a esta provider
-                $productos = Producto::where('provider_id', $request->id)->get();
+                $productos = Producto::where('provider_id', $id)->get();
         
                 if ($productos->count() === 0) {
-                    $precios = Precio::where('provider_id', $request->id)->get();
+                    $precios = Precio::where('provider_id', $id)->get();
+                    
                     if ($precios->count() === 0) {
         
                         // Eliminar
-                        $provider = Provider::find($request->id);
+                        $provider = Provider::find($id);
         
                         $respuesta = $provider->delete();
                         if ($respuesta) {
