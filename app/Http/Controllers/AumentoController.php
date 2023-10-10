@@ -28,7 +28,8 @@ class AumentoController extends Controller
     }
     public function listado_aumentos()
     {
-        $registros = Aumento::all();
+        // Se listan los últimos 50 registros
+        $registros = Aumento::orderBy('created_at', 'desc')->take(50)->get();
 
         return view('aumentos.listado', [
             'registros' => $registros

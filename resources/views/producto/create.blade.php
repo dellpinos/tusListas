@@ -9,7 +9,7 @@
 @endsection
 
 @section('contenido')
-    <div id="contenedor-pendientes">
+    <div id="contenedor-pendientes" class="producto-formulario__contenedor-pendientes">
         {{-- Js --}}
     </div>
 

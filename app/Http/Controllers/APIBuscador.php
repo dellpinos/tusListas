@@ -28,6 +28,7 @@ class APIBuscador extends Controller
         $pagina_actual = filter_var($pagina_actual, FILTER_VALIDATE_INT);
         $total_registros = Producto::all()->count();
 
+
         if (!$pagina_actual || $pagina_actual < 1) {
             return json_encode("error");
         }
@@ -40,7 +41,7 @@ class APIBuscador extends Controller
             return;
         }
 
-        $paginacion = new Paginacion($pagina_actual, $registros_por_pagina, $total_registros); // creo la instancia con "la forma de una paginacion"
+       $paginacion = new Paginacion($pagina_actual, $registros_por_pagina, $total_registros); // creo la instancia con "la forma de una paginacion"
 
         if ($paginacion->totalPaginas() < $pagina_actual) {
             return json_encode("error");

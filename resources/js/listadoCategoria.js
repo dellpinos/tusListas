@@ -18,32 +18,25 @@ import * as helpers from './helpers';
         // Obtener todas las categorias
         listadoCategorias();
 
-        campoBuscador.onclick = function() {
+        campoBuscador.onclick = function () {
             inputBusqueda.focus();
         }
 
-
-
-        
         inputBusqueda.addEventListener('input', (e) => {
 
-            if(busquedaLength > e.target.value.length) {
+            if (busquedaLength > e.target.value.length) {
 
                 // El usuario esta borrando 
                 categoriasArrayFiltrado = categoriasArray;
                 mostrarElementos();
             }
-            
+
             busquedaLength = e.target.value.length;
 
-            if(e.target.value.length >= 2) {
+            if (e.target.value.length >= 2) {
                 buscarCoincidenciasMemoria(e);
             }
         });
-
-
-
-
 
         // Vacia el campo de busqueda
         inputBusqueda.addEventListener('blur', (e) => {
@@ -73,7 +66,6 @@ import * as helpers from './helpers';
             // Elimina los elementos hijos
             limpiarElementos(contRegistros);
             limpiarElementos(contenedorVacio);
-            
 
             if (categoriasArrayFiltrado.length === 0) {
 
@@ -82,7 +74,7 @@ import * as helpers from './helpers';
                 limpiarElementos(contenedorVacio);
 
                 textoNoCat.textContent = "No se encontraron categorias";
-                textoNoCat.classList.add('mensaje__vacio');
+                textoNoCat.classList.add('mensaje__info');
                 contenedorVacio.appendChild(textoNoCat);
                 return;
             }
@@ -123,11 +115,9 @@ import * as helpers from './helpers';
 
                 contenedorSM.appendChild(catEnlace);
                 contenedorSM.appendChild(catBtn);
-
                 contenedor.appendChild(catHeading);
                 contenedor.appendChild(catParrafo);
                 contenedor.appendChild(contenedorSM);
-
                 contRegistros.appendChild(contenedor);
 
                 swiper.update();
@@ -168,26 +158,31 @@ import * as helpers from './helpers';
                 if (result.isConfirmed) {
 
                     (async function () {
-                        const resultado = await destroy(id, tipo, token);
+                        try {
 
-                        if (resultado.eliminado) {
-                            swalWithBootstrapButtons.fire(
-                                'Eliminado/a',
-                                helpers.firstCap(tipo) + ' ha sido destruido :(',
-                                'success'
-                            );
-                            if (flag) {
-                                categoriasArray = filtrarVirtualDOM(categoriasArray, id); // si hay un array va a filtrarlo
-                                categoriasArrayFiltrado = categoriasArray;
-                                mostrarElementos();
+                            const resultado = await destroy(id, tipo, token);
+
+                            if (resultado.eliminado) {
+                                swalWithBootstrapButtons.fire(
+                                    'Eliminado/a',
+                                    helpers.firstCap(tipo) + ' ha sido destruido :(',
+                                    'success'
+                                );
+                                if (flag) {
+                                    categoriasArray = filtrarVirtualDOM(categoriasArray, id); // si hay un array va a filtrarlo
+                                    categoriasArrayFiltrado = categoriasArray;
+                                    mostrarElementos();
+                                }
+                            } else {
+
+                                swalWithBootstrapButtons.fire(
+                                    'No puede ser eliminado',
+                                    'Hay ' + resultado.cantidad_productos + ' producto/s relacionado/s. Puedes editar ' + tipo + ' o el/los producto/s.',
+                                    'error'
+                                );
                             }
-                        } else {
-
-                            swalWithBootstrapButtons.fire(
-                                'No puede ser eliminado',
-                                'Hay ' + resultado.cantidad_productos + ' producto/s relacionado/s. Puedes editar ' + tipo + ' o el/los producto/s.',
-                                'error'
-                            );
+                        } catch (error) {
+                            console.log(error);
                         }
                     })();
                 } else if (
@@ -247,6 +242,5 @@ import * as helpers from './helpers';
             // Recargar elementos
             mostrarElementos();
         }
-
     }
 })();

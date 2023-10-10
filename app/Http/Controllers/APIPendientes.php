@@ -18,12 +18,14 @@ class APIPendientes extends Controller
         $pendiente = Pendiente::orderBy('created_at', 'asc')->first();
 
         echo json_encode($pendiente);
+
     }
     public function count()
     {
         $pendientes = Pendiente::all()->count();
 
         echo json_encode($pendientes);
+
     }
     public function create(Request $request)
     {

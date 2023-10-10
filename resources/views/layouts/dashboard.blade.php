@@ -60,30 +60,43 @@
     <main class="dashboard__grid">
 
         <aside class="sidebar">
+
             <nav class=" sidebar__nav">
-
                 <a href="{{ route('buscador') }}"
-                    class="sidebar__enlace @if (request()->path() === '/') activo @endif"><i
-                        class="fa-solid fa-magnifying-glass sidebar__icono"></i>Buscador</a>
+                    class="sidebar__enlace @if (request()->path() === '/') activo @endif">
+                    <i class="fa-solid fa-magnifying-glass sidebar__icono"></i>
+                    <p class="sidebar__texto-icono">Buscador</p>
+                </a>
                 <a href="{{ route('ingreso') }}"
-                    class="sidebar__enlace @if (request()->path() === 'ingreso') activo @endif"><i
-                        class="fa-solid fa-clipboard sidebar__icono"></i>Ingreso</a>
-                <a href="{{ route('producto.create') }}"
-                    class="sidebar__enlace @if (request()->path() === 'producto/nuevo-producto') activo @endif"><i
-                        class="fa-solid fa-plus sidebar__icono"></i>Producto</a>
+                    class="sidebar__enlace @if (request()->path() === 'ingreso') activo @endif">
+                    <i class="fa-solid fa-clipboard sidebar__icono"></i>
+                        <p class="sidebar__texto-icono">Ingreso</p>
+                    </a>
+                <a href="{{ route('producto.create') }}" id="sidebar__new-prod"
+                    class="sidebar__enlace @if (request()->path() === 'producto/nuevo-producto') activo @endif">
+                    <i class="fa-solid fa-plus sidebar__icono"></i>
+                    <p class="sidebar__texto-icono">Producto</p>
+                </a>
                 <a href="{{ route('aumentos') }}"
-                    class="sidebar__enlace @if (request()->path() === 'aumentos') activo @endif""><i
-                        class="fa-solid fa-dollar-sign sidebar__icono"></i>Aumentos</a>
+                    class="sidebar__enlace @if (request()->path() === 'aumentos') activo @endif"">
+                    <i class="fa-solid fa-dollar-sign sidebar__icono"></i>
+                        <p class="sidebar__texto-icono">Aumentos</p>
+                    </a>
                 <a href="{{ route('providers') }}"
-                    class="sidebar__enlace @if (request()->path() === 'providers') activo @endif"><i
-                        class="fa-solid fa-shop sidebar__icono"></i>Proveedores</a>
+                    class="sidebar__enlace @if (request()->path() === 'providers') activo @endif">
+                    <i class="fa-solid fa-shop sidebar__icono"></i>
+                        <p class="sidebar__texto-icono">Proveedores</p>
+                    </a>
                 <a href="{{ route('categorias') }}"
-                    class="sidebar__enlace @if (request()->path() === 'categorias') activo @endif"><i
-                        class="fa-solid fa-folder-open sidebar__icono"></i>Categorias</a>
+                    class="sidebar__enlace @if (request()->path() === 'categorias') activo @endif">
+                    <i class="fa-solid fa-folder-open sidebar__icono"></i>
+                    <p class="sidebar__texto-icono">Categorias</p>
+                </a>
                 <a href="{{ route('fabricantes') }}"
-                    class="sidebar__enlace @if (request()->path() === 'fabricantes') activo @endif"><i
-                        class="fa-solid fa-industry sidebar__icono"></i>Fabricantes</a>
-
+                    class="sidebar__enlace @if (request()->path() === 'fabricantes') activo @endif">
+                    <i class="fa-solid fa-industry sidebar__icono"></i>
+                    <p class="sidebar__texto-icono">Fabricantes</p>
+                </a>
             </nav>
         </aside>
 
@@ -91,17 +104,16 @@
 
             @yield('tabs')
 
-            
             <div class="dashboard__contenedor-secundario">
-                
+
                 <h2 class="dashboard__heading">
                     @yield('titulo')
                 </h2>
-                
+
                 @yield('contenido')
             </div>
         </div>
-            
+
     </main>
 
     @vite('resources/js/app.js')

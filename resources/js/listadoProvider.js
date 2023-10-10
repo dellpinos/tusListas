@@ -23,11 +23,7 @@ import * as helpers from './helpers';
             inputBusqueda.focus();
         }
 
-
-
-
         inputBusqueda.addEventListener('input', (e) => {
-
 
             if (busquedaLength > e.target.value.length) {
 
@@ -41,12 +37,7 @@ import * as helpers from './helpers';
             if (e.target.value.length >= 2) {
                 buscarCoincidenciasMemoria(e);
             }
-
-
         });
-
-
-
 
         // Vacia el campo de busqueda
         inputBusqueda.addEventListener('blur', (e) => {
@@ -62,13 +53,12 @@ import * as helpers from './helpers';
                 const resultado = await respuesta.json();
 
                 providersArray = resultado.providers; // array de providers
-
                 providersArrayFiltrado = resultado.providers;
 
                 mostrarElementos();
 
             } catch (error) {
-                console.log('No carga el listado');
+                console.log('No carga el listado' + error);
             }
         }
 
@@ -85,11 +75,10 @@ import * as helpers from './helpers';
                 limpiarElementos(contenedorVacio);
 
                 textoNoCat.textContent = "No se encontraron proveedores";
-                textoNoCat.classList.add('mensaje__vacio');
+                textoNoCat.classList.add('mensaje__info');
                 contenedorVacio.appendChild(textoNoCat);
                 return;
             }
-
 
             providersArrayFiltrado.forEach(provider => {
 
@@ -119,7 +108,6 @@ import * as helpers from './helpers';
                 const catParrafo5 = document.createElement('P');
                 catParrafo5.textContent = "Web: " + provider.web;
 
-
                 const contenedorSM = document.createElement('DIV');
                 contenedorSM.classList.add('formulario__contenedor-boton', 'formulario__contenedor-boton--sm');
 
@@ -142,20 +130,15 @@ import * as helpers from './helpers';
                     }
                 });
 
-
-
                 contenedorSM.appendChild(catEnlace);
                 contenedorSM.appendChild(catBtn);
-
                 contenedor.appendChild(catHeading);
                 contenedor.appendChild(catParrafo);
                 contenedor.appendChild(catParrafo2);
                 contenedor.appendChild(catParrafo3);
                 contenedor.appendChild(catParrafo4);
                 contenedor.appendChild(catParrafo5);
-
                 contenedor.appendChild(contenedorSM);
-
                 contRegistros.appendChild(contenedor);
 
                 swiper.update();
@@ -196,26 +179,32 @@ import * as helpers from './helpers';
                 if (result.isConfirmed) {
 
                     (async function () {
-                        const resultado = await destroy(id, tipo, token);
 
-                        if (resultado.eliminado) {
-                            swalWithBootstrapButtons.fire(
-                                'Eliminado/a',
-                                helpers.firstCap(tipo) + ' ha sido destruido :(',
-                                'success'
-                            );
-                            if (flag) {
-                                providersArray = filtrarVirtualDOM(providersArray, id); // si hay un array va a filtrarlo
-                                providersArrayFiltrado = providersArray;
-                                mostrarElementos();
+                        try {
+
+                            const resultado = await destroy(id, tipo, token);
+
+                            if (resultado.eliminado) {
+                                swalWithBootstrapButtons.fire(
+                                    'Eliminado/a',
+                                    helpers.firstCap(tipo) + ' ha sido destruido :(',
+                                    'success'
+                                );
+                                if (flag) {
+                                    providersArray = filtrarVirtualDOM(providersArray, id); // si hay un array va a filtrarlo
+                                    providersArrayFiltrado = providersArray;
+                                    mostrarElementos();
+                                }
+                            } else {
+
+                                swalWithBootstrapButtons.fire(
+                                    'No puede ser eliminado',
+                                    'Hay ' + resultado.cantidad_productos + ' producto/s relacionado/s. Puedes editar ' + tipo + ' o el/los producto/s.',
+                                    'error'
+                                );
                             }
-                        } else {
-
-                            swalWithBootstrapButtons.fire(
-                                'No puede ser eliminado',
-                                'Hay ' + resultado.cantidad_productos + ' producto/s relacionado/s. Puedes editar ' + tipo + ' o el/los producto/s.',
-                                'error'
-                            );
+                        } catch (error) {
+                            console.log(error);
                         }
                     })();
                 } else if (
@@ -275,6 +264,5 @@ import * as helpers from './helpers';
             // Recargar elementos
             mostrarElementos();
         }
-
     }
 })();

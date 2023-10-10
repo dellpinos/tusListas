@@ -55,7 +55,7 @@ import * as helpers from './helpers';
 
             });
             contenedorTabs.addEventListener('mouseleave', () => {
-               tabs.classList.remove('dashboard__tabs--activo');
+                tabs.classList.remove('dashboard__tabs--activo');
                 tabsIcono.classList.remove('dashboard__tab-icono--activo');
 
             });
@@ -73,6 +73,11 @@ import * as helpers from './helpers';
 
         tabCodigo.addEventListener('click', () => {
 
+            enlaceBusquedaCodigo();
+
+        });
+
+        function enlaceBusquedaCodigo() {
             // recargar archivo
             tipoBusqueda = "codigo";
             headingPrincipal.textContent = "Buscar código";
@@ -82,8 +87,7 @@ import * as helpers from './helpers';
             generarBuscador();
 
             busquedaCodigo();
-
-        });
+        }
 
         function busquedaCodigo() {
 
@@ -223,21 +227,26 @@ import * as helpers from './helpers';
 
             headingPrincipal.textContent = "Todos los productos";
 
-            // Consultar todos los productos de la DB
-            const resultado = await paginadorTodos();
+            try {
 
-            if (resultado.productos.length === 0 || resultado.precios.length === 0) {
+                // Consultar todos los productos de la DB
+                const resultado = await paginadorTodos();
 
-                sinResultados(); /// Mensaje "sin resultados"
-                return;
+                if (resultado.productos.length === 0 || resultado.precios.length === 0) {
 
-            } else {
+                    sinResultados(); /// Mensaje "sin resultados"
+                    return;
 
-                // Generar table y thead
-                const tbody = generarTabla();
-                const tablaPaginacion = generarPaginacion();
-                // Renderizar productos paginados
-                recargarPaginacion(resultado, tbody, tablaPaginacion);
+                } else {
+
+                    // Generar table y thead
+                    const tbody = generarTabla();
+                    const tablaPaginacion = generarPaginacion();
+                    // Renderizar productos paginados
+                    recargarPaginacion(resultado, tbody, tablaPaginacion);
+                }
+            } catch (error) {
+                console.log(error);
             }
         });
 
@@ -355,11 +364,17 @@ import * as helpers from './helpers';
                             const enlaceNumero = document.querySelectorAll('[data-page]');
                             enlaceNumero.forEach(numero => {
                                 numero.addEventListener('click', async (e) => {
-                                    // modificar page
+                                    // Modificar page
                                     page = e.target.dataset.page;
-                                    const resultado = await paginadorTodos();
-                                    recargarPaginacion(resultado, tbody, tablaPaginacion);
-                                    // regenerar HTML
+
+                                    try {
+
+                                        const resultado = await paginadorTodos();
+                                        // Regenerar HTML
+                                        recargarPaginacion(resultado, tbody, tablaPaginacion);
+                                    } catch (error) {
+                                        console.log(error);
+                                    }
                                 });
                             });
 
@@ -367,20 +382,25 @@ import * as helpers from './helpers';
                             enlaceBtn.forEach(boton => {
                                 boton.addEventListener('click', async (e) => {
 
-                                    if (e.target.dataset.btn === 'siguiente') {
-                                        // regenerar HTML
-                                        page++;
-                                        const resultado = await paginadorTodos();
-                                        recargarPaginacion(resultado, tbody, tablaPaginacion);
+                                    try {
 
-                                        return;
+                                        if (e.target.dataset.btn === 'siguiente') {
+                                            // regenerar HTML
+                                            page++;
+                                            const resultado = await paginadorTodos();
+                                            recargarPaginacion(resultado, tbody, tablaPaginacion);
 
-                                    } else {
-                                        // regenerar HTML
-                                        page--;
-                                        const resultado = await paginadorTodos();
-                                        recargarPaginacion(resultado, tbody, tablaPaginacion);
-                                        return;
+                                            return;
+
+                                        } else {
+                                            // regenerar HTML
+                                            page--;
+                                            const resultado = await paginadorTodos();
+                                            recargarPaginacion(resultado, tbody, tablaPaginacion);
+                                            return;
+                                        }
+                                    } catch (error) {
+                                        console.log(error);
                                     }
                                 });
                             });
@@ -389,7 +409,6 @@ import * as helpers from './helpers';
                 }); // Fin cada precio
             }); // Fin cada producto
         }
-
 
         function limpiarContenedor() {
 
@@ -416,8 +435,8 @@ import * as helpers from './helpers';
 
             const mensajeNoResult = document.createElement('DIV');
 
-            mensajeNoResult.innerHTML = `<p class="mensaje__info--my">
-            No hay productos, deberias crear el primero
+            mensajeNoResult.innerHTML = `<p class="mensaje__info mb-4">
+            No hay productos, deberías crear el primero
             </p>`;
 
             contenedorPrincipal.appendChild(mensajeNoResult);
@@ -491,11 +510,19 @@ import * as helpers from './helpers';
 
                         const mensajeSinResult = document.createElement('P');
                         mensajeSinResult.classList.add('mensaje__info');
-                        mensajeSinResult.textContent = "No hay resultados";
 
+                        const enlaceCodigo = document.createElement('A');
+                        enlaceCodigo.textContent = "Buscar por código";
+                        enlaceCodigo.addEventListener('click', enlaceBusquedaCodigo);
+                        enlaceCodigo.classList.add('enlace__mensaje');
+
+                        mensajeSinResult.textContent = `
+                        No hay resultados, deberías 
+                        `;
+
+                        mensajeSinResult.appendChild(enlaceCodigo);
                         cardProducto.appendChild(mensajeSinResult);
                     }
-
                 }
             });
 
