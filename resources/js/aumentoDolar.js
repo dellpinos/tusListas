@@ -39,7 +39,7 @@ import Swal from 'sweetalert2';
             if (dolarInput.value) {
                 valor = parseInt(dolarInput.value);
 
-                if(valor < 0 || valor > 10000) {
+                if (valor < 0 || valor > 10000) {
 
                     Swal.fire(
                         'Oops!',
@@ -56,43 +56,52 @@ import Swal from 'sweetalert2';
             preciosArray = {};
             table.classList.remove('display-none');
 
-            // Consultar DB
-            const resultado = await paginadorDesactualizados();
+            try {
 
-            if (resultado.errors) {
-                // Evalua el array "errors" dentro del resultado, identificando el campo y el mensaje
-                for (let campo in resultado.errors) {
-                    if (resultado.errors.hasOwnProperty(campo)) {
-                        let mensajesDeError = resultado.errors[campo];
+                // Consultar DB
+                const resultado = await paginadorDesactualizados();
 
-                        for (let i = 0; i < mensajesDeError.length; i++) {
+                if (resultado.errors) {
+                    // Evalua el array "errors" dentro del resultado, identificando el campo y el mensaje
+                    for (let campo in resultado.errors) {
+                        if (resultado.errors.hasOwnProperty(campo)) {
+                            let mensajesDeError = resultado.errors[campo];
 
-                            // Mensaje de error
-                            Swal.fire(
-                                'Oops!',
-                                mensajesDeError[i],
-                                'info'
-                            );
-                            return;
+                            for (let i = 0; i < mensajesDeError.length; i++) {
+
+                                // Mensaje de error
+                                Swal.fire(
+                                    'Oops!',
+                                    mensajesDeError[i],
+                                    'info'
+                                );
+                                return;
+                            }
                         }
                     }
                 }
-            }
 
-            if (resultado.productos.length === 0 || resultado.precios.length === 0) {
+                if (resultado.productos.length === 0 || resultado.precios.length === 0) {
 
-                sinResultados();
-                return;
+                    sinResultados();
+                    return;
 
-            } else {
-                recargarPaginacion(resultado);
+                } else {
+                    recargarPaginacion(resultado);
+                }
+            } catch (error) {
+                console.log(error);
             }
         });
 
         function recargarPaginacion(resultado) {
             mensajeInfo.classList.remove('display-none');
+            mensajeInfo.classList.add('mensaje__warning');
             btnDolarAct.classList.remove('display-none');
-            mensajeInfo.textContent = "Productos con un valor dolar inferior a U$S " + valor;
+
+            const countProductos = resultado.productos.length;
+
+            mensajeInfo.textContent = countProductos + "  Productos con un valor dolar inferior a U$S " + valor;
             productosArray = resultado.productos;
             preciosArray = resultado.precios;
             paginacion = resultado.paginacion;
@@ -149,7 +158,7 @@ import Swal from 'sweetalert2';
 
                 const resultado = await respuesta.json();
 
-                if(resultado.errors) {
+                if (resultado.errors) {
                     Swal.fire(
                         'Oops!',
                         "Algo salío mal",
@@ -184,7 +193,7 @@ import Swal from 'sweetalert2';
         }
 
         function sinResultados() {
-            
+
             limpiarProductos();
 
             mensajeNoResult.innerHTML = `<p class="mensaje__info mb-4">
@@ -245,32 +254,41 @@ import Swal from 'sweetalert2';
                             const enlaceNumero = document.querySelectorAll('[data-page]');
                             enlaceNumero.forEach(numero => {
                                 numero.addEventListener('click', async (e) => {
-                                    // modificar page
+
+                                    // Modificar page
                                     page = e.target.dataset.page;
-                                    const resultado = await paginadorDesactualizados();
-                                    recargarPaginacion(resultado);
-                                    // regenerar HTML
+                                    try {
+                                        const resultado = await paginadorDesactualizados();
+                                        // Regenerar HTML
+                                        recargarPaginacion(resultado);
+                                    } catch (error) {
+                                        console.log(error);
+                                    }
                                 });
                             });
 
                             const enlaceBtn = document.querySelectorAll('[data-btn]');
                             enlaceBtn.forEach(boton => {
                                 boton.addEventListener('click', async (e) => {
+                                    try {
 
-                                    if (e.target.dataset.btn === 'siguiente') {
-                                        // regenerar HTML
-                                        page++;
-                                        const resultado = await paginadorDesactualizados();
-                                        recargarPaginacion(resultado);
+                                        if (e.target.dataset.btn === 'siguiente') {
+                                            // regenerar HTML
+                                            page++;
+                                            const resultado = await paginadorDesactualizados();
+                                            recargarPaginacion(resultado);
 
-                                        return;
+                                            return;
 
-                                    } else {
-                                        // regenerar HTML
-                                        page--;
-                                        const resultado = await paginadorDesactualizados();
-                                        recargarPaginacion(resultado);
-                                        return;
+                                        } else {
+                                            // regenerar HTML
+                                            page--;
+                                            const resultado = await paginadorDesactualizados();
+                                            recargarPaginacion(resultado);
+                                            return;
+                                        }
+                                    } catch (error) {
+                                        console.log(error);
                                     }
                                 });
                             });
@@ -302,25 +320,31 @@ import Swal from 'sweetalert2';
                 if (result.isConfirmed) {
 
                     (async function () {
-                        const respuesta = await update(valor, resultado.afectados);
 
-                        if (respuesta) {
-                            swalWithBootstrapButtons.fire(
-                                'Precios actualizados',
-                                resultado.afectados + " precios han sido actualizados",
-                                'success'
-                            );
+                        try {
 
-                            // Recargar en pantalla y reiniciar VirtualDOM
-                            reiniciarPagina();
+                            const respuesta = await update(valor, resultado.afectados);
 
-                        } else {
+                            if (respuesta) {
+                                swalWithBootstrapButtons.fire(
+                                    'Precios actualizados',
+                                    resultado.afectados + " precios han sido actualizados",
+                                    'success'
+                                );
 
-                            swalWithBootstrapButtons.fire(
-                                'Ups!',
-                                'Surgió un error, no se realizaron cambios',
-                                'error'
-                            );
+                                // Recargar en pantalla y reiniciar VirtualDOM
+                                reiniciarPagina();
+
+                            } else {
+
+                                swalWithBootstrapButtons.fire(
+                                    'Ups!',
+                                    'Surgió un error, no se realizaron cambios',
+                                    'error'
+                                );
+                            }
+                        } catch (error) {
+                            console.log(error);
                         }
                     })();
                 } else if (
@@ -337,22 +361,28 @@ import Swal from 'sweetalert2';
 
         async function update(valor, afectados) {
 
-            const url = '/api/aumentos/dolar-update';
-            const datos = new FormData();
+            try {
 
-            datos.append('valor', valor);
-            datos.append('afectados', afectados);
+                const url = '/api/aumentos/dolar-update';
+                const datos = new FormData();
 
-            const respuesta = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': tokenCSRF
-                },
-                body: datos
-            });
+                datos.append('valor', valor);
+                datos.append('afectados', afectados);
 
-            const resultado = await respuesta.json();
-            return resultado;
+                const respuesta = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': tokenCSRF
+                    },
+                    body: datos
+                });
+
+                const resultado = await respuesta.json();
+                return resultado;
+
+            } catch (error) {
+                console.log(error);
+            }
         }
 
         function limpiarProductos() {

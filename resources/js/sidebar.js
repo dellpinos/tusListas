@@ -4,27 +4,37 @@
 
         document.addEventListener('DOMContentLoaded', async () => {
 
-            const iconoProducto = document.querySelector('#sidebar__new-prod');
-            const resultado = await consultaPendientes();
+            try {
 
-            if (resultado > 0) {
+                const iconoProducto = document.querySelector('#sidebar__new-prod');
+                const resultado = await consultaPendientes();
 
-                const notif = document.createElement('I');
-                notif.classList.add('sidebar__alert', 'fa-solid', 'fa-circle-exclamation');
-                notif.id = 'sidebar__pendiente-alert';
+                if (resultado > 0) {
 
-                iconoProducto.appendChild(notif);
+                    const notif = document.createElement('I');
+                    notif.classList.add('sidebar__alert', 'fa-solid', 'fa-circle-exclamation');
+                    notif.id = 'sidebar__pendiente-alert';
+
+                    iconoProducto.appendChild(notif);
+                }
+
+            } catch (error) {
+                console.log(error);
             }
 
             async function consultaPendientes() {
 
-                const url = '/api/pendientes/count';
+                try {
 
-                const respuesta = await fetch(url);
-                const resultado = await respuesta.json();
+                    const url = '/api/pendientes/count';
 
-                return resultado;
+                    const respuesta = await fetch(url);
+                    const resultado = await respuesta.json();
 
+                    return resultado;
+                } catch (error) {
+                    console.log(error);
+                }
             }
         });
     }

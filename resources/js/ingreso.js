@@ -36,15 +36,21 @@ import * as helpers from './helpers';
 
             codigo.addEventListener('input', async (e) => {
 
-                const resultado = await findCodigo(codigo.value);
+                try {
 
-                if (resultado) {
+                    const resultado = await findCodigo(codigo.value);
 
-                    const resultadoCompleto = await buscarProducto(resultado[0].id);
-                    completarCampos(resultadoCompleto.producto, resultadoCompleto.precio, obj);
+                    if (resultado) {
 
-                    precioId = resultadoCompleto.precio.id; // Precio seleccionado que será almacenado
-                    productoId = resultadoCompleto.producto.id; // Producto seleccionado que será almacenado
+                        const resultadoCompleto = await buscarProducto(resultado[0].id);
+                        completarCampos(resultadoCompleto.producto, resultadoCompleto.precio, obj);
+
+                        precioId = resultadoCompleto.precio.id; // Precio seleccionado que será almacenado
+                        productoId = resultadoCompleto.producto.id; // Producto seleccionado que será almacenado
+                    }
+
+                } catch (error) {
+                    console.log(error);
                 }
             });
 
@@ -73,14 +79,14 @@ import * as helpers from './helpers';
 
                 if (resultado) {
 
-                    
+
                     // Limpiar variables en memoria
                     precioId = '';
                     productoId = '';
                     flagIVA = 0;
                     desactivarCampos(obj);
                     app();
-                    
+
                     alertPendiente();
 
 
@@ -644,15 +650,20 @@ import * as helpers from './helpers';
 
                     sugerenciaBusqueda.addEventListener('click', async function (e) {
 
-                        const respuesta = await buscarProducto(coincidencia.id);
+                        try {
 
-                        const DBproducto = respuesta.producto;
-                        const DBprecio = respuesta.precio;
+                            const respuesta = await buscarProducto(coincidencia.id);
 
-                        precioId = respuesta.precio.id; // Precio seleccionado que será almacenado
-                        productoId = respuesta.producto.id; // Producto seleccionado que será almacenado
+                            const DBproducto = respuesta.producto;
+                            const DBprecio = respuesta.precio;
 
-                        completarCampos(DBproducto, DBprecio, obj, inputProducto);
+                            precioId = respuesta.precio.id; // Precio seleccionado que será almacenado
+                            productoId = respuesta.producto.id; // Producto seleccionado que será almacenado
+
+                            completarCampos(DBproducto, DBprecio, obj, inputProducto);
+                        } catch (error) {
+                            console.log(error);
+                        }
 
                     });
                 }

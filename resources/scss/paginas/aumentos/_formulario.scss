@@ -86,12 +86,12 @@
         white-space: nowrap;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
-        background-color: v.$amarillo;
+        background-color: lighten(v.$naranja, 15%);
+        transition: background-color .5s ease;
 
         &:hover {
-            background-color: darken(v.$amarillo, 8%);
+            background-color: darken(v.$naranja, 8%);
         }
-        
     }
     &__mensaje--act {
         width: 100%;
@@ -105,5 +105,4 @@
         justify-content: space-between;
         margin-bottom: 2rem;
     }
-
 }

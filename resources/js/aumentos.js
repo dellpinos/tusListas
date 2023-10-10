@@ -45,8 +45,8 @@ import Swal from 'sweetalert2';
 
         function alertaAumento(tipo, valor, porcentaje) {
 
-            if(porcentaje > 500 || porcentaje < 1) {
-                
+            if (porcentaje > 500 || porcentaje < 1) {
+
                 Swal.fire(
                     'Oops!',
                     'El porcentaje debe ser entre 1% - 500%',
@@ -76,18 +76,23 @@ import Swal from 'sweetalert2';
                 if (result.isConfirmed) {
 
                     (async function () {
-                        const resultado = await aumento(tipo, valor, porcentaje);
+                        try {
 
-                        if (resultado.errors !== null) {
-                            await validaciones(resultado);
+                            const resultado = await aumento(tipo, valor, porcentaje);
 
-                        } else {
+                            if (resultado.errors !== null) {
+                                await validaciones(resultado);
 
-                            swalWithBootstrapButtons.fire(
-                                'Precios actualizados',
-                                resultado.afectados.toString() + ' precios han sido actualizados.',
-                                'success'
-                            )
+                            } else {
+
+                                swalWithBootstrapButtons.fire(
+                                    'Precios actualizados',
+                                    resultado.afectados.toString() + ' precios han sido actualizados.',
+                                    'success'
+                                );
+                            }
+                        } catch (error) {
+                            console.log(error);
                         }
                     })();
                 } else if (
@@ -165,11 +170,11 @@ import Swal from 'sweetalert2';
             let padre = '';
 
             if (tipo === "categoria") {
-                if(campo === "porcentaje") {
+                if (campo === "porcentaje") {
 
                     padre = categoriaPorc.parentNode;
                     categoriaPorc.classList.add('borde__error');
-                    
+
                 } else {
 
                     categoria.classList.add('borde__error');
@@ -178,15 +183,15 @@ import Swal from 'sweetalert2';
                 }
 
             } else if (tipo === "fabricante") {
-                if(campo === "porcentaje") {
+                if (campo === "porcentaje") {
 
                     padre = fabricantePorc.parentNode;
                 } else {
 
                     padre = fabricante.parentNode;
                 }
-            } else if ( tipo === "provider") {
-                if(campo === "porcentaje") {
+            } else if (tipo === "provider") {
+                if (campo === "porcentaje") {
 
                     padre = providerPorc.parentNode;
                 } else {

@@ -26,8 +26,8 @@ class APIBuscador extends Controller
         $pagina_actual = $request->page;
 
         $pagina_actual = filter_var($pagina_actual, FILTER_VALIDATE_INT);
-//        $total_registros = Producto::all()->count();
-        $total_registros = 0;
+        $total_registros = Producto::all()->count();
+
 
         if (!$pagina_actual || $pagina_actual < 1) {
             return json_encode("error");

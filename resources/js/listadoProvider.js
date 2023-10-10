@@ -179,26 +179,32 @@ import * as helpers from './helpers';
                 if (result.isConfirmed) {
 
                     (async function () {
-                        const resultado = await destroy(id, tipo, token);
 
-                        if (resultado.eliminado) {
-                            swalWithBootstrapButtons.fire(
-                                'Eliminado/a',
-                                helpers.firstCap(tipo) + ' ha sido destruido :(',
-                                'success'
-                            );
-                            if (flag) {
-                                providersArray = filtrarVirtualDOM(providersArray, id); // si hay un array va a filtrarlo
-                                providersArrayFiltrado = providersArray;
-                                mostrarElementos();
+                        try {
+
+                            const resultado = await destroy(id, tipo, token);
+
+                            if (resultado.eliminado) {
+                                swalWithBootstrapButtons.fire(
+                                    'Eliminado/a',
+                                    helpers.firstCap(tipo) + ' ha sido destruido :(',
+                                    'success'
+                                );
+                                if (flag) {
+                                    providersArray = filtrarVirtualDOM(providersArray, id); // si hay un array va a filtrarlo
+                                    providersArrayFiltrado = providersArray;
+                                    mostrarElementos();
+                                }
+                            } else {
+
+                                swalWithBootstrapButtons.fire(
+                                    'No puede ser eliminado',
+                                    'Hay ' + resultado.cantidad_productos + ' producto/s relacionado/s. Puedes editar ' + tipo + ' o el/los producto/s.',
+                                    'error'
+                                );
                             }
-                        } else {
-
-                            swalWithBootstrapButtons.fire(
-                                'No puede ser eliminado',
-                                'Hay ' + resultado.cantidad_productos + ' producto/s relacionado/s. Puedes editar ' + tipo + ' o el/los producto/s.',
-                                'error'
-                            );
+                        } catch (error) {
+                            console.log(error);
                         }
                     })();
                 } else if (
