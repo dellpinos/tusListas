@@ -3,49 +3,53 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Empresa;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
 
-    }
     public function index()
     {
-
-        if (auth()->user()->user_type !== 'admin') {
-            return redirect()->route('login');
-        }
-
-        return view('auth.register');
+        return view('empresa.register');
     }
     public function store(Request $request)
     {
-        // Sanitizar username
+
         $request->request->add([
             'username' => Str::slug($request->username)
         ]);
 
         // Validar formulario
         $this->validate($request, [
-            'name' => 'required|max:30',
+            'name' => 'required|max:30|min:3|unique:empresas',
+            'usuario' => 'required|max:30|min:3',
             'username' => ["required", "unique:users", "min:3", "max:20", "not_in:logout,register"],
             'email' => 'required|unique:users|email|max:60',
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|confirmed|min:6|max:32',
         ]);
 
-        // Crear registro
-        User::create([
+        $resultado = Empresa::create([
             'name' => $request->name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => $request->password
+            'plan' => 'free' ///// <<<<<<<<<<<<  Este default debe cambiar para restringir el acceso a usuarios vip
         ]);
+
+        if ($resultado) {
+
+            // Crear registro
+            User::create([
+                'name' => $request->usuario,
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => $request->password,
+                'empresa_id' => $resultado->id,
+                'user_type' => 'admin' /////// <<<<<<<<<< Cambiar por owner
+
+            ]);
+        }
 
         // Redireccionar
-        return redirect()->route('buscador');
+        return redirect()->route('login');
     }
 }

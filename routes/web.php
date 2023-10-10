@@ -14,6 +14,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\AumentoController;
 use App\Http\Controllers\IngresoController;
+use App\Http\Controllers\NewUserController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\RegisterController;
@@ -24,14 +25,21 @@ use App\Http\Controllers\FabricanteController;
 // Buscador
 Route::get('/', [ProductoController::class, 'index'])->name('buscador');
 
+// Empresa
+Route::get('/register', [RegisterController::class, 'index'])->name('register');
+Route::post('/register', [RegisterController::class, 'store']);
+
 // Auth
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'store']);
 Route::post('/logout', [LogoutController::class, 'store'])->name('logout');
 
+
+
 // Registro - Rutas no visibles para los usuarios (solo el admin crea cuentas)
-Route::get('/register', [RegisterController::class, 'index'])->name('register');
-Route::post('/register', [RegisterController::class, 'store']);
+Route::get('/new-user/register', [NewUserController::class, 'index'])->name('new-user.register');
+Route::post('/new-user/register', [NewUserController::class, 'store']);
+
 
 // Productos
 Route::get('/producto/nuevo-producto', [ProductoController::class, 'create'])->name('producto.create');
