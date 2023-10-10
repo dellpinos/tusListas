@@ -10,6 +10,8 @@
     <a href="{{ route('aumentos') }}" class="categoria__boton">&laquo; Volver</a>
 </div>
 
+@if ($registros)
+
 <table class="table">
     <thead class="table__thead">
         <tr>
@@ -35,8 +37,13 @@
         </tr>
         @endforeach
     </tbody>
-
 </table>
+
+@else
+
+<p class="mensaje__info">No hay registro de Aumentos Generales</p>
+    
+@endif
 
 @endsection
 

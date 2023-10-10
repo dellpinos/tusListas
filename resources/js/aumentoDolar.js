@@ -29,7 +29,7 @@ import Swal from 'sweetalert2';
         let valor = 0;
 
         // mensaje Info
-        mensajeInfo.textContent = "Los 5 productos con el dolar mas bajo o desactualizado";
+        mensajeInfo.textContent = "Los productos con el dolar mas bajo o desactualizado";
 
         // Obtener elementos
         listadoDesactualizados();
@@ -137,7 +137,7 @@ import Swal from 'sweetalert2';
 
                 const url = '/api/aumentos/dolar-count';
                 const datos = new FormData();
-                datos.append('valor', valor);       /// <<<<<<<< <<<< <<<< <<<<<< <<<<
+                datos.append('valor', valor);
 
                 const respuesta = await fetch(url, {
                     method: 'POST',
@@ -184,9 +184,10 @@ import Swal from 'sweetalert2';
         }
 
         function sinResultados() {
+            
             limpiarProductos();
 
-            mensajeNoResult.innerHTML = `<p class="mensaje__info--my">
+            mensajeNoResult.innerHTML = `<p class="mensaje__info mb-4">
             No hay productos desactualizados
             </p>`;
 

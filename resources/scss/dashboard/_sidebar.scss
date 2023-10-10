@@ -14,6 +14,7 @@
     }
 
     &__enlace {
+        position: relative;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -42,5 +43,19 @@
     }
     &__icono {
         font-size: 2rem;
+    }
+
+    &__texto-icono {
+        font-size: 1.4rem;
+    }
+    &__alert {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 2rem;
+
+        color: v.$naranja;
+
+
     }
 }

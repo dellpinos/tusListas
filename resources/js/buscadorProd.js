@@ -55,7 +55,7 @@ import * as helpers from './helpers';
 
             });
             contenedorTabs.addEventListener('mouseleave', () => {
-               tabs.classList.remove('dashboard__tabs--activo');
+                tabs.classList.remove('dashboard__tabs--activo');
                 tabsIcono.classList.remove('dashboard__tab-icono--activo');
 
             });
@@ -73,6 +73,11 @@ import * as helpers from './helpers';
 
         tabCodigo.addEventListener('click', () => {
 
+            enlaceBusquedaCodigo();
+
+        });
+
+        function enlaceBusquedaCodigo() {
             // recargar archivo
             tipoBusqueda = "codigo";
             headingPrincipal.textContent = "Buscar código";
@@ -82,8 +87,7 @@ import * as helpers from './helpers';
             generarBuscador();
 
             busquedaCodigo();
-
-        });
+        }
 
         function busquedaCodigo() {
 
@@ -416,8 +420,8 @@ import * as helpers from './helpers';
 
             const mensajeNoResult = document.createElement('DIV');
 
-            mensajeNoResult.innerHTML = `<p class="mensaje__info--my">
-            No hay productos, deberias crear el primero
+            mensajeNoResult.innerHTML = `<p class="mensaje__info mb-4">
+            No hay productos, deberías crear el primero
             </p>`;
 
             contenedorPrincipal.appendChild(mensajeNoResult);
@@ -491,11 +495,19 @@ import * as helpers from './helpers';
 
                         const mensajeSinResult = document.createElement('P');
                         mensajeSinResult.classList.add('mensaje__info');
-                        mensajeSinResult.textContent = "No hay resultados";
 
+                        const enlaceCodigo = document.createElement('A');
+                        enlaceCodigo.textContent = "Buscar por código";
+                        enlaceCodigo.addEventListener('click', enlaceBusquedaCodigo);
+                        enlaceCodigo.classList.add('enlace__mensaje');
+
+                        mensajeSinResult.textContent = `
+                        No hay resultados, deberías 
+                        `;
+                        
+                        mensajeSinResult.appendChild(enlaceCodigo);
                         cardProducto.appendChild(mensajeSinResult);
                     }
-
                 }
             });
 

@@ -37,7 +37,6 @@ import * as helpers from './helpers';
             if(e.target.value.length >= 2) {
                 buscarCoincidenciasMemoria(e);
             }
-
         });
 
         // Vacia el campo de busqueda
@@ -76,7 +75,7 @@ import * as helpers from './helpers';
                 limpiarElementos(contenedorVacio);
 
                 textoNoCat.textContent = "No se encontraron fabricantes";
-                textoNoCat.classList.add('mensaje__vacio');
+                textoNoCat.classList.add('mensaje__info');
                 contenedorVacio.appendChild(textoNoCat);
                 return;
             }

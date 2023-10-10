@@ -71,9 +71,11 @@ import * as helpers from './helpers';
             }
 
             (async () => {
+
                 const resultado = await contadorPendiente();
 
                 mensajePendiente(resultado);
+
             })();
         });
 
@@ -111,29 +113,62 @@ import * as helpers from './helpers';
         btnVenta.addEventListener('click', function () {
 
             calcularGanancia(click);
+            ;
 
         });
-        function mensajePendiente(contador) {
+
+        async function mensajePendiente(contador) {
+
+            await alertPendiente();
             const contenedor = document.querySelector('#contenedor-pendientes');
+
+            contenedor.classList.add('producto-formulario__contenedor-pendientes--visible');
             while (contenedor.firstChild) {
                 contenedor.removeChild(contenedor.firstChild);
             }
             if (contador > 0) {
+
+                const pendiente = await consultarPenidente();
+                let descuentos = '';
+                let stock = '';
+
+                if (pendiente.stock === null) {
+                    stock = 'sin stock';
+                } else {
+                    stock = `${pendiente.stock} unidades `;
+                }
+                if (pendiente.desc_porc === null) {
+                    descuentos = " | Sin descuento";
+                } else {
+                    descuentos = ` | ${pendiente.desc_porc} % | ${pendiente.desc_duracion} semanas`;
+                }
+
                 const mensaje = document.createElement('P');
                 mensaje.classList.add('mensaje__info', 'mensaje__pendientes');
                 mensaje.textContent = `Productos Pendientes: ${contador}`;
 
                 contenedor.appendChild(mensaje);
+
+                mensaje.addEventListener('mouseenter', async () => {
+
+                    mensaje.textContent = `${pendiente.nombre} | $ ${pendiente.precio} | ${stock} ${descuentos}`;
+                });
+                mensaje.addEventListener('mouseleave', () => {
+                    mensaje.textContent = `Productos Pendientes: ${contador}`;
+                });
+
                 // Carga datos de un penidente en el formulario
-                mensaje.addEventListener('click', cargarPendiente);
+                mensaje.addEventListener('click', async () => {
+
+                    await cargarPendiente(pendiente)
+                });
 
             }
         }
 
-        async function cargarPendiente() {
+        async function cargarPendiente(pendiente) {
 
             // Consultar DB por el penidente mas antiguo
-            const pendiente = await consultarPenidente();
 
             if (pendiente.desc_porc) {
                 descHidden.value = pendiente.desc_porc;
@@ -170,6 +205,7 @@ import * as helpers from './helpers';
                 console.log(error);
             }
         }
+
         async function consultarPenidente() {
             try {
                 const url = '/api/pendientes/index';
@@ -523,6 +559,55 @@ import * as helpers from './helpers';
             } catch (error) {
                 console.log('El servidor no responde');
             }
+        }
+
+        async function alertPendiente() {
+
+            try {
+
+                const resultado = await consultaPendientes();
+
+                if (resultado > 0) {
+
+                    if (!document.querySelector('#sidebar__pendiente-alert')) {
+
+                        const iconoProducto = document.querySelector('#sidebar__new-prod');
+                        const notif = document.createElement('I');
+
+                        notif.classList.add('sidebar__alert', 'fa-solid', 'fa-circle-exclamation');
+                        notif.id = 'sidebar__pendiente-alert';
+
+                        iconoProducto.appendChild(notif);
+                    }
+
+                } else {
+
+                    if (document.querySelector('#sidebar__pendiente-alert')) {
+                        const notif = document.querySelector('#sidebar__pendiente-alert');
+                        notif.remove();
+                    }
+                }
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        async function consultaPendientes() {
+
+            try {
+
+                const url = '/api/pendientes/count';
+
+                const respuesta = await fetch(url);
+                const resultado = await respuesta.json();
+
+                return resultado;
+
+            } catch (error) {
+                console.log(error)
+            }
+
         }
     }
 })();

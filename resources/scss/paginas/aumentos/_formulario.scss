@@ -38,6 +38,16 @@
         width: 100%;
         
     }
+    &__contenedor-campo {
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+
+        a {
+            text-align: right;
+        }
+    }
+
     &__campo-flex {
         display: flex;
         justify-content: space-between;
@@ -50,8 +60,9 @@
             font-size: 3rem;
         }
         input {
-            width: 50%;
+            width: 70%;
             font-size: 3rem;
+
         }
     }
     &__boton {
@@ -66,11 +77,9 @@
         background-color: v.$blanco;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
         text-align: center;
-
         width: 70%;
         margin: 5rem auto;
 
-        
     }
     &__boton--act {
         width: 20%;
@@ -83,7 +92,6 @@
             background-color: darken(v.$amarillo, 8%);
         }
         
-
     }
     &__mensaje--act {
         width: 100%;

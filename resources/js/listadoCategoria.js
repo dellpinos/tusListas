@@ -22,9 +22,6 @@ import * as helpers from './helpers';
             inputBusqueda.focus();
         }
 
-
-
-        
         inputBusqueda.addEventListener('input', (e) => {
 
             if(busquedaLength > e.target.value.length) {
@@ -40,10 +37,6 @@ import * as helpers from './helpers';
                 buscarCoincidenciasMemoria(e);
             }
         });
-
-
-
-
 
         // Vacia el campo de busqueda
         inputBusqueda.addEventListener('blur', (e) => {
@@ -74,7 +67,6 @@ import * as helpers from './helpers';
             limpiarElementos(contRegistros);
             limpiarElementos(contenedorVacio);
             
-
             if (categoriasArrayFiltrado.length === 0) {
 
                 const textoNoCat = document.createElement('P');
@@ -82,7 +74,7 @@ import * as helpers from './helpers';
                 limpiarElementos(contenedorVacio);
 
                 textoNoCat.textContent = "No se encontraron categorias";
-                textoNoCat.classList.add('mensaje__vacio');
+                textoNoCat.classList.add('mensaje__info');
                 contenedorVacio.appendChild(textoNoCat);
                 return;
             }
@@ -123,11 +115,9 @@ import * as helpers from './helpers';
 
                 contenedorSM.appendChild(catEnlace);
                 contenedorSM.appendChild(catBtn);
-
                 contenedor.appendChild(catHeading);
                 contenedor.appendChild(catParrafo);
                 contenedor.appendChild(contenedorSM);
-
                 contRegistros.appendChild(contenedor);
 
                 swiper.update();
@@ -247,6 +237,5 @@ import * as helpers from './helpers';
             // Recargar elementos
             mostrarElementos();
         }
-
     }
 })();

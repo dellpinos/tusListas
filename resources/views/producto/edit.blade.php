@@ -9,12 +9,8 @@
 @endsection
 
 @section('contenido')
-    <div id="contenedor-pendientes">
-        {{-- Js --}}
-    </div>
     @if ($producto_fraccionado)
-        <p class="mensaje__info mensaje__warning">Algunas opciones no estan disponibles en un "producto fraccionado".
-        </p>
+        <p class="mensaje__info mensaje__warning">Algunas opciones no estan disponibles en un "producto fraccionado".</p>
     @endif
 
     <div class="producto-formulario__grid">
