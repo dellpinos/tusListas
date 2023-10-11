@@ -37,24 +37,26 @@ class APIAumentos extends Controller
             ]);
         }
 
-        // Consultar Todos los productos que corresponden a esta categoria
-        $precios = Precio::where('categoria_id', $request->categoria_id)->get();
-        $categoria = Categoria::find($request->categoria_id);
+        // Consultar Todos los productos que corresponden a esta categoria y la empresa dentro sesión actual
+        $precios = Precio::where('categoria_id', $request->categoria_id)->where('empresa_id', session('empresa')->id)->get();
 
+        $categoria = Categoria::where('id', $request->categoria_id)->where('empresa_id', session('empresa')->id)->first();
+        
         $preciosAfectados = count($precios);
         $porcentajeDecimal = 1 + ($request->porcentaje / 100);
-
+        
         foreach ($precios as $precio) {
             $precio->precio = $precio->precio * $porcentajeDecimal; // convierto porcentaje en decimal
             $precio->save();
         }
-
+        
         Aumento::create([
             'porcentaje' => $porcentajeDecimal,
             'tipo' => 'Categoria',
             'nombre' => $categoria->nombre,
             'username' => auth()->user()->username,
-            'afectados' => $preciosAfectados
+            'afectados' => $preciosAfectados,
+            'empresa_id' => session('empresa')->id
         ]);
 
         return json_encode([
@@ -80,8 +82,8 @@ class APIAumentos extends Controller
             ]);
         }
 
-        $precios = Precio::where('provider_id', $request->provider_id)->get();
-        $provider = Provider::find($request->provider_id);
+        $precios = Precio::where('provider_id', $request->provider_id)->where('empresa_id', session('empresa')->id)->get();
+        $provider = Provider::where('id', $request->provider_id)->where('empresa_id', session('empresa')->id)->first();
 
         $preciosAfectados = count($precios);
         $porcentajeDecimal = 1 + ($request->porcentaje / 100);
@@ -91,12 +93,13 @@ class APIAumentos extends Controller
             $precio->save();
         }
 
-        Aumento::create([
+        $resultado = Aumento::create([
             'porcentaje' => $porcentajeDecimal,
             'tipo' => 'Proveedor',
             'nombre' => $provider->nombre,
             'username' => auth()->user()->username,
-            'afectados' => $preciosAfectados
+            'afectados' => $preciosAfectados,
+            'empresa_id' => session('empresa')->id
         ]);
 
         echo json_encode($preciosAfectados);
