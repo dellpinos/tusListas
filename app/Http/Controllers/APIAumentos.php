@@ -168,7 +168,7 @@ class APIAumentos extends Controller
         $pagina_actual = $request->page;
 
         $pagina_actual = filter_var($pagina_actual, FILTER_VALIDATE_INT);
-        $total_registros = Precio::where('dolar', "<", $input)->count();
+        $total_registros = Precio::where('dolar', "<", $input)->where('empresa_id', session('empresa')->id)->count();
 
         if (!$pagina_actual || $pagina_actual < 1) {
             return json_encode("error");
@@ -193,7 +193,7 @@ class APIAumentos extends Controller
         $productos = [];
         $resultado = [];
         foreach ($precios as $precio) {
-            $productosTodos = Producto::where('precio_id', $precio->id)->get();
+            $productosTodos = Producto::where('precio_id', $precio->id)->where('empresa_id', session('empresa')->id)->get();
 
             if ($productosTodos->count() === 0) {
                 $precio->delete(); //// PROVISORIO, elimina un precio sin producto. Resolver al trabajar en delete() de registros
@@ -206,14 +206,14 @@ class APIAumentos extends Controller
                         // No es el fraccionado
                         $resultado = precioVenta($producto, $precio);
                         $productos[] = $resultado['producto'];
-                        $precio = $resultado['precio']; //????
+                        $precio = $resultado['precio'];
                     }
                 }
             } else {
                 // No existe fraccionado
                 $resultado = precioVenta($productosTodos->first(), $precio);
                 $productos[] = $resultado['producto'];
-                $precio = $resultado['precio']; //????
+                $precio = $resultado['precio'];
             }
         }
 
@@ -228,18 +228,14 @@ class APIAumentos extends Controller
     public function dolar_listado()
     {
         // 10 precios - productos con "dolar" mas bajo
-        $precios = Precio::orderBy('dolar', 'asc')->limit(5)->get();
+        $precios = Precio::orderBy('dolar', 'asc')->where('empresa_id', session('empresa')->id)->limit(5)->get();
 
 
         $productos = [];
         $resultado = [];
         foreach ($precios as $precio) {
-            $productosTodos = Producto::where('precio_id', $precio->id)->get();
+            $productosTodos = Producto::where('precio_id', $precio->id)->where('empresa_id', session('empresa')->id)->get();
 
-            if ($productosTodos->count() === 0) {
-                $precio->delete(); //// PROVISORIO, elimina un precio sin producto. Resolver al trabajar en delete() de registros
-                return; // retorna, hay que recargar la página para volver a ejecutar hasta que no queden precios sin producto
-            }
             if ($productosTodos->count() > 1) {
                 // Existe Fraccionado
                 foreach ($productosTodos as $producto) {
@@ -282,7 +278,7 @@ class APIAumentos extends Controller
 
         // Cuantos registros serán afectados
         $input = $request->valor;
-        $resultado = Precio::where('dolar', "<", $input)->count();
+        $resultado = Precio::where('dolar', "<", $input)->where('empresa_id', session('empresa')->id)->count();
 
         return json_encode([
             'afectados' => $resultado,
@@ -316,8 +312,7 @@ class APIAumentos extends Controller
             return;
         }
 
-
-        $precios = Precio::where('dolar', "<", $input)->get();
+        $precios = Precio::where('dolar', "<", $input)->where('empresa_id', session('empresa')->id)->get();
 
         foreach ($precios as $precio) {
 
@@ -334,7 +329,8 @@ class APIAumentos extends Controller
             'tipo' => 'Dolar',
             'nombre' => 'Varios',
             'username' => auth()->user()->username,
-            'afectados' => $afectados
+            'afectados' => $afectados,
+            'empresa_id' => session('empresa')->id
         ]);
 
         echo json_encode(true);

@@ -35,10 +35,10 @@ class APICalculos extends Controller
         $respuesta = 0;
 
         if ($request->ganancia === 'categoria') {
-            $categoria = Categoria::find($request->id);
+            $categoria = Categoria::where('id', $request->id)->where('empresa_id', session('empresa')->id)->first();
             $respuesta = $categoria->ganancia;
         } elseif ($request->ganancia === 'provider') {
-            $provider = Provider::find($request->id);
+            $provider = Provider::where('id', $request->id)->where('empresa_id', session('empresa')->id)->first();
             $respuesta = $provider->ganancia;
         }
 
