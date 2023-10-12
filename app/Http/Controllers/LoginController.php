@@ -25,6 +25,11 @@ class LoginController extends Controller
 
         $empresa = Empresa::find(auth()->user()->empresa_id);
 
+        if(!$empresa) {
+            auth()->logout();
+            return redirect()->route('login');
+        }
+
         session()->put('empresa', $empresa);
 
         return redirect()->route('buscador');

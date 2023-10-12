@@ -18,7 +18,7 @@ class APIFabricantes extends Controller
     public function all()
     {
 
-        $fabricantes = Fabricante::orderBy('nombre', 'asc')->get();
+        $fabricantes = Fabricante::orderBy('nombre', 'asc')->where('empresa_id', session('empresa')->id)->get();
 
         echo json_encode([
             'fabricantes' => $fabricantes
@@ -30,14 +30,14 @@ class APIFabricantes extends Controller
 
         $id = filter_var($request->id, FILTER_VALIDATE_INT);
         // Verifico que no haya productos ni precios relacionados a esta fabricante
-        $productos = Producto::where('fabricante_id', $id)->get();
+        $productos = Producto::where('fabricante_id', $id)->where('empresa_id', session('empresa')->id)->get();
 
         if ($productos->count() === 0 && $id !== false) {
-            $precios = Precio::where('fabricante_id', $id)->get();
+            $precios = Precio::where('fabricante_id', $id)->where('empresa_id', session('empresa')->id)->get();
             if ($precios->count() === 0) {
 
                 // Eliminar
-                $fabricante = Fabricante::find($id);
+                $fabricante = Fabricante::where('id', $id)->where('empresa_id', session('empresa')->id)->first();
 
                 $respuesta = $fabricante->delete();
                 if ($respuesta) {
@@ -53,7 +53,7 @@ class APIFabricantes extends Controller
             }
         } else {
             // No se puede eliminar
-            $productos_count = $productos->count(); // "Esta fabricante tiene X productos asignados"
+            $productos_count = $productos->count(); // "Este fabricante tiene X productos asignados"
 
             echo json_encode([
                 'cantidad_productos' => $productos_count,

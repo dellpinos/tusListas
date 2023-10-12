@@ -16,9 +16,9 @@ class AumentoController extends Controller
     
     public function index()
     {
-        $categorias = Categoria::orderBy('nombre', 'asc')->get();
-        $providers = Provider::orderBy('nombre', 'asc')->get();
-        $fabricantes = Fabricante::orderBy('nombre', 'asc')->get();
+        $categorias = Categoria::orderBy('nombre', 'asc')->where('empresa_id', session('empresa')->id)->get();
+        $providers = Provider::orderBy('nombre', 'asc')->where('empresa_id', session('empresa')->id)->get();
+        $fabricantes = Fabricante::orderBy('nombre', 'asc')->where('empresa_id', session('empresa')->id)->get();
 
         return view('aumentos.index', [
             'categorias' => $categorias,
@@ -29,7 +29,7 @@ class AumentoController extends Controller
     public function listado_aumentos()
     {
         // Se listan los últimos 50 registros
-        $registros = Aumento::orderBy('created_at', 'desc')->take(50)->get();
+        $registros = Aumento::orderBy('created_at', 'desc')->where('empresa_id', session('empresa')->id)->take(50)->get();
 
         return view('aumentos.listado', [
             'registros' => $registros

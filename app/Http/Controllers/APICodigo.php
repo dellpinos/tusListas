@@ -17,7 +17,7 @@ class APICodigo extends Controller
         // Generar código al azar y verificar si existe
         do {
             $codigo = Str::lower(Str::random(4));
-        } while (Producto::where('codigo', $codigo)->exists()); // Verifina que sea unico o vuelve a generar
+        } while (Producto::where('codigo', $codigo)->where('empresa_id', session('empresa')->id)->exists()); // Verifina que sea unico o vuelve a generar
 
         echo json_encode($codigo);
 

@@ -17,9 +17,11 @@ function generarCodigo()
 {
     do {
         $codigo = Str::lower(Str::random(4));
-    } while (Producto::where('codigo', $codigo)->exists()); // Verifina que sea unico o vuelve a generar
+    } while (Producto::where('codigo', $codigo)->where('empresa_id', session('empresa')->id)->exists()); // Verifina que sea unico o vuelve a generar
+
     return $codigo;
 }
+
 
 // Debuguear
 function debuguear($elemento)
@@ -42,8 +44,8 @@ function precioVenta(Producto $producto, Precio $precio)
 
     $precio->updated_at = $precio->updated_at->subHours(3);
 
-    $categoria = Categoria::find($producto->categoria_id);
-    $provider = Provider::find($producto->provider_id);
+    $categoria = Categoria::where('id', $producto->categoria_id)->where('empresa_id', session('empresa')->id)->first();
+    $provider = Provider::where('id', $producto->provider_id)->where('empresa_id', session('empresa')->id)->first();
 
     // Que ganancia aplica a este producto
     if (!$producto->ganancia_prod) {

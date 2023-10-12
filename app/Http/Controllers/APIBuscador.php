@@ -53,7 +53,7 @@ class APIBuscador extends Controller
 
         foreach ($productos as $producto) {
 
-            $precio = Precio::where('id', $producto->precio_id)->where('empresa_id', session('empresa')->id)->first();;
+            $precio = Precio::where('id', $producto->precio_id)->where('empresa_id', session('empresa')->id)->first();
             $resultado = precioVenta($producto, $precio);
 
             $precios[] = $resultado['precio'];

@@ -1,13 +1,5 @@
 <?php
 
-
-
-// $precios = Precio::where('fabricante_id', $request->fabricante_id)->where('empresa_id', session('empresa')->id)->get();
-// $fabricante = Fabricante::where('id', $request->fabricante_id)->where('empresa_id', session('empresa')->id)->first();
-
-
-
-
 namespace App\Http\Controllers;
 
 use App\Models\Precio;

@@ -43,7 +43,7 @@ class NewUserController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => $request->password,
-            'empresa_id' => 1 ////// <<<<<<<<<<<<<<<< Modificar
+            'empresa_id' => session('empresa')->id
         ]);
 
         // Redireccionar
