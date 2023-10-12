@@ -93,7 +93,7 @@ class APIAumentos extends Controller
             $precio->save();
         }
 
-        $resultado = Aumento::create([
+        Aumento::create([
             'porcentaje' => $porcentajeDecimal,
             'tipo' => 'Proveedor',
             'nombre' => $provider->nombre,
@@ -121,8 +121,8 @@ class APIAumentos extends Controller
             ]);
         }
 
-        $precios = Precio::where('fabricante_id', $request->fabricante_id)->get();
-        $fabricante = Fabricante::find($request->fabricante_id);
+        $precios = Precio::where('fabricante_id', $request->fabricante_id)->where('empresa_id', session('empresa')->id)->get();
+        $fabricante = Fabricante::where('id', $request->fabricante_id)->where('empresa_id', session('empresa')->id)->first();
 
         $preciosAfectados = count($precios);
         $porcentajeDecimal = 1 + ($request->porcentaje / 100);
@@ -137,7 +137,8 @@ class APIAumentos extends Controller
             'tipo' => 'Fabricante',
             'nombre' => $fabricante->nombre,
             'username' => auth()->user()->username,
-            'afectados' => $preciosAfectados
+            'afectados' => $preciosAfectados,
+            'empresa_id' => session('empresa')->id
         ]);
 
         return json_encode([
@@ -145,7 +146,7 @@ class APIAumentos extends Controller
             'errors' => false
         ]);
     }
-    public function dolar_busqueda(Request $request)
+    public function dolar_busqueda(Request $request) // <<<<<<
     {
 
         // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
