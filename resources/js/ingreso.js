@@ -598,7 +598,7 @@ import * as helpers from './helpers';
         }
         async function findCodigo(codigo) {
 
-            if (codigo.length === 4) {
+            if (codigo.length === 5) {
                 try {
                     const datos = new FormData();
                     datos.append('filtro_frac', true);

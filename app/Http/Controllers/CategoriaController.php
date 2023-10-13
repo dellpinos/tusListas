@@ -25,7 +25,7 @@ class CategoriaController extends Controller
     {
 
         $this->validate($request, [
-            'nombre' => 'required|max:60|min:3|unique:categorias,nombre,NULL,id,empresa_id,' . session('empresa')->id, // Ignora los nombres en otras empresas
+            'nombre' => 'required|string|max:60|min:3|unique:categorias,nombre,NULL,id,empresa_id,' . session('empresa')->id, // Ignora los nombres en otras empresas
             'ganancia' => 'required|numeric|between:1,19.99'
         ]);
 
@@ -53,6 +53,7 @@ class CategoriaController extends Controller
 
             'nombre' => [
                 'required',
+                'string',
                 'max:60',
                 'min:3',
                 Rule::unique('categorias', 'nombre')->where(function ($query) {

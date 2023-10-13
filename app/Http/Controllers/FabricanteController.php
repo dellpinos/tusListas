@@ -24,7 +24,7 @@ class FabricanteController extends Controller
     {
 
         $this->validate($request, [
-            'nombre' => 'required|max:60|min:3|unique:fabricantes,nombre,NULL,id,empresa_id,' . session('empresa')->id, // Ignora los nombres en otras empresas
+            'nombre' => 'required|string|max:60|min:3|unique:fabricantes,nombre,NULL,id,empresa_id,' . session('empresa')->id, // Ignora los nombres en otras empresas
             'telefono' => ['string', 'nullable', 'max:20', 'min:5', 'regex:/^[0-9 -]*$/'],
             'vendedor' => 'string|nullable|max:60|min:3',
             'descripcion' => 'string|nullable|max:255'
@@ -55,6 +55,7 @@ class FabricanteController extends Controller
             'nombre' => [
                 'required',
                 'max:60',
+                'string',
                 'min:3',
                 Rule::unique('fabricantes', 'nombre')->where(function ($query) {
                     return $query->where('empresa_id', session('empresa')->id); // solo tiene en cuenta la empresa del usuario

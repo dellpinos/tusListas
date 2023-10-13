@@ -82,7 +82,7 @@ class ProductoController extends Controller
 
         $this->validate($request, [
 
-            'codigo' => 'required|string|max:4|min:4|unique:productos,codigo,NULL,id,empresa_id,' . session('empresa')->id,
+            'codigo' => 'required|string|max:5|min:5|unique:productos,codigo,NULL,id,empresa_id,' . session('empresa')->id,
             'nombre' => 'required|string|max:60|min:3|unique:productos,nombre,NULL,id,empresa_id,' . session('empresa')->id, // Ignora los nombres en otras empresas
             'categoria_id' => 'required|integer',
             'fabricante_id' => 'required|integer',
@@ -100,7 +100,7 @@ class ProductoController extends Controller
 
             $this->validate($request, [
 
-                'codigo_fraccionado' => 'required|string|max:4|min:4|unique:productos,codigo,NULL,id,empresa_id,' . session('empresa')->id,
+                'codigo_fraccionado' => 'required|string|max:5|min:5|unique:productos,codigo,NULL,id,empresa_id,' . session('empresa')->id,
                 'unidad_fraccion' => 'required|string|max:60',
                 'contenido_total' => 'required|numeric|max:9999|min:0',
                 'ganancia_fraccion' => 'required|numeric|between:1,19.9'
@@ -362,8 +362,8 @@ class ProductoController extends Controller
                 'codigo' => [
                     'required',
                     'string',
-                    'max:4',
-                    'min:4',
+                    'max:5',
+                    'min:5',
                     Rule::unique('productos', 'codigo')->where(function ($query) {
                         return $query->where('empresa_id', session('empresa')->id); // solo tiene en cuenta la empresa del usuario
                     })->ignore($producto->id), // Ignora el registro actual
@@ -418,8 +418,8 @@ class ProductoController extends Controller
                     'codigo' => [
                         'required',
                         'string',
-                        'max:4',
-                        'min:4',
+                        'max:5',
+                        'min:5',
                         Rule::unique('productos', 'codigo')->where(function ($query) {
                             return $query->where('empresa_id', session('empresa')->id); // solo tiene en cuenta la empresa del usuario
                         })->ignore($producto->id), // Ignora el registro actual
@@ -478,8 +478,8 @@ class ProductoController extends Controller
                     'codigo' => [
                         'required',
                         'string',
-                        'max:4',
-                        'min:4',
+                        'max:5',
+                        'min:5',
                         Rule::unique('productos', 'codigo')->where(function ($query) {
                             return $query->where('empresa_id', session('empresa')->id); // solo tiene en cuenta la empresa del usuario
                         })->ignore($producto->id), // Ignora el registro actual
@@ -505,8 +505,8 @@ class ProductoController extends Controller
                 'codigo_fraccionado' => [
                 'required',
                 'string',
-                'max:4',
-                'min:4',
+                'max:5',
+                'min:5',
                 Rule::unique('productos', 'codigo')->where(function ($query) {
                     return $query->where('empresa_id', session('empresa')->id); // solo tiene en cuenta la empresa del usuario
                 })->ignore($producto->id), // Ignora el registro actual

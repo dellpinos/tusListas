@@ -14,12 +14,10 @@ class APICodigo extends Controller
     public function generar_codigo()
     {
 
-        // Generar código al azar y verificar si existe
-        do {
-            $codigo = Str::lower(Str::random(4));
-        } while (Producto::where('codigo', $codigo)->where('empresa_id', session('empresa')->id)->exists()); // Verifina que sea unico o vuelve a generar
+        $codigo = generarCodigo(); // helper
 
         echo json_encode($codigo);
+
 
     }
 }

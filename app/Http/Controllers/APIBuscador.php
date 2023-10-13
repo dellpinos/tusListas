@@ -26,7 +26,9 @@ class APIBuscador extends Controller
         $pagina_actual = $request->page;
 
         $pagina_actual = filter_var($pagina_actual, FILTER_VALIDATE_INT);
-        $total_registros = Producto::where('empresa_id', session('empresa')->id)->get();
+        $total_registros = Producto::where('empresa_id', session('empresa')->id)->count();
+
+
 
         if (!$pagina_actual || $pagina_actual < 1) {
             return json_encode("error");
@@ -127,7 +129,7 @@ class APIBuscador extends Controller
 
         // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
         $validator = Validator::make($request->all(), [
-            'codigo_producto' => 'required|string|min:4|max:4'
+            'codigo_producto' => 'required|string|min:5|max:5'
         ]);
 
         // La instancia de Validator me permite enviar al Frontend los resultados de la validación fallida

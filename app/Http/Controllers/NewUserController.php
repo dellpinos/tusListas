@@ -31,10 +31,10 @@ class NewUserController extends Controller
 
         // Validar formulario
         $this->validate($request, [
-            'name' => 'required|max:30',
+            'name' => 'required|max:30|string|min:3',
             'username' => ["required", "unique:users", "min:3", "max:20", "not_in:logout,register"],
             'email' => 'required|unique:users|email|max:60',
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|confirmed|min:6|max:60',
         ]);
 
         // Crear registro

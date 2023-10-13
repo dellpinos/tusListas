@@ -23,8 +23,8 @@ class RegisterController extends Controller
 
         // Validar formulario
         $this->validate($request, [
-            'name' => 'required|max:30|min:3|unique:empresas',
-            'usuario' => 'required|max:30|min:3',
+            'name' => 'required|max:30|min:3|unique:empresas|string',
+            'usuario' => 'required|max:30|min:3|string',
             'username' => ["required", "unique:users", "min:3", "max:20", "not_in:logout,register"],
             'email' => 'required|unique:users|email|max:60',
             'password' => 'required|confirmed|min:6|max:32',
@@ -44,7 +44,7 @@ class RegisterController extends Controller
                 'email' => $request->email,
                 'password' => $request->password,
                 'empresa_id' => $resultado->id,
-                'user_type' => 'admin' /////// <<<<<<<<<< Cambiar por owner
+                'user_type' => 'owner'
 
             ]);
         }

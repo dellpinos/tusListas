@@ -24,7 +24,7 @@ class ProviderController extends Controller
     {
         
         $this->validate($request, [
-            'nombre' => 'required|max:60|min:3|unique:providers,nombre,NULL,id,empresa_id,' . session('empresa')->id, // Ignora los nombres en otras empresas
+            'nombre' => 'required|string|max:60|min:3|unique:providers,nombre,NULL,id,empresa_id,' . session('empresa')->id, // Ignora los nombres en otras empresas
             'email' => 'email|nullable',
             'telefono' => ['string', 'nullable', 'max:20', 'min:5', 'regex:/^[0-9 -]*$/'],
             'vendedor' => 'string|max:60|min:3|nullable',
@@ -63,6 +63,7 @@ class ProviderController extends Controller
                 'required',
                 'max:60',
                 'min:3',
+                'string',
                 Rule::unique('providers', 'nombre')->where(function ($query) {
                     return $query->where('empresa_id', session('empresa')->id); // solo tiene en cuenta la empresa del usuario
                 })->ignore($provider->id), // Ignora el registro actual

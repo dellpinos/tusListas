@@ -16,7 +16,7 @@ function redondear($numero)
 function generarCodigo()
 {
     do {
-        $codigo = Str::lower(Str::random(4));
+        $codigo = Str::lower(Str::random(5));
     } while (Producto::where('codigo', $codigo)->where('empresa_id', session('empresa')->id)->exists()); // Verifina que sea unico o vuelve a generar
 
     return $codigo;
