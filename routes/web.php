@@ -10,8 +10,10 @@ use App\Http\Controllers\APIProviders;
 use App\Http\Controllers\APICategorias;
 use App\Http\Controllers\APIPendientes;
 use App\Http\Controllers\APIFabricantes;
+use App\Http\Controllers\APIOwnerTools;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\AumentoController;
 use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\NewUserController;
@@ -19,6 +21,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\FabricanteController;
 
 
@@ -29,10 +32,16 @@ Route::get('/', [ProductoController::class, 'index'])->name('buscador');
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/register', [RegisterController::class, 'store']);
 
+Route::get('/owner-tools', [EmpresaController::class, 'index'])->name('owner-tools');
+
+
 // Auth
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'store']);
+
 Route::post('/logout', [LogoutController::class, 'store'])->name('logout');
+
+Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil');
 
 
 
@@ -85,6 +94,14 @@ Route::post('/api/buscador/todos', [APIBuscador::class, 'index']);
 Route::post('/api/buscador/producto', [APIBuscador::class, 'nombre_producto']);
 Route::post('/api/buscador/producto-codigo', [APIBuscador::class, 'codigo_producto']);
 Route::post('/api/buscador/producto-individual', [APIBuscador::class, 'producto_individual']);
+
+// API OwnerTools
+Route::get('/api/owner-tools/all', [APIOwnerTools::class, 'all']);
+Route::get('/api/owner-tools/name', [APIOwnerTools::class, 'name']);
+Route::post('/api/owner-tools/destroy', [APIOwnerTools::class, 'destroy']);
+Route::post('/api/owner-tools/update', [APIOwnerTools::class, 'update']);
+
+
 
 // API Calculos
 Route::post('/api/calculo/ganancia', [APICalculos::class, 'calculo_ganancia']);

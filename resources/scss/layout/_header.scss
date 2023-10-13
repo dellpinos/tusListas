@@ -29,8 +29,15 @@
     }
     &__enlace {
         font-weight: v.$bold;
-        color: v.$blanco;
         margin: 0 1rem 0 1rem;
+        color: v.$blanco;
+        
+        &:hover {
+            color: darken(v.$blanco, 30%);
+        }
+        &--admin {
+            
+        }
     }
     &__button {
         color: v.$grisClaro;
@@ -44,7 +51,7 @@
         width: 100%;
 
         &:hover {
-            color: v.$blanco;
+            color: v.$rojo;
         }
     }
 }

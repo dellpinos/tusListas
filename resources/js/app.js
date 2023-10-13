@@ -11,5 +11,6 @@ import './listadoProvider';
 import './ingreso';
 import './helpers';
 import './sidebar';
+import './ownerTools';
 
 

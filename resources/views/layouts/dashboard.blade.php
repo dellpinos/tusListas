@@ -38,10 +38,12 @@
                 <nav class="header__nav">
 
                     @if (auth()->user()->user_type === 'admin' || auth()->user()->user_type === 'owner')
-                        <a class="header__enlace" href="{{ route('new-user.register') }}">User <span
-                                class="font-regular">Owner</span></a>
+                        <a class="header__enlace header__enlace--admin" href="{{ route('owner-tools') }}">
+                            
+                            <i class="fa-solid fa-user-gear"></i>
+                            <span class="font-regular">Admin</span></a>
                     @endif
-                    <a class="header__enlace" href="#">Hola: <span
+                    <a class="header__enlace" href="{{ route('perfil') }}">Hola: <span
                             class="font-regular ">{{ auth()->user()->username }}</span></a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

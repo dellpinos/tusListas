@@ -4,14 +4,12 @@
     Iniciar Sesión
 @endsection
 
-{{-- Falta definir las clases de las alertas (pasarlo todo a SASS) y el resposive --}}
-
 @section('contenido')
 
 <div class="formulario__contenedor-md">
 
     <div class="formulario__contenedor">
-        <form method="POST" action="{{ route('login') }}" novalidate>
+        <form method="POST" action="{{ route('login') }}">
             @csrf
             @if (session('mensaje'))
                 <p class=" alerta__error">{{ session('mensaje') }}</p>
