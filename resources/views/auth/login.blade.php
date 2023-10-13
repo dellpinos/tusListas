@@ -46,4 +46,9 @@
 
 </div>
 
+<div class="formulario__opciones-contenedor">
+    <a href="{{ route('register') }}" class="formulario__opciones-enlace">Aún no tienes una cuenta?</a>
+    <a href="#" class="formulario__opciones-enlace">He olvidado mi contraseña</a>
+</div>
+
 @endsection()

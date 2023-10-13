@@ -37,9 +37,9 @@
             @auth
                 <nav class="header__nav">
 
-                    @if (auth()->user()->user_type === 'admin')
+                    @if (auth()->user()->user_type === 'admin' || auth()->user()->user_type === 'owner')
                         <a class="header__enlace" href="{{ route('new-user.register') }}">User <span
-                                class="font-regular">Admin</span></a>
+                                class="font-regular">Owner</span></a>
                     @endif
                     <a class="header__enlace" href="#">Hola: <span
                             class="font-regular ">{{ auth()->user()->username }}</span></a>

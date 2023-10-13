@@ -47,9 +47,16 @@ class RegisterController extends Controller
                 'user_type' => 'owner'
 
             ]);
-        }
 
-        // Redireccionar
-        return redirect()->route('login');
+            auth()->attempt($request->only('email', 'password'));
+            $empresa = Empresa::find(auth()->user()->empresa_id);
+            session()->put('empresa', $empresa);
+
+            // Redireccionar
+            return redirect()->route('buscador');
+        } else {
+
+            return redirect()->route('login');
+        }
     }
 }

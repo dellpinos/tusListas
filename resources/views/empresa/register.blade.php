@@ -7,10 +7,8 @@
 @section('contenido')
     <div class="formulario__contenedor-md">
 
-        
-        
         <div class="formulario__contenedor">
-            <form action="{{ route('register') }}" method="POST">   {{-- Modificar --}}
+            <form action="{{ route('register') }}" method="POST">
                 @csrf
                 {{-- Formulario empresa --}}
                 
@@ -24,7 +22,6 @@
                     @enderror
                 </div>
                 
-
                 {{-- Formulario Owner --}}
                 <div class="formulario__campo-contenedor">
                     <label for="name" class="formulario__label">Nombre del Propietario</label>
@@ -72,6 +69,10 @@
                     class="formulario__boton">
             </form>
         </div>
+    </div>
 
+    <div class="formulario__opciones-contenedor">
+        <a href="{{ route('login') }}" class="formulario__opciones-enlace">Ya tienes una cuenta?</a>
+        <a href="#" class="formulario__opciones-enlace">He olvidado mi contraseña</a>
     </div>
 @endsection
