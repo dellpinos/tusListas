@@ -29,8 +29,8 @@ use App\Http\Controllers\FabricanteController;
 Route::get('/', [ProductoController::class, 'index'])->name('buscador');
 
 // Empresa
-Route::get('/register', [RegisterController::class, 'index'])->name('register');
-Route::post('/register', [RegisterController::class, 'store']);
+// Route::get('/register', [RegisterController::class, 'index'])->name('register');
+// Route::post('/register', [RegisterController::class, 'store']);
 
 Route::get('/owner-tools', [EmpresaController::class, 'index'])->name('owner-tools');
 
@@ -86,6 +86,14 @@ Route::get('/categoria/nueva-categoria', [CategoriaController::class, 'create'])
 Route::post('/categoria/categoria-store', [CategoriaController::class, 'store'])->name('categoria.store');
 Route::get('/categoria/categoria-edit/{categoria}', [CategoriaController::class, 'edit'])->name('categoria.edit');
 Route::post('/categoria/categoria-update', [CategoriaController::class, 'update'])->name('categoria.update');
+
+/* Emails */
+
+// Route::get('/email/verify', [VerificationController::class, 'notice'])->name('verification.notice');
+// Route::get('/email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
+// Route::get('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
+
+
 
 /* APIs */
 

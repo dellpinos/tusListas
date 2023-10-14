@@ -37,23 +37,28 @@ class RegisterController extends Controller
 
         if ($resultado) {
 
+            session()->put('empresa', $resultado);
+
             // Crear registro
-            User::create([
+            $user = User::create([
                 'name' => $request->usuario,
                 'username' => $request->username,
                 'email' => $request->email,
                 'password' => $request->password,
-                'empresa_id' => $resultado->id,
-                'user_type' => 'owner'
-
             ]);
 
-            auth()->attempt($request->only('email', 'password'));
-            $empresa = Empresa::find(auth()->user()->empresa_id);
-            session()->put('empresa', $empresa);
 
-            // Redireccionar
-            return redirect()->route('buscador');
+
+            // $user->sendEmailVerificationNotification(); /// Envio el mail de verificación, redirijo a vita "revisa tu email"
+
+            // auth()->attempt($request->only('email', 'password'));
+            // $empresa = Empresa::find(auth()->user()->empresa_id);
+            // session()->put('empresa', $empresa);
+
+            // // Redireccionar
+            // return redirect()->route('buscador');
+
+            // return redirect()->route('login'); /// Cambiar por vista acorde o mensaje de "revisa tu email"
         } else {
 
             return redirect()->route('login');
