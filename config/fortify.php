@@ -74,8 +74,8 @@ return [
     |
     */
 
-    //'home' => RouteServiceProvider::HOME,
-    'home' => 'login',
+    'home' => RouteServiceProvider::HOME,
+
 
     /*
     |--------------------------------------------------------------------------
@@ -132,7 +132,7 @@ return [
     |
     */
 
-    'views' => true,
+    'views' => true, /// <<<  Como true funcionan las vistas y se añaden las rutas GET. Como false no funcionan la vistas pero si el POST permitiendo la validacion
 
     /*
     |--------------------------------------------------------------------------

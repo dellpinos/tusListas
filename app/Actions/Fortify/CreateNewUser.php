@@ -20,16 +20,18 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input): User
     {
-        
+   
         Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => 'required|max:30|min:3|unique:empresas|string',
             'email' => [
                 'required',
                 'string',
                 'email',
-                'max:255',
+                'max:60',
                 Rule::unique(User::class),
             ],
+            'usuario' => 'required|max:30|min:3|string',
+            'username' => ["required", "unique:users", "min:3", "max:20", "not_in:logout,register"],
             'password' => $this->passwordRules(),
         ])->validate();
 
@@ -37,8 +39,6 @@ class CreateNewUser implements CreatesNewUsers
             'name' => $input['name'],
             'plan' => 'free' ///// <<<<<<<<<<<<  Este default debe cambiar para restringir el acceso a usuarios vip
         ]);
-
-        session()->put('empresa', $resultado);
 
         return User::create([
             'name' => $input['usuario'],

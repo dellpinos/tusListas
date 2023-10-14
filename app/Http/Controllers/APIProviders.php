@@ -12,7 +12,7 @@ class APIProviders extends Controller
     // Agregar seguridad, sesion del usuario y sanitizacion de datos
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
     }
 
     public function all()
