@@ -34,13 +34,13 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.verify-email'); // Aqui la vita "Revisa tu casilla de email"
         });
 
-        // Fortify::resetPasswordView(function (Request $request) {
-        //     return view('auth.reset-password', ['request' => $request]); //// Aqui ingresa el nuevo password / Espera recibir un email, password, confirmación de password, and a hidden field named token that contains the value of request()->route('token')
-        // });
+        Fortify::resetPasswordView(function (Request $request) {
+            return view('auth.reset-password', ['request' => $request]); //// Aqui ingresa el nuevo password / Espera recibir un email, password, confirmación de password, and a hidden field named token that contains the value of request()->route('token')
+        });
 
-        // Fortify::requestPasswordResetLinkView(function () {
-        //     return view('auth.forgot-password'); /// Aqui la vita "he perdido mi password" / Espera recibir un email
-        // });
+        Fortify::requestPasswordResetLinkView(function () {
+            return view('auth.forgot-password'); /// Aqui la vita "he perdido mi password" / Espera recibir un email
+        });
 
         Fortify::registerView(function () {
             return view('empresa.register');

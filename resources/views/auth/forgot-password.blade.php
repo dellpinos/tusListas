@@ -1,17 +1,19 @@
 @extends('layouts.app')
 
 @section('titulo')
-    Debes confirmar tu email
+    Recuperar Password
 @endsection
 
 @section('contenido')
 
-<div class="formulario__contenedor-md">
 
-    
+@if( session('status') )
+<p class="mensaje__info mensaje__warning">{{ session('status' )}}</p>
+@endif
 
-    <div class="formulario__contenedor">
-        <form method="POST" action="{{ route('forgot-password') }}">
+
+    <div class="formulario__contenedor width-full">
+        <form method="POST" action="{{ route('password.email') }}">
             @csrf
             @if (session('mensaje'))
                 <p class=" alerta__error">{{ session('mensaje') }}</p>
@@ -27,14 +29,14 @@
                 @enderror
             </div>
 
-            <input type="submit" value="Iniciar Sesión" class="formulario__boton"/>
+            <input type="submit" value="Enviar correo" class="formulario__boton"/>
         </form>
     </div>
 
-</div>
+
 
 <div class="formulario__opciones-contenedor mb-10">
-    <a href="{{ route('login') }}" class="formulario__opciones-enlace">Ya tienes una cuenta?</a>
+    <a href="{{ route('login') }}" class="formulario__opciones-enlace">Iniciar Sesión</a>
 </div>
 
 @endsection

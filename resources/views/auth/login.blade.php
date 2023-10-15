@@ -7,7 +7,7 @@
 @section('contenido')
 
 <div class="formulario__contenedor-md">
-
+    
     <div class="formulario__contenedor">
         <form method="POST" action="{{ route('login') }}">
             @csrf
@@ -46,7 +46,7 @@
 
 <div class="formulario__opciones-contenedor">
     <a href="{{ route('register') }}" class="formulario__opciones-enlace">Aún no tienes una cuenta?</a>
-    <a href="#" class="formulario__opciones-enlace">He olvidado mi contraseña</a>
+    <a href="{{ route('password.request') }}" class="formulario__opciones-enlace">He olvidado mi contraseña</a>
 </div>
 
 @endsection()
