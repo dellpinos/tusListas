@@ -63,14 +63,14 @@ import Swal from 'sweetalert2';
                     for (let i = 0; i < mensajesDeError.length; i++) {
 
                         // Mensaje de error, recibe el campo, el mensaje y el tipo (categoria, provider o fabricante)
-                        mensajeError(mensajesDeError[i]);
+                        mensajeError(campo, mensajesDeError[i]);
 
                     }
                 }
             }
         }
 
-        function mensajeError(mensaje) { 
+        function mensajeError(campo, mensaje) { 
 
             // Eliminar errores anteriores
             const errores = document.querySelectorAll(".alerta__error");
@@ -87,7 +87,7 @@ import Swal from 'sweetalert2';
             mensajeParrafo.classList.add('alerta__error');
             mensajeParrafo.textContent = mensaje;
 
-            let padre = nameEmpresa.parentNode;
+            const padre = document.querySelector(`input[name="${campo}"]`).parentNode;
 
             padre.appendChild(mensajeParrafo);
         }
@@ -244,7 +244,7 @@ import Swal from 'sweetalert2';
 
         async function enviarInvitacion(email, token) {
 
-            const url = '/api/invitaciones/create';
+            const url = '/api/owner-tools/send';
 
             try {
                 const datos = new FormData();
@@ -258,8 +258,13 @@ import Swal from 'sweetalert2';
                 });
 
                 const resultado = await respuesta.json();
+                if(resultado.errors) {
+                    validaciones(resultado);
+                    return false;
+                } else {
+                    return resultado;
 
-                return resultado;
+                }
 
                 
             } catch (error) {

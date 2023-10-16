@@ -13,12 +13,18 @@ class InvitarUsuario extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $empresa;
+    public $token;
+    public $remitente;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($empresa, $token, $remitente)
     {
-        //
+        $this->empresa = $empresa;
+        $this->token = $token;
+        $this->remitente = $remitente;
     }
 
     /**

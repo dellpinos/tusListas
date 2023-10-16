@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Invitacion extends Model
+class Invitation extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'email',
         'token',
-        'empresa_id'
+        'empresa_id',
+        
     ];
 
     public function empresas()

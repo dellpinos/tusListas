@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Models\Invitation;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Laravel\Fortify\Fortify;
@@ -42,8 +43,18 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.forgot-password'); /// Aqui la vita "he perdido mi password" / Espera recibir un email
         });
 
-        Fortify::registerView(function () {
-            return view('empresa.register');
+        Fortify::registerView(function (Request $request) {
+           // Busco el token en la base de datos, si hay coincidencia redirijo a "register" modificado
+           $invitation = Invitation::where('token', $request->input('inv'))->first(); 
+           $mensaje = '';
+
+           if($request->input('inv') && !$invitation) {
+                $mensaje = "La invitación no existe o ha caducado.";
+           }
+            return view('empresa.register', [
+                'invitation' => $invitation,
+                'mensaje' => $mensaje
+            ]);
         });
     
 
@@ -59,10 +70,6 @@ class FortifyServiceProvider extends ServiceProvider
                 return $user;
             }
         });
-
-
-
-
 
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);

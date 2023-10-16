@@ -20,7 +20,7 @@
             <label for="email-user" class="formulario__label">Email nuevo Usuario</label>
             <div class="formulario__campo-contenedor owner__campo-contenedor">
                 <div class="width-full">
-                <input type="email" id="email-user" placeholder="ejemplo@correo.com"
+                <input type="email" id="email-user" placeholder="ejemplo@correo.com" name="email"
                     class="formulario__campo owner__campo">
                 </div>
 
@@ -29,10 +29,10 @@
         </div>
 
         <div class="owner__flex">
-            <label for="name" class="formulario__label">Nombre de la Empresa</label>
+            <label for="name-empresa" class="formulario__label">Nombre de la Empresa</label>
             <div class="formulario__campo-contenedor owner__campo-contenedor">
                 <div class="width-full">
-                <input type="email" id="name-empresa" placeholder="Nombre de la empresa"
+                <input type="text" id="name-empresa" placeholder="Nombre de la empresa" name="name"
                     class="formulario__campo owner__campo">
                 </div>
                 <button class="formulario__boton owner__boton" id="btn-name-empresa">Guardar Cambios</button>

@@ -21,7 +21,10 @@ class ProductoController extends Controller
     public function index()
     {
 
+       // dd("Desde controlador del buscador");
         $empresa = Empresa::find(auth()->user()->empresa_id);
+
+
 
         if (!$empresa) {
             auth()->logout();

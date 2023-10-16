@@ -11,7 +11,6 @@ use App\Http\Controllers\APICategorias;
 use App\Http\Controllers\APIOwnerTools;
 use App\Http\Controllers\APIPendientes;
 use App\Http\Controllers\APIFabricantes;
-use App\Http\Controllers\APIInvitaciones;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\PerfilController;
@@ -47,8 +46,11 @@ Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil');
 
 
 // Registro - Rutas no visibles para los usuarios (solo el admin crea cuentas)
-Route::get('/new-user/register', [NewUserController::class, 'index'])->name('new-user.register');
-Route::post('/new-user/register', [NewUserController::class, 'store']);
+// Route::get('/new-user/register', [NewUserController::class, 'index'])->name('new-user.register');
+// Route::post('/new-user/register', [NewUserController::class, 'store']);
+
+// Route::get('/new-user/invitacion', [NewUserController::class, 'aceptar'])->name('new-user.aceptar');
+
 
 
 // Productos
@@ -109,9 +111,9 @@ Route::get('/api/owner-tools/all', [APIOwnerTools::class, 'all']);
 Route::get('/api/owner-tools/name', [APIOwnerTools::class, 'name']);
 Route::post('/api/owner-tools/destroy', [APIOwnerTools::class, 'destroy']);
 Route::post('/api/owner-tools/update', [APIOwnerTools::class, 'update']);
+Route::post('/api/owner-tools/send', [APIOwnerTools::class, 'send']);
 
-// API Invitaciones
-Route::post('/api/invitaciones/create', [APIInvitaciones::class, 'create']);
+
 
 
 
