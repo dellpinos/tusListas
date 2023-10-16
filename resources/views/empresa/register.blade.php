@@ -51,7 +51,7 @@
                     @enderror
                 </div>
                 <div class="formulario__campo-contenedor">
-                    <label for="password" class="formulario__label">Passsword</label>
+                    <label for="password" class="formulario__label">Password</label>
                     <input type="password" id="password" name="password" placeholder="Tu password"
                         class="formulario__campo @error('password') borde__error @enderror">
                     @error('password')

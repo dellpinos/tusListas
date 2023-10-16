@@ -6,5 +6,8 @@
 <body>
     <h1>¡Hola, Persona!</h1>
     <p>Esto es un correo de prueba para invitarte a algún evento o acción.</p>
+
+
+    <a href="{{env('APP_URL') . "?inv=''' " }}">Aceptar Invitación</a>
 </body>
 </html>

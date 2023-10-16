@@ -62,7 +62,7 @@ class APIOwnerTools extends Controller
     public function update(Request $request)
     {
 
-        // Mail::to('correo_destino@example.com')->send(new InvitarUsuario()); // <<<< Como enviar emails
+         // Mail::to('correo_destino@example.com')->send(new InvitarUsuario()); // <<<< Como enviar emails
 
         $empresa = session('empresa');
 

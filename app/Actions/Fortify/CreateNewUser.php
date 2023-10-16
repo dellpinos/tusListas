@@ -20,33 +20,38 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input): User
     {
-   
-        Validator::make($input, [
-            'name' => 'required|max:30|min:3|unique:empresas|string',
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:60',
-                Rule::unique(User::class),
-            ],
-            'usuario' => 'required|max:30|min:3|string',
-            'username' => ["required", "unique:users", "min:3", "max:20", "not_in:logout,register"],
-            'password' => $this->passwordRules(),
-        ])->validate();
+        //if($input['owner']) {
+            // Usuario owner
 
-        $resultado = Empresa::create([
-            'name' => $input['name'],
-            'plan' => 'free' ///// <<<<<<<<<<<<  Este default debe cambiar para restringir el acceso a usuarios vip
-        ]);
-
-        return User::create([
-            'name' => $input['usuario'],
-            'email' => $input['email'],
-            'username' => $input['username'],
-            'password' => Hash::make($input['password']),
-            'empresa_id' => $resultado->id,
-            'user_type' => 'owner'
-        ]);
+            Validator::make($input, [
+                'name' => 'required|max:30|min:3|unique:empresas|string',
+                'email' => [
+                    'required',
+                    'string',
+                    'email',
+                    'max:60',
+                    Rule::unique(User::class),
+                ],
+                'usuario' => 'required|max:30|min:3|string',
+                'username' => ["required", "unique:users", "min:3", "max:20", "not_in:logout,register"],
+                'password' => $this->passwordRules(),
+            ])->validate();
+    
+            $resultado = Empresa::create([
+                'name' => $input['name'],
+                'plan' => 'free' ///// <<<<<<<<<<<<  Este default debe cambiar para restringir el acceso a usuarios vip
+            ]);
+    
+            return User::create([
+                'name' => $input['usuario'],
+                'email' => $input['email'],
+                'username' => $input['username'],
+                'password' => Hash::make($input['password']),
+                'empresa_id' => $resultado->id,
+                'user_type' => 'owner'
+            ]);
+        //} else {
+            // Usuario común
+        //}
     }
 }

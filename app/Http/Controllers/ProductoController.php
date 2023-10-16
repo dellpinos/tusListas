@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Precio;
+use App\Models\Empresa;
 use App\Models\Producto;
 use App\Models\Provider;
 use App\Models\Categoria;
@@ -19,6 +20,15 @@ class ProductoController extends Controller
     }
     public function index()
     {
+
+        $empresa = Empresa::find(auth()->user()->empresa_id);
+
+        if (!$empresa) {
+            auth()->logout();
+            return redirect()->route('login');
+        }
+
+        session()->put('empresa', $empresa);
 
         return view('producto.buscador');
     }
@@ -503,14 +513,14 @@ class ProductoController extends Controller
 
             $this->validate($request, [
                 'codigo_fraccionado' => [
-                'required',
-                'string',
-                'max:5',
-                'min:5',
-                Rule::unique('productos', 'codigo')->where(function ($query) {
-                    return $query->where('empresa_id', session('empresa')->id); // solo tiene en cuenta la empresa del usuario
-                })->ignore($producto->id), // Ignora el registro actual
-            ],
+                    'required',
+                    'string',
+                    'max:5',
+                    'min:5',
+                    Rule::unique('productos', 'codigo')->where(function ($query) {
+                        return $query->where('empresa_id', session('empresa')->id); // solo tiene en cuenta la empresa del usuario
+                    })->ignore($producto->id), // Ignora el registro actual
+                ],
                 'unidad_fraccion' => 'required|string|max:60',
                 'contenido_total' => 'required|numeric|max:9999|min:0',
                 'ganancia_fraccion' => 'required|numeric|between:1,19.9'

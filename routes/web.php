@@ -8,20 +8,21 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\APIProductos;
 use App\Http\Controllers\APIProviders;
 use App\Http\Controllers\APICategorias;
+use App\Http\Controllers\APIOwnerTools;
 use App\Http\Controllers\APIPendientes;
 use App\Http\Controllers\APIFabricantes;
-use App\Http\Controllers\APIOwnerTools;
+use App\Http\Controllers\APIInvitaciones;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\AumentoController;
+use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\NewUserController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\CategoriaController;
-use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\FabricanteController;
 
 
@@ -108,6 +109,9 @@ Route::get('/api/owner-tools/all', [APIOwnerTools::class, 'all']);
 Route::get('/api/owner-tools/name', [APIOwnerTools::class, 'name']);
 Route::post('/api/owner-tools/destroy', [APIOwnerTools::class, 'destroy']);
 Route::post('/api/owner-tools/update', [APIOwnerTools::class, 'update']);
+
+// API Invitaciones
+Route::post('/api/invitaciones/create', [APIInvitaciones::class, 'create']);
 
 
 

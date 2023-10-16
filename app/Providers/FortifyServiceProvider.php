@@ -22,7 +22,7 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+
     }
 
     /**
@@ -31,7 +31,7 @@ class FortifyServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Fortify::verifyEmailView(function () {
-            return view('auth.verify-email'); // Aqui la vita "Revisa tu casilla de email"
+            return view('auth.verify-email'); // Aqui la vista "Revisa tu casilla de email"
         });
 
         Fortify::resetPasswordView(function (Request $request) {
@@ -59,6 +59,10 @@ class FortifyServiceProvider extends ServiceProvider
                 return $user;
             }
         });
+
+
+
+
 
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);

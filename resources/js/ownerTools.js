@@ -15,6 +15,24 @@ import Swal from 'sweetalert2';
 
         main();
 
+        btnNuevoUser.addEventListener('click', async () => {
+
+            console.log('Click!');
+
+            // Alerta advertencia
+
+            const email = nuevoUser.value;
+
+            const resultado = await alertaInvitacion(email, tokenCSRF);
+
+            // Enviar Email
+
+
+
+
+
+        });
+
 
         btnNameEmpresa.addEventListener('click', async () => {
 
@@ -45,14 +63,14 @@ import Swal from 'sweetalert2';
                     for (let i = 0; i < mensajesDeError.length; i++) {
 
                         // Mensaje de error, recibe el campo, el mensaje y el tipo (categoria, provider o fabricante)
-                        mensajeError(campo, mensajesDeError[i]);
+                        mensajeError(mensajesDeError[i]);
 
                     }
                 }
             }
         }
 
-        function mensajeError(campo, mensaje) { // campo incluye "_id" como "categoria_id" (el nombre puesto en la API)
+        function mensajeError(mensaje) { 
 
             // Eliminar errores anteriores
             const errores = document.querySelectorAll(".alerta__error");
@@ -71,22 +89,10 @@ import Swal from 'sweetalert2';
 
             let padre = nameEmpresa.parentNode;
 
-            /// padre?
-
             padre.appendChild(mensajeParrafo);
         }
 
-        btnNuevoUser.addEventListener('click', () => {
 
-            console.log('Click!');
-
-            // Alerta advertencia
-
-            // Enviar Email
-
-
-
-        });
 
 
 
@@ -233,6 +239,103 @@ import Swal from 'sweetalert2';
             }
 
         }
+
+        //////
+
+        async function enviarInvitacion(email, token) {
+
+            const url = '/api/invitaciones/create';
+
+            try {
+                const datos = new FormData();
+                datos.append('email', email);
+                const respuesta = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    },
+                    body: datos
+                });
+
+                const resultado = await respuesta.json();
+
+                return resultado;
+
+                
+            } catch (error) {
+                console.log(error);
+            }
+
+        }
+
+        ///
+
+        
+
+
+
+        async function alertaInvitacion(email, token) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            });
+
+            swalWithBootstrapButtons.fire({
+                title: `Enviar invitación a ${email}`,
+                text: "Este usuario formará parte de la empresa y podrá modificar la información.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Enviar',
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    (async function () {
+
+                        try {
+
+                            const resultado = await enviarInvitacion(email, token);
+
+                            if (resultado) {
+                                swalWithBootstrapButtons.fire(
+                                    'Invitación enviada',
+                                    'La invitación ha sido enviada con éxito',
+                                    'success'
+                                );
+                                    nuevoUser.value = ''; // Limpiar campo
+                                
+                            } else {
+
+                                swalWithBootstrapButtons.fire(
+                                    'Algo salió mal',
+                                    'Error',
+                                    'error'
+                                );
+                            }
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    })();
+                } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Cancelado',
+                        'No se ha enviado la invitación',
+                        'error'
+                    );
+                }
+            });
+        }
+
+
+        ///////
+
+
 
         async function alertaName(name, token) {
 
