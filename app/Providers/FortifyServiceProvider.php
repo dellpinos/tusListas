@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use Illuminate\Auth\Notifications\ResetPassword;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -25,7 +26,6 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-
     }
 
     /**
@@ -47,13 +47,13 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         Fortify::registerView(function (Request $request) {
-           // Busco el token en la base de datos, si hay coincidencia redirijo a "register" modificado
-           $invitation = Invitation::where('token', $request->input('inv'))->first(); 
-           $mensaje = '';
+            // Busco el token en la base de datos, si hay coincidencia redirijo a "register" modificado
+            $invitation = Invitation::where('token', $request->input('inv'))->first();
+            $mensaje = '';
 
-           if($request->input('inv') && !$invitation) {
+            if ($request->input('inv') && !$invitation) {
                 $mensaje = "La invitación no existe o ha caducado.";
-           }
+            }
             return view('empresa.register', [
                 'invitation' => $invitation,
                 'mensaje' => $mensaje
@@ -71,11 +71,27 @@ class FortifyServiceProvider extends ServiceProvider
                 ->action('Verificar tu email', $url);
         });
 
+
+        ResetPassword::toMailUsing(function ($notifiable, $url) {
+
+            // El método esta enviando un token como $url en vez de la URL completa, agrego una linea para convertirlo en URL (copiada de ResetPassword::resetUrl)
+            $url = url(route('password.reset', ['token' => $url, 'email' => $notifiable->getEmailForPasswordReset()], false));
+
+            return (new MailMessage)
+                ->subject('Reinicio de contraseña')
+                ->line('Te enviamos este email porque recibimos un pedido para reiniciar la contraseña de tu cuenta.')
+                ->action('Reiniciar Password', $url)
+                ->line('Este enlace expirará en 60 minutos.') /* El tiempo deberia ser un dato variable */
+                ->line('Si no hiciste la solicitud de reinicio de contraseña, solo ignora este mensaje.');
+        });
+
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email)->first();
-     
-            if ($user &&
-                Hash::check($request->password, $user->password)) {
+
+            if (
+                $user &&
+                Hash::check($request->password, $user->password)
+            ) {
                 return $user;
             }
         });
@@ -86,7 +102,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });

@@ -9,6 +9,8 @@
 
     <meta name="description" content="App de gestión de precios e inventario">
 
+    <link rel="icon" href="{{ asset('img/LogoSinFondo.png') }}" type="image/x-icon">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
@@ -25,11 +27,13 @@
 
 </head>
 
+
 <body class="bg-home">
     <header class="header">
         <div class="header__contenedor">
-            <a href="{{ route('login') }}">
-                <h1 class=" header__logo">Tus Listas</h1>
+            <a class="header__contenedor-nombre" href="{{ route('login') }}">
+                <img src="{{ asset('img/LogoSinFondo.png') }}" class="header__logo" alt="Logo Tus Listas">
+                <h1 class=" header__nombre">Tus Listas</h1>
             </a>
             {{-- @auth
                 <nav class="header__nav">
