@@ -14,6 +14,8 @@ use Illuminate\Cache\RateLimiting\Limit;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Notifications\Messages\MailMessage;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -34,6 +36,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::verifyEmailView(function () {
             return view('auth.verify-email'); // Aqui la vista "Revisa tu casilla de email"
         });
+
 
         Fortify::resetPasswordView(function (Request $request) {
             return view('auth.reset-password', ['request' => $request]); //// Aqui ingresa el nuevo password / Espera recibir un email, password, confirmación de password, and a hidden field named token that contains the value of request()->route('token')
@@ -56,10 +59,16 @@ class FortifyServiceProvider extends ServiceProvider
                 'mensaje' => $mensaje
             ]);
         });
-    
 
         Fortify::loginView(function () {
             return view('auth.login');
+        });
+
+        VerifyEmail::toMailUsing(function ($notifiable, $url) {
+            return (new MailMessage)
+                ->subject('Verifica tu dirección de correo electrónico.')
+                ->line('Haz clic en el siguiente botón para verificar tu dirección de correo electrónico y poder acceder a la aplicación de TusListas.')
+                ->action('Verificar tu email', $url);
         });
 
         Fortify::authenticateUsing(function (Request $request) {
