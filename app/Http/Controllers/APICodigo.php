@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Producto;
-use Illuminate\Support\Str;
-
 class APICodigo extends Controller
 {
     public function __construct()
@@ -17,7 +14,5 @@ class APICodigo extends Controller
         $codigo = generarCodigo(); // helper
 
         echo json_encode($codigo);
-
-
     }
 }

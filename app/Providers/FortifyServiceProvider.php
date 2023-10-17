@@ -54,6 +54,7 @@ class FortifyServiceProvider extends ServiceProvider
             if ($request->input('inv') && !$invitation) {
                 $mensaje = "La invitación no existe o ha caducado.";
             }
+
             return view('empresa.register', [
                 'invitation' => $invitation,
                 'mensaje' => $mensaje

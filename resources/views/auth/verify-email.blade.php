@@ -8,7 +8,7 @@
 
 <div class="formulario__contenedor-md">
 
-    <p class="mensaje__info">Te hemos enviado un correo electronico para que confirmes tu casilla de correo, no olvides revisar el spam.</p>
+    <p class="mensaje__info mensaje__warning">Te hemos enviado un correo electronico para que confirmes tu casilla de correo, no olvides revisar el spam.</p>
 
 </div>
 

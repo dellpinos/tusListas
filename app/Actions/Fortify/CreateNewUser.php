@@ -67,16 +67,19 @@ class CreateNewUser implements CreatesNewUsers
                 'password' => $this->passwordRules(),
             ])->validate();
 
-            $invitacion = Invitation::where('token', $input['token'])->first();
+            $invitation = Invitation::where('token', $input['token'])->first();
 
-            // Eliminar invitacion <<<<s
+            $empresa_id = $invitation->empresa_id;
+            $invitation->delete();
+
+            // Eliminar invitacion <<<<
 
             return User::create([
                 'name' => $input['usuario'],
                 'email' => $input['email'],
                 'username' => $input['username'],
                 'password' => Hash::make($input['password']),
-                'empresa_id' => $invitacion->empresa_id,
+                'empresa_id' => $empresa_id,
                 'user_type' => 'user'
             ]);
 

@@ -11,16 +11,12 @@ use App\Http\Controllers\APICategorias;
 use App\Http\Controllers\APIOwnerTools;
 use App\Http\Controllers\APIPendientes;
 use App\Http\Controllers\APIFabricantes;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\AumentoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\IngresoController;
-use App\Http\Controllers\NewUserController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProviderController;
-use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\FabricanteController;
 
@@ -29,29 +25,10 @@ use App\Http\Controllers\FabricanteController;
 Route::get('/', [ProductoController::class, 'index'])->name('buscador');
 
 // Empresa
-// Route::get('/register', [RegisterController::class, 'index'])->name('register');
-// Route::post('/register', [RegisterController::class, 'store']);
-
 Route::get('/owner-tools', [EmpresaController::class, 'index'])->name('owner-tools');
 
 
-// Auth
-// Route::get('/login', [LoginController::class, 'index'])->name('login');
-// Route::post('/login', [LoginController::class, 'store']);
-
-Route::post('/logout', [LogoutController::class, 'store'])->name('logout');
-
 Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil');
-
-
-
-// Registro - Rutas no visibles para los usuarios (solo el admin crea cuentas)
-// Route::get('/new-user/register', [NewUserController::class, 'index'])->name('new-user.register');
-// Route::post('/new-user/register', [NewUserController::class, 'store']);
-
-// Route::get('/new-user/invitacion', [NewUserController::class, 'aceptar'])->name('new-user.aceptar');
-
-
 
 // Productos
 Route::get('/producto/nuevo-producto', [ProductoController::class, 'create'])->name('producto.create');
@@ -90,12 +67,7 @@ Route::post('/categoria/categoria-store', [CategoriaController::class, 'store'])
 Route::get('/categoria/categoria-edit/{categoria}', [CategoriaController::class, 'edit'])->name('categoria.edit');
 Route::post('/categoria/categoria-update', [CategoriaController::class, 'update'])->name('categoria.update');
 
-/* Emails */
-
-// Route::get('/email/verify', [VerificationController::class, 'notice'])->name('verification.notice');
-// Route::get('/email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
-// Route::get('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
-
+/* Tener en cuenta que Fortify crea multiples rutas para manejar la autenticación y los emails de verificación */
 
 
 /* APIs */
@@ -112,10 +84,6 @@ Route::get('/api/owner-tools/name', [APIOwnerTools::class, 'name']);
 Route::post('/api/owner-tools/destroy', [APIOwnerTools::class, 'destroy']);
 Route::post('/api/owner-tools/update', [APIOwnerTools::class, 'update']);
 Route::post('/api/owner-tools/send', [APIOwnerTools::class, 'send']);
-
-
-
-
 
 // API Calculos
 Route::post('/api/calculo/ganancia', [APICalculos::class, 'calculo_ganancia']);
@@ -154,5 +122,3 @@ Route::get('/api/pendientes/index', [APIPendientes::class, 'index']);
 Route::get('/api/pendientes/count', [APIPendientes::class, 'count']);
 Route::post('/api/pendientes/create', [APIPendientes::class, 'create']);
 Route::post('/api/pendientes/destroy', [APIPendientes::class, 'destroy']);
-
-
