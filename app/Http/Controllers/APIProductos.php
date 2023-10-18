@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 class APIProductos extends Controller
 {
-    // Agregar seguridad, sesion del usuario y sanitizacion de datos
 
     public function __construct()
     {
@@ -19,7 +18,6 @@ class APIProductos extends Controller
     public function all()
     {
         // Devuelve todos los productos sin filtro ni busqueda
-
         $productos = Producto::orderBy('nombre', 'asc')->get();
 
         echo json_encode([
@@ -28,25 +26,29 @@ class APIProductos extends Controller
     }
     public function destroy(Request $request)
     {
+        $id = filter_var($request->id, FILTER_VALIDATE_INT);
 
-        // Debo recibir un id a eliminar y tengo que validar si es un fraccionado. Un fraccionado puede eliminarse
-        // Un producto principal puede eliminarse pero debe eliminarse el fraccionado y debe informarse al usuario
+        if(!$id) {
+            echo json_encode("Algo salió mal :( ");
+            return;
+        }
 
         // Recibo el id de un producto:
-        // 1_ este producto es fraccionado
-        // 2_ no fraccionado y sin otro producto relacionado
-        // 3_ no fraccionado y con otro producto relacionado
+        // 1_ Este producto es fraccionado
+        // 2_ No fraccionado y sin otro producto relacionado
+        // 3_ No fraccionado y con otro producto relacionado
 
-        // 1- se elimina el producto y precio
-        // 2- se elimina el producto y precio
-        // 3- consulta al usuario para eliminar 2 productos al mismo tiempo
+        // 1- Se elimina el producto y precio
+        // 2- Se elimina el producto y precio
+        // 3- Consulta al usuario para eliminar 2 productos al mismo tiempo
 
-        $producto = Producto::find($request->id);
+        $producto = Producto::find($id);
         $precio = Precio::find($producto->precio_id);
         $productos = Producto::where('precio_id', $precio->id)->get();
 
         if ($request->confirm === "true") {
-            
+
+            // 3_ Confirmación del usuario, elimino ambos productos y el precio
             foreach ($productos as $elemento) {
                 $elemento->delete();
             }
@@ -62,6 +64,7 @@ class APIProductos extends Controller
             $prod_no_fraccionado = '';
 
             if ($productos->count() > 1) {
+                // Identificar Fraccionado
 
                 foreach ($productos as $elemento) {
                     if ($elemento->unidad_fraccion !== null) {
@@ -72,10 +75,11 @@ class APIProductos extends Controller
                 }
 
                 if ($producto->id === $prod_fraccionado->id) {
-                    // Es fraccionado, eliminar producto y precio
+
+                    // Es fraccionado, eliminar producto (precio no es eliminado)
                     $respuesta = $producto->delete();
+
                     if ($respuesta) {
-                        $precio->delete();
 
                         echo json_encode([
                             'eliminado' => true,
@@ -88,7 +92,7 @@ class APIProductos extends Controller
                         return;
                     }
                 } else if ($producto->id === $prod_no_fraccionado->id) {
-                    // No es fraccionado, consultar al usuario
+                    // No es fraccionado, solicito confirmación del usuario
                     echo json_encode([
                         'eliminado' => false,
                         'eliminar_doble' => true
@@ -117,13 +121,14 @@ class APIProductos extends Controller
     public function update(Request $request)
     {
 
+        // Hay una validación previa en Js
         $this->validate($request, [
-            'producto_id' => 'integer|required',
-            'cantidad' => 'integer|nullable',
-            'precio' => 'numeric|required',
-            'descuento' => 'numeric|nullable',
-            'semanas' => 'integer',
-            'dolar' => 'numeric|required',
+            'producto_id' => 'required|integer|min:1',
+            'cantidad' => 'integer|nullable|min:1|max:999999',
+            'precio' => 'numeric|required|max:99999999|min:0',
+            'descuento' => 'numeric|nullable|min:1|max:999',
+            'semanas' => 'integer|min:0|max:8',
+            'dolar' => 'numeric|required|max:999999|min:0',
         ]);
 
         $producto = Producto::find($request->producto_id);

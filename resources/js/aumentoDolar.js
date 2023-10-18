@@ -29,7 +29,7 @@ import Swal from 'sweetalert2';
         let valor = 0;
 
         // mensaje Info
-        mensajeInfo.textContent = "Los 5 productos con el dolar mas bajo o desactualizado";
+        mensajeInfo.textContent = "Los productos con el dolar mas bajo o desactualizado";
 
         // Obtener elementos
         listadoDesactualizados();
@@ -38,6 +38,17 @@ import Swal from 'sweetalert2';
             // Busqueda con el boton
             if (dolarInput.value) {
                 valor = parseInt(dolarInput.value);
+
+                if (valor < 0 || valor > 10000) {
+
+                    Swal.fire(
+                        'Oops!',
+                        "El valor debe ser entre 0 y 10.000.",
+                        'info'
+                    );
+                    return;
+
+                }
             }
 
             // limpiar virtual DOM
@@ -45,27 +56,59 @@ import Swal from 'sweetalert2';
             preciosArray = {};
             table.classList.remove('display-none');
 
-            // Consultar DB
-            const resultado = await paginadorDesactualizados();
+            try {
 
-            if (resultado.productos.length === 0 || resultado.precios.length === 0) {
+                // Consultar DB
+                const resultado = await paginadorDesactualizados();
 
-                sinResultados();
-                return;
+                if (resultado.errors) {
+                    // Evalua el array "errors" dentro del resultado, identificando el campo y el mensaje
+                    for (let campo in resultado.errors) {
+                        if (resultado.errors.hasOwnProperty(campo)) {
+                            let mensajesDeError = resultado.errors[campo];
 
-            } else {
-                recargarPaginacion(resultado);
+                            for (let i = 0; i < mensajesDeError.length; i++) {
+
+                                // Mensaje de error
+                                Swal.fire(
+                                    'Oops!',
+                                    mensajesDeError[i],
+                                    'info'
+                                );
+                                return;
+                            }
+                        }
+                    }
+                }
+
+
+                if (resultado.productos.length === 0 || resultado.precios.length === 0) {
+
+                    sinResultados();
+                    return;
+
+                } else {
+                    recargarPaginacion(resultado);
+                }
+            } catch (error) {
+                console.log(error);
 
             }
         });
 
         function recargarPaginacion(resultado) {
             mensajeInfo.classList.remove('display-none');
+
+            mensajeInfo.classList.add('mensaje__warning');
             btnDolarAct.classList.remove('display-none');
-            mensajeInfo.textContent = "Productos con un valor dolar inferior a U$S " + valor;
+
+            const countProductos = resultado.productos.length;
+
+            mensajeInfo.textContent = countProductos + "  Productos con un valor dolar inferior a U$S " + valor;
             productosArray = resultado.productos;
             preciosArray = resultado.precios;
-            paginacion = resultado.paginacion;  
+            paginacion = resultado.paginacion;
+
 
             // Generar elementos
             mostrarElementos();
@@ -119,6 +162,15 @@ import Swal from 'sweetalert2';
 
                 const resultado = await respuesta.json();
 
+                if (resultado.errors) {
+                    Swal.fire(
+                        'Oops!',
+                        "Algo salío mal",
+                        'info'
+                    );
+                    return;
+                }
+
                 alertaUpdate(valor, resultado);
 
             } catch (error) {
@@ -145,11 +197,12 @@ import Swal from 'sweetalert2';
         }
 
         function sinResultados() {
+
             limpiarProductos();
 
-            mensajeNoResult.innerHTML = `<p class="mensaje__info--my">
+            mensajeNoResult.innerHTML = `<p class="mensaje__info mb-4">
             No hay productos desactualizados
-            </p>`
+            </p>`;
 
             mensajeInfo.classList.add('display-none');
             table.classList.add('display-none');
@@ -195,7 +248,7 @@ import Swal from 'sweetalert2';
                         <td class="table__td">$ ${precio.precio}</td>
                         <td class="table__td">$ ${producto.venta} ${producto.unidad_fraccion}</td>
                         <td class="table__td">${fechaFormateada}</td>
-                        <td class="table__td"><a class="table__accion table__accion--editar" href="/producto/producto-show/${producto.id}">Editar</a></td>
+                        <td class="table__td"><a class="table__accion table__accion--editar" href="/producto/producto-show/${producto.id}">Ver</a></td>
                         </tr>
                     `;
 
@@ -205,11 +258,18 @@ import Swal from 'sweetalert2';
                             const enlaceNumero = document.querySelectorAll('[data-page]');
                             enlaceNumero.forEach(numero => {
                                 numero.addEventListener('click', async (e) => {
-                                    // modificar page
+
+
+                                    // Modificar page
                                     page = e.target.dataset.page;
-                                    const resultado = await paginadorDesactualizados();
-                                    recargarPaginacion(resultado);
-                                    // regenerar HTML
+                                    try {
+                                        const resultado = await paginadorDesactualizados();
+                                        // Regenerar HTML
+                                        recargarPaginacion(resultado);
+                                    } catch (error) {
+                                        console.log(error);
+                                    }
+
                                 });
                             });
 
@@ -217,20 +277,26 @@ import Swal from 'sweetalert2';
                             enlaceBtn.forEach(boton => {
                                 boton.addEventListener('click', async (e) => {
 
-                                    if (e.target.dataset.btn === 'siguiente') {
-                                        // regenerar HTML
-                                        page++;
-                                        const resultado = await paginadorDesactualizados();
-                                        recargarPaginacion(resultado);
-                                        
-                                        return;
+                                    try {
 
-                                    } else {
-                                        // regenerar HTML
-                                        page--;
-                                        const resultado = await paginadorDesactualizados();
-                                        recargarPaginacion(resultado);
-                                        return;
+                                        if (e.target.dataset.btn === 'siguiente') {
+                                            // regenerar HTML
+                                            page++;
+                                            const resultado = await paginadorDesactualizados();
+                                            recargarPaginacion(resultado);
+
+                                            return;
+
+                                        } else {
+                                            // regenerar HTML
+                                            page--;
+                                            const resultado = await paginadorDesactualizados();
+                                            recargarPaginacion(resultado);
+                                            return;
+                                        }
+                                    } catch (error) {
+                                        console.log(error);
+
                                     }
                                 });
                             });
@@ -240,7 +306,7 @@ import Swal from 'sweetalert2';
             }); // Fin cada producto
         }
 
-        async function alertaUpdate(valor, afectados) {
+        async function alertaUpdate(valor, resultado) {
 
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
@@ -252,7 +318,7 @@ import Swal from 'sweetalert2';
 
             swalWithBootstrapButtons.fire({
                 title: 'Estas seguro?',
-                text: "No hay vuelta atras, seran afectados " + afectados + " precios.",
+                text: "No hay vuelta atras, seran afectados " + resultado.afectados + " precios.",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Si!',
@@ -262,25 +328,31 @@ import Swal from 'sweetalert2';
                 if (result.isConfirmed) {
 
                     (async function () {
-                        const resultado = await update(valor, afectados);
 
-                        if (resultado) {
-                            swalWithBootstrapButtons.fire(
-                                'Precios actualizados',
-                                afectados + " precios han sido actualizados",
-                                'success'
-                            );
+                        try {
 
-                            // Recargar en pantalla y reiniciar VirtualDOM
-                            reiniciarPagina();
+                            const respuesta = await update(valor, resultado.afectados);
 
-                        } else {
+                            if (respuesta) {
+                                swalWithBootstrapButtons.fire(
+                                    'Precios actualizados',
+                                    resultado.afectados + " precios han sido actualizados",
+                                    'success'
+                                );
 
-                            swalWithBootstrapButtons.fire(
-                                'Ups!',
-                                'Surgió un error, no se realizaron cambios',
-                                'error'
-                            );
+                                // Recargar en pantalla y reiniciar VirtualDOM
+                                reiniciarPagina();
+
+                            } else {
+
+                                swalWithBootstrapButtons.fire(
+                                    'Ups!',
+                                    'Surgió un error, no se realizaron cambios',
+                                    'error'
+                                );
+                            }
+                        } catch (error) {
+                            console.log(error);
                         }
                     })();
                 } else if (
@@ -297,22 +369,28 @@ import Swal from 'sweetalert2';
 
         async function update(valor, afectados) {
 
-            const url = '/api/aumentos/dolar-update';
-            const datos = new FormData();
+            try {
 
-            datos.append('valor', valor);
-            datos.append('afectados', afectados);
+                const url = '/api/aumentos/dolar-update';
+                const datos = new FormData();
 
-            const respuesta = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': tokenCSRF
-                },
-                body: datos
-            });
+                datos.append('valor', valor);
+                datos.append('afectados', afectados);
 
-            const resultado = await respuesta.json();
-            return resultado;
+                const respuesta = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': tokenCSRF
+                    },
+                    body: datos
+                });
+
+                const resultado = await respuesta.json();
+                return resultado;
+
+            } catch (error) {
+                console.log(error);
+            }
         }
 
         function limpiarProductos() {

@@ -8,6 +8,8 @@ import * as helpers from './helpers';
     if (document.querySelector('#fabricantes-registros')) {
 
         let fabricantesArray = [];
+        let fabricantesArrayFiltrado = [];
+        let busquedaLength = 0;
         const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         const contRegistros = document.querySelector('#fabricantes-registros'); // contenedor
         const inputBusqueda = document.querySelector('#fabricante-formulario');
@@ -17,15 +19,23 @@ import * as helpers from './helpers';
         // Obtener todas las fabricantes
         listadofabricantes();
 
-        campoBuscador.onclick = function() {
+        campoBuscador.onclick = function () {
             inputBusqueda.focus();
         }
-        
+
         inputBusqueda.addEventListener('input', (e) => {
-            if (e.target.value.length >= 3) {
+
+            if (busquedaLength > e.target.value.length) {
+
+                // El usuario esta borrando 
+                fabricantesArrayFiltrado = fabricantesArray;
+                mostrarElementos();
+            }
+
+            busquedaLength = e.target.value.length;
+
+            if (e.target.value.length >= 2) {
                 buscarCoincidenciasMemoria(e);
-            } else if (e.target.value.length < 3) {
-                listadofabricantes();
             }
         });
 
@@ -43,6 +53,8 @@ import * as helpers from './helpers';
                 const resultado = await respuesta.json();
 
                 fabricantesArray = resultado.fabricantes; // array de fabricantes
+                fabricantesArrayFiltrado = resultado.fabricantes;
+
                 mostrarElementos();
 
             } catch (error) {
@@ -56,19 +68,19 @@ import * as helpers from './helpers';
             limpiarElementos(contRegistros);
             limpiarElementos(contenedorVacio);
 
-            if (fabricantesArray.length === 0) {
+            if (fabricantesArrayFiltrado.length === 0) {
 
                 const textoNoCat = document.createElement('P');
 
                 limpiarElementos(contenedorVacio);
 
                 textoNoCat.textContent = "No se encontraron fabricantes";
-                textoNoCat.classList.add('mensaje__vacio');
+                textoNoCat.classList.add('mensaje__info');
                 contenedorVacio.appendChild(textoNoCat);
                 return;
             }
 
-            fabricantesArray.forEach(fabricante => {
+            fabricantesArrayFiltrado.forEach(fabricante => {
 
                 const contenedor = document.createElement('DIV');
                 contenedor.classList.add('fabricante__contenedor', 'swiper-slide');
@@ -150,32 +162,39 @@ import * as helpers from './helpers';
                 text: "No hay vuelta atras",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Si, muerte!',
-                cancelButtonText: 'No, era una prueba!',
+                confirmButtonText: 'Eliminar',
+                cancelButtonText: 'Cancelar',
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
 
                     (async function () {
-                        const resultado = await destroy(id, tipo, token);
 
-                        if (resultado.eliminado) {
-                            swalWithBootstrapButtons.fire(
-                                'Eliminado/a',
-                                helpers.firstCap(tipo) + ' ha sido destruido :(',
-                                'success'
-                            );
-                            if (flag) {
-                                fabricantesArray = filtrarVirtualDOM(fabricantesArray, id); // si hay un array va a filtrarlo
-                                mostrarElementos();
+                        try {
+
+                            const resultado = await destroy(id, tipo, token);
+
+                            if (resultado.eliminado) {
+                                swalWithBootstrapButtons.fire(
+                                    'Eliminado/a',
+                                    helpers.firstCap(tipo) + ' ha sido destruido :(',
+                                    'success'
+                                );
+                                if (flag) {
+                                    fabricantesArray = filtrarVirtualDOM(fabricantesArray, id); // si hay un array va a filtrarlo
+                                    fabricantesArrayFiltrado = fabricantesArray;
+                                    mostrarElementos();
+                                }
+                            } else {
+
+                                swalWithBootstrapButtons.fire(
+                                    'No puede ser eliminado',
+                                    'Hay ' + resultado.cantidad_productos + ' producto/s relacionado/s. Puedes editar ' + tipo + ' o el/los producto/s.',
+                                    'error'
+                                );
                             }
-                        } else {
-
-                            swalWithBootstrapButtons.fire(
-                                'No puede ser eliminado',
-                                'Hay ' + resultado.cantidad_productos + ' producto/s relacionado/s. Puedes editar ' + tipo + ' o el/los producto/s.',
-                                'error'
-                            );
+                        } catch (error) {
+                            console.log(error);
                         }
                     })();
                 } else if (
@@ -226,7 +245,7 @@ import * as helpers from './helpers';
             const busqueda = e.target.value; // input del usuario
             const Regex = new RegExp(busqueda, 'i'); // la "i" es para ser insensible a mayusculas/minusculas
 
-            fabricantesArray = fabricantesArray.filter(fabricante => { // filtra elementos en memoria
+            fabricantesArrayFiltrado = fabricantesArrayFiltrado.filter(fabricante => { // filtra elementos en memoria
                 if (fabricante.nombre.toLowerCase().search(Regex) !== -1) {
                     return fabricante;
                 }

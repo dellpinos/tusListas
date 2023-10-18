@@ -10,7 +10,7 @@
 @endsection
 
 @section('contenido')
-<p class="mensaje__info">Dolar aplicado a esta mercaderia (el mas alto registrado): U$S <span class="ingreso__numero">{{intval($dolar)}}</span></p>
+<p class="mensaje__info">Dolar aplicado a esta mercaderia: U$S <span class="ingreso__numero">{{intval($dolar)}}</span></p>
     <div class="ingreso__contenedor">
 
         <h3>Productos</h3>
@@ -21,7 +21,7 @@
             <label class="formulario__label text-center" for="mercaderia-checkbox">Cant</label>
             <label class="formulario__label text-center" for="mercaderia-codigo">Código</label>
             <label class="formulario__label text-center" for="mercaderia-nombre">Nombre</label>
-            <label class="formulario__label text-center" for="mercaderia-precio">Costo sin IVA</label>
+            <label class="formulario__label text-center" for="mercaderia-precio">Precio</label>
             <label class="formulario__label text-center" for="mercaderia-descuento">% Descuento</label>
             <label class="formulario__label text-center" for="mercaderia-semanas">Semanas</label>
             <label class="formulario__label text-center" for="mercaderia-guardar"></label>
@@ -32,3 +32,4 @@
         </div>
     </div>
 @endsection
+

@@ -13,12 +13,8 @@ class FabricanteController extends Controller
     }
     public function index()
     {
-        $fabricantes = Fabricante::orderBy('nombre', 'asc')->get();
 
-
-        return view('fabricante.index', [
-            'fabricantes' => $fabricantes
-        ]);
+        return view('fabricante.index');
     }
     public function create()
     {
@@ -27,12 +23,11 @@ class FabricanteController extends Controller
     public function store(Request $request)
     {
 
-
         $this->validate($request, [
-            'nombre' => 'required|max:60|unique:fabricantes',
-            'telefono' => 'string|nullable|max:60',
-            'vendedor' => 'string|nullable|max:60',
-            'descripcion' => 'string|nullable|max:500'
+            'nombre' => 'required|max:60|min:3|unique:fabricantes',
+            'telefono' => ['string', 'nullable', 'max:20', 'min:5', 'regex:/^[0-9 -]*$/'],
+            'vendedor' => 'string|nullable|max:60|min:3',
+            'descripcion' => 'string|nullable|max:255'
         ]);
         // Añadir validaciones y autenticación
         Fabricante::create([
@@ -58,10 +53,10 @@ class FabricanteController extends Controller
         $fabricante = Fabricante::find($request->id);
 
         $this->validate($request, [
-            'nombre' => 'required|string|max:60|unique:fabricantes,nombre,' . $fabricante->id,
-            'telefono' => 'string|nullable|max:60',
-            'vendedor' => 'string|nullable|max:60',
-            'descripcion' => 'string|nullable|max:500'
+            'nombre' => 'required|string|max:60|min:3|unique:fabricantes,nombre,' . $fabricante->id,
+            'telefono' => ['string', 'nullable', 'max:20', 'min:5', 'regex:/^[0-9 -]*$/'],
+            'vendedor' => 'string|nullable|max:60|min:3',
+            'descripcion' => 'string|nullable|max:255'
         ]);
 
         $fabricante->nombre = $request->nombre;

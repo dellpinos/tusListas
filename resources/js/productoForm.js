@@ -22,6 +22,7 @@ import * as helpers from './helpers';
         const gananciaNumero = document.querySelector('#ganancia-numero');
         const precioFraccionado = document.querySelector('#precio-fraccionado');
         const btnFraccionado = document.querySelector('#btn-fraccionado'); // calcular precio fraccionado
+        const btnSubmit = document.querySelector('input[type="submit"]');
 
         const radiobtns = document.querySelectorAll('input[type="radio"]');
         let radioChecked = document.querySelector('input[type="radio"]:checked');
@@ -32,6 +33,7 @@ import * as helpers from './helpers';
         const btnDestroy = document.querySelector('#producto-destroy');
         const idHidden = document.querySelector('#producto-id');
 
+        // Inputs hidden en caso de ser un "pendiente"
         const descHidden = document.querySelector('input[name="desc_porc"]');
         const durHidden = document.querySelector('input[name="desc_duracion"]');
         const stockHidden = document.querySelector('input[name="stock"]');
@@ -39,6 +41,16 @@ import * as helpers from './helpers';
         let precioVenta = '';
         const click = true;
 
+        btnSubmit.addEventListener('click', () => {
+
+            if (radioChecked.value === 'personalizada') {
+
+                gananciaNumero.value = campoPersonalizado.value;
+            } else {
+                gananciaNumero.value = '';
+            }
+
+        });
 
         radiobtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -59,22 +71,47 @@ import * as helpers from './helpers';
             }
 
             (async () => {
-                const resultado = await contadorPendiente();
 
-                mensajePendiente(resultado);
+                try {
+                    const resultado = await contadorPendiente();
+                    mensajePendiente(resultado);
+
+                } catch (error) {
+                    console.log(error)
+                }
+
+
+
             })();
         });
 
         campoSinIva.addEventListener('input', function () {
 
+            if (campoSinIva.value.length >= 10) {
+                campoVenta.textContent = "#Error";
+                return;
+            }
+
             precioFraccionado.textContent = '$ 0';
             campoVenta.textContent = '$ 0';
             calcularGanancia(click);
-            campoConIva.value = Math.round(campoSinIva.value * 1.21);
+
+            // Redondea los decimas y luego convierte el string a float
+            campoConIva.value = parseFloat((campoSinIva.value * 1.21).toFixed(2));
+
         });
 
         campoConIva.addEventListener('input', function () {
-            campoSinIva.value = Math.round(campoConIva.value / 1.21);
+
+            if (campoConIva.value.length >= 10) {
+                campoVenta.textContent = "#Error";
+                return;
+            }
+
+            calcularGanancia(click);
+
+            // Redondea los decimas y luego convierte el string a float
+            campoSinIva.value = parseFloat((campoConIva.value / 1.21).toFixed(2));
 
         });
 
@@ -84,27 +121,64 @@ import * as helpers from './helpers';
             calcularGanancia(click);
 
         });
-        function mensajePendiente(contador) {
-            const contenedor = document.querySelector('#contenedor-pendientes');
-            while (contenedor.firstChild) {
-                contenedor.removeChild(contenedor.firstChild);
-            }
-            if (contador > 0) {
-                const mensaje = document.createElement('P');
-                mensaje.classList.add('mensaje__info', 'mensaje__pendientes');
-                mensaje.textContent = `Productos Pendientes: ${contador}`;
 
-                contenedor.appendChild(mensaje);
-                // Carga datos de un penidente en el formulario
-                mensaje.addEventListener('click', cargarPendiente);
+        async function mensajePendiente(contador) {
 
+            try {
+
+                await alertPendiente();
+                const contenedor = document.querySelector('#contenedor-pendientes');
+
+                contenedor.classList.add('producto-formulario__contenedor-pendientes--visible');
+                while (contenedor.firstChild) {
+                    contenedor.removeChild(contenedor.firstChild);
+                }
+                if (contador > 0) {
+
+                    const pendiente = await consultarPenidente();
+                    let descuentos = '';
+                    let stock = '';
+
+                    if (pendiente.stock === null) {
+                        stock = 'sin stock';
+                    } else {
+                        stock = `${pendiente.stock} unidades `;
+                    }
+                    if (pendiente.desc_porc === null) {
+                        descuentos = " | Sin descuento";
+                    } else {
+                        descuentos = ` | ${pendiente.desc_porc} % | ${pendiente.desc_duracion} semanas`;
+                    }
+
+                    const mensaje = document.createElement('P');
+                    mensaje.classList.add('mensaje__info', 'mensaje__pendientes');
+                    mensaje.textContent = `Productos Pendientes: ${contador}`;
+
+                    contenedor.appendChild(mensaje);
+
+                    mensaje.addEventListener('mouseenter', async () => {
+
+                        mensaje.textContent = `${pendiente.nombre} | $ ${pendiente.precio} | ${stock} ${descuentos}`;
+                    });
+                    mensaje.addEventListener('mouseleave', () => {
+                        mensaje.textContent = `Productos Pendientes: ${contador}`;
+                    });
+
+                    // Carga datos de un penidente en el formulario
+                    mensaje.addEventListener('click', async () => {
+
+                        await cargarPendiente(pendiente)
+                    });
+
+                }
+            } catch (error) {
+                console.log(error)
             }
         }
 
-        async function cargarPendiente() {
+        async function cargarPendiente(pendiente) {
 
             // Consultar DB por el penidente mas antiguo
-            const pendiente = await consultarPenidente();
 
             if (pendiente.desc_porc) {
                 descHidden.value = pendiente.desc_porc;
@@ -119,13 +193,18 @@ import * as helpers from './helpers';
             campoNombre.value = pendiente.nombre;
             campoConIva.value = helpers.redondear(pendiente.precio * 1.21);
 
-            // Eliminar pendiente, alerta "pendiente eliminado/cargado"
-            const resultado = await deletePendiente(pendiente.id);
+            try {
+                // Eliminar pendiente, alerta "pendiente eliminado/cargado"
+                const resultado = await deletePendiente(pendiente.id);
 
-            // Recargar alerta, eliminar si no hay mas pendientes
-            if (resultado) {
-                const respuesta = await contadorPendiente();
-                mensajePendiente(respuesta);
+                // Recargar alerta, eliminar si no hay mas pendientes
+                if (resultado) {
+                    const respuesta = await contadorPendiente();
+                    mensajePendiente(respuesta);
+                }
+
+            } catch (error) {
+                console.log(error)
             }
 
         }
@@ -141,6 +220,7 @@ import * as helpers from './helpers';
                 console.log(error);
             }
         }
+
         async function consultarPenidente() {
             try {
                 const url = '/api/pendientes/index';
@@ -177,10 +257,8 @@ import * as helpers from './helpers';
             }
         }
 
-
         // Habilitar / Deshabilitar campo opcional
         function habilitarCampo(e) {
-
 
             if (e.target.value === 'personalizada' && campoPersonalizado.readOnly === true) {
 
@@ -196,50 +274,67 @@ import * as helpers from './helpers';
 
         async function calcularGanancia(click) {
 
-            if (selectCat.value !== '' && selectProv.value !== '') { // Debe escoger categoria y provider primero
+            try {
 
-                radioChecked = document.querySelector('input[type="radio"]:checked');
+                if (selectCat.value !== '' && selectProv.value !== '') { // Debe escoger categoria y provider primero
 
-                if (radioChecked.value === 'personalizada') {
-                    // Calculo leyendo el formulario
-                    precioVenta = (campoSinIva.value * 1.21) * campoPersonalizado.value;
-                    gananciaNumero.value = campoPersonalizado.value;
+                    radioChecked = document.querySelector('input[type="radio"]:checked');
 
-                } else if (radioChecked.value === 'provider') {
+                    if (radioChecked.value === 'personalizada') {
+                        // Calculo leyendo el formulario
+                        precioVenta = (campoSinIva.value * 1.21) * campoPersonalizado.value;
+                        gananciaNumero.value = campoPersonalizado.value;
 
-                    // Consulta la DB
-                    const provider_id = document.querySelector('#provider');
-                    let ganancia = await consultarGanancia(radioChecked.value, provider_id.value);
-                    precioVenta = (campoSinIva.value * 1.21) * ganancia;
-                    gananciaNumero.value = '';
+                    } else if (radioChecked.value === 'provider') {
 
-                } else if (radioChecked.value === 'categoria') {
+                        // Consulta la DB
+                        const provider_id = document.querySelector('#provider');
+                        let ganancia = await consultarGanancia(radioChecked.value, provider_id.value);
+                        precioVenta = (campoSinIva.value * 1.21) * ganancia;
+                        gananciaNumero.value = '';
 
-                    const categoria_id = document.querySelector('#categoria');
-                    let ganancia = await consultarGanancia(radioChecked.value, categoria_id.value);
-                    precioVenta = (campoSinIva.value * 1.21) * ganancia;
-                    gananciaNumero.value = '';
+                    } else if (radioChecked.value === 'categoria') {
 
-                }
-
-                if (click) { // Solo cambio el "precio venta" si es presionado el btn de calcular
-                    campoVenta.textContent = "$ " + helpers.redondear(precioVenta);
-                }
-
-                if (checkFraccion) {
-
-                    if (checkFraccion.checked === true) {
-                        checkFraccion.checked = false;
-                        deseleccionarFraccionado();
+                        const categoria_id = document.querySelector('#categoria');
+                        let ganancia = await consultarGanancia(radioChecked.value, categoria_id.value);
+                        precioVenta = (campoSinIva.value * 1.21) * ganancia;
+                        gananciaNumero.value = '';
 
                     }
+
+                    if (click) { // Solo cambio el "precio venta" si es presionado el btn de calcular
+                        campoVenta.textContent = "$ " + helpers.redondear(precioVenta);
+                    }
+
+                    if (checkFraccion) {
+
+                        if (checkFraccion.checked === true) {
+                            checkFraccion.checked = false;
+                            deseleccionarFraccionado();
+
+                        }
+                    }
+
+                    // Evita que se desborde el Precio de Venta
+                    if (campoVenta.textContent.length > 10) {
+                        campoVenta.classList.add('font-sm');
+                    } else {
+                        campoVenta.classList.remove('font-sm');
+                    }
+                    if (campoVenta.textContent.length > 20) {
+                        campoVenta.classList.remove('font-sm');
+                        campoVenta.textContent = "#Error";
+                    }
+
+                } else {
+                    Swal.fire(
+                        'Oops!',
+                        'Aún no has escogido la categoria y el proveedor.',
+                        'info'
+                    );
                 }
-            } else {
-                Swal.fire(
-                    'Error',
-                    'Debes escoger Categoria y Provider primero',
-                    'error'
-                  );
+            } catch (error) {
+                console.log(error)
             }
         }
 
@@ -272,7 +367,6 @@ import * as helpers from './helpers';
         btnFraccionado.addEventListener('click', calcularGananciaFraccionado);
 
         if (checkFraccion) {
-
             checkFraccion.addEventListener('click', function () {
 
                 if (checkFraccion.checked === true) {
@@ -284,8 +378,15 @@ import * as helpers from './helpers';
                     // Consultar DB para obtener código
                     if (codigoFraccionado.value === '') {
                         (async () => {
-                            const codigo = await generarCodigo();
-                            codigoFraccionado.value = codigo.toUpperCase(); // Nuevo código
+
+                            try {
+
+                                const codigo = await generarCodigo();
+                                codigoFraccionado.value = codigo.toUpperCase(); // Nuevo código
+
+                            } catch (error) {
+                                console.log(error);
+                            }
                         })();
                     }
 
@@ -310,7 +411,6 @@ import * as helpers from './helpers';
                     }
                 } else {
                     // Deseleccionado
-                    codigoFraccionado.value = '';
                     deseleccionarFraccionado();
                 }
             });
@@ -318,15 +418,19 @@ import * as helpers from './helpers';
 
         async function calcularGananciaFraccionado() {
 
-            if (precioVenta && gananciaFraccion.value !== '') { // <<<<<<<<<<
+            if (precioVenta && gananciaFraccion.value !== '' && totalFraccionado.value) {
                 // Calculo leyendo el formulario
                 precioFraccionado.textContent = "$ " + helpers.redondear((precioVenta / totalFraccionado.value) * gananciaFraccion.value);
+
+                if (precioFraccionado.textContent.length > 10) {
+                    precioFraccionado.textContent = "#Error";
+                }
             } else {
                 Swal.fire(
-                    'Error',
-                    'Debes calcular el precio no-fraccionado e indicar una ganancia fraccionado',
-                    'error'
-                  );
+                    'Oops!',
+                    'Debes calcular el precio no fraccionado, ¡también debes indicar la ganancia del fraccionado y la cantidad de unidades!',
+                    'info'
+                );
             }
         }
 
@@ -360,7 +464,6 @@ import * as helpers from './helpers';
             }
         }
 
-
         async function alertaDelete(id, tipo, token = null) {
 
             const swalWithBootstrapButtons = Swal.mixin({
@@ -376,78 +479,87 @@ import * as helpers from './helpers';
                 text: "No hay vuelta atras",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Si, muerte!',
-                cancelButtonText: 'No, era una prueba!',
+                confirmButtonText: 'Eliminar',
+                cancelButtonText: 'Cancelar',
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
 
                     (async function () {
-                        const resultado = await destroy(id, tipo, token);
 
-                        if (resultado.eliminado) {
-                            swalWithBootstrapButtons.fire(
-                                'Eliminado/a',
-                                'El producto ha sido destruido :(',
-                                'success'
-                            );
-                            setTimeout(() => {
-                                window.location.href = "/"; // redirijo al usuario
-                            }, 900);
-                        } else if (resultado.eliminar_doble) {
+                        try {
 
-                            // Nueva alerta
-                            ////// <<< Segunda alerta
-                            const swalWithBootstrapButtons2 = Swal.mixin({
-                                customClass: {
-                                    confirmButton: 'btn btn-success',
-                                    cancelButton: 'btn btn-danger'
-                                },
-                                buttonsStyling: false
-                            });
-                            swalWithBootstrapButtons2.fire({
-                                title: 'Dos productos serán eliminados',
-                                text: "No hay vuelta atras!",
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonText: 'Si, muerte!',
-                                cancelButtonText: 'No, no... mejor no.',
-                                reverseButtons: true
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    (async function () {
-                                        const resultado = await destroy(id, tipo, token, true);
+                            const resultado = await destroy(id, tipo, token);
 
-                                        if (resultado.eliminado) {
-                                            swalWithBootstrapButtons2.fire(
-                                                'Eliminado/a',
-                                                'Ambos productos han sido eliminados :(',
-                                                'success'
-                                            );
-                                            setTimeout(() => {
-                                                window.location.href = "/"; // redirijo al usuario
-                                            }, 900);
-                                        }
-                                    })();
-                                } else if (
-                                    result.dismiss === Swal.DismissReason.cancel
-                                ) {
-                                    swalWithBootstrapButtons2.fire(
-                                        'Cancelado',
-                                        'No se han hecho cambios',
-                                        'error'
-                                    );
-                                }
-                            });
-                            ////// <<< Fin segunda alerta
+                            if (resultado.eliminado) {
+                                swalWithBootstrapButtons.fire(
+                                    'Eliminado/a',
+                                    'El producto ha sido destruido :(',
+                                    'success'
+                                );
+                                setTimeout(() => {
+                                    window.location.href = "/"; // redirijo al usuario
+                                }, 1300);
+                            } else if (resultado.eliminar_doble) {
 
+                                // Nueva alerta
+                                const swalWithBootstrapButtons2 = Swal.mixin({
+                                    customClass: {
+                                        confirmButton: 'btn btn-success',
+                                        cancelButton: 'btn btn-danger'
+                                    },
+                                    buttonsStyling: false
+                                });
+                                swalWithBootstrapButtons2.fire({
+                                    title: 'Dos productos serán eliminados',
+                                    text: "No hay vuelta atras!",
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Eliminar',
+                                    cancelButtonText: 'No, no... mejor no.',
+                                    reverseButtons: true
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        (async function () {
 
-                        } else {
-                            swalWithBootstrapButtons.fire(
-                                'No puede ser eliminado',
-                                'Ocurrio un error',
-                                'error'
-                            );
+                                            try {
+
+                                                const resultado = await destroy(id, tipo, token, true);
+
+                                                if (resultado.eliminado) {
+                                                    swalWithBootstrapButtons2.fire(
+                                                        'Eliminado/a',
+                                                        'Ambos productos han sido eliminados :(',
+                                                        'success'
+                                                    );
+                                                    setTimeout(() => {
+                                                        window.location.href = "/"; // redirijo al usuario
+                                                    }, 900);
+                                                }
+                                            } catch (error) {
+                                                console.log(error);
+                                            }
+                                        })();
+                                    } else if (
+                                        result.dismiss === Swal.DismissReason.cancel
+                                    ) {
+                                        swalWithBootstrapButtons2.fire(
+                                            'Cancelado',
+                                            'No se han hecho cambios',
+                                            'error'
+                                        );
+                                    }
+                                });
+
+                            } else {
+                                swalWithBootstrapButtons.fire(
+                                    'No puede ser eliminado',
+                                    'Ocurrio un error',
+                                    'error'
+                                );
+                            }
+                        } catch (error) {
+                            console.log(error);
                         }
                     })();
                 } else if (
@@ -488,6 +600,54 @@ import * as helpers from './helpers';
             }
         }
 
+        async function alertPendiente() {
+
+            try {
+
+                const resultado = await consultaPendientes();
+
+                if (resultado > 0) {
+
+                    if (!document.querySelector('#sidebar__pendiente-alert')) {
+
+                        const iconoProducto = document.querySelector('#sidebar__new-prod');
+                        const notif = document.createElement('I');
+
+                        notif.classList.add('sidebar__alert', 'fa-solid', 'fa-circle-exclamation');
+                        notif.id = 'sidebar__pendiente-alert';
+
+                        iconoProducto.appendChild(notif);
+                    }
+
+                } else {
+
+                    if (document.querySelector('#sidebar__pendiente-alert')) {
+                        const notif = document.querySelector('#sidebar__pendiente-alert');
+                        notif.remove();
+                    }
+                }
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        async function consultaPendientes() {
+
+            try {
+
+                const url = '/api/pendientes/count';
+
+                const respuesta = await fetch(url);
+                const resultado = await respuesta.json();
+
+                return resultado;
+
+            } catch (error) {
+                console.log(error)
+            }
+
+        }
     }
 })();
 

@@ -8,6 +8,8 @@ import * as helpers from './helpers';
     if (document.querySelector('#providers-registros')) {
 
         let providersArray = [];
+        let providersArrayFiltrado = [];
+        let busquedaLength = 0;
         const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         const contRegistros = document.querySelector('#providers-registros'); // contenedor
         const inputBusqueda = document.querySelector('#provider-formulario');
@@ -17,15 +19,23 @@ import * as helpers from './helpers';
         // Obtener todas las providers
         listadoproviders();
 
-        campoBuscador.onclick = function() {
+        campoBuscador.onclick = function () {
             inputBusqueda.focus();
         }
-        
+
         inputBusqueda.addEventListener('input', (e) => {
-            if (e.target.value.length >= 3) {
+
+            if (busquedaLength > e.target.value.length) {
+
+                // El usuario esta borrando 
+                providersArrayFiltrado = providersArray;
+                mostrarElementos();
+            }
+
+            busquedaLength = e.target.value.length;
+
+            if (e.target.value.length >= 2) {
                 buscarCoincidenciasMemoria(e);
-            } else if (e.target.value.length < 3) {
-                listadoproviders();
             }
         });
 
@@ -43,10 +53,12 @@ import * as helpers from './helpers';
                 const resultado = await respuesta.json();
 
                 providersArray = resultado.providers; // array de providers
+                providersArrayFiltrado = resultado.providers;
+
                 mostrarElementos();
 
             } catch (error) {
-                console.log('No carga el listado');
+                console.log('No carga el listado' + error);
             }
         }
 
@@ -56,20 +68,19 @@ import * as helpers from './helpers';
             limpiarElementos(contRegistros);
             limpiarElementos(contenedorVacio);
 
-            if (providersArray.length === 0) {
+            if (providersArrayFiltrado.length === 0) {
 
                 const textoNoCat = document.createElement('P');
 
                 limpiarElementos(contenedorVacio);
 
                 textoNoCat.textContent = "No se encontraron proveedores";
-                textoNoCat.classList.add('mensaje__vacio');
+                textoNoCat.classList.add('mensaje__info');
                 contenedorVacio.appendChild(textoNoCat);
                 return;
             }
 
-
-            providersArray.forEach(provider => {
+            providersArrayFiltrado.forEach(provider => {
 
                 const contenedor = document.createElement('DIV');
                 contenedor.classList.add('provider__contenedor', 'swiper-slide');
@@ -97,7 +108,6 @@ import * as helpers from './helpers';
                 const catParrafo5 = document.createElement('P');
                 catParrafo5.textContent = "Web: " + provider.web;
 
-
                 const contenedorSM = document.createElement('DIV');
                 contenedorSM.classList.add('formulario__contenedor-boton', 'formulario__contenedor-boton--sm');
 
@@ -120,20 +130,15 @@ import * as helpers from './helpers';
                     }
                 });
 
-
-
                 contenedorSM.appendChild(catEnlace);
                 contenedorSM.appendChild(catBtn);
-
                 contenedor.appendChild(catHeading);
                 contenedor.appendChild(catParrafo);
                 contenedor.appendChild(catParrafo2);
                 contenedor.appendChild(catParrafo3);
                 contenedor.appendChild(catParrafo4);
                 contenedor.appendChild(catParrafo5);
-
                 contenedor.appendChild(contenedorSM);
-
                 contRegistros.appendChild(contenedor);
 
                 swiper.update();
@@ -167,32 +172,39 @@ import * as helpers from './helpers';
                 text: "No hay vuelta atras",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Si, muerte!',
-                cancelButtonText: 'No, era una prueba!',
+                confirmButtonText: 'Eliminar',
+                cancelButtonText: 'Cancelar',
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
 
                     (async function () {
-                        const resultado = await destroy(id, tipo, token);
 
-                        if (resultado.eliminado) {
-                            swalWithBootstrapButtons.fire(
-                                'Eliminado/a',
-                                helpers.firstCap(tipo) + ' ha sido destruido :(',
-                                'success'
-                            );
-                            if (flag) {
-                                providersArray = filtrarVirtualDOM(providersArray, id); // si hay un array va a filtrarlo
-                                mostrarElementos();
+                        try {
+
+                            const resultado = await destroy(id, tipo, token);
+
+                            if (resultado.eliminado) {
+                                swalWithBootstrapButtons.fire(
+                                    'Eliminado/a',
+                                    helpers.firstCap(tipo) + ' ha sido destruido :(',
+                                    'success'
+                                );
+                                if (flag) {
+                                    providersArray = filtrarVirtualDOM(providersArray, id); // si hay un array va a filtrarlo
+                                    providersArrayFiltrado = providersArray;
+                                    mostrarElementos();
+                                }
+                            } else {
+
+                                swalWithBootstrapButtons.fire(
+                                    'No puede ser eliminado',
+                                    'Hay ' + resultado.cantidad_productos + ' producto/s relacionado/s. Puedes editar ' + tipo + ' o el/los producto/s.',
+                                    'error'
+                                );
                             }
-                        } else {
-
-                            swalWithBootstrapButtons.fire(
-                                'No puede ser eliminado',
-                                'Hay ' + resultado.cantidad_productos + ' producto/s relacionado/s. Puedes editar ' + tipo + ' o el/los producto/s.',
-                                'error'
-                            );
+                        } catch (error) {
+                            console.log(error);
                         }
                     })();
                 } else if (
@@ -243,7 +255,7 @@ import * as helpers from './helpers';
             const busqueda = e.target.value; // input del usuario
             const Regex = new RegExp(busqueda, 'i'); // la "i" es para ser insensible a mayusculas/minusculas
 
-            providersArray = providersArray.filter(provider => { // filtra elementos en memoria
+            providersArrayFiltrado = providersArrayFiltrado.filter(provider => { // filtra elementos en memoria
                 if (provider.nombre.toLowerCase().search(Regex) !== -1) {
                     return provider;
                 }
@@ -252,6 +264,5 @@ import * as helpers from './helpers';
             // Recargar elementos
             mostrarElementos();
         }
-
     }
 })();

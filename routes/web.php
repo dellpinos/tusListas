@@ -70,10 +70,10 @@ Route::post('/categoria/categoria-store', [CategoriaController::class, 'store'])
 Route::get('/categoria/categoria-edit/{categoria}', [CategoriaController::class, 'edit'])->name('categoria.edit');
 Route::post('/categoria/categoria-update', [CategoriaController::class, 'update'])->name('categoria.update');
 
-
 /* APIs */
 
 // API buscador
+Route::post('/api/buscador/todos', [APIBuscador::class, 'index']);
 Route::post('/api/buscador/producto', [APIBuscador::class, 'nombre_producto']);
 Route::post('/api/buscador/producto-codigo', [APIBuscador::class, 'codigo_producto']);
 Route::post('/api/buscador/producto-individual', [APIBuscador::class, 'producto_individual']);

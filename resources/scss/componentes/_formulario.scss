@@ -99,7 +99,7 @@
     }
     &__boton--rojo {
         background-color: v.$rojo;
-        transition: all .5s ease;
+        transition: all .8s ease;
 
         &:hover {
             background-color: v.$negro;
@@ -107,7 +107,7 @@
         }
     }
 
-
+    // Estas clases se incluyen en el buscador de Categoria, Provider y Fabricante
     &__contenedor-busqueda {
         display: flex;
         border: 1px solid v.$grisBlanco;
@@ -115,7 +115,6 @@
         padding: 1rem;
         background-color: v.$blanco;
         width: 15%;
-
 
     }
     &__icono-busqueda {
@@ -150,11 +149,6 @@
         height: 3rem;
 
     }
-
-    &__contenedor-enlaces {
-
-    }
-    
 }
 
 

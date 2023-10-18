@@ -18,7 +18,12 @@
         <div class="aumento-formulario__campo-flex">
             <label for="aumento-dolar" class="formulario__label">U$S</label>
 
-            <input type="number" id="aumento-dolar" placeholder="Dolar Hoy" class="formulario__campo">
+            <div class="aumento-formulario__contenedor-campo">
+                <input type="number" id="aumento-dolar" placeholder="Dolar Hoy" class="formulario__campo aumento-formulario__campo-dolar">
+                <a class="enlace__normal" href="https://dolarhoy.com/cotizaciondolarblue" target="_blank">Consultar
+                    Dolar Hoy</a>
+
+            </div>
         </div>
 
         <a class="formulario__boton" id="btn-dolar">Buscar Desactualizados</a>
@@ -31,7 +36,8 @@
 
     <div class="mensaje__contenedor" id="desactualizados-mensaje"></div>
 
-    <table class="table" id=""> {{-- <<< --}}
+    
+    <table class="table" id="">
         <thead class="table__thead">
             <tr>
                 <th scope="col" class="table__th">Dolar</th>
@@ -46,13 +52,12 @@
         <tbody class="table__tbody" id="aumento-dolar-registros"> <!-- Tabla Body -->
 
 
-            {{--  --}}
+            {{-- Js --}}
 
         </tbody> <!-- Fin Tabla Body -->
 
     </table>
 
-    <div id="table-paginacion">
+    <div id="table-paginacion"></div>
 
-    </div>
 @endsection

@@ -6,11 +6,24 @@
     display: inline-block;
     font-size: 1.4rem;
     color: v.$azul;
+    &:hover {
+        color: darken(v.$azul, 10%);
+        cursor: pointer;
+    }
     
     &__normal {
         @extend .enlace;
         font-size: 1rem;
         padding: .5rem 0 0 .5rem;
+    }
 
+    &__mensaje {
+        @extend .enlace;
+        font-size: 1.6rem;
+        color: lighten(v.$azul, 25%);
+
+        &:hover {
+            color: lighten(v.$azul, 10%);
+        }
     }
 }

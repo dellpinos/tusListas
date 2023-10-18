@@ -13,13 +13,8 @@ class ProviderController extends Controller
     }
     public function index()
     {
-        $providers = Provider::orderBy('nombre', 'asc')->get();
 
-
-
-        return view('provider.index', [
-            'providers' => $providers
-        ]);
+        return view('provider.index');
     }
     public function create()
     {
@@ -27,18 +22,16 @@ class ProviderController extends Controller
     }
     public function store(Request $request)
     {
-
+        
         $this->validate($request, [
-            'nombre' => 'required|unique:providers|max:60',
+            'nombre' => 'required|unique:providers|max:60|min:3',
             'email' => 'email|nullable',
-            'telefono' => 'string|nullable',
-            'vendedor' => 'string|max:60|nullable',
-            'web' => 'string|nullable',
-            'ganancia' => 'required|numeric', 'between:0.01,9.99'
+            'telefono' => ['string', 'nullable', 'max:20', 'min:5', 'regex:/^[0-9 -]*$/'],
+            'vendedor' => 'string|max:60|min:3|nullable',
+            'web' => 'string|nullable|url|max:100|min:6',
+            'ganancia' => 'required|numeric|between:1,19.99'
         ]);
 
-
-        // Añadir validaciones y autenticación
         Provider::create([
             'nombre' => $request->nombre,
             'email' =>$request->email,
@@ -63,14 +56,13 @@ class ProviderController extends Controller
         $provider = Provider::find($request->id);
 
         $this->validate($request, [
-            'nombre' => 'required|max:60|unique:providers,nombre,' . $provider->id,
+            'nombre' => 'required|max:60|min:3|unique:providers,nombre,' . $provider->id,
             'email' => 'email|nullable',
-            'telefono' => 'string|nullable',
-            'vendedor' => 'string|max:60|nullable',
-            'web' => 'string|nullable',
-            'ganancia' => 'required|numeric', 'between:0.01,9.99'
+            'telefono' => ['string', 'nullable', 'max:20', 'min:5', 'regex:/^[0-9 -]*$/'],
+            'vendedor' => 'string|max:60|min:3|nullable',
+            'web' => 'string|nullable|url|max:100|min:6',
+            'ganancia' => 'required|numeric|between:1,19.99'
         ]);
-
 
         $provider->nombre = $request->nombre;
         $provider->email = $request->email;
@@ -78,7 +70,6 @@ class ProviderController extends Controller
         $provider->vendedor = $request->vendedor;
         $provider->web = $request->web;
         $provider->ganancia = $request->ganancia;
-
 
         $provider->save();
 

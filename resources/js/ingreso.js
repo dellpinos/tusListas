@@ -8,6 +8,7 @@ import * as helpers from './helpers';
         const grid = document.querySelector('#mercaderia-grid');
         const dolarPrevio = document.querySelector('.ingreso__numero');
         let flag = 0; // Saber cuando se obtuvo el primer resultado de la DB
+        let flagIVA = 0; // Flag checkbox IVA - par -> sin IVA / inpar -> con IVA
         let arrayCoincidencias = []; // Aqui se almacena el resultado de la DB
         let coincidenciasPantalla = []; // Aqui se almacena el resultado de la DB filtrado
         let precioId = ''; // Precio seleccionado que será almacenado
@@ -26,7 +27,7 @@ import * as helpers from './helpers';
             }
 
             const obj = generarForm();
-            const {cantidad, codigo, nombre, precio, descuento, semanas, btnGuardar, btnEliminar } = obj;
+            const { cantidad, codigo, nombre, precio, descuento, semanas, btnGuardar, btnEliminar } = obj;
 
             nombre.addEventListener('click', (e) => {
                 generarHTML(e, obj);
@@ -35,15 +36,21 @@ import * as helpers from './helpers';
 
             codigo.addEventListener('input', async (e) => {
 
-                const resultado = await findCodigo(codigo.value);
+                try {
 
-                if (resultado) {
+                    const resultado = await findCodigo(codigo.value);
 
-                    const resultadoCompleto = await buscarProducto(resultado[0].id);
-                    completarCampos(resultadoCompleto.producto, resultadoCompleto.precio, obj);
+                    if (resultado) {
 
-                    precioId = resultadoCompleto.precio.id; // Precio seleccionado que será almacenado
-                    productoId = resultadoCompleto.producto.id; // Producto seleccionado que será almacenado
+                        const resultadoCompleto = await buscarProducto(resultado[0].id);
+                        completarCampos(resultadoCompleto.producto, resultadoCompleto.precio, obj);
+
+                        precioId = resultadoCompleto.precio.id; // Precio seleccionado que será almacenado
+                        productoId = resultadoCompleto.producto.id; // Producto seleccionado que será almacenado
+                    }
+
+                } catch (error) {
+                    console.log(error);
                 }
             });
 
@@ -63,15 +70,26 @@ import * as helpers from './helpers';
                     cantidad.classList.remove('b-red', 'b-green');
                 }
 
+                if (!flagIVA % 2 === 0) {
+                    objV.precio = Math.round(objV.precio / 1.21);
+                }
+
                 // Almacenar informacion
                 const resultado = almacenarDatos(objV);
 
                 if (resultado) {
+
+
                     // Limpiar variables en memoria
                     precioId = '';
                     productoId = '';
+                    flagIVA = 0;
                     desactivarCampos(obj);
                     app();
+
+                    alertPendiente();
+
+
                 }
             });
 
@@ -117,7 +135,7 @@ import * as helpers from './helpers';
                     return resultado;
 
                 } catch (error) {
-                    console.log('El servidor no responde');
+                    console.log('El servidor no responde' + error);
                 }
 
 
@@ -148,8 +166,6 @@ import * as helpers from './helpers';
                     console.log('El servidor no responde');
                 }
             }
-
-
         }
 
         function validarCampos(obj) {
@@ -187,7 +203,7 @@ import * as helpers from './helpers';
                 flagValidacion[0] = true;
             }
 
-            if (cantidad.value !== '' && !regexCantidad.test(cantidad.value)) {
+            if (cantidad.value !== '' && !regexCantidad.test(cantidad.value) || cantidad.value.length > 6) {
                 cantidad.classList.add('b-red');
                 flagValidacion[4] = false;
             } else {
@@ -398,15 +414,50 @@ import * as helpers from './helpers';
 
             contenedorNombre.appendChild(nombre);
 
+            const contenedorPrecio = document.createElement('DIV');
+            contenedorPrecio.classList.add('ingreso__contenedor-precio');
+
+            const contenedorCheckIVA = document.createElement('DIV');
+            contenedorCheckIVA.classList.add('ingreso__contenedor-checkboxIVA');
+
             const precio = document.createElement('INPUT');
             precio.type = 'text';
-            precio.classList.add('formulario__campo');
+            precio.classList.add('formulario__campo', 'ingreso__campo-precio');
             precio.placeholder = "Precio sin IVA";
+
+            const optIVA = document.createElement('P');
+            optIVA.textContent = "sin IVA";
+            optIVA.classList.add('ingreso__checkbox-IVA');
+
+            contenedorPrecio.appendChild(precio);
+            contenedorCheckIVA.appendChild(optIVA);
+            contenedorPrecio.appendChild(contenedorCheckIVA);
+
+            contenedorCheckIVA.addEventListener('click', () => {
+
+                if (flagIVA % 2 === 0) {
+                    optIVA.classList.add('ingreso__checkbox-IVA--checked');
+                    precio.placeholder = "Precio con IVA";
+                    optIVA.textContent = "con IVA";
+                    precio.classList.add('ingreso__campo-precio--checked');
+
+
+                } else {
+
+                    precio.classList.remove('ingreso__campo-precio--checked');
+                    optIVA.classList.remove('ingreso__checkbox-IVA--checked');
+                    precio.placeholder = "Precio sin IVA";
+                    optIVA.textContent = "sin IVA";
+
+                }
+
+                flagIVA++;
+            });
 
             const descuento = document.createElement('INPUT');
             descuento.type = 'text';
             descuento.classList.add('formulario__campo');
-            descuento.placeholder = "0%";
+            descuento.placeholder = "0 %";
 
             const semanas = document.createElement('SELECT');
             semanas.classList.add('formulario__campo');
@@ -439,7 +490,7 @@ import * as helpers from './helpers';
             grid.appendChild(cantidad);
             grid.appendChild(contenedorCodigo);
             grid.appendChild(contenedorNombre);
-            grid.appendChild(precio);
+            grid.appendChild(contenedorPrecio);
             grid.appendChild(descuento);
             grid.appendChild(semanas);
             grid.appendChild(btnGuardar);
@@ -462,7 +513,7 @@ import * as helpers from './helpers';
 
             // Contenedor
             const contenedorOpciones = document.createElement('DIV');
-            contenedorOpciones.classList.add('buscador__opciones-contenedor');
+            contenedorOpciones.classList.add('buscador__opciones-contenedor', 'ingreso__opciones-contenedor');
 
             // input real
             const inputProducto = document.createElement('INPUT');
@@ -599,15 +650,20 @@ import * as helpers from './helpers';
 
                     sugerenciaBusqueda.addEventListener('click', async function (e) {
 
-                        const respuesta = await buscarProducto(coincidencia.id);
+                        try {
 
-                        const DBproducto = respuesta.producto;
-                        const DBprecio = respuesta.precio;
+                            const respuesta = await buscarProducto(coincidencia.id);
 
-                        precioId = respuesta.precio.id; // Precio seleccionado que será almacenado
-                        productoId = respuesta.producto.id; // Producto seleccionado que será almacenado
+                            const DBproducto = respuesta.producto;
+                            const DBprecio = respuesta.precio;
 
-                        completarCampos(DBproducto, DBprecio, obj, inputProducto);
+                            precioId = respuesta.precio.id; // Precio seleccionado que será almacenado
+                            productoId = respuesta.producto.id; // Producto seleccionado que será almacenado
+
+                            completarCampos(DBproducto, DBprecio, obj, inputProducto);
+                        } catch (error) {
+                            console.log(error);
+                        }
 
                     });
                 }
@@ -660,8 +716,57 @@ import * as helpers from './helpers';
                 return resultado;
 
             } catch (error) {
-                console.log('El servidor no responde');
+                console.log('El servidor no responde' + error);
             }
+        }
+
+        async function alertPendiente() {
+
+            try {
+
+                const resultado = await consultaPendientes();
+
+                if (resultado > 0) {
+
+                    if (!document.querySelector('#sidebar__pendiente-alert')) {
+
+                        const iconoProducto = document.querySelector('#sidebar__new-prod');
+                        const notif = document.createElement('I');
+
+                        notif.classList.add('sidebar__alert', 'fa-solid', 'fa-circle-exclamation');
+                        notif.id = 'sidebar__pendiente-alert';
+
+                        iconoProducto.appendChild(notif);
+                    }
+
+                } else {
+
+                    if (document.querySelector('#sidebar__pendiente-alert')) {
+                        const notif = document.querySelector('#sidebar__pendiente-alert');
+                        notif.remove();
+                    }
+                }
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        async function consultaPendientes() {
+
+            try {
+
+                const url = '/api/pendientes/count';
+
+                const respuesta = await fetch(url);
+                const resultado = await respuesta.json();
+
+                return resultado;
+
+            } catch (error) {
+                console.log(error)
+            }
+
         }
     }
 })();

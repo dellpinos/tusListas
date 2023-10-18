@@ -4,12 +4,91 @@
 .dashboard {
 
     &__contenedor-principal {
-        
-        overflow-y: scroll;
         width: 100%;
-        padding: 3rem 8rem 8rem 8rem;
-        margin-left: auto;
-        margin-right: auto;
+        overflow-y: scroll;
+        position: relative;
+    }
+    &__contenedor-tabs {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
+
+    &__tabs {
+        background-color: v.$azul;
+        display: flex;
+        justify-content: space-around;
+        color: v.$blanco;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease;
         
+        p {
+            box-shadow: 0px -3px 4px v.$blanco inset;
+            width: 100%;
+            text-align: center;
+            border-right: 1px solid v.$blanco;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            padding: .5rem 0 .8rem 0;
+        }
+
+        
+        &--activo {
+
+            max-height: 6rem;
+            p {
+                opacity: 1;
+            }
+
+        }
+    }
+
+    &__tab {
+        cursor: pointer;
+        text-transform: uppercase;
+        font-size: 1.4rem;
+        padding-top: .5rem;
+        font-weight: v.$bold;
+        transition: all .6s ease!important;
+
+
+        &:hover {
+
+            background-color: lighten(v.$azul, 10%);
+        }
+    }
+    
+    &__tab-icono {
+        box-shadow: 0px -3px 4px v.$blanco inset;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        padding: .2rem;
+        color: v.$blanco;
+        background-color: v.$azul;
+        cursor: pointer;
+        max-height: 3rem;
+        opacity: 1;
+        transition: max-height .5s ease, opacity 2s ease;
+
+        &--activo {
+            opacity: 0;
+            max-height: 0;
+            color: v.$azul;
+            cursor: default;
+
+            
+        }
+    }
+
+    &__contenedor-secundario {
+        
+        margin: 4rem auto;
+        padding: 3rem 8rem 8rem 8rem;
+
     }
 }

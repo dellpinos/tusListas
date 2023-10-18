@@ -6,7 +6,6 @@ use App\Models\Precio;
 use App\Models\Producto;
 use App\Models\Provider;
 use App\Models\Categoria;
-use App\Models\Pendiente;
 use App\Models\Fabricante;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -47,12 +46,15 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
 
+        $desc_dur = 0;
+        $stock = 0;
+        $ganancia_tipo = '';
+
+        $ganancia = $request->ganancia;
         $request->request->add([
             'codigo' => Str::lower($request->codigo),
         ]);
 
-        $desc_dur = 0;
-        $stock = 0;
         if ($request->desc_duracion) {
             $desc_dur = $request->desc_duracion;
         }
@@ -60,10 +62,7 @@ class ProductoController extends Controller
             $stock = $request->stock;
         }
 
-        $ganancia = $request->ganancia;
-        $ganancia_tipo = '';
-
-        // ganancia_numero
+        // Ganancia aplicada
         if ($ganancia === 'provider') {
             $ganancia_tipo = 'provider';
             $ganancia_prod = null;
@@ -75,35 +74,34 @@ class ProductoController extends Controller
             $ganancia_prod = $request->ganancia_numero;
         }
 
-        if (empty($request->ganancia) || (!is_numeric($ganancia_prod) && $ganancia_prod !== null)) { // $ganancia_prod debe ser un numero
+        // Validación de ganancia
+        if (empty($request->ganancia) || (!is_numeric($ganancia_prod) && $ganancia_prod !== null)) {
             return redirect()->route('buscador')->with('mensaje', "Ganancia no válida");
         }
 
-
-
         $this->validate($request, [
             'codigo' => 'required|string|max:4|min:4|unique:productos',
-            'nombre' => 'required|string|max:60|unique:productos',
+            'nombre' => 'required|string|max:60|unique:productos|min:3',
             'categoria_id' => 'required|integer',
             'fabricante_id' => 'required|integer',
             'provider_id' => 'required|integer',
-            'dolar' => 'numeric|required',
-            'precio' => 'numeric|required',
-            'ganancia' => 'required',
-            'stock' => 'integer|nullable',
-            "desc_porc" => 'numeric|nullable',
-            "desc_duracion" => 'integer|nullable'
+            'dolar' => 'numeric|required|max:999999|min:0',
+            'precio' => 'numeric|required|max:99999999|min:0',
+            'ganancia' => 'required|min:0',
+            'stock' => 'integer|nullable|max:99999|min:1',
+            "desc_porc" => 'numeric|nullable|max:999|min:0',
+            "desc_duracion" => 'integer|nullable|max:8|min:1'
         ]);
 
         if ($request->codigo_fraccionado !== null) {
             // Producto fraccionado
 
-            $this->validate($request, [ // Da error con cualquiera, el problema puede ser la referencia a "this"
+            $this->validate($request, [
 
                 'codigo_fraccionado' => 'required|max:4|min:4|unique:productos,codigo',
-                'unidad_fraccion' => 'required|string|max:60', // <<<<<< dice fraccionado!!!!!
-                'contenido_total' => 'required|numeric',
-                'ganancia_fraccion' => 'required|numeric|between:0.01,9.99'
+                'unidad_fraccion' => 'required|string|max:60',
+                'contenido_total' => 'required|numeric|max:9999|min:0',
+                'ganancia_fraccion' => 'required|numeric|between:1,19.9'
 
             ]);
         }
@@ -188,22 +186,27 @@ class ProductoController extends Controller
     public function edit(Producto $producto)
     {
 
+        // En caso de haber otro registro relacionado
+        $producto_secundario = '';
+        // Este es un producto fraccionado
+        $producto_fraccionado = false;
+
+        $categoria = '';
+        $provider = '';
+        $fabricante = '';
+
         // Cargar datos para los <select>
         $categorias = Categoria::orderBy('nombre', 'asc')->get();
         $providers = Provider::orderBy('nombre', 'asc')->get();
         $fabricantes = Fabricante::orderBy('nombre', 'asc')->get();
         $precio = Precio::find($producto->precio_id);
 
-        // Cargo 1 o 2 productos relacionados a este precio
+        // Cargo 1 o 2 productos relacionados a este precio (posible fraccionado)
         $productos = Producto::where('precio_id', $precio->id)->get();
-        // En caso de haber otro registro relacionado
-        $producto_secundario = '';
-        // Este es un producto fraccionado
-        $producto_fraccionado = false;
 
         /** Consulto si existe otro registro relacionado a esta instancia de Precio (existe fraccionado) */
 
-        // Hay 3 opciones:
+        // Hay 3 posibilidades:
         // 1_ No es un producto fraccionado y no existe un fraccionado
         // 2_ No es un producto fraccionado y existe un producto relacionado
         // 3_ Si es un producto fraccionado 
@@ -237,11 +240,6 @@ class ProductoController extends Controller
         }
         // 1_ No es un producto fraccionado y no existe un fraccionado 
 
-        $categoria = '';
-        $provider = '';
-        $fabricante = '';
-
-
         // Consultar categoria, provider y fabricante del producto actual 
         foreach ($categorias as $elemento) {
             if ($producto->categoria_id  === $elemento->id) {
@@ -258,7 +256,6 @@ class ProductoController extends Controller
                 $fabricante = $elemento;
             }
         }
-
 
         // Que ganancia aplica a este producto
         if (!$producto->ganancia_prod) {
@@ -358,17 +355,16 @@ class ProductoController extends Controller
             $this->validate($request, [
                 // Validacion de formulario principal
                 'codigo' => 'required|string|max:4|min:4|unique:productos,codigo,' . $producto->id,
-                'nombre' => 'required|string|max:60|unique:productos,nombre,' . $producto->id,
-                'ganancia' => 'required',
+                'nombre' => 'required|string|max:60|min:3|unique:productos,nombre,' . $producto->id,
+                'ganancia' => 'required|min:0',
                 'categoria_id' => 'required|integer',
                 'fabricante_id' => 'required|integer',
                 'provider_id' => 'required|integer',
-                'dolar' => 'numeric|required',
-                'precio' => 'numeric|required'
+                'dolar' => 'numeric|required|max:999999|min:0',
+                'precio' => 'numeric|required|max:99999999|min:0'
             ]);
 
             // Almacenar cambios
-
             $precio->categoria_id = intval($request->categoria_id);
             $precio->fabricante_id = intval($request->fabricante_id);
             $precio->provider_id = intval($request->provider_id);
@@ -399,13 +395,13 @@ class ProductoController extends Controller
                 $this->validate($request, [
                     // Validacion de formulario principal
                     'codigo' => 'required|string|max:4|min:4|unique:productos,codigo,' . $producto->id,
-                    'nombre' => 'required|string|max:60|unique:productos,nombre,' . $producto->id,
-                    'ganancia' => 'required',
+                    'nombre' => 'required|string|max:60|min:3|unique:productos,nombre,' . $producto->id,
+                    'ganancia' => 'required|min:0',
                     'categoria_id' => 'required|integer',
                     'fabricante_id' => 'required|integer',
                     'provider_id' => 'required|integer',
-                    'dolar' => 'numeric|required',
-                    'precio' => 'numeric|required'
+                    'dolar' => 'numeric|required|max:999999|min:0',
+                    'precio' => 'numeric|required|max:99999999|min:0',
                 ]);
 
                 $precio->categoria_id = intval($request->categoria_id);
@@ -444,8 +440,8 @@ class ProductoController extends Controller
                 $this->validate($request, [
                     'codigo' => 'required|max:4|min:4|unique:productos,codigo,' . $producto->id,
                     'unidad_fraccion' => 'required|string|max:60',
-                    'contenido_total' => 'required|numeric',
-                    'ganancia_fraccion' => 'required|numeric', 'between:0.01,9.99'
+                    'contenido_total' => 'required|numeric|min:0',
+                    'ganancia_fraccion' => 'required|numeric|between:0.01,19.9'
 
                 ]);
 
@@ -463,8 +459,8 @@ class ProductoController extends Controller
             $this->validate($request, [
                 'codigo_fraccionado' => 'required|max:4|min:4|unique:productos,codigo',
                 'unidad_fraccion' => 'required|string|max:60',
-                'contenido_total' => 'required|numeric',
-                'ganancia_fraccion' => 'required|numeric', 'between:0.01,9.99'
+                'contenido_total' => 'required|numeric|max:9999|min:0',
+                'ganancia_fraccion' => 'required|numeric|between:1,19.9'
 
             ]);
 
