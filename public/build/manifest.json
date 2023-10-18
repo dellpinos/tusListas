@@ -7,7 +7,9 @@
     "css": [
       "assets/app-a5c3f752.css"
     ],
+
     "file": "assets/app-b232a77a.js",
+
     "isEntry": true,
     "src": "resources/js/app.js"
   },
