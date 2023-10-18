@@ -7,6 +7,7 @@
     @yield('meta')
 
     <meta name="description" content="App de gestión de precios e inventario">
+    <link rel="icon" href="{{ asset('img/LogoSinFondo.png') }}" type="image/x-icon">
 
     <title>TusListas - @yield('titulo')</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,17 +32,22 @@
 <body class=" bg-dashboard">
     <header class="header">
         <div class="header__contenedor">
-            <a href="{{ route('buscador') }}">
-                <h1 class=" header__logo">Tus Listas</h1>
+            <a class="header__contenedor-nombre" href="{{ route('buscador') }}">
+                <img src="{{ asset('img/LogoSinFondo.png') }}" class="header__logo" alt="Logo Tus Listas">
+                <h1 class=" header__nombre">Tus Listas - {{ session('empresa')->name}}</h1>
             </a>
             @auth
                 <nav class="header__nav">
 
-                    @if (auth()->user()->user_type === 'admin')
-                        <a class="header__enlace" href="{{ route('register') }}">User<span
-                                class="font-regular">Admin</span></a>
+
+                    @if (auth()->user()->user_type === 'admin' || auth()->user()->user_type === 'owner')
+                        <a class="header__enlace header__enlace--admin" href="{{ route('owner-tools') }}">
+                            
+                            <i class="fa-solid fa-user-gear"></i>
+                            <span class="font-regular">Admin</span></a>
+
                     @endif
-                    <a class="header__enlace" href="#">Hola: <span
+                    <a class="header__enlace" href="{{ route('perfil') }}">Hola: <span
                             class="font-regular ">{{ auth()->user()->username }}</span></a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

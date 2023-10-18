@@ -3,21 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Models\Precio;
+use App\Models\Empresa;
 use App\Models\Producto;
 use App\Models\Provider;
 use App\Models\Categoria;
 use App\Models\Fabricante;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ProductoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
     }
     public function index()
     {
+
+       // dd("Desde controlador del buscador");
+        $empresa = Empresa::find(auth()->user()->empresa_id);
+
+
+
+        if (!$empresa) {
+            auth()->logout();
+            return redirect()->route('login');
+        }
+
+        session()->put('empresa', $empresa);
 
         return view('producto.buscador');
     }
@@ -25,15 +39,15 @@ class ProductoController extends Controller
     {
 
         $codigo = generarCodigo(); // helper
-        $precio = Precio::orderBy('dolar', 'desc')->first();
+        $precio = Precio::orderBy('dolar', 'desc')->where('empresa_id', session('empresa')->id)->first();
         $dolar_pred = '';
 
         if ($precio !== null) { // En caso del primer producto
             $dolar_pred = (old('dolar') === null) ? intval($precio->dolar) : old('dolar');
         }
-        $categorias = Categoria::orderBy('nombre', 'asc')->get();
-        $providers = Provider::orderBy('nombre', 'asc')->get();
-        $fabricantes = Fabricante::orderBy('nombre', 'asc')->get();
+        $categorias = Categoria::orderBy('nombre', 'asc')->where('empresa_id', session('empresa')->id)->get();
+        $providers = Provider::orderBy('nombre', 'asc')->where('empresa_id', session('empresa')->id)->get();
+        $fabricantes = Fabricante::orderBy('nombre', 'asc')->where('empresa_id', session('empresa')->id)->get();
 
         return view('producto.create', [
             'codigo' => $codigo,
@@ -80,8 +94,9 @@ class ProductoController extends Controller
         }
 
         $this->validate($request, [
-            'codigo' => 'required|string|max:4|min:4|unique:productos',
-            'nombre' => 'required|string|max:60|unique:productos|min:3',
+
+            'codigo' => 'required|string|max:5|min:5|unique:productos,codigo,NULL,id,empresa_id,' . session('empresa')->id,
+            'nombre' => 'required|string|max:60|min:3|unique:productos,nombre,NULL,id,empresa_id,' . session('empresa')->id, // Ignora los nombres en otras empresas
             'categoria_id' => 'required|integer',
             'fabricante_id' => 'required|integer',
             'provider_id' => 'required|integer',
@@ -98,7 +113,7 @@ class ProductoController extends Controller
 
             $this->validate($request, [
 
-                'codigo_fraccionado' => 'required|max:4|min:4|unique:productos,codigo',
+                'codigo_fraccionado' => 'required|string|max:5|min:5|unique:productos,codigo,NULL,id,empresa_id,' . session('empresa')->id,
                 'unidad_fraccion' => 'required|string|max:60',
                 'contenido_total' => 'required|numeric|max:9999|min:0',
                 'ganancia_fraccion' => 'required|numeric|between:1,19.9'
@@ -113,7 +128,8 @@ class ProductoController extends Controller
             'categoria_id' => intval($request->categoria_id),
             'provider_id' => intval($request->provider_id),
             'desc_porc' => $request->desc_porc,
-            'desc_duracion' => $desc_dur
+            'desc_duracion' => $desc_dur,
+            'empresa_id' => session('empresa')->id
         ]);
         if ($request->desc_porc) {
             $precio->increment('desc_acu');
@@ -122,7 +138,7 @@ class ProductoController extends Controller
         // Primero tengo que crear el fabircante, la categoria, provider 
         $producto = Producto::create([
             'nombre' => $request->nombre,
-            'codigo' => $request->codigo,
+            'codigo' => strtolower($request->codigo),
             'categoria_id' => intval($request->categoria_id),
             'fabricante_id' => intval($request->fabricante_id),
             'provider_id' => intval($request->provider_id),
@@ -132,7 +148,8 @@ class ProductoController extends Controller
             'stock' => $stock,
             'unidad_fraccion' => null,
             'contenido_total' => null,
-            'ganancia_fraccion' => null
+            'ganancia_fraccion' => null,
+            'empresa_id' => session('empresa')->id
         ]);
 
         if ($request->codigo_fraccionado !== null) {
@@ -149,7 +166,8 @@ class ProductoController extends Controller
                 'precio_id' => intval($precio->id),
                 'unidad_fraccion' => $request->unidad_fraccion,
                 'contenido_total' => $request->contenido_total,
-                'ganancia_fraccion' => $request->ganancia_fraccion
+                'ganancia_fraccion' => $request->ganancia_fraccion,
+                'empresa_id' => session('empresa')->id
 
             ]);
         }
@@ -162,8 +180,8 @@ class ProductoController extends Controller
 
         $producto->increment('contador_show');
 
-        $precio = Precio::find($producto->precio_id);
-        $fabricante = Fabricante::find($producto->fabricante_id);
+        $precio = Precio::where('id', $producto->precio_id)->where('empresa_id', session('empresa')->id)->first();
+        $fabricante = Fabricante::where('id', $producto->fabricante_id)->where('empresa_id', session('empresa')->id)->first();
 
         $resultado = precioVenta($producto, $precio);
 
@@ -196,13 +214,13 @@ class ProductoController extends Controller
         $fabricante = '';
 
         // Cargar datos para los <select>
-        $categorias = Categoria::orderBy('nombre', 'asc')->get();
-        $providers = Provider::orderBy('nombre', 'asc')->get();
-        $fabricantes = Fabricante::orderBy('nombre', 'asc')->get();
-        $precio = Precio::find($producto->precio_id);
+        $categorias = Categoria::orderBy('nombre', 'asc')->where('empresa_id', session('empresa')->id)->get();
+        $providers = Provider::orderBy('nombre', 'asc')->where('empresa_id', session('empresa')->id)->get();
+        $fabricantes = Fabricante::orderBy('nombre', 'asc')->where('empresa_id', session('empresa')->id)->get();
+        $precio = Precio::where('id', $producto->precio_id)->where('empresa_id', session('empresa')->id)->first();
 
         // Cargo 1 o 2 productos relacionados a este precio (posible fraccionado)
-        $productos = Producto::where('precio_id', $precio->id)->get();
+        $productos = Producto::where('precio_id', $precio->id)->where('empresa_id', session('empresa')->id)->get();
 
         /** Consulto si existe otro registro relacionado a esta instancia de Precio (existe fraccionado) */
 
@@ -290,11 +308,11 @@ class ProductoController extends Controller
     public function update(Request $request)
     {
 
-        $producto = Producto::find($request->id);
-        $precio = Precio::find($producto->precio_id);
+        $producto = Producto::where('id', $request->id)->where('empresa_id', session('empresa')->id)->first();
+        $precio = Precio::where('id', $producto->precio_id)->where('empresa_id', session('empresa')->id)->first();
 
         // Cargo 1 o 2 productos relacionados a este precio
-        $productos = Producto::where('precio_id', $precio->id)->get();
+        $productos = Producto::where('precio_id', $precio->id)->where('empresa_id', session('empresa')->id)->get();
 
         // En caso de haber otro registro relacionado
         $producto_secundario = '';
@@ -354,8 +372,24 @@ class ProductoController extends Controller
 
             $this->validate($request, [
                 // Validacion de formulario principal
-                'codigo' => 'required|string|max:4|min:4|unique:productos,codigo,' . $producto->id,
-                'nombre' => 'required|string|max:60|min:3|unique:productos,nombre,' . $producto->id,
+                'codigo' => [
+                    'required',
+                    'string',
+                    'max:5',
+                    'min:5',
+                    Rule::unique('productos', 'codigo')->where(function ($query) {
+                        return $query->where('empresa_id', session('empresa')->id); // solo tiene en cuenta la empresa del usuario
+                    })->ignore($producto->id), // Ignora el registro actual
+                ],
+                'nombre' => [
+                    'required',
+                    'string',
+                    'max:60',
+                    'min:3',
+                    Rule::unique('productos', 'nombre')->where(function ($query) {
+                        return $query->where('empresa_id', session('empresa')->id); // solo tiene en cuenta la empresa del usuario
+                    })->ignore($producto->id), // Ignora el registro actual
+                ],
                 'ganancia' => 'required|min:0',
                 'categoria_id' => 'required|integer',
                 'fabricante_id' => 'required|integer',
@@ -394,8 +428,24 @@ class ProductoController extends Controller
 
                 $this->validate($request, [
                     // Validacion de formulario principal
-                    'codigo' => 'required|string|max:4|min:4|unique:productos,codigo,' . $producto->id,
-                    'nombre' => 'required|string|max:60|min:3|unique:productos,nombre,' . $producto->id,
+                    'codigo' => [
+                        'required',
+                        'string',
+                        'max:5',
+                        'min:5',
+                        Rule::unique('productos', 'codigo')->where(function ($query) {
+                            return $query->where('empresa_id', session('empresa')->id); // solo tiene en cuenta la empresa del usuario
+                        })->ignore($producto->id), // Ignora el registro actual
+                    ],
+                    'nombre' => [
+                        'required',
+                        'string',
+                        'max:60',
+                        'min:3',
+                        Rule::unique('productos', 'nombre')->where(function ($query) {
+                            return $query->where('empresa_id', session('empresa')->id); // solo tiene en cuenta la empresa del usuario
+                        })->ignore($producto->id), // Ignora el registro actual
+                    ],
                     'ganancia' => 'required|min:0',
                     'categoria_id' => 'required|integer',
                     'fabricante_id' => 'required|integer',
@@ -438,7 +488,15 @@ class ProductoController extends Controller
                 // Si este es fraccionado debo validar todos los campos y almacenar solo este producto
 
                 $this->validate($request, [
-                    'codigo' => 'required|max:4|min:4|unique:productos,codigo,' . $producto->id,
+                    'codigo' => [
+                        'required',
+                        'string',
+                        'max:5',
+                        'min:5',
+                        Rule::unique('productos', 'codigo')->where(function ($query) {
+                            return $query->where('empresa_id', session('empresa')->id); // solo tiene en cuenta la empresa del usuario
+                        })->ignore($producto->id), // Ignora el registro actual
+                    ],
                     'unidad_fraccion' => 'required|string|max:60',
                     'contenido_total' => 'required|numeric|min:0',
                     'ganancia_fraccion' => 'required|numeric|between:0.01,19.9'
@@ -457,7 +515,15 @@ class ProductoController extends Controller
         if ($request->codigo_fraccionado !== null) {
 
             $this->validate($request, [
-                'codigo_fraccionado' => 'required|max:4|min:4|unique:productos,codigo',
+                'codigo_fraccionado' => [
+                    'required',
+                    'string',
+                    'max:5',
+                    'min:5',
+                    Rule::unique('productos', 'codigo')->where(function ($query) {
+                        return $query->where('empresa_id', session('empresa')->id); // solo tiene en cuenta la empresa del usuario
+                    })->ignore($producto->id), // Ignora el registro actual
+                ],
                 'unidad_fraccion' => 'required|string|max:60',
                 'contenido_total' => 'required|numeric|max:9999|min:0',
                 'ganancia_fraccion' => 'required|numeric|between:1,19.9'
@@ -476,7 +542,8 @@ class ProductoController extends Controller
                 'precio_id' => $precio->id,
                 'unidad_fraccion' => $request->unidad_fraccion,
                 'contenido_total' => $request->contenido_total,
-                'ganancia_fraccion' => $request->ganancia_fraccion
+                'ganancia_fraccion' => $request->ganancia_fraccion,
+                'empresa_id' => session('empresa')->id
             ]);
         }
 

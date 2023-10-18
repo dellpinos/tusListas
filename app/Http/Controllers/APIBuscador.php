@@ -14,7 +14,7 @@ class APIBuscador extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
     }
 
     public function index(Request $request)
@@ -26,7 +26,8 @@ class APIBuscador extends Controller
         $pagina_actual = $request->page;
 
         $pagina_actual = filter_var($pagina_actual, FILTER_VALIDATE_INT);
-        $total_registros = Producto::all()->count();
+        $total_registros = Producto::where('empresa_id', session('empresa')->id)->count();
+
 
 
         if (!$pagina_actual || $pagina_actual < 1) {
@@ -41,20 +42,20 @@ class APIBuscador extends Controller
             return;
         }
 
-       $paginacion = new Paginacion($pagina_actual, $registros_por_pagina, $total_registros); // creo la instancia con "la forma de una paginacion"
+       $paginacion = new Paginacion($pagina_actual, $registros_por_pagina, $total_registros); // Creo la instancia con "la forma de una paginacion"
 
         if ($paginacion->totalPaginas() < $pagina_actual) {
             return json_encode("error");
         }
 
-        $productos = Producto::orderBy('nombre', 'ASC')->offset($paginacion->offset())->limit($registros_por_pagina)->get(); // ->get()?
+        $productos = Producto::orderBy('nombre', 'ASC')->where('empresa_id', session('empresa')->id)->offset($paginacion->offset())->limit($registros_por_pagina)->get();
 
         $precios = [];
         $resultado = [];
 
         foreach ($productos as $producto) {
 
-            $precio = Precio::find($producto->precio_id);
+            $precio = Precio::where('id', $producto->precio_id)->where('empresa_id', session('empresa')->id)->first();
             $resultado = precioVenta($producto, $precio);
 
             $precios[] = $resultado['precio'];
@@ -88,10 +89,10 @@ class APIBuscador extends Controller
 
         if ($request->filtro_frac) {
             // No retorna fraccionados, esto es util en buscadores que modifican registros
-            $resultado = Producto::where('nombre', 'LIKE', '%' . $patron . '%')->whereNull('ganancia_fraccion')->get();
+            $resultado = Producto::where('nombre', 'LIKE', '%' . $patron . '%')->where('empresa_id', session('empresa')->id)->whereNull('ganancia_fraccion')->get();
         } else {
 
-            $resultado = Producto::where('nombre', 'LIKE', '%' . $patron . '%')->get();
+            $resultado = Producto::where('nombre', 'LIKE', '%' . $patron . '%')->where('empresa_id', session('empresa')->id)->get();
         }
 
         echo json_encode($resultado);
@@ -114,12 +115,11 @@ class APIBuscador extends Controller
         $id = $request->id;
         $id = filter_var($id, FILTER_VALIDATE_INT);
 
-        $producto = Producto::find($id);
-        $precio = Precio::find($producto->precio_id);
+        $producto = Producto::where('id', $id)->where('empresa_id', session('empresa')->id)->first();
+        $precio = Precio::where('id', $producto->precio_id)->where('empresa_id', session('empresa')->id)->first();
 
         // Calcular precio de venta
         $resultado = precioVenta($producto, $precio);
-
 
         echo json_encode($resultado);
     }
@@ -129,7 +129,7 @@ class APIBuscador extends Controller
 
         // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
         $validator = Validator::make($request->all(), [
-            'codigo_producto' => 'required|string|min:4|max:4'
+            'codigo_producto' => 'required|string|min:5|max:5'
         ]);
 
         // La instancia de Validator me permite enviar al Frontend los resultados de la validación fallida
@@ -144,10 +144,10 @@ class APIBuscador extends Controller
         // Filtra fraccionados
         if ($request->filtro_frac) {
             // No retorna fraccionados, esto es util en buscadores que modifican registros
-            $resultado = Producto::where('codigo', $codigo)->whereNull('ganancia_fraccion')->get();
+            $resultado = Producto::where('codigo', $codigo)->where('empresa_id', session('empresa')->id)->whereNull('ganancia_fraccion')->get();
         } else {
 
-            $resultado = Producto::where('codigo', $codigo)->get();
+            $resultado = Producto::where('codigo', $codigo)->where('empresa_id', session('empresa')->id)->get();
         }
 
         if ($resultado->isEmpty()) {

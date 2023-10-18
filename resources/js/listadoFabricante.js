@@ -236,7 +236,7 @@ import * as helpers from './helpers';
                 return resultado;
 
             } catch (error) {
-                console.log('El servidor no responde');
+                console.log('El servidor no responde' + error);
             }
         }
 

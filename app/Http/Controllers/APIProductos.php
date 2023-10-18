@@ -12,13 +12,14 @@ class APIProductos extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
     }
 
     public function all()
     {
+
         // Devuelve todos los productos sin filtro ni busqueda
-        $productos = Producto::orderBy('nombre', 'asc')->get();
+        $productos = Producto::orderBy('nombre', 'asc')->where('empresa_id', session('empresa')->id)->get();
 
         echo json_encode([
             'productos' => $productos
@@ -42,9 +43,9 @@ class APIProductos extends Controller
         // 2- Se elimina el producto y precio
         // 3- Consulta al usuario para eliminar 2 productos al mismo tiempo
 
-        $producto = Producto::find($id);
-        $precio = Precio::find($producto->precio_id);
-        $productos = Producto::where('precio_id', $precio->id)->get();
+        $producto = Producto::where('id', $id)->where('empresa_id', session('empresa')->id)->first();
+        $precio = Precio::where('id', $producto->precio_id)->where('empresa_id', session('empresa')->id)->first();
+        $productos = Producto::where('precio_id', $precio->id)->where('empresa_id', session('empresa')->id)->get();
 
         if ($request->confirm === "true") {
 
@@ -131,8 +132,8 @@ class APIProductos extends Controller
             'dolar' => 'numeric|required|max:999999|min:0',
         ]);
 
-        $producto = Producto::find($request->producto_id);
-        $precio = Precio::find($producto->precio_id);
+        $producto = Producto::where('id', $request->producto_id)->where('empresa_id', session('empresa')->id)->first();
+        $precio = Precio::where('id', $producto->precio_id)->where('empresa_id', session('empresa')->id)->first();
 
         $precio->increment('contador_update');
         $precio->dolar = $request->dolar;
@@ -158,11 +159,5 @@ class APIProductos extends Controller
         } else {
             echo json_encode($resultado);
         }
-
     }
 }
-
-
-
-
-

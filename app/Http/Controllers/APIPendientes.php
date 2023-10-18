@@ -9,20 +9,20 @@ class APIPendientes extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
     }
 
     public function index()
     {
         // Pendiente mas antiguo
-        $pendiente = Pendiente::orderBy('created_at', 'asc')->first();
+        $pendiente = Pendiente::orderBy('created_at', 'asc')->where('empresa_id', session('empresa')->id)->first();
 
         echo json_encode($pendiente);
 
     }
     public function count()
     {
-        $pendientes = Pendiente::all()->count();
+        $pendientes = Pendiente::where('empresa_id', session('empresa')->id)->count();
 
         echo json_encode($pendientes);
 
@@ -42,6 +42,7 @@ class APIPendientes extends Controller
         $pendiente = Pendiente::create([
             'nombre' => $request->nombre,
             'precio' => $request->precio,
+            'empresa_id' => session('empresa')->id,
             'stock' => $request->cantidad,
             'desc_porc' => $request->descuento,
             'desc_duracion' => $request->semanas
@@ -59,7 +60,7 @@ class APIPendientes extends Controller
             return;
         }
         // Eliminar pendiente
-        $pendiente = Pendiente::find($id);
+        $pendiente = Pendiente::where('id', $id)->where('empresa_id', session('empresa')->id)->first();
         $resultado = $pendiente->delete();
 
         echo json_encode($resultado);

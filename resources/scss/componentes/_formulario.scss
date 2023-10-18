@@ -149,6 +149,22 @@
         height: 3rem;
 
     }
+
+    &__opciones-contenedor {
+
+        display: flex;
+        justify-content: space-around;
+        margin-top: 5rem;
+    }
+
+    &__opciones-enlace {
+        color: v.$azul;
+        font-size: 1.4rem;
+
+        &:hover {
+            color: darken(v.$azul, 20%);
+        }
+    }
 }
 
 

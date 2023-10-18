@@ -4,14 +4,12 @@
     Iniciar Sesión
 @endsection
 
-{{-- Falta definir las clases de las alertas (pasarlo todo a SASS) y el resposive --}}
-
 @section('contenido')
 
 <div class="formulario__contenedor-md">
-
+    
     <div class="formulario__contenedor">
-        <form method="POST" action="{{ route('login') }}" novalidate>
+        <form method="POST" action="{{ route('login') }}">
             @csrf
             @if (session('mensaje'))
                 <p class=" alerta__error">{{ session('mensaje') }}</p>
@@ -44,6 +42,11 @@
         </form>
     </div>
 
+</div>
+
+<div class="formulario__opciones-contenedor">
+    <a href="{{ route('register') }}" class="formulario__opciones-enlace">Aún no tienes una cuenta?</a>
+    <a href="{{ route('password.request') }}" class="formulario__opciones-enlace">He olvidado mi contraseña</a>
 </div>
 
 @endsection()

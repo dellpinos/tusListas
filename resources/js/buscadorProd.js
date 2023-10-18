@@ -104,7 +104,7 @@ import * as helpers from './helpers';
 
                 const regex = /^[a-zA-Z0-9]+$/;
 
-                if (inputProductoFalso.value.length === 4 && regex.test(inputProductoFalso.value)) {
+                if (inputProductoFalso.value.length === 5 && regex.test(inputProductoFalso.value)) {
 
                     // cambiar la vista (color del box-shadow - verde)
                     btnBusqueda.classList.add('buscador__btn-busqueda--mostrar');
@@ -113,7 +113,7 @@ import * as helpers from './helpers';
 
                     inputProductoFalso.addEventListener('keydown', function (e) {
 
-                        if (e.key === 'Enter' && inputProductoFalso.value.length === 4) {
+                        if (e.key === 'Enter' && inputProductoFalso.value.length === 5) {
                             // cuando el usuario presiona Enter hago la busqueda
 
                             const codigo = inputProductoFalso.value; // Los códigos estan escritos en minusculas
@@ -124,7 +124,7 @@ import * as helpers from './helpers';
 
                     btnBusqueda.addEventListener('click', () => {
 
-                        if (inputProductoFalso.value.length === 4 && regex.test(inputProductoFalso.value)) {
+                        if (inputProductoFalso.value.length === 5 && regex.test(inputProductoFalso.value)) {
 
                             const codigo = inputProductoFalso.value; // Los códigos estan escritos en minusculas
                             findDBCodigo(codigo.toLowerCase());
@@ -187,7 +187,6 @@ import * as helpers from './helpers';
 
             // recargar archivo
             limpiarContenedor();
-
             generarBuscador();
 
             inputProductoFalso.addEventListener('click', function () {

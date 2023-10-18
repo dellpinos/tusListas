@@ -13,12 +13,12 @@ class APICategorias extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
     }
     public function all()
     {
 
-        $categorias = Categoria::orderBy('nombre', 'asc')->get();
+        $categorias = Categoria::orderBy('nombre', 'asc')->where('empresa_id', session('empresa')->id)->get();
 
         echo json_encode([
             'categorias' => $categorias
@@ -31,14 +31,14 @@ class APICategorias extends Controller
         $id = filter_var($request->id, FILTER_VALIDATE_INT);
 
         // Verifico que no haya productos ni precios relacionados a esta categoria
-        $productos = Producto::where('categoria_id', $id)->get();
+        $productos = Producto::where('categoria_id', $id)->where('empresa_id', session('empresa')->id)->get();
 
         if ($productos->count() === 0 && $id !== false) {
-            $precios = Precio::where('categoria_id', $id)->get();
+            $precios = Precio::where('categoria_id', $id)->where('empresa_id', session('empresa')->id)->get();
             if ($precios->count() === 0) {
 
                 // Eliminar
-                $categoria = Categoria::find($id);
+                $categoria = Categoria::where('id', $id)->where('empresa_id', session('empresa')->id)->first();
 
                 $respuesta = $categoria->delete();
                 if ($respuesta) {

@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Empresa;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Aumento extends Model
 {
@@ -14,6 +15,12 @@ class Aumento extends Model
         'tipo',
         'username',
         'nombre',
-        'afectados'
+        'afectados',
+        'empresa_id'
     ];
+
+    public function empresas()
+    {
+        return $this->belongsTo(Empresa::class);
+    }
 }
