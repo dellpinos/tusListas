@@ -81,6 +81,7 @@ import Swal from 'sweetalert2';
                     }
                 }
 
+
                 if (resultado.productos.length === 0 || resultado.precios.length === 0) {
 
                     sinResultados();
@@ -91,11 +92,13 @@ import Swal from 'sweetalert2';
                 }
             } catch (error) {
                 console.log(error);
+
             }
         });
 
         function recargarPaginacion(resultado) {
             mensajeInfo.classList.remove('display-none');
+
             mensajeInfo.classList.add('mensaje__warning');
             btnDolarAct.classList.remove('display-none');
 
@@ -105,6 +108,7 @@ import Swal from 'sweetalert2';
             productosArray = resultado.productos;
             preciosArray = resultado.precios;
             paginacion = resultado.paginacion;
+
 
             // Generar elementos
             mostrarElementos();
@@ -255,6 +259,7 @@ import Swal from 'sweetalert2';
                             enlaceNumero.forEach(numero => {
                                 numero.addEventListener('click', async (e) => {
 
+
                                     // Modificar page
                                     page = e.target.dataset.page;
                                     try {
@@ -264,12 +269,14 @@ import Swal from 'sweetalert2';
                                     } catch (error) {
                                         console.log(error);
                                     }
+
                                 });
                             });
 
                             const enlaceBtn = document.querySelectorAll('[data-btn]');
                             enlaceBtn.forEach(boton => {
                                 boton.addEventListener('click', async (e) => {
+
                                     try {
 
                                         if (e.target.dataset.btn === 'siguiente') {
@@ -289,6 +296,7 @@ import Swal from 'sweetalert2';
                                         }
                                     } catch (error) {
                                         console.log(error);
+
                                     }
                                 });
                             });
