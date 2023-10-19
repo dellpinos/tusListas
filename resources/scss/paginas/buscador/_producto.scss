@@ -67,36 +67,37 @@
         overflow: hidden;
         white-space: nowrap;
         border-left: 20px solid v.$verde;
+        width: 100%;
 
 
-        &--slider {
-            color: v.$blanco;
-            background-color: v.$grisOscuroAzul;
-            padding: 2rem; // Este padding provoca que no se vea el utlimo elemento adecuadamente, loop
-            margin: 3rem 0 3rem 0;
-            border-radius: 1rem;
-            overflow: hidden;
-            white-space: nowrap;
+        // &--slider {
+        //     color: v.$blanco;
+        //     background-color: v.$grisOscuroAzul;
+        //     padding: 2rem; // Este padding provoca que no se vea el utlimo elemento adecuadamente, loop
+        //     margin: 3rem 0 3rem 0;
+        //     border-radius: 1rem;
+        //     overflow: hidden;
+        //     white-space: nowrap;
 
-            a {
-                color: v.$blanco;
+        //     a {
+        //         color: v.$blanco;
 
-                &:hover {
-                    color: v.$verde;
-                }
-            }
+        //         &:hover {
+        //             color: v.$verde;
+        //         }
+        //     }
 
-            h3 {
-                text-align: center;
-                margin-bottom: 1.5rem;
-                font-size: 3rem;
-            }
+        //     h3 {
+        //         text-align: center;
+        //         margin-bottom: 1.5rem;
+        //         font-size: 3rem;
+        //     }
 
-            p {
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-        }
+        //     p {
+        //         overflow: hidden;
+        //         text-overflow: ellipsis;
+        //     }
+        // }
     }
 
     &__contenedor--descuento {
@@ -113,6 +114,7 @@
 
         flex-direction: column;
 
+
         @include m.tablet {
             flex-direction: row;
         }
@@ -120,18 +122,36 @@
     }
 
     &__card-nombre {
-        font-size: 4rem;
+        font-size: 3rem;
         text-align: center;
         overflow: hidden;
+        white-space: pre-line;
+        color: v.$blanco;
         text-overflow: ellipsis;
+
+        @include m.phone {
+            white-space: ellipsis;
+        }
+
+        @include m.tablet {
+            font-size: 5rem;
+        }
+
+    }
+
+    &__contenedor-precio {
 
     }
 
     &__card-precio {
         text-align: center;
-        font-size: 7rem;
         font-weight: v.$bold;
         color: v.$verde;
+        font-size: 5rem;
+        
+        @include m.phone {
+            font-size: 9rem;
+        }
 
         span {
             font-size: 2rem;
@@ -143,21 +163,53 @@
         }
     }
 
-    &__card-info {
+    &__btn-opts {
+        display: none;
+        
+        @include m.tablet {
+            display: flex;
+            justify-content: flex-end;
+        }
 
+    }
+
+    &__card-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         p {
-            font-size: 2rem;
+            font-size: 1.4rem;
+
+            @include m.phone {
+                font-size: 2rem;
+            }
         }
     }
 
     &__grid-card {
 
-        width: 80%;
+        margin-top: 2rem;
+        width: 100%;
+        display: flex;
+        flex-direction: column-reverse;
+        
+        @include m.tablet {
+            @include m.grid(2, 1rem);
+            margin-top: 6rem;
+        }
+
     }
 
     &__card-contenedor-boton {
-        width: 15%;
+        
+        background-color: v.$azul;
+        padding: 1.5rem 3rem;
         margin: 2rem;
+        transition: background-color .5s ease;
+
+        &:hover {
+            background-color: darken(v.$azul, 10%);
+        }
     }
 
     &__card-contenedor-boton--ancho {

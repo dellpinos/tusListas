@@ -352,7 +352,7 @@ import * as helpers from './helpers';
                         <td class="table__td">${producto.nombre}</td>
                         <td class="table__td">$ ${precio.precio}</td>
                         <td class="table__td ${claseDescuento}">$ ${producto.venta} ${unidadFraccion}</td>
-                        <td class="table__td"><a class="table__accion table__accion--editar" href="/producto/producto-show/${producto.id}">Editar</a></td>
+                        <td class="table__td"><a class="table__accion table__accion--editar" href="/producto/producto-show/${producto.id}">Ver</a></td>
                         </tr>
                     `;
 
@@ -676,46 +676,53 @@ import * as helpers from './helpers';
                 if (resultado.precio.desc_porc) {
                     // Producto en oferta
                     cardProducto.innerHTML = `
-                    <a href="/producto/producto-show/${resultado.producto.id}" class="producto__grid-card">
-                    <div class=" producto__contenedor producto__contenedor--descuento ">
-                        <h3 class="producto__card-nombre">${resultado.producto.nombre} - <span class="c-red">En Oferta</span></h3>
-                        <div class="producto__contenedor-precio">
-                            <p class="producto__card-precio producto__card-precio--oferta">$ ${resultado.producto.venta}<span class="font-bold"> ${resultado.producto.unidad_fraccion}</span></p>
+                        <div class=" producto__contenedor producto__contenedor--descuento ">
+                            <a href="/producto/producto-show/${resultado.producto.id}">
+                                <h3 class="producto__card-nombre">${resultado.producto.nombre} - <span class="c-red">En Oferta</span></h3>
+                            </a>
+                            <div class="producto__grid-card">
+                                <div class="producto__card-info">
+                                    <p><span class=" font-bold">Código: </span>${resultado.producto.codigo.toUpperCase()}</p>
+                                    <p><span class="c-red font-bold">Descuento: </span>${resultado.precio.desc_porc} % </p>
+                                    <p><span class="c-red font-bold">Descuento finaliza en: </span>${resultado.precio.semanas_restantes} semanas</p>
+                                    <p><span class=" font-bold">Ganancia aplicada: </span>${resultado.producto.ganancia}</p>
+                                    <p><span class=" font-bold">Costo sin IVA: $ </span>${resultado.precio.precio}</p>
+                                    <p><span class=" font-bold">Modificación: </span>${fechaFormateada}</p>
+                                </div>
+                                <div class="producto__contenedor-precio">
+                                    <p class="producto__card-precio producto__card-precio--oferta">$ ${resultado.producto.venta}<span class="font-bold"> ${resultado.producto.unidad_fraccion}</span></p>
+                                    <div class="producto__btn-opts">
+                                        <a href="/producto/producto-edit/${resultado.producto.id}" class="producto__card-contenedor-boton producto__boton producto__boton--verde">Editar</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="producto__card-info">
-                            <p><span class=" font-bold">Descuento: </span>${resultado.precio.desc_porc} % </p>
-                            <p><span class=" font-bold">Descuento finaliza en: </span>${resultado.precio.semanas_restantes} semanas</p>
-                            <p><span class=" font-bold">Código: </span>${resultado.producto.codigo.toUpperCase()}</p>
-                            <p><span class=" font-bold">Ganancia aplicada: </span>${resultado.producto.ganancia}</p>
-                            <p><span class=" font-bold">Costo sin IVA: $ </span>${resultado.precio.precio}</p>
-                            <p><span class=" font-bold">Modificación: </span>${fechaFormateada}</p>
-                        </div>
-        
-                    </div>
-                    <a href="/producto/producto-edit/${resultado.producto.id}" class="producto__card-contenedor-boton producto__boton producto__boton--verde">Modificar</a>
-                </a>
                 `;
 
                 } else {
 
-                    // No tiene descuento
+                    // No tiene descuento 
                     cardProducto.innerHTML = `
-                    <a href="/producto/producto-show/${resultado.producto.id}" class="producto__grid-card">
                     <div class=" producto__contenedor ">
-                        <h3 class="producto__card-nombre">${resultado.producto.nombre}</h3>
-                        <div class="producto__contenedor-precio">
-                            <p class="producto__card-precio">$ ${resultado.producto.venta}<span class="font-bold"> ${resultado.producto.unidad_fraccion}</span></p>
+                        <a href="/producto/producto-show/${resultado.producto.id}">
+                            <h3 class="producto__card-nombre">${resultado.producto.nombre}</h3>
+                        </a>
+                        <div class="producto__grid-card">
+
+                            <div class="producto__card-info">
+                                <p><span class=" font-bold">Código: </span>${resultado.producto.codigo.toUpperCase()}</p>
+                                <p><span class=" font-bold">Ganancia aplicada: </span>${resultado.producto.ganancia}</p>
+                                <p><span class=" font-bold">Costo sin IVA: $ </span>${resultado.precio.precio}</p>
+                                <p><span class=" font-bold">Modificación: </span>${fechaFormateada}</p>
+                            </div>
+                            <div class="producto__contenedor-precio">
+                                <p class="producto__card-precio">$ ${resultado.producto.venta}<span class="font-bold"> ${resultado.producto.unidad_fraccion}</span></p>
+                                <div class="producto__btn-opts">
+                                    <a href="/producto/producto-edit/${resultado.producto.id}" class="producto__card-contenedor-boton producto__boton producto__boton--verde">Editar</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="producto__card-info">
-                            <p><span class=" font-bold">Código: </span>${resultado.producto.codigo.toUpperCase()}</p>
-                            <p><span class=" font-bold">Ganancia aplicada: </span>${resultado.producto.ganancia}</p>
-                            <p><span class=" font-bold">Costo sin IVA: $ </span>${resultado.precio.precio}</p>
-                            <p><span class=" font-bold">Modificación: </span>${fechaFormateada}</p>
-                        </div>
-        
-                    </div>
-                    <a href="/producto/producto-edit/${resultado.producto.id}" class="producto__card-contenedor-boton producto__boton producto__boton--verde">Modificar</a>
-                </a>
+                    </div
                 `;
                 }
 
@@ -724,5 +731,4 @@ import * as helpers from './helpers';
             }
         }
     }
-
 })();

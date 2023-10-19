@@ -16,6 +16,10 @@
         
         @include m.phone {
             
+            padding: 3rem 2rem 6rem 2rem;
+        }
+
+        @include m.tablet {
             padding: 3rem 8rem 8rem 8rem;
         }
     }
@@ -41,18 +45,27 @@
         display: flex;
         justify-content: space-around;
         color: v.$blanco;
-        max-height: 0;
+        max-height: 6rem;
         overflow: hidden;
         transition: max-height 0.5s ease;
+
+        @include m.tablet {
+            max-height: 0;
+        }
+        
         
         p {
             box-shadow: 0px -3px 4px v.$blanco inset;
             width: 100%;
             text-align: center;
             border-right: 1px solid v.$blanco;
-            opacity: 0;
+            opacity: 1;
             transition: opacity 1.5s ease;
             padding: .5rem 0 .8rem 0;
+
+            @include m.tablet {
+                opacity: 0;
+            }
         }
 
         
@@ -75,14 +88,13 @@
 
 
         &:hover {
-
             background-color: lighten(v.$azul, 10%);
         }
     }
     
     &__tab-icono {
         box-shadow: 0px -3px 4px v.$blanco inset;
-        display: flex;
+        
         align-items: center;
         justify-content: center;
         font-size: 2rem;
@@ -94,11 +106,18 @@
         opacity: 1;
         transition: max-height .5s ease, opacity 2s ease;
 
+        display: none;
+
+        @include m.tablet {
+            display: flex;
+        }
+
         &--activo {
             opacity: 0;
             max-height: 0;
             color: v.$azul;
             cursor: default;
+
         }
     }
 }
