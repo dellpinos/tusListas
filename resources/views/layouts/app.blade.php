@@ -60,7 +60,7 @@
 
         <div class="home__contenedor-principal">
 
-            <h2 class="">
+            <h2 class="home__heading">
                 @yield('titulo')
             </h2>
 

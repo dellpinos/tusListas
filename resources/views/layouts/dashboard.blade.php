@@ -37,6 +37,9 @@
                 <h1 class=" header__nombre">Tus Listas - {{ session('empresa')->name}}</h1>
             </a>
             @auth
+
+            <i class="header__icono-menu fa-solid fa-bars"></i>
+
                 <nav class="header__nav">
 
 
