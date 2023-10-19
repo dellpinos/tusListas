@@ -1,4 +1,5 @@
 @use '../base/variables' as v;
+@use '../base/mixins' as m;
 
 
 .dashboard {
@@ -8,11 +9,30 @@
         overflow-y: scroll;
         position: relative;
     }
+    &__contenedor-secundario {
+        
+        margin: 4rem auto;
+        padding: 3rem 1rem 3rem 1rem;
+        
+        @include m.phone {
+            
+            padding: 3rem 8rem 8rem 8rem;
+        }
+    }
+
     &__contenedor-tabs {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
+    }
+
+    &__heading {
+        font-size: 4rem;
+
+        @include m.phone {
+            font-size: 8rem;
+        }
     }
 
 
@@ -42,7 +62,6 @@
             p {
                 opacity: 1;
             }
-
         }
     }
 
@@ -80,15 +99,6 @@
             max-height: 0;
             color: v.$azul;
             cursor: default;
-
-            
         }
-    }
-
-    &__contenedor-secundario {
-        
-        margin: 4rem auto;
-        padding: 3rem 8rem 8rem 8rem;
-
     }
 }

@@ -111,6 +111,12 @@
         gap: 0;
         background-color: v.$grisOscuroAzul;
 
+        flex-direction: column;
+
+        @include m.tablet {
+            flex-direction: row;
+        }
+
     }
 
     &__card-nombre {

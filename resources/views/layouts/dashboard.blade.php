@@ -34,21 +34,18 @@
         <div class="header__contenedor">
             <a class="header__contenedor-nombre" href="{{ route('buscador') }}">
                 <img src="{{ asset('img/LogoSinFondo.png') }}" class="header__logo" alt="Logo Tus Listas">
-                <h1 class=" header__nombre">Tus Listas - {{ session('empresa')->name}}</h1>
+                <h1 class=" header__nombre">Tus Listas - {{ session('empresa')->name }}</h1>
             </a>
             @auth
 
-            <i class="header__icono-menu fa-solid fa-bars"></i>
+                <i id="icono-menu-movil" class="header__icono-menu fa-solid fa-bars"></i>
 
                 <nav class="header__nav">
-
-
                     @if (auth()->user()->user_type === 'admin' || auth()->user()->user_type === 'owner')
                         <a class="header__enlace header__enlace--admin" href="{{ route('owner-tools') }}">
-                            
+
                             <i class="fa-solid fa-user-gear"></i>
                             <span class="font-regular">Admin</span></a>
-
                     @endif
                     <a class="header__enlace" href="{{ route('perfil') }}">Hola: <span
                             class="font-regular ">{{ auth()->user()->username }}</span></a>
@@ -79,8 +76,8 @@
                 <a href="{{ route('ingreso') }}"
                     class="sidebar__enlace @if (request()->path() === 'ingreso') activo @endif">
                     <i class="fa-solid fa-clipboard sidebar__icono"></i>
-                        <p class="sidebar__texto-icono">Ingreso</p>
-                    </a>
+                    <p class="sidebar__texto-icono">Ingreso</p>
+                </a>
                 <a href="{{ route('producto.create') }}" id="sidebar__new-prod"
                     class="sidebar__enlace @if (request()->path() === 'producto/nuevo-producto') activo @endif">
                     <i class="fa-solid fa-plus sidebar__icono"></i>
@@ -89,13 +86,13 @@
                 <a href="{{ route('aumentos') }}"
                     class="sidebar__enlace @if (request()->path() === 'aumentos') activo @endif"">
                     <i class="fa-solid fa-dollar-sign sidebar__icono"></i>
-                        <p class="sidebar__texto-icono">Aumentos</p>
-                    </a>
+                    <p class="sidebar__texto-icono">Aumentos</p>
+                </a>
                 <a href="{{ route('providers') }}"
                     class="sidebar__enlace @if (request()->path() === 'providers') activo @endif">
                     <i class="fa-solid fa-shop sidebar__icono"></i>
-                        <p class="sidebar__texto-icono">Proveedores</p>
-                    </a>
+                    <p class="sidebar__texto-icono">Proveedores</p>
+                </a>
                 <a href="{{ route('categorias') }}"
                     class="sidebar__enlace @if (request()->path() === 'categorias') activo @endif">
                     <i class="fa-solid fa-folder-open sidebar__icono"></i>
@@ -106,6 +103,28 @@
                     <i class="fa-solid fa-industry sidebar__icono"></i>
                     <p class="sidebar__texto-icono">Fabricantes</p>
                 </a>
+
+
+                {{-- Solo visibles en móviles --}}
+                <a href="{{ route('perfil') }}"
+                    class="sidebar__enlace sidebar__enlace-movil @if (request()->path() === 'perfil') activo @endif">
+                    <i class="fa-solid fa-user sidebar__icono"></i>
+                    <p class="sidebar__texto-icono">Perfil</p>
+                </a>
+                @if (auth()->user()->user_type === 'admin' || auth()->user()->user_type === 'owner')
+                <a href="{{ route('owner-tools') }}"
+                    class="sidebar__enlace sidebar__enlace-movil @if (request()->path() === 'owner-tools') activo @endif">
+                    <i class="fa-solid fa-user-gear sidebar__icono"></i>
+                    <p class="sidebar__texto-icono">Administrador</p>
+                </a>
+                @endif
+                <a href="{{ route('logout') }}"
+                    class="sidebar__enlace sidebar__enlace-movil sidebar__enlace-movil--logout">
+                    <i class="fa-solid fa-arrow-right-from-bracket sidebar__icono"></i>
+                    <p class="sidebar__texto-icono">Cerrar sesión</p>
+                </a>
+                {{-- Fin móviles --}}
+
             </nav>
         </aside>
 

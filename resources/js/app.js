@@ -12,5 +12,6 @@ import './ingreso';
 import './helpers';
 import './sidebar';
 import './ownerTools';
+import './menuMovil';
 
 
