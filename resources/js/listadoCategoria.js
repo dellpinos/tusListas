@@ -92,7 +92,7 @@ import * as helpers from './helpers';
                 catParrafo.textContent = "Ganancia: " + categoria.ganancia;
 
                 const contenedorSM = document.createElement('DIV');
-                contenedorSM.classList.add('formulario__contenedor-boton', 'formulario__contenedor-boton--sm');
+                contenedorSM.classList.add('categoria__contenedor-boton', 'formulario__contenedor-boton--sm');
 
                 const catEnlace = document.createElement('A');
                 catEnlace.setAttribute('href', `/categoria/categoria-edit/${categoria.id}`);

@@ -11,7 +11,7 @@
     }
     &__contenedor-secundario {
         
-        margin: 4rem auto;
+        margin: 1rem auto;
         padding: 3rem 1rem 3rem 1rem;
         
         @include m.phone {
@@ -21,6 +21,7 @@
 
         @include m.tablet {
             padding: 3rem 8rem 8rem 8rem;
+            margin: 4rem auto;
         }
     }
 
@@ -35,7 +36,12 @@
         font-size: 4rem;
 
         @include m.phone {
+            font-size: 6rem;
+        }
+        
+        @include m.tablet {
             font-size: 8rem;
+            
         }
     }
 

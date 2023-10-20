@@ -6,7 +6,6 @@
     border-collapse: collapse;
     font-size: 1rem;
     text-align: center;
-
     
     @include m.phone {
         font-size: 1.5rem;
@@ -15,12 +14,10 @@
     &__thead {
         background-color: v.$grisMedio;
         color: v.$blanco;
-
     }
 
     &__th {
         padding: 1rem;
-
     }
 
     &__tr {
@@ -61,7 +58,5 @@
             cursor: pointer;
         }
     }
-
-
 }
 

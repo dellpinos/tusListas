@@ -65,9 +65,15 @@
         padding: 3rem;
         border-radius: 1rem;
         overflow: hidden;
-        white-space: nowrap;
+        text-overflow: ellipsis;
         border-left: 20px solid v.$verde;
         width: 100%;
+
+        
+        @include m.phone {
+            white-space: nowrap;
+            
+        }
 
 
         // &--slider {

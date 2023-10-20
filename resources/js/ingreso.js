@@ -380,6 +380,19 @@ import * as helpers from './helpers';
         }
         function generarForm() {
 
+            /// crear un label para cada campon e inhabilitarlo con display:none / habilitarlo en mq:phone a la vez que deshabilito los que se encuentran en el HTML
+            const contenedorLabel = document.createElement('DIV');
+            contenedorLabel.classList.add('ingreso__contenedor-campo-movil');
+
+            const labelMovil = document.createElement('LABEL');
+            labelMovil.classList.add('ingreso__label-movil');
+            labelMovil.textContent = "";
+
+            contenedorLabel.appendChild(labelMovil);
+            ///
+
+
+
             const contenedorCheck = document.createElement('DIV');
             contenedorCheck.classList.add('formulario__contenedor-checkbox');
 
@@ -440,7 +453,6 @@ import * as helpers from './helpers';
                     precio.placeholder = "Precio con IVA";
                     optIVA.textContent = "con IVA";
                     precio.classList.add('ingreso__campo-precio--checked');
-
 
                 } else {
 

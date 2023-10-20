@@ -1,0 +1,7 @@
+@use '../../base/variables' as v;
+.aumento {
+
+    &__contenedor-table {
+        overflow-x: scroll;
+    }
+}

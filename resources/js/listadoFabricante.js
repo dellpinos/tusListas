@@ -101,7 +101,7 @@ import * as helpers from './helpers';
                 catParrafo3.textContent = "Descripción: " + fabricante.descripcion;
 
                 const contenedorSM = document.createElement('DIV');
-                contenedorSM.classList.add('formulario__contenedor-boton', 'formulario__contenedor-boton--sm');
+                contenedorSM.classList.add('fabricante__contenedor-boton', 'formulario__contenedor-boton--sm');
 
                 const catEnlace = document.createElement('A');
                 catEnlace.setAttribute('href', `/fabricante/fabricante-edit/${fabricante.id}`);

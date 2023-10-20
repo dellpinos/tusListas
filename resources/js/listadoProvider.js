@@ -109,7 +109,7 @@ import * as helpers from './helpers';
                 catParrafo5.textContent = "Web: " + provider.web;
 
                 const contenedorSM = document.createElement('DIV');
-                contenedorSM.classList.add('formulario__contenedor-boton', 'formulario__contenedor-boton--sm');
+                contenedorSM.classList.add('provider__contenedor-boton', 'formulario__contenedor-boton--sm');
 
                 const catEnlace = document.createElement('A');
                 catEnlace.setAttribute('href', `/provider/provider-edit/${provider.id}`);

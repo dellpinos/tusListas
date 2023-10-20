@@ -61,17 +61,33 @@
     &__campo-flex {
         display: flex;
         justify-content: space-between;
+        flex-direction: column;
         align-items: center;
         margin: 0 0 2rem 0;
         padding: 0 5rem 0 5rem;
+
+        @include m.phone {
+            flex-direction: row;
+
+        }
         
         label {
-            width: 20%;
-            font-size: 3rem;
+            width: 100%;
+            font-size: 2rem;
+            
+            @include m.phone {
+                width: 20%;
+                font-size: 3rem;
+            }
         }
         input {
-            width: 70%;
-            font-size: 3rem;
+            width: 100%;
+            font-size: 2rem;
+            
+            @include m.phone {
+                width: 70%;
+                font-size: 3rem;
+            }
 
         }
     }
@@ -92,8 +108,20 @@
         background-color: v.$blanco;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
         text-align: center;
-        width: 70%;
+        width: 100%;
         margin: 5rem auto;
+
+        @include m.tablet {
+            width: 70%;
+        }
+
+        h3 {
+            font-size: 2rem;
+
+            @include m.phone {
+                font-size: 4rem;
+            }
+        }
 
     }
     &__boton--act {

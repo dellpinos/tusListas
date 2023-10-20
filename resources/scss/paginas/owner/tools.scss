@@ -8,28 +8,38 @@
         gap: 2rem;
         align-items: center;
         margin-bottom: 2rem;
+
     }
 
     &__contenedor-sm {
-        width: 90%;
+        width: 100%;
         margin: 5rem auto;
         margin-bottom: 5rem;
         padding: 3rem;
         border-radius: .5rem;
         background-color: v.$blanco;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+
+        @include m.tablet {
+            width: 90%;
+        }
     }
 
     &__campo-contenedor {
         width: 100%;
         margin: 0;
         display: flex;
+        flex-direction: column;
         gap: 2rem;
         
+        
+        @include m.phone {
+            flex-direction: row;
+            align-items: center;
+        }
     }
 
     &__campo {
-      //  width: 70%;
 
     }
 
@@ -52,8 +62,12 @@
     }
     &__boton {
         height: 100%;
-        width: 30rem;
         white-space: nowrap;
+        width: auto;
+        
+        @include m.phone {
+            width: 30rem;
+        }
     }
 
     &__contenedor {
@@ -91,7 +105,18 @@
         margin-bottom: 2rem;
     }
 
-    &__heading-tabla {
+    &__contenedor-table {
+
+        width: auto;
+        overflow: scroll;
+    }
+
+    &__heading-table {
         margin-top: 5rem;
+        font-size: 3rem;
+
+        @include m.phone {
+            font-size: 4rem;
+        }
     }
 }
