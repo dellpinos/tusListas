@@ -14,13 +14,18 @@
 
     &__flex {
         display: flex;
-        gap: 2rem;
         align-items: center;
         margin-bottom: 5rem;
         padding: 3rem;
         border-radius: .5rem;
         background-color: v.$blanco;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        flex-direction: column;
+        
+        @include m.tablet {
+            gap: 2rem;
+            flex-direction: row;
+        }
     }
 
     &__contenedor-sm {
@@ -31,7 +36,12 @@
         display: flex;
         justify-content: space-around;
         align-items: center;
-        gap: 2rem;
+        flex-direction: column;
+        
+        @include m.tablet {
+            gap: 2rem;
+            flex-direction: row;
+        }
     }
 
     &__campo-contenedor {
@@ -67,8 +77,13 @@
     }
     &__boton {
         height: 100%;
-        width: 20%;
+        width: auto;
         white-space: nowrap;
+        
+        @include m.tablet {
+            width: 20%;
+            
+        }
     }
 
     &__contenedor {

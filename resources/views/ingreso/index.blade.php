@@ -13,7 +13,7 @@
 <p class="mensaje__info">Dolar aplicado a esta mercaderia: U$S <span class="ingreso__numero">{{intval($dolar)}}</span></p>
     <div class="ingreso__contenedor">
 
-        <h3>Productos</h3>
+        <h3>Ingreso de Productos</h3>
 
         <div class="ingreso__grid" id="mercaderia-grid">
             

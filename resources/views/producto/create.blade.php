@@ -93,8 +93,9 @@
                 <div class="formulario__campo-contenedor">
                     <label for="dolar" class="formulario__label">Cotización dolar Blue
                         (compra) *</label>
-                    <input required type="number" id="dolar" name="dolar" placeholder="0" min="1" step="any"
-                        class="formulario__campo  @error('dolar') borde__error @enderror" value="{{ $dolar_pred }}">
+                    <input required type="number" id="dolar" name="dolar" placeholder="0" min="1"
+                        step="any" class="formulario__campo  @error('dolar') borde__error @enderror"
+                        value="{{ $dolar_pred }}">
                     @error('dolar')
                         <p class="alerta__error">{{ $message }}</p>
                     @enderror
@@ -102,22 +103,7 @@
                         Dolar Hoy</a>
                 </div>
 
-                <div class="producto-formulario__flex producto-formulario__contenedor-checkbox">
-                    <input type="checkbox" id="check-fraccion" />
-                    <label for="check-fraccion"
-                        class="formulario__label pointer
-                        @error('ganancia_fraccion')
-                        c-red
-                        @enderror
-                        @error('contenido_total')
-                        c-red
-                        @enderror
-                        @error('unidad_fraccion')
-                        c-red
-                        @enderror
-                    ">Venta fraccionado</label>
 
-                </div>
             </div>
             <div class="producto-formulario__contenedor-sm">
 
@@ -141,15 +127,21 @@
 
                 <label for="ganancia" class="formulario__label">Ganancia *</label>
                 <div class="formulario__contenedor-radio" id="contenedor-radios">
-                    <label for="ganancia-categoria" class="formulario__label--small">Categoria</label>
-                    <input type="radio" value="categoria" name="ganancia" class="cursor-pointer"
-                        id="ganancia-categoria" />
-                    <label for="ganancia-provider" class="formulario__label--small">Proveedor</label>
-                    <input type="radio" value="provider" name="ganancia" class="cursor-pointer"
-                        id="ganancia-provider" checked />
-                    <label for="ganancia-personalizada" class="formulario__label--small">Personalizada</label>
-                    <input type="radio" value="personalizada" name="ganancia" class="cursor-pointer"
-                        id="ganancia-personalizada" />
+                    <div class="formulario__contenedor-input-radio">
+                        <label for="ganancia-categoria" class="formulario__label--small">Categoria</label>
+                        <input type="radio" value="categoria" name="ganancia" class="cursor-pointer"
+                            id="ganancia-categoria" />
+                    </div>
+                    <div class="formulario__contenedor-input-radio">
+                        <label for="ganancia-provider" class="formulario__label--small">Proveedor</label>
+                        <input type="radio" value="provider" name="ganancia" class="cursor-pointer"
+                            id="ganancia-provider" checked />
+                    </div>
+                    <div class="formulario__contenedor-input-radio">
+                        <label for="ganancia-personalizada" class="formulario__label--small">Personalizada</label>
+                        <input type="radio" value="personalizada" name="ganancia" class="cursor-pointer"
+                            id="ganancia-personalizada" />
+                    </div>
                 </div>
                 <div class="formulario__campo-contenedor">
                     <input type="number" step="0.01" min="1" max="19.9" id="ganancia"
@@ -175,6 +167,24 @@
                     </div>
                 </div>
             </div>
+
+        </div>
+        <div class="producto-formulario__flex producto-formulario__contenedor-checkbox">
+            <input type="checkbox" id="check-fraccion" />
+            <label for="check-fraccion"
+                class="formulario__label pointer
+                @error('ganancia_fraccion')
+                c-red
+                @enderror
+                @error('contenido_total')
+                c-red
+                @enderror
+                @error('unidad_fraccion')
+                c-red
+                @enderror
+            ">Venta
+                fraccionado</label>
+
         </div>
 
         <div id="producto-contenedor-oculto" class="producto-formulario__contenedor-oculto"> {{-- Contenedor Fraccionado --}}

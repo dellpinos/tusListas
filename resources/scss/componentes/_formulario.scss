@@ -87,7 +87,22 @@
         padding: 1rem;
         gap: 1rem;
         justify-content: space-between;
+        flex-direction: column;
 
+        @include m.phone {
+            flex-direction: row;
+        }
+
+    }
+
+    &__contenedor-input-radio {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+
+        input {
+            margin: 0;
+        }
     }
 
     &__campo{
@@ -162,6 +177,13 @@
         display: flex;
         justify-content: space-between;
         margin-bottom: 2rem;
+        gap: 1rem;
+        flex-direction: column;
+
+        @include m.tablet {
+            flex-direction: row;
+            gap: 0;
+        }
     }
 
     &__contenedor-checkbox {

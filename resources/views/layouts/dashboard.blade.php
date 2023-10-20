@@ -112,17 +112,29 @@
                     <p class="sidebar__texto-icono">Perfil</p>
                 </a>
                 @if (auth()->user()->user_type === 'admin' || auth()->user()->user_type === 'owner')
-                <a href="{{ route('owner-tools') }}"
-                    class="sidebar__enlace sidebar__enlace-movil @if (request()->path() === 'owner-tools') activo @endif">
-                    <i class="fa-solid fa-user-gear sidebar__icono"></i>
-                    <p class="sidebar__texto-icono">Administrador</p>
-                </a>
+                    <a href="{{ route('owner-tools') }}"
+                        class="sidebar__enlace sidebar__enlace-movil @if (request()->path() === 'owner-tools') activo @endif">
+                        <i class="fa-solid fa-user-gear sidebar__icono"></i>
+                        <p class="sidebar__texto-icono">Administrador</p>
+                    </a>
                 @endif
-                <a href="{{ route('logout') }}"
+                {{-- <a href="{{ route('logout') }}"
                     class="sidebar__enlace sidebar__enlace-movil sidebar__enlace-movil--logout">
                     <i class="fa-solid fa-arrow-right-from-bracket sidebar__icono"></i>
                     <p class="sidebar__texto-icono">Cerrar sesión</p>
-                </a>
+                </a> --}}
+
+                <form method="POST" action="{{ route('logout') }}"
+                    class="sidebar__enlace sidebar__enlace-movil sidebar__enlace-movil--logout">
+                    @csrf
+                    <button type="submit" class="btn-reset sidebar__button-movil--logout">
+                        <i class="fa-solid fa-arrow-right-from-bracket sidebar__icono"></i>
+                        <p class="sidebar__texto-icono">Cerrar sesión</p>
+                    </button>
+                </form>
+
+
+
                 {{-- Fin móviles --}}
 
             </nav>

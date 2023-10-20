@@ -8,8 +8,8 @@ import 'swiper/css/navigation';
 
 
 const opciones = {
-    slidesPerView: 2,
-    spaceBetween: 15,
+    slidesPerView: 1,
+    spaceBetween: 20,
     freeMode: true,
     loop: true,
     watchOverflow: true,
@@ -31,18 +31,19 @@ const opciones = {
         clickable: true,
         type: 'bullets',
         dynamicBullets: true,
+    },
+    breakpoints: {
+
+        768: {
+            slidesPerView: 2
+        },
+        1024: {
+            slidesPerView: 3
+        },
+        1200: {
+            slidesPerView: 4
+        }
     }
-    // breakpoints: {
-    //     768: {
-    //         slidesPerView: 2
-    //     },
-    //     1024: {
-    //         slidesPerView: 3
-    //     },
-    //     1200: {
-    //         slidesPerView: 4
-    //     }
-    // }
 }
 
 const swiper = new Swiper('.swiper', opciones);

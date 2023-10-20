@@ -82,13 +82,32 @@
             display: none;
         }
 
-        &--logout {
-
+        &--logout{
             &:hover {
                 box-shadow: lighten(v.$rojo, 5%) 0px 2px 5px;
                 color: lighten(v.$rojo, 10%);
+                cursor: pointer;
+
+                p, i{
+                    color: lighten(v.$rojo, 10%);
+                    cursor: pointer;
+                }
+                
             }
 
+        }
+    }
+    &__button-movil--logout {
+
+        align-items: center;
+        color: v.$blanco;
+        gap: 1rem;
+        justify-content: center;
+        width: 100%;
+        display: flex;
+
+        &:hover {
+            cursor: pointer;
         }
     }
     &__icono {
@@ -97,6 +116,19 @@
 
     &__texto-icono {
         font-size: 1.4rem;
+        font-weight: v.$bold;
+        text-transform: uppercase;
+
+        &--rojo {
+            color: v.$blanco;
+
+            &:hover {
+
+                cursor: pointer;
+                color: lighten(v.$rojo, 10%);
+            }
+
+        }
     }
     &__alert {
         position: absolute;
