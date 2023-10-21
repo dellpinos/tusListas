@@ -23,6 +23,15 @@ class APIAumentos extends Controller
     public function aumento_categoria(Request $request)
     {
 
+        // Evalua el rol del usuario
+        if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
+            return json_encode([
+                'error' => "Usuario invalido",
+            ]);
+        }
+
+
+
         // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
         $validator = Validator::make($request->all(), [
             'categoria_id' => 'integer|required|min:1',
@@ -41,15 +50,15 @@ class APIAumentos extends Controller
         $precios = Precio::where('categoria_id', $request->categoria_id)->where('empresa_id', session('empresa')->id)->get();
 
         $categoria = Categoria::where('id', $request->categoria_id)->where('empresa_id', session('empresa')->id)->first();
-        
+
         $preciosAfectados = count($precios);
         $porcentajeDecimal = 1 + ($request->porcentaje / 100);
-        
+
         foreach ($precios as $precio) {
             $precio->precio = $precio->precio * $porcentajeDecimal; // convierto porcentaje en decimal
             $precio->save();
         }
-        
+
         Aumento::create([
             'porcentaje' => $porcentajeDecimal,
             'tipo' => 'Categoria',
@@ -67,6 +76,15 @@ class APIAumentos extends Controller
 
     public function aumento_provider(Request $request)
     {
+
+                // Evalua el rol del usuario
+                if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
+                    return json_encode([
+                        'error' => "Usuario invalido",
+                    ]);
+                }
+
+
 
         // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
         $validator = Validator::make($request->all(), [
@@ -106,6 +124,15 @@ class APIAumentos extends Controller
     }
     public function aumento_fabricante(Request $request)
     {
+
+                // Evalua el rol del usuario
+                if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
+                    return json_encode([
+                        'error' => "Usuario invalido",
+                    ]);
+                }
+
+
 
         // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
         $validator = Validator::make($request->all(), [
@@ -148,6 +175,15 @@ class APIAumentos extends Controller
     }
     public function dolar_busqueda(Request $request) // <<<<<<
     {
+
+                // Evalua el rol del usuario
+                if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
+                    return json_encode([
+                        'error' => "Usuario invalido",
+                    ]);
+                }
+
+
 
         // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
         $validator = Validator::make($request->all(), [
@@ -227,6 +263,15 @@ class APIAumentos extends Controller
 
     public function dolar_listado()
     {
+
+                // Evalua el rol del usuario
+                if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
+                    return json_encode([
+                        'error' => "Usuario invalido",
+                    ]);
+                }
+
+
         // 10 precios - productos con "dolar" mas bajo
         $precios = Precio::orderBy('dolar', 'asc')->where('empresa_id', session('empresa')->id)->limit(5)->get();
 
@@ -264,6 +309,15 @@ class APIAumentos extends Controller
     public function dolar_count(Request $request)
     {
 
+                // Evalua el rol del usuario
+                if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
+                    return json_encode([
+                        'error' => "Usuario invalido",
+                    ]);
+                }
+
+
+
         // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
         $validator = Validator::make($request->all(), [
             'valor' => 'integer|required|min:0|max:10000'
@@ -288,6 +342,15 @@ class APIAumentos extends Controller
 
     public function dolar_update(Request $request)
     {
+
+                // Evalua el rol del usuario
+                if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
+                    return json_encode([
+                        'error' => "Usuario invalido",
+                    ]);
+                }
+
+                
 
         // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
         $validator = Validator::make($request->all(), [
