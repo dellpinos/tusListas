@@ -279,7 +279,7 @@ import * as helpers from './helpers';
             tabla.appendChild(tablaBody);
 
             contenedorPrincipal.appendChild(tabla);
-
+            contenedorPrincipal.classList.add('x-scroll');
             return tablaBody;
 
         }
@@ -410,6 +410,8 @@ import * as helpers from './helpers';
         }
 
         function limpiarContenedor() {
+
+            contenedorPrincipal.classList.remove('x-scroll');
 
             // Eliminar la barra de busqueda
             while (contenedorPrincipal.firstChild) {

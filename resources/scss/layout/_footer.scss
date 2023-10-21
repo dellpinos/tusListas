@@ -11,11 +11,14 @@
         margin: 10rem 0 0 0;
         text-align: center;
         padding: 4rem;
-        font-size: 1.8rem;
+        font-size: 1.4rem;
         text-transform: uppercase;
         
         line-height: 3rem;
-
+        
+        @include m.phone {
+            font-size: 1.8rem;
+        }
         @include m.tablet {
             line-height: 0;
         }

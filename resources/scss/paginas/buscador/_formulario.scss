@@ -37,6 +37,8 @@
         border: 2px solid v.$blanco;
         padding: 2rem;
 
+        
+
         &--no-valido {
             box-shadow: lighten(v.$rojo, 15%) 0px 5px 15px,
             lighten(v.$rojo, 15%) 0px 5px 15px inset;
