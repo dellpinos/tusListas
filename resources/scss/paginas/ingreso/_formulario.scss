@@ -12,6 +12,7 @@
             grid-template-columns: 1fr 2fr 4fr 9fr 5fr 3fr 3fr 1fr;
         }
 
+
     }
 
     &__contenedor {
@@ -19,6 +20,7 @@
         padding: 3rem;
         border-radius: .5rem;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+
     }
 
     &__icono {
@@ -105,7 +107,7 @@
         white-space: nowrap;
         
         @include m.tablet {
-           // display: none;
+           display: none;
             
         }
     }
@@ -113,15 +115,35 @@
     &__contenedor-btns {
         display: flex;
         gap: 1rem;
+        margin-top: 2rem;
+        padding-bottom: 2rem;
+
+        border-bottom: 1px solid v.$grisClaro;
+
+
+        @include m.tablet {
+            margin-top: 0;
+            border-bottom: none;
+        }
     }
 
     &__contenedor-precio {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        
+        @include m.tablet {
+            flex-direction: column;
+            
+        }
     }
 
     &__campo-precio {
-        border-radius: 1rem 1rem 0 0;
+        border-radius: 1rem 0rem 0 1rem;
+        
+        @include m.tablet {
+            border-radius: 1rem 1rem 0 0;
+            
+        }
 
         &--checked {
             border-color: v.$azul;
@@ -131,12 +153,12 @@
     &__contenedor-checkboxIVA {
 
         height: 1.3rem;
+
     }
 
     &__checkbox-IVA {
         width: 100%;
         border: 0.5px solid v.$gris;
-        height: 100%;
         color: v.$negro;
         font-size: 1.1rem;
         font-weight: v.$bold;
@@ -145,7 +167,12 @@
         flex-direction: column;
         justify-content: center;
         cursor: pointer;
-        border-radius: 0rem 0rem .5rem .5rem;
+        border-radius: 0rem .5rem .5rem 0rem;
+
+        @include m.tablet {
+            height: 100%;
+            border-radius: 0rem 0rem .5rem .5rem;
+        }
 
         &:hover {
             background-color: darken(v.$blanco, 5%);
