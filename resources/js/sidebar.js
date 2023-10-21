@@ -12,7 +12,7 @@
                 if (resultado > 0) {
 
                     const notif = document.createElement('I');
-                    notif.classList.add('sidebar__alert', 'fa-solid', 'fa-circle-exclamation');
+                    notif.classList.add('sidebar__alert-pendiente', 'fa-solid', 'fa-circle-exclamation');
                     notif.id = 'sidebar__pendiente-alert';
 
                     iconoProducto.appendChild(notif);

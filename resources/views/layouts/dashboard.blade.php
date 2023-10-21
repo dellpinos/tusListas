@@ -83,11 +83,22 @@
                     <i class="fa-solid fa-plus sidebar__icono"></i>
                     <p class="sidebar__texto-icono">Producto</p>
                 </a>
-                <a href="{{ route('aumentos') }}"
-                    class="sidebar__enlace @if (request()->path() === 'aumentos') activo @endif"">
-                    <i class="fa-solid fa-dollar-sign sidebar__icono"></i>
-                    <p class="sidebar__texto-icono">Aumentos</p>
-                </a>
+
+                {{-- Condicional dependiendo el rol del usuario --}}
+                @if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin')
+                    <a href="#" class="sidebar__enlace no-owner @if (request()->path() === 'aumentos') activo @endif ">
+                        <i class="fa-solid fa-dollar-sign sidebar__icono"></i>
+                        <p class="sidebar__texto-icono">Aumentos</p>
+                        <i class="sidebar__alert fa-solid fa-user-gear sidebar__alert-no-owner"></i>
+                    </a>
+                @else
+                    <a href=" {{ route('aumentos') }} "
+                        class="sidebar__enlace @if (request()->path() === 'aumentos') activo @endif ">
+                        <i class="fa-solid fa-dollar-sign sidebar__icono"></i>
+                        <p class="sidebar__texto-icono">Aumentos</p>
+                    </a>
+                @endif
+
                 <a href="{{ route('providers') }}"
                     class="sidebar__enlace @if (request()->path() === 'providers') activo @endif">
                     <i class="fa-solid fa-shop sidebar__icono"></i>
@@ -104,7 +115,6 @@
                     <p class="sidebar__texto-icono">Fabricantes</p>
                 </a>
 
-
                 {{-- Solo visibles en móviles --}}
                 <a href="{{ route('perfil') }}"
                     class="sidebar__enlace sidebar__enlace-movil @if (request()->path() === 'perfil') activo @endif">
@@ -118,11 +128,6 @@
                         <p class="sidebar__texto-icono">Administrador</p>
                     </a>
                 @endif
-                {{-- <a href="{{ route('logout') }}"
-                    class="sidebar__enlace sidebar__enlace-movil sidebar__enlace-movil--logout">
-                    <i class="fa-solid fa-arrow-right-from-bracket sidebar__icono"></i>
-                    <p class="sidebar__texto-icono">Cerrar sesión</p>
-                </a> --}}
 
                 <form method="POST" action="{{ route('logout') }}"
                     class="sidebar__enlace sidebar__enlace-movil sidebar__enlace-movil--logout">
@@ -132,8 +137,6 @@
                         <p class="sidebar__texto-icono">Cerrar sesión</p>
                     </button>
                 </form>
-
-
 
                 {{-- Fin móviles --}}
 

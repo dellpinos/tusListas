@@ -13,9 +13,17 @@ class AumentoController extends Controller
     {
         $this->middleware(['auth', 'verified']);
     }
-    
+
     public function index()
     {
+
+        // Evalua el rol del usuario
+        if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
+            return json_encode([
+                'error' => "Usuario invalido",
+            ]);
+        }
+
         $categorias = Categoria::orderBy('nombre', 'asc')->where('empresa_id', session('empresa')->id)->get();
         $providers = Provider::orderBy('nombre', 'asc')->where('empresa_id', session('empresa')->id)->get();
         $fabricantes = Fabricante::orderBy('nombre', 'asc')->where('empresa_id', session('empresa')->id)->get();
@@ -28,6 +36,15 @@ class AumentoController extends Controller
     }
     public function listado_aumentos()
     {
+
+        // Evalua el rol del usuario
+        if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
+            return json_encode([
+                'error' => "Usuario invalido",
+            ]);
+        }
+
+
         // Se listan los últimos 50 registros
         $registros = Aumento::orderBy('created_at', 'desc')->where('empresa_id', session('empresa')->id)->take(50)->get();
 
@@ -38,6 +55,15 @@ class AumentoController extends Controller
 
     public function dolar_aumentos()
     {
+
+        // Evalua el rol del usuario
+        if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
+            return json_encode([
+                'error' => "Usuario invalido",
+            ]);
+        }
+
+
         return view('aumentos.dolar');
     }
 }
