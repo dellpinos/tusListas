@@ -21,18 +21,6 @@ class ProductoController extends Controller
     public function index()
     {
 
-       // dd("Desde controlador del buscador");
-        $empresa = Empresa::find(auth()->user()->empresa_id);
-
-
-
-        if (!$empresa) {
-            auth()->logout();
-            return redirect()->route('login');
-        }
-
-        session()->put('empresa', $empresa);
-
         return view('producto.buscador');
     }
     public function create()
