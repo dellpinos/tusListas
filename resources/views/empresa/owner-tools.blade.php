@@ -39,15 +39,17 @@
             </div>
         </div>
 
-        <h3 class="owner__heading-tabla">Usuarios</h2>
+        <h3 class="owner__heading-table">Usuarios</h2>
 
+            <div class="owner__contenedor-table">
+                <table class="table" id="owner-table">
 
-            <table class="table" id="owner-table">
+                    {{-- Js --}}
+    
+                </table>
 
+            </div>
 
-                {{-- Js --}}
-
-            </table>
 
 
 

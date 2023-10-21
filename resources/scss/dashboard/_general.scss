@@ -1,11 +1,18 @@
 @use '../base/variables' as v;
+@use '../base/mixins' as m;
 
 
 .dashboard {
 
     &__grid {
+        
         display: flex;
-        overflow-y: auto;
+        flex-direction: column;
+
+        @include m.tablet {
+            overflow-y: auto;
+            flex-direction: row;
+        }
     }
 }
 

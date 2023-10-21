@@ -1,15 +1,37 @@
 @use '../base/variables' as v;
-
+@use '../base/mixins' as m;
 
 .home {
 
     &__contenedor-principal {
 
-        margin: 6rem auto 2rem auto;
-        width: 75%;
+        width: 100%;
         height: 100%;
+        margin: 2rem auto 1rem auto;
         padding: 1rem;
 
+        @include m.phone { // Tablet
+            width: 100%;
+            margin: 6rem auto 14rem auto;
+            
+        }
+        @include m.tablet { // Pc
+            width: 75%;
+            margin: 6rem auto 2rem auto;
+        }
         
     }
+
+    &__heading {
+        font-size: 4rem;
+
+        @include m.phone {
+            font-size: 6rem;
+        }
+        
+        @include m.tablet {
+            font-size: 8rem;
+        }
+    }
+
 }

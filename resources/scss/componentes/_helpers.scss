@@ -55,6 +55,9 @@
 .font-bold {
     font-weight: v.$bold;
 }
+.mt-1 {
+    margin-top: 1rem;
+}
 .mb-4 {
     margin-bottom: 4rem;
 }
@@ -81,4 +84,11 @@
 }
 .font-sm {
     font-size: 4rem!important;
+}
+.btn-reset { // Reinicia los estilos de un button
+    background-color: transparent;
+    border: none;
+}
+.x-scroll {
+    overflow-x: scroll;
 }
