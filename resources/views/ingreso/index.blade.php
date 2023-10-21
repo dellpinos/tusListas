@@ -25,7 +25,6 @@
             <label class="formulario__label ingreso__label" for="mercaderia-descuento">% Descuento</label>
             <label class="formulario__label ingreso__label" for="mercaderia-semanas">Semanas</label>
             <label class="formulario__label ingreso__label" for="mercaderia-guardar"></label>
-            <label class="formulario__label ingreso__label" for="mercaderia-guardar"></label>
 
             {{-- Js --}}
 

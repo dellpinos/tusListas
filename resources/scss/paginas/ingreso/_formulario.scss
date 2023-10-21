@@ -9,8 +9,7 @@
         row-gap: 1.5rem;
         
         @include m.tablet {
-            grid-template-columns: 1fr 2fr 4fr 9fr 5fr 3fr 3fr 1fr 1fr;
-            
+            grid-template-columns: 1fr 2fr 4fr 9fr 5fr 3fr 3fr 1fr;
         }
 
     }
@@ -69,6 +68,14 @@
         }
     }
 
+    &__campo {
+        width: 50%;
+
+        @include m.tablet {
+            width: 100%;
+        }
+    }
+
     &__label {
         display: none;
         text-align: center;
@@ -76,6 +83,36 @@
         @include m.tablet {
             display: block;
         }
+    }
+
+    &__contenedor-campo-movil {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        @include m.tablet {
+            display: block;
+        }
+    }
+
+    &__label-movil {
+        display: block;
+        font-size: 1.4rem;
+        margin: 0 0 .5rem 0;
+        text-transform: uppercase;
+        color: v.$grisClaro;
+        font-weight: v.$bold;
+        white-space: nowrap;
+        
+        @include m.tablet {
+           // display: none;
+            
+        }
+    }
+
+    &__contenedor-btns {
+        display: flex;
+        gap: 1rem;
     }
 
     &__contenedor-precio {
