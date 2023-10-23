@@ -175,10 +175,10 @@ import * as helpers from './helpers';
 
             let flagValidacion = [];
             let flagValidacionGral = true;
-            const regexCodigo = /^[a-zA-Z0-9]{4}$/;
+            const regexCodigo = /^[a-zA-Z0-9]{5}$/;
             const regexDescuento = /^[0-9]{1,3}(\.[0-9]{1,3})?$/;
             const regexPrecio = /^[0-9]+(\.[0-9]+)?$/;
-            const regexCantidad = /^(0|[1-9]\d*)$/; // <<<<<<
+            const regexCantidad = /^(0|[1-9]\d*)$/;
 
             descuento.classList.remove('b-red', 'b-green');
             semanas.classList.remove('b-red', 'b-green');
@@ -420,7 +420,6 @@ import * as helpers from './helpers';
 
             contenedorLabelCantidad.appendChild(cantidad);
 
-
             const contenedorLabelCodigo = document.createElement('DIV');
             contenedorLabelCodigo.classList.add('ingreso__contenedor-campo-movil');
 
@@ -429,7 +428,6 @@ import * as helpers from './helpers';
             labelCodigoMovil.textContent = "Código";
 
             contenedorLabelCodigo.appendChild(labelCodigoMovil);
-
 
             const contenedorCodigo = document.createElement('DIV');
             contenedorCodigo.classList.add('relative', 'ingreso__campo');
@@ -441,7 +439,6 @@ import * as helpers from './helpers';
 
             contenedorCodigo.appendChild(codigo);
             contenedorLabelCodigo.appendChild(contenedorCodigo);
-
 
             const contenedorLabelNombre = document.createElement('DIV');
             contenedorLabelNombre.classList.add('ingreso__contenedor-campo-movil');
@@ -463,7 +460,6 @@ import * as helpers from './helpers';
             contenedorNombre.appendChild(nombre);
             contenedorLabelNombre.appendChild(contenedorNombre);
 
-
             const contenedorLabelPrecio = document.createElement('DIV');
             contenedorLabelPrecio.classList.add('ingreso__contenedor-campo-movil');
 
@@ -473,10 +469,8 @@ import * as helpers from './helpers';
 
             contenedorLabelPrecio.appendChild(labelMovilPrecio);
 
-
             const contenedorPrecio = document.createElement('DIV');
             contenedorPrecio.classList.add('ingreso__contenedor-precio', 'ingreso__campo');
-
 
             const contenedorCheckIVA = document.createElement('DIV');
             contenedorCheckIVA.classList.add('ingreso__contenedor-checkboxIVA');
@@ -744,7 +738,6 @@ import * as helpers from './helpers';
                         try {
 
                             const respuesta = await buscarProducto(coincidencia.id);
-
                             const DBproducto = respuesta.producto;
                             const DBprecio = respuesta.precio;
 
@@ -857,7 +850,6 @@ import * as helpers from './helpers';
             } catch (error) {
                 console.log(error)
             }
-
         }
     }
 })();
