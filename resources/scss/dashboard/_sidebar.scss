@@ -6,7 +6,6 @@
     overflow: hidden;
 }
 
-
 .sidebar {
     
     background-color: v.$grisOscuroAzul;
@@ -27,7 +26,6 @@
     
     &__movil-visible {
         height: 100vh;
-        overflow: scroll;
         opacity: 1;
         padding: 1rem;
 
@@ -37,6 +35,16 @@
     &__nav {
         display: grid;
         gap: .5rem;
+        height: 80vh;
+        overflow-y: scroll;
+        padding: .5rem;
+
+
+        @include m.tablet {
+            height: auto;
+            overflow-y: visible;
+        
+        }
     }
 
     &__enlace {
@@ -48,7 +56,7 @@
         text-transform: uppercase;
         font-weight: bold;
         font-size: 1.3rem;
-        padding: 1.5rem;
+        padding: 1rem;
         gap: 1rem;
         width: auto;
         transition: all .5s ease;
@@ -59,6 +67,7 @@
         
         
         @include m.tablet {
+
             flex-direction: column;
             justify-content: space-between;
         }
@@ -75,12 +84,17 @@
             
             color: v.$gris;
 
+            .sidebar__alert-no-owner {
+                // icono dentro del enlace
+                color: darken(v.$blanco, 10%);
+            }
+
             &:hover {
                 box-shadow: lighten(v.$rojo, 10%) 0px 2px 5px;
                 cursor: not-allowed;
 
                 .sidebar__alert-no-owner {
-                    color: lighten(v.$rojo, 5%);
+                    // icono dentro del enlace
                 }
 
             }
@@ -104,7 +118,6 @@
                     color: lighten(v.$rojo, 10%);
                     cursor: pointer;
                 }
-                
             }
 
         }
@@ -139,9 +152,9 @@
                 cursor: pointer;
                 color: lighten(v.$rojo, 10%);
             }
-
         }
     }
+
     &__alert {
         position: absolute;
         top: 1rem;
