@@ -8,7 +8,7 @@ import * as helpers from './helpers';
         const grid = document.querySelector('#mercaderia-grid');
         const dolarPrevio = document.querySelector('.ingreso__numero');
         let flag = 0; // Saber cuando se obtuvo el primer resultado de la DB
-        let flagIVA = 0; // Flag checkbox IVA - par -> sin IVA / inpar -> con IVA
+        let flagIVA = false; // False -> sin IVA / True -> con IVA
         let arrayCoincidencias = []; // Aqui se almacena el resultado de la DB
         let coincidenciasPantalla = []; // Aqui se almacena el resultado de la DB filtrado
         let precioId = ''; // Precio seleccionado que será almacenado
@@ -54,7 +54,7 @@ import * as helpers from './helpers';
                 }
             });
 
-            btnGuardar.addEventListener('click', (e) => {
+            btnGuardar.addEventListener('click', async (e) => {
 
                 // Validar datos
                 const objV = validarCampos(obj);
@@ -70,25 +70,27 @@ import * as helpers from './helpers';
                     cantidad.classList.remove('b-red', 'b-green');
                 }
 
-                if (!flagIVA % 2 === 0) {
-                    objV.precio = Math.round(objV.precio / 1.21);
-                }
 
+                if(flagIVA) {
+
+                    objV.precio = Math.round(objV.precio / 1.21);
+
+                }
+                
+                console.log(objV.precio);
                 // Almacenar informacion
-                const resultado = almacenarDatos(objV);
+                const resultado = await almacenarDatos(objV);
 
                 if (resultado) {
-
 
                     // Limpiar variables en memoria
                     precioId = '';
                     productoId = '';
-                    flagIVA = 0;
+                    flagIVA = false;
                     desactivarCampos(obj);
                     app();
 
-                    alertPendiente();
-
+                    await alertPendiente();
 
                 }
             });
@@ -492,24 +494,25 @@ import * as helpers from './helpers';
 
             contenedorCheckIVA.addEventListener('click', () => {
 
-                if (flagIVA % 2 === 0) {
+                if(!flagIVA) {
+                    // Con IVA
+
+                    flagIVA = true;
                     optIVA.classList.add('ingreso__checkbox-IVA--checked');
                     precio.placeholder = "Precio con IVA";
                     optIVA.textContent = "con IVA";
                     labelMovilPrecio.textContent = "Precio con IVA";
                     precio.classList.add('ingreso__campo-precio--checked');
-
                 } else {
+                    // Sin IVA
 
+                    flagIVA = false;
                     precio.classList.remove('ingreso__campo-precio--checked');
                     optIVA.classList.remove('ingreso__checkbox-IVA--checked');
                     precio.placeholder = "Precio sin IVA";
                     optIVA.textContent = "sin IVA";
                     labelMovilPrecio.textContent = "Precio sin IVA";
-
                 }
-
-                flagIVA++;
             });
 
             const contenedorLabelDescuento = document.createElement('DIV');
@@ -817,7 +820,7 @@ import * as helpers from './helpers';
                         const iconoProducto = document.querySelector('#sidebar__new-prod');
                         const notif = document.createElement('I');
 
-                        notif.classList.add('sidebar__alert', 'fa-solid', 'fa-circle-exclamation');
+                        notif.classList.add('sidebar__alert-pendiente', 'fa-solid', 'fa-circle-exclamation');
                         notif.id = 'sidebar__pendiente-alert';
 
                         iconoProducto.appendChild(notif);

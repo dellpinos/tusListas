@@ -135,7 +135,7 @@ import * as helpers from './helpers';
                 }
                 if (contador > 0) {
 
-                    const pendiente = await consultarPenidente();
+                    const pendiente = await consultarPendiente();
                     let descuentos = '';
                     let stock = '';
 
@@ -208,20 +208,7 @@ import * as helpers from './helpers';
             }
 
         }
-        async function contadorPendiente() {
-            try {
-                const url = '/api/pendientes/count';
-                const respuesta = await fetch(url);
-                const resultado = await respuesta.json();
-
-                return resultado;
-
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
-        async function consultarPenidente() {
+        async function consultarPendiente() {
             try {
                 const url = '/api/pendientes/index';
                 const respuesta = await fetch(url);
@@ -602,51 +589,41 @@ import * as helpers from './helpers';
 
         async function alertPendiente() {
 
-            try {
+            const resultado = await contadorPendiente();
 
-                const resultado = await consultaPendientes();
+            if (resultado > 0) {
 
-                if (resultado > 0) {
+                if (!document.querySelector('#sidebar__pendiente-alert')) {
 
-                    if (!document.querySelector('#sidebar__pendiente-alert')) {
+                    const iconoProducto = document.querySelector('#sidebar__new-prod');
+                    const notif = document.createElement('I');
 
-                        const iconoProducto = document.querySelector('#sidebar__new-prod');
-                        const notif = document.createElement('I');
+                    notif.classList.add('sidebar__alert', 'fa-solid', 'fa-circle-exclamation');
+                    notif.id = 'sidebar__pendiente-alert';
 
-                        notif.classList.add('sidebar__alert', 'fa-solid', 'fa-circle-exclamation');
-                        notif.id = 'sidebar__pendiente-alert';
-
-                        iconoProducto.appendChild(notif);
-                    }
-
-                } else {
-
-                    if (document.querySelector('#sidebar__pendiente-alert')) {
-                        const notif = document.querySelector('#sidebar__pendiente-alert');
-                        notif.remove();
-                    }
+                    iconoProducto.appendChild(notif);
                 }
 
-            } catch (error) {
-                console.log(error);
+            } else {
+
+                if (document.querySelector('#sidebar__pendiente-alert')) {
+                    const notif = document.querySelector('#sidebar__pendiente-alert');
+                    notif.remove();
+                }
             }
         }
 
-        async function consultaPendientes() {
-
+        async function contadorPendiente() {
             try {
-
                 const url = '/api/pendientes/count';
-
                 const respuesta = await fetch(url);
                 const resultado = await respuesta.json();
 
                 return resultado;
 
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
-
         }
     }
 })();
