@@ -98,7 +98,7 @@ import Swal from 'sweetalert2';
             const owner = users.owner;
             const usuarios = users.users;
 
-            if (usuarios.length > 0) {
+            if (usuarios.length > 1) {
                 const tabla = document.querySelector('#owner-table');
 
                 tabla.innerHTML = `
