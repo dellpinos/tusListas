@@ -13,13 +13,17 @@ class EmpresaController extends Controller
         $this->middleware(['auth', 'verified']);
     }
 
-    public function index ()
+    public function index()
     {
         // Evalua el rol del usuario
-        if(auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin'){
+        if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
             return redirect(route('buscador'));
         }
 
-        return view('empresa.owner-tools');
+        $users = User::orderBy('name', 'asc')->where('empresa_id', session('empresa')->id)->count();
+
+        return view('empresa.owner-tools', [
+            'contador_users' => $users
+        ]);
     }
 }

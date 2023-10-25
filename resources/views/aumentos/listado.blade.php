@@ -10,7 +10,7 @@
         <a href="{{ route('aumentos') }}" class="categoria__boton">&laquo; Volver</a>
     </div>
 
-    @if ($registros)
+    @if (!$registros->isEmpty())
         <div class="aumento__contenedor-table">
 
             <table class="table">

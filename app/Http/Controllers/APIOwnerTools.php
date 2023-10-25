@@ -48,8 +48,6 @@ class APIOwnerTools extends Controller
 
         Mail::to($request->email)->send(new InvitarUsuario($empresa->name, $token, auth()->user()->username)); // <<<< Como enviar emails
 
-
-
         $invitacion = Invitation::create([
             'empresa_id' => $empresa->id,
             'email' => $request->email,
@@ -60,8 +58,6 @@ class APIOwnerTools extends Controller
         // Almacenar Invitacion
 
         return json_encode($invitacion);
-
-
 
     }
 
@@ -75,6 +71,8 @@ class APIOwnerTools extends Controller
         }
 
         $users = User::orderBy('name', 'asc')->where('empresa_id', session('empresa')->id)->get();
+
+        
 
         return json_encode([
             'users' => $users,

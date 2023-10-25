@@ -17,19 +17,10 @@ import Swal from 'sweetalert2';
 
         btnNuevoUser.addEventListener('click', async () => {
 
-            console.log('Click!');
-
-            // Alerta advertencia
-
             const email = nuevoUser.value;
 
+            // Alerta y Enviar Email
             const resultado = await alertaInvitacion(email, tokenCSRF);
-
-            // Enviar Email
-
-
-
-
 
         });
 
@@ -42,14 +33,12 @@ import Swal from 'sweetalert2';
             // Cambiar Nombre
             const resultado = await alertaName(name, tokenCSRF);
 
+            // Recargar para impactar los cambios, el heading principal es consultado directamente por el backend
             if(resultado) {
                 location.reload();
             } else {
 
             }
-
-            
-
 
         });
 
@@ -92,11 +81,6 @@ import Swal from 'sweetalert2';
             padre.appendChild(mensajeParrafo);
         }
 
-
-
-
-
-
         async function main() {
 
             const usuarios = await all();
@@ -107,8 +91,6 @@ import Swal from 'sweetalert2';
 
             nameEmpresa.value = empresa;
 
-
-
         }
 
         function cargarTabla(users) {
@@ -116,7 +98,7 @@ import Swal from 'sweetalert2';
             const owner = users.owner;
             const usuarios = users.users;
 
-            if (!users.length <= 1) {
+            if (usuarios.length > 0) {
                 const tabla = document.querySelector('#owner-table');
 
                 tabla.innerHTML = `
@@ -173,7 +155,7 @@ import Swal from 'sweetalert2';
                 });
             } else {
 
-                console.log("no hay usuarios")
+                console.log("No hay usuarios.")
             }
         }
 

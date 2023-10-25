@@ -1,4 +1,5 @@
 @use '../../base/variables' as v;
+@use '../../base/mixins' as m;
 
 
 .perfil {
@@ -19,8 +20,12 @@
         margin: 0;
         width: 100%;
         text-align: center;
-        font-size: 3rem;
         color: v.$gris;
+        font-size: 1.6rem;
+        
+        @include m.tablet {
+            font-size: 3rem;
+        }
 
         a {
             color: v.$azul;
