@@ -101,13 +101,13 @@ import * as helpers from './helpers';
                 // Deshabilitar campos
 
                 radiobtns.forEach(btn => {
-                    btn.disabled = true; // inhabilita los radio btns
+                    btn.disabled = true; // deshabilita los radio btns
                 });
-                campoConIva.disabled = true;
-                campoConIva.classList.add('formulario__campo--no-activo');
-
+                // deshabilita los input
                 campoSinIva.disabled = true;
+                campoConIva.disabled = true;
                 campoSinIva.classList.add('formulario__campo--no-activo');
+                campoConIva.classList.add('formulario__campo--no-activo');
 
             }
 
@@ -131,7 +131,7 @@ import * as helpers from './helpers';
 
             precioFraccionado.textContent = '$ 0';
             campoVenta.textContent = '$ 0';
-            calcularGanancia();  /////// <<<<<<<<< Calcula ganancia con el input del precio
+            calcularGanancia();
 
             // Redondea los decimas y luego convierte el string a float
             campoConIva.value = parseFloat((campoSinIva.value * 1.21).toFixed(2));
@@ -145,7 +145,7 @@ import * as helpers from './helpers';
                 return;
             }
 
-            calcularGanancia(); /////// <<<<<<<<< Calcula ganancia con el input del precio
+            calcularGanancia()
 
             // Redondea los decimas y luego convierte el string a float
             campoSinIva.value = parseFloat((campoConIva.value / 1.21).toFixed(2));
@@ -153,16 +153,14 @@ import * as helpers from './helpers';
         });
 
         // Consultar precio venta
-        btnVenta.addEventListener('click', function () {
-
+        btnVenta.addEventListener('click', () => {
             calcularGanancia(click);
-
         });
 
-        selectCat.addEventListener('click', function () {
+        selectCat.addEventListener('change', () => {
             evaluarCampos();
         });
-        selectProv.addEventListener('click', () => {
+        selectProv.addEventListener('change', () => {
             evaluarCampos();
         });
 
