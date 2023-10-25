@@ -10,6 +10,11 @@
 .swiper-button-next,
 .swiper-button-prev {
     color: v.$blanco!important;
+    display: none!important;
+
+    @include m.tablet {
+        display: block!important;
+    }
 
 }
 .swiper-pagination {

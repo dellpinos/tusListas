@@ -4,10 +4,8 @@ import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css/bundle';
 import 'swiper/css/navigation';
 
-
-
-
 const opciones = {
+    
     slidesPerView: 1,
     spaceBetween: 20,
     freeMode: true,
@@ -25,6 +23,7 @@ const opciones = {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
         hideOnClick: true,
+        
     },
     pagination: {
         el: ".swiper-pagination",
