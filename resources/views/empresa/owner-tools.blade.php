@@ -20,8 +20,8 @@
             <label for="email-user" class="formulario__label">Email nuevo Usuario</label>
             <div class="formulario__campo-contenedor owner__campo-contenedor">
                 <div class="width-full">
-                <input type="email" id="email-user" placeholder="ejemplo@correo.com" name="email"
-                    class="formulario__campo owner__campo">
+                    <input type="email" id="email-user" placeholder="ejemplo@correo.com" name="email"
+                        class="formulario__campo owner__campo">
                 </div>
 
                 <button class="formulario__boton owner__boton" id="btn-new-user">Enviar Invitación</button>
@@ -32,8 +32,8 @@
             <label for="name-empresa" class="formulario__label">Nombre de la Empresa</label>
             <div class="formulario__campo-contenedor owner__campo-contenedor">
                 <div class="width-full">
-                <input type="text" id="name-empresa" placeholder="Nombre de la empresa" name="name"
-                    class="formulario__campo owner__campo">
+                    <input type="text" id="name-empresa" placeholder="Nombre de la empresa" name="name"
+                        class="formulario__campo owner__campo">
                 </div>
                 <button class="formulario__boton owner__boton" id="btn-name-empresa">Guardar Cambios</button>
             </div>
@@ -41,28 +41,18 @@
 
         <h3 class="owner__heading-table">Usuarios</h2>
 
-            @if ($contador_users > 0)
-                
-            <div class="owner__contenedor-table">
-                <table class="table" id="owner-table">
+            @if ($contador_users > 1)
+                <div class="owner__contenedor-table">
+                    <table class="table" id="owner-table">
 
-                    {{-- Js --}}
-    
-                </table>
+                        {{-- Js --}}
 
-            </div>
+                    </table>
 
-
+                </div>
             @else
-
-            <p class="mensaje__info">Eres el único usuario de esta empresa, puedes enviar invitaciones.</p>
-                
+                <p class="mensaje__info">Eres el único usuario de esta empresa, puedes enviar invitaciones.</p>
             @endif
-
-
-
-
-
 
     </div>
 @endsection()
