@@ -1,0 +1,48 @@
+@use '../../base/variables' as v;
+@use '../../base/mixins' as m;
+
+
+.agenda {
+
+    &__grid {
+        @include m.grid(2, 1rem);
+        margin: 0 auto;
+
+    }
+
+    &__elemento-grid {
+        display: flex;
+
+        align-items: center;
+        justify-content: space-around;
+        border-radius: .5rem;
+        padding: 2rem;
+        color: v.$blanco;
+
+        h3 {
+            font-size: 8rem;
+            margin: 0;
+        }
+    }
+
+    &__contenedor-xs {
+        display: flex;
+        gap: 2rem;
+    }
+
+    &__categoria {
+        background-color: v.$naranja;
+    }
+
+    &__provider {
+        background-color: v.$azul;
+    }
+
+    &__fabricante {
+        background-color: v.$verde;
+    }
+
+    &__producto {
+        background-color: v.$rojo;
+    }
+}

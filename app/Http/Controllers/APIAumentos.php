@@ -223,10 +223,6 @@ class APIAumentos extends Controller
         foreach ($precios as $precio) {
             $productosTodos = Producto::where('precio_id', $precio->id)->where('empresa_id', session('empresa')->id)->get();
 
-            if ($productosTodos->count() === 0) {
-                $precio->delete(); //// PROVISORIO, elimina un precio sin producto. Resolver al trabajar en delete() de registros
-                return; // retorna, hay que recargar la página para volver a ejecutar hasta que no queden precios sin producto
-            }
             if ($productosTodos->count() > 1) {
                 // Existe Fraccionado
                 foreach ($productosTodos as $producto) {
