@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Precio;
 use App\Models\Aumento;
 use App\Models\Provider;
 use App\Models\Categoria;
@@ -63,7 +64,10 @@ class AumentoController extends Controller
             ]);
         }
 
+        $precios = Precio::orderBy('dolar', 'asc')->where('empresa_id', session('empresa')->id)->count();
 
-        return view('aumentos.dolar');
+        return view('aumentos.dolar', [
+            'contador_precios' => $precios
+        ]);
     }
 }

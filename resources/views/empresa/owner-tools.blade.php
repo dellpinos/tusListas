@@ -41,6 +41,8 @@
 
         <h3 class="owner__heading-table">Usuarios</h2>
 
+            @if ($contador_users > 0)
+                
             <div class="owner__contenedor-table">
                 <table class="table" id="owner-table">
 
@@ -49,6 +51,15 @@
                 </table>
 
             </div>
+
+
+            @else
+
+            <p class="mensaje__info">Eres el único usuario de esta empresa, puedes enviar invitaciones.</p>
+                
+            @endif
+
+
 
 
 
