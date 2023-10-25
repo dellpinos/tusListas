@@ -90,6 +90,7 @@
             .sidebar__alert-no-owner {
                 // icono dentro del enlace
                 color: darken(v.$blanco, 10%);
+                font-size: 1.5rem;
             }
 
             &:hover {
@@ -99,10 +100,8 @@
                 .sidebar__alert-no-owner {
                     // icono dentro del enlace
                 }
-
             }
         }
-
     }
 
     // Oculta estos enlaces en pantallas grandes

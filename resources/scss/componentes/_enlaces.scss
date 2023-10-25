@@ -19,8 +19,12 @@
 
     &__mensaje {
         @extend .enlace;
-        font-size: 1.6rem;
+        font-size: 1.2rem;
         color: lighten(v.$azul, 25%);
+
+        @include m.phone {
+            font-size: 1.6rem;
+        }
 
         &:hover {
             color: lighten(v.$azul, 10%);

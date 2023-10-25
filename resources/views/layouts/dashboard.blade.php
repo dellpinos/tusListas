@@ -89,7 +89,7 @@
                     <a href="#" class="sidebar__enlace no-owner @if (request()->path() === 'aumentos') activo @endif ">
                         <i class="fa-solid fa-dollar-sign sidebar__icono"></i>
                         <p class="sidebar__texto-icono">Aumentos</p>
-                        <i class="sidebar__alert fa-solid fa-user-gear sidebar__alert-no-owner"></i>
+                        <i class="sidebar__alert sidebar__alert-no-owner fa-solid fa-user-gear"></i>
                     </a>
                 @else
                     <a href=" {{ route('aumentos') }} "
