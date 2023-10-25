@@ -40,6 +40,34 @@ import * as helpers from './helpers';
 
         let precioVenta = '';
         const click = true;
+        //const flagCalculo = false; // Evalua si se admite el calculo de precio de venta
+
+
+
+        // En caso de ser el update de un producto va a calcular el precio de venta
+        document.addEventListener("DOMContentLoaded", function () {
+            if (campoConIva.value !== undefined) {
+                if (campoSinIva.value !== '') {
+                    campoConIva.value = Math.round(campoSinIva.value * 1.21);
+
+                    calcularGanancia();
+                }
+            }
+
+            evaluarCampos();
+
+            (async () => {
+
+                try {
+                    const resultado = await contadorPendiente();
+                    mensajePendiente(resultado);
+
+                } catch (error) {
+                    console.log(error)
+                }
+            })();
+        });
+
 
         btnSubmit.addEventListener('click', () => {
 
@@ -52,37 +80,46 @@ import * as helpers from './helpers';
 
         });
 
+
+        // Habilita / Deshabilita campos relacionados al calculo de precio
+        function evaluarCampos() {
+
+            if (selectCat.value !== '' && selectProv.value !== '') {
+                // Habilitar campos
+
+                radiobtns.forEach(btn => {
+                    btn.disabled = false; // inhabilita los radio btns
+                });
+                campoConIva.disabled = false;
+                campoConIva.classList.remove('formulario__campo--no-activo');
+
+                campoSinIva.disabled = false;
+                campoSinIva.classList.remove('formulario__campo--no-activo');
+
+
+            } else {
+                // Deshabilitar campos
+
+                radiobtns.forEach(btn => {
+                    btn.disabled = true; // deshabilita los radio btns
+                });
+                // deshabilita los input
+                campoSinIva.disabled = true;
+                campoConIva.disabled = true;
+                campoSinIva.classList.add('formulario__campo--no-activo');
+                campoConIva.classList.add('formulario__campo--no-activo');
+
+            }
+
+        }
         radiobtns.forEach(btn => {
+
             btn.addEventListener('click', (e) => {
 
                 habilitarCampo(e);
                 calcularGanancia();
                 campoVenta.textContent = '$ 0';
             });
-        });
-
-        document.addEventListener("DOMContentLoaded", function () {
-            if (campoConIva.value !== undefined) {
-                if (campoSinIva.value !== '') {
-                    campoConIva.value = Math.round(campoSinIva.value * 1.21);
-
-                    calcularGanancia();
-                }
-            }
-
-            (async () => {
-
-                try {
-                    const resultado = await contadorPendiente();
-                    mensajePendiente(resultado);
-
-                } catch (error) {
-                    console.log(error)
-                }
-
-
-
-            })();
         });
 
         campoSinIva.addEventListener('input', function () {
@@ -94,7 +131,7 @@ import * as helpers from './helpers';
 
             precioFraccionado.textContent = '$ 0';
             campoVenta.textContent = '$ 0';
-            calcularGanancia(click);
+            calcularGanancia();
 
             // Redondea los decimas y luego convierte el string a float
             campoConIva.value = parseFloat((campoSinIva.value * 1.21).toFixed(2));
@@ -108,7 +145,7 @@ import * as helpers from './helpers';
                 return;
             }
 
-            calcularGanancia(click);
+            calcularGanancia()
 
             // Redondea los decimas y luego convierte el string a float
             campoSinIva.value = parseFloat((campoConIva.value / 1.21).toFixed(2));
@@ -116,10 +153,15 @@ import * as helpers from './helpers';
         });
 
         // Consultar precio venta
-        btnVenta.addEventListener('click', function () {
-
+        btnVenta.addEventListener('click', () => {
             calcularGanancia(click);
+        });
 
+        selectCat.addEventListener('change', () => {
+            evaluarCampos();
+        });
+        selectProv.addEventListener('change', () => {
+            evaluarCampos();
         });
 
         async function mensajePendiente(contador) {
