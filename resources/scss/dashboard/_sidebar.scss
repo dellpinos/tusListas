@@ -29,18 +29,14 @@
         opacity: 1;
         padding: 1rem;
 
-
     }
 
     &__nav {
         display: grid;
-        gap: .5rem;
+        gap: 1.5rem;
         height: 80vh;
         overflow-y: scroll;
         padding: .5rem .5rem 3rem .5rem;
-
-
-
 
         @include m.tablet {
             height: auto;
@@ -52,7 +48,7 @@
 
     &__enlace {
         position: relative;
-        color: v.$blanco;
+        color: lighten(v.$gris, 5%);
         text-align: center;
         transition-property: background-color;
         transition-duration: 300ms;
@@ -63,11 +59,9 @@
         gap: 1rem;
         width: auto;
         transition: all .5s ease;
-
         display: flex;
         align-items: center;
         justify-content: center;
-        
         
         @include m.tablet {
 

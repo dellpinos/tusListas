@@ -5,44 +5,84 @@
 .agenda {
 
     &__grid {
-        @include m.grid(2, 1rem);
-        margin: 0 auto;
-
+        display: flex;
+        flex-direction: column;
+        
+        @include m.tablet {
+            @include m.grid(2, 1rem);
+        }
     }
 
     &__elemento-grid {
         display: flex;
-
+        flex-direction: column;
         align-items: center;
-        justify-content: space-around;
         border-radius: .5rem;
-        padding: 2rem;
+        padding: 3rem 1rem;
         color: v.$blanco;
+        width: 100%;
 
-        h3 {
-            font-size: 8rem;
-            margin: 0;
+        @include m.tablet {
+            padding: 6rem 2rem;
+
         }
+        
+        &:nth-child(1){
+            @include m.bg-gradient(v.$naranjaSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$naranjaSobrio, 5%));
+            }
+        }
+        &:nth-child(2){
+            @include m.bg-gradient(v.$verdeSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$verdeSobrio, 5%));
+            }
+        }
+        &:nth-child(3){
+            @include m.bg-gradient(v.$rojoSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$rojoSobrio, 5%));
+            }
+        }
+        &:nth-child(4){
+            @include m.bg-gradient(v.$azulSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$azulSobrio, 5%));
+            }
+        }
+
     }
 
     &__contenedor-xs {
         display: flex;
-        gap: 2rem;
+        align-items: center;
+        gap: .5rem;
     }
 
-    &__categoria {
-        background-color: v.$naranja;
+    &__icono {
+        font-size: 4rem;
+        margin: 0rem 2rem;
+        
+        @include m.tablet {
+            font-size: 6rem;
+        }
     }
 
-    &__provider {
-        background-color: v.$azul;
+    &__contador {
+        font-size: 4rem;
+        
+        @include m.tablet {
+            font-size: 6rem;
+        }
     }
 
-    &__fabricante {
-        background-color: v.$verde;
-    }
-
-    &__producto {
-        background-color: v.$rojo;
+    &__text {
+        font-weight: v.$bold;
+        font-size: 2rem;
+        
+        @include m.tablet {
+            font-size: 3rem;
+        }
     }
 }

@@ -12,6 +12,7 @@
 @section('contenido')
 
 <div class="formulario__contenedor-boton">
+    <a href="{{ route('agenda') }}" class="fabricante__boton">&laquo; Volver</a>
     <a href="{{ route('fabricante.create') }}" class="fabricante__boton">Crear Fabricante</a>
     <div class="formulario__contenedor-busqueda">
         <i class="formulario__icono-busqueda fa-solid fa-magnifying-glass"></i>

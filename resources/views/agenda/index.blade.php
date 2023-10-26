@@ -6,31 +6,40 @@
 
 @section('contenido')
     <div class="agenda__grid contenedor-md">
-        <div class="agenda__elemento-grid agenda__categoria">
-            <h3>{{ $contador_categorias }} </h3>
 
+        <a href="{{ route('categorias') }}" class="agenda__elemento-grid">
             <div class="agenda__contenedor-xs">
-                <i class="fa-solid fa-folder-open icono"></i>
-                <p>Categorias</p>
+                <i class="fa-solid fa-folder-open agenda__icono"></i>
+                <p class="agenda__text"><span class="agenda__contador">{{ $contador_categorias }} </span>Categorias</p>
             </div>
+        </a>
 
-        </div>
-        <div class="agenda__elemento-grid agenda__fabricante">
-            <i class="fa-solid fa-industry sidebar__icono"></i>
-            <h3>Fabricantes</h3>
-            <p>{{ $contador_fabricantes }}</p>
-        </div>
-        <div class="agenda__elemento-grid agenda__provider">
-            <i class="fa-solid fa-shop sidebar__icono"></i>
-            <h3>Proveedores</h3>
-            <p>{{ $contador_providers }}</p>
-        </div>
-        <div class="agenda__elemento-grid agenda__producto">
-            <i class="fa-solid fa-boxes-stacked sidebar__icono"></i>
-            <h3>Productos</h3>
-            <p>{{ $contador_productos }}</p>
+        <a href="{{ route('fabricantes') }}" class="agenda__elemento-grid">
+            <div class="agenda__contenedor-xs">
+                <i class="fa-solid fa-industry agenda__icono"></i>
+                <p class="agenda__text"><span class="agenda__contador">{{ $contador_fabricantes }} </span>Fabricantes</p>
 
-        </div>
+
+            </div>
+        </a>
+
+
+        <a href="{{ route('providers') }}" class="agenda__elemento-grid">
+            <div class="agenda__contenedor-xs">
+                <i class="fa-solid fa-shop agenda__icono"></i>
+                <p class="agenda__text"><span class="agenda__contador">{{ $contador_providers }} </span>Proveedores</p>
+
+
+            </div>
+        </a>
+
+        <a href="{{ route('buscador') }}" class="agenda__elemento-grid">
+            <div class="agenda__contenedor-xs">
+                <i class="fa-solid fa-boxes-stacked agenda__icono"></i>
+                <p class="agenda__text"><span class="agenda__contador">{{ $contador_productos }} </span>Productos</p>
+
+            </div>
+        </a>
     </div>
 @endsection
 
@@ -57,7 +66,3 @@ El ultimo item puede ser "Mis datos" o "Todos los productos"
                     <i class="fa-solid fa-industry sidebar__icono"></i>
                     <p class="sidebar__texto-icono">Fabricantes</p>
                 </a> --}}
-
-
-
---}}

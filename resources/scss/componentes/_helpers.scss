@@ -5,7 +5,6 @@
 .font-regular {
     font-weight: v.$regular;
 }
-// Los contenedores me van a servir para añadir los media querie y son vitales en el responsive
 .contenedor-md {
     display: flex;
     justify-content: space-between;
@@ -13,16 +12,13 @@
     align-items: center;
     margin-bottom: 5rem;
 }
-
 .contenedor-xl {
     width: 100%;
     display: flex;
 }
-
 .no-scroll {
     overflow-y: hidden;
 }
-
 .boton {
     @include m.boton(v.$azul, v.$blanco);
     border-radius: .5rem;

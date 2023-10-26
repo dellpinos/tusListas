@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 
 class AgendaController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth', 'verified']);
+    }
+
     public function index()
     {
         // Contar cantidad de categorias, proveedores y fabricantes
