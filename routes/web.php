@@ -4,6 +4,7 @@ use App\Http\Controllers\APICodigo;
 use App\Http\Controllers\APIAumentos;
 use App\Http\Controllers\APIBuscador;
 use App\Http\Controllers\APICalculos;
+use App\Http\Controllers\APITutorial;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\APIProductos;
 use App\Http\Controllers\APIProviders;
@@ -48,7 +49,6 @@ Route::get('/ingreso', [IngresoController::class, 'index'])->name('ingreso');
 
 // Agenda
 Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda');
-
 
 // Fabricantes
 Route::get('/fabricantes', [FabricanteController::class, 'index'])->name('fabricantes');
@@ -121,8 +121,12 @@ Route::get('/api/productos/all', [APIProductos::class, 'all']);
 Route::post('/api/productos/destroy', [APIProductos::class, 'destroy']);
 Route::post('/api/productos/update', [APIProductos::class, 'update']);
 
-// Pendientes
+// API Pendientes
 Route::get('/api/pendientes/index', [APIPendientes::class, 'index']);
 Route::get('/api/pendientes/count', [APIPendientes::class, 'count']);
 Route::post('/api/pendientes/create', [APIPendientes::class, 'create']);
 Route::post('/api/pendientes/destroy', [APIPendientes::class, 'destroy']);
+
+// API Tutorial
+Route::get('/api/tutorial/consulta', [APITutorial::class, 'consulta']);
+Route::post('/api/tutorial/modificar', [APITutorial::class, 'modificar']);

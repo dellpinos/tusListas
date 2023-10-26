@@ -13,5 +13,6 @@ import './helpers';
 import './sidebar';
 import './ownerTools';
 import './menuMovil';
+import './tutorial';
 
 
