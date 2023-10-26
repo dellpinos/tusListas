@@ -815,21 +815,21 @@ import * as helpers from './helpers';
 
                 if (resultado > 0) {
 
-                    if (!document.querySelector('#sidebar__pendiente-alert')) {
+                    if (!document.querySelector('#sidebar-pendiente-alert')) {
 
-                        const iconoProducto = document.querySelector('#sidebar__new-prod');
+                        const iconoProducto = document.querySelector('#sidebar-new-prod');
                         const notif = document.createElement('I');
 
                         notif.classList.add('sidebar__alert-pendiente', 'fa-solid', 'fa-circle-exclamation');
-                        notif.id = 'sidebar__pendiente-alert';
+                        notif.id = 'sidebar-pendiente-alert';
 
                         iconoProducto.appendChild(notif);
                     }
 
                 } else {
 
-                    if (document.querySelector('#sidebar__pendiente-alert')) {
-                        const notif = document.querySelector('#sidebar__pendiente-alert');
+                    if (document.querySelector('#sidebar-pendiente-alert')) {
+                        const notif = document.querySelector('#sidebar-pendiente-alert');
                         notif.remove();
                     }
                 }
