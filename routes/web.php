@@ -11,6 +11,7 @@ use App\Http\Controllers\APICategorias;
 use App\Http\Controllers\APIOwnerTools;
 use App\Http\Controllers\APIPendientes;
 use App\Http\Controllers\APIFabricantes;
+use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\AumentoController;
 use App\Http\Controllers\EmpresaController;
@@ -44,6 +45,9 @@ Route::get('aumento/dolar', [AumentoController::class, 'dolar_aumentos'])->name(
 
 // Ingreso de Mercaderia
 Route::get('/ingreso', [IngresoController::class, 'index'])->name('ingreso');
+
+// Agenda
+Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda');
 
 
 // Fabricantes

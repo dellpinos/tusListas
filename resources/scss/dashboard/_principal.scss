@@ -38,12 +38,12 @@
         margin: 2rem 0 3rem 0;
 
         @include m.phone {
-            font-size: 6rem;
+            font-size: 4rem;
         }
         
         @include m.tablet {
             margin: 1rem 0 4rem 0;
-            font-size: 8rem;
+            font-size: 4rem;
             
         }
     }

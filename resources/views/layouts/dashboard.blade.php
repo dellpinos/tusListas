@@ -99,7 +99,7 @@
                     </a>
                 @endif
 
-                <a href="{{ route('providers') }}"
+                {{-- <a href="{{ route('providers') }}"
                     class="sidebar__enlace @if (request()->path() === 'providers') activo @endif">
                     <i class="fa-solid fa-shop sidebar__icono"></i>
                     <p class="sidebar__texto-icono">Proveedores</p>
@@ -113,6 +113,12 @@
                     class="sidebar__enlace @if (request()->path() === 'fabricantes') activo @endif">
                     <i class="fa-solid fa-industry sidebar__icono"></i>
                     <p class="sidebar__texto-icono">Fabricantes</p>
+                </a> --}}
+
+                <a href="{{ route('agenda') }}"
+                    class="sidebar__enlace @if (request()->path() === 'agenda') activo @endif">
+                    <i class="fa-solid fa-address-card sidebar__icono"></i>
+                    <p class="sidebar__texto-icono">Agenda</p>
                 </a>
 
                 {{-- Solo visibles en móviles --}}

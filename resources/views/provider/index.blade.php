@@ -12,6 +12,7 @@
 @section('contenido')
 
 <div class="formulario__contenedor-boton">
+    <a href="{{ route('agenda') }}" class="provider__boton">&laquo; Volver</a>
     <a href="{{ route('provider.create') }}" class="provider__boton">Crear Proveedor</a>
     <div class="formulario__contenedor-busqueda">
         <i class="formulario__icono-busqueda fa-solid fa-magnifying-glass"></i>
