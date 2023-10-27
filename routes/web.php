@@ -130,3 +130,4 @@ Route::post('/api/pendientes/destroy', [APIPendientes::class, 'destroy']);
 // API Tutorial
 Route::get('/api/tutorial/consulta', [APITutorial::class, 'consulta']);
 Route::post('/api/tutorial/modificar', [APITutorial::class, 'modificar']);
+Route::post('/api/tutorial/set-lvl', [APITutorial::class, 'set_lvl']);

@@ -123,7 +123,7 @@
     &__enlace {
         font-weight: v.$bold;
         margin: 0 1rem 0 1rem;
-        color: v.$blanco;
+        color: lighten(v.$gris, 5%);
         transition: color .5s ease;
         display: flex;
         align-items: center;
@@ -131,7 +131,7 @@
 
         &:hover {
 
-            color: v.$azul;
+            color: v.$blanco;
         }
 
         &--admin {}

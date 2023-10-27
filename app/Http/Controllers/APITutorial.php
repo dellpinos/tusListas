@@ -10,11 +10,15 @@ class APITutorial extends Controller
     public function consulta ()
     {
 
-        $consulta = auth()->user()->tutorial;
+        $user = User::find(auth()->user()->id);
 
-        echo json_encode($consulta);
+        $consulta = $user->tutorial;
+        $consulta_lvl = $user->tutorial_lvl;
 
-
+        echo json_encode([
+            'tutorial' => $consulta,
+            'tutorial_lvl' => $consulta_lvl
+        ]);
     }
 
     public function modificar (Request $request)
@@ -22,10 +26,21 @@ class APITutorial extends Controller
 
         $user = User::find(auth()->user()->id);
         $user->tutorial = $request->modificar;
+        $user->tutorial_lvl = 0;
 
-        $user->save();
-        
+        $resultado = $user->save();
 
-        dd($user);
+        echo json_encode($resultado);
+    }
+
+    public function set_Lvl (Request $request)
+    {
+
+        $user = User::find(auth()->user()->id);
+        $user->tutorial_lvl = $request->lvl;
+
+        $resultado = $user->save();
+
+        echo json_encode($resultado);
     }
 }

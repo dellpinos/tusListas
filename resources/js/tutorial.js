@@ -12,12 +12,16 @@ import Swal from 'sweetalert2';
         // Consultar
         const respuesta = await consultar();
 
-        if (!respuesta && window.location.pathname === '/') {
+
+        console.log(respuesta);
+
+
+        if (!respuesta.tutorial && respuesta.tutorial_lvl === 0 && window.location.pathname === '/') {
             // Iniciar tutorial
 
             Swal.fire({
                 title: '¡ Bienvenido a TusListas !',
-                text: "Este es un pequeño tutorial para guiarte en tus primeros pasos",
+                text: "Este es un pequeño tutorial para guiarte en tus primeros pasos.",
                 icon: 'info',
                 showCancelButton: true,
                 confirmButtonColor: '#0284C7',
@@ -33,11 +37,13 @@ import Swal from 'sweetalert2';
                     Swal.fire({
 
                         title: 'Primeros pasos',
-                        text: 'Deberias comenzar por personalizar tu AGENDA, puedes encontrarla en la barra de herramientas',
+                        text: 'Deberias comenzar por personalizar tu AGENDA, puedes encontrarla en la barra de herramientas.',
                         icon: 'info',
                         showCancelButton: false,
 
                     });
+
+                    setLvl(1, tokenCSRF);
                 } else {
                     // Desactivar tutorial
 
@@ -53,7 +59,9 @@ import Swal from 'sweetalert2';
 
         } // Cierre Primeros Pasos en "/"
 
-        if (!respuesta && window.location.pathname.includes('/agenda')) {
+        if (!respuesta.tutorial && respuesta.tutorial_lvl === 1 && window.location.pathname.includes('/agenda')) {
+
+            crearIconoTutorial('agenda');
 
             // Mensaje Agenda
             Swal.fire({
@@ -75,20 +83,9 @@ import Swal from 'sweetalert2';
                         icon: 'info',
                         showCancelButton: false,
 
-                    }).then(() => {
-
-                        // Siguiente mensaje, alerta en PRODUCTO
-                        crearIconoTutorial('new-prod');
-
-                        Swal.fire({
-
-                            title: 'Primeros pasos',
-                            text: 'Cuando hayas creado almenos una Categoria, un Proveedor y un Fabricante deberias crear tu primero PRODUCTO! Puedes encontrarlo en la barra de herramientas.',
-                            icon: 'info',
-                            showCancelButton: false,
-
-                        });
                     });
+
+                    setLvl(2, tokenCSRF);
 
                 } else {
 
@@ -105,7 +102,59 @@ import Swal from 'sweetalert2';
 
         } // Cierre Primeros Pasos en "/agenda"
 
-        if (!respuesta && window.location.pathname.includes('/producto')) {
+
+        // Mensaje Categorias
+        if (!respuesta.tutorial && window.location.pathname.includes('/categorias')) {
+
+            Swal.fire({
+                title: 'Estas son tus Categorias',
+                text: "En cada Categoria puedes indicar el indice de Ganancia que deseas aplicar a sus articulos. Esto es muy útil para clasificar tus Productos y posteriormente para hacer Aumentos Generales.",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#0284C7',
+                cancelButtonColor: '#EF4444',
+                cancelButtonText: 'Nada de tutoriales',
+                confirmButtonText: 'Genial, sigamos!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    Swal.fire({
+
+                        title: 'Primeros pasos',
+                        text: 'Piensa en cualquier producto de tu inventario: A que Categoria pertenece? También puedes utilizar nombres genericos como "Otros" y una ganancia de 1 (sin ganancia), pero será mas dificil clasificarlos en el futuro.',
+                        icon: 'info',
+                        showCancelButton: false,
+
+                    });
+
+                    setLvl(3, tokenCSRF);
+
+                } else {
+
+                    // Desactivar tutorial
+                    activarDesactivar(1, tokenCSRF);
+
+                    Swal.fire(
+                        'Tutorial desactivado',
+                        'Puedes volver a activarlo en Ayuda',
+                        'success'
+                    );
+                }
+            });
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+        if (!respuesta.tutorial && window.location.pathname.includes('/producto')) {
 
 
 
@@ -181,17 +230,45 @@ import Swal from 'sweetalert2';
 
 
 
-        function crearIconoTutorial(elemento) {
+        function iconoTutorial(elemento, eliminar = false) {
 
-            const icono = document.querySelector('#sidebar-' + elemento);
+            if (!eliminar) {
+                // Crear icono
 
-            const notif = document.createElement('I');
-            notif.classList.add('sidebar__alert-tutorial', 'fa-solid', 'fa-circle-exclamation');
-            notif.id = 'sidebar-tutorial-alert';
+                const elementoDOM = document.querySelector('#sidebar-' + elemento);
 
-            icono.appendChild(notif);
+                const notif = document.createElement('I');
+                notif.classList.add('sidebar__alert-tutorial', 'fa-solid', 'fa-circle-exclamation');
+                notif.id = 'sidebar-tutorial-alert';
+
+                elementoDOM.appendChild(notif);
+
+            } else {
+                // Eliminar icono
+                const icono = document.querySelector('#sidebar-tutorial-alert');
+                icono.remove();
+
+            }
+        }
 
 
+        function iconoAgenda(elemento, eliminar = false) {
+
+            if (!eliminar) {
+                // Crear icono
+                const elementoDOM = document.querySelector('#agenda-' + elemento);
+
+                const notif = document.createElement('I');
+                notif.classList.add('agenda__alert-tutorial', 'fa-solid', 'fa-circle-exclamation');
+                notif.id = 'agenda-tutorial-alert';
+
+                elementoDOM.appendChild(notif);
+            } else {
+                // Eliminar icono
+                const icono = document.querySelector('#agenda-tutorial-alert');
+                icono.remove();
+
+            }
 
         }
 
@@ -224,9 +301,36 @@ import Swal from 'sweetalert2';
             }
         }
 
+        // Modifica la elección del usuario (0 ver tutoriales - 1 no ver tutoriales)
+        async function setLvl(lvl, token) {
+
+            try {
+                const url = '/api/tutorial/set-lvl';
+                const datos = new FormData();
+
+                datos.append('lvl', lvl);
+
+                const respuesta = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    },
+                    body: datos
+                });
+                const resultado = await respuesta.json();
+
+                return resultado;
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
 
 
-        // Consulta si el usuario desea ver tutorial
+
+
+
+        // Consulta si el usuario desea ver tutorial, devuelve bool y tutorial_lvl
         async function consultar() {
 
             try {
@@ -240,10 +344,6 @@ import Swal from 'sweetalert2';
                 console.log(error);
             }
         }
-
-
-
-
 
     }
 

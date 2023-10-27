@@ -12,14 +12,14 @@
 @section('contenido')
     <div class="agenda__grid contenedor-md">
 
-        <a href="{{ route('categorias') }}" class="agenda__elemento-grid">
+        <a href="{{ route('categorias') }}" class="agenda__elemento-grid" id="agenda-categorias">
             <div class="agenda__contenedor-xs">
                 <i class="fa-solid fa-folder-open agenda__icono"></i>
                 <p class="agenda__text"><span class="agenda__contador">{{ $contador_categorias }} </span>Categorias</p>
             </div>
         </a>
 
-        <a href="{{ route('fabricantes') }}" class="agenda__elemento-grid">
+        <a href="{{ route('fabricantes') }}" class="agenda__elemento-grid" id="agenda-fabricantes">
             <div class="agenda__contenedor-xs">
                 <i class="fa-solid fa-industry agenda__icono"></i>
                 <p class="agenda__text"><span class="agenda__contador">{{ $contador_fabricantes }} </span>Fabricantes</p>
@@ -29,7 +29,7 @@
         </a>
 
 
-        <a href="{{ route('providers') }}" class="agenda__elemento-grid">
+        <a href="{{ route('providers') }}" class="agenda__elemento-grid" id="agenda-providers">
             <div class="agenda__contenedor-xs">
                 <i class="fa-solid fa-shop agenda__icono"></i>
                 <p class="agenda__text"><span class="agenda__contador">{{ $contador_providers }} </span>Proveedores</p>
@@ -38,7 +38,7 @@
             </div>
         </a>
 
-        <a href="{{ route('buscador') }}" class="agenda__elemento-grid">
+        <a href="{{ route('buscador') }}" class="agenda__elemento-grid" id="agenda-productos">
             <div class="agenda__contenedor-xs">
                 <i class="fa-solid fa-boxes-stacked agenda__icono"></i>
                 <p class="agenda__text"><span class="agenda__contador">{{ $contador_productos }} </span>Productos</p>
