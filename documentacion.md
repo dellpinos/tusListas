@@ -148,3 +148,11 @@ El Administrador cuenta con un listado de los usuarios que pertenecen a su empre
 #### Estadisticas
 
 Funcionalidad en desarrollo. Llegará pronto!
+
+#### Cambiar nombre de la empresa
+
+El usuario administrador puede cambiar el nombre de la empresa en cualquier momento, el resto de los usuarios solo verán este cambio despues de haber cerrado sesión una vez.
+
+#### En todos tus dispositivos
+
+TusListas funciona en móviles sin necesidad de "descargar una aplicación" y es ejecutada dentro de cualquier navegador que tenga instalado el usuario. Esto es muy útil para que el usuario utilice el buscador y consulte cualquer producto en cualquier momento pero dificulta utilizar herramientas como Ingreso de Mercaderia o visualizar tablas completas. La versión de escritorio de TusListas es mucho mas cómida a la hora de utilizar estas herramientas y es la mas aconsejable.
