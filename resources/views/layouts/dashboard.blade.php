@@ -47,7 +47,7 @@
                             <i class="fa-solid fa-user-gear"></i>
                             <span class="font-regular">Admin</span></a>
                     @endif
-                    <a class="header__enlace font-regular" href="#">
+                    <a class="header__enlace font-regular" href="{{ route('ayuda') }}">
                         <i class="fa-solid fa-circle-info"></i>
                         Ayuda
                     </a>

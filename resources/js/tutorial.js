@@ -30,7 +30,7 @@ import Swal from 'sweetalert2';
                     Swal.fire({
 
                         title: 'Primeros Pasos',
-                        text: 'Deberias comenzar por personalizar tu AGENDA, puedes encontrarla en la barra de herramientas.',
+                        text: 'Deberías comenzar por personalizar tu AGENDA, puedes encontrarla en la barra de herramientas.',
                         icon: 'info',
                         showCancelButton: false,
 
@@ -44,12 +44,11 @@ import Swal from 'sweetalert2';
 
                     Swal.fire(
                         'Tutorial desactivado',
-                        'Puedes volver a activarlo desde tu perfil',
+                        'Puedes volver a activarlo en la sección Ayuda.',
                         'success'
                     );
                 }
             });
-
         } // Cierre Primeros Pasos en "/"
 
         if (!respuesta.tutorial && respuesta.tutorial_lvl === 1 && window.location.pathname.includes('/agenda')) {
@@ -57,7 +56,7 @@ import Swal from 'sweetalert2';
             // Mensaje Agenda
             Swal.fire({
                 title: 'Esta es tu agenda',
-                text: "Aqui puedes almacenar tus Proveedores, las Categorias de tus productos y sus Fabricantes. En cada Categoria y Proveedor puedes indicar el indice de GANANCIA que deseas aplicar a sus productos. Esto es muy útil para clasificar tus productos y posteriormente para hacer Aumentos Generales.",
+                text: "Aquí puedes almacenar tus Proveedores, las Categorías de tus productos y sus Fabricantes. En cada Categoría y Proveedor, puedes indicar el índice de GANANCIA que deseas aplicar a sus productos. Esto es muy útil para clasificar tus productos y posteriormente para hacer Aumentos Generales.",
                 icon: 'info',
                 showCancelButton: true,
                 confirmButtonColor: '#0284C7',
@@ -87,7 +86,7 @@ import Swal from 'sweetalert2';
 
                     Swal.fire(
                         'Tutorial desactivado',
-                        'Puedes volver a activarlo desde tu perfil',
+                        'Puedes volver a activarlo en la sección Ayuda.',
                         'success'
                     );
                 }
@@ -95,11 +94,10 @@ import Swal from 'sweetalert2';
 
         } else if (!respuesta.tutorial && respuesta.tutorial_lvl === 3 && window.location.pathname.includes('/agenda')) {
 
-
             Swal.fire({
 
                 title: 'Primeros Pasos',
-                text: 'Deberias continuar creando tu primer FABRICANTE.',
+                text: 'Deberías continuar creando tu primer FABRICANTE.',
                 icon: 'info',
                 showCancelButton: false,
 
@@ -109,39 +107,34 @@ import Swal from 'sweetalert2';
 
             setLvl(4, tokenCSRF);
 
-
         } else if (!respuesta.tutorial && respuesta.tutorial_lvl === 5 && window.location.pathname.includes('/agenda')) {
 
 
             Swal.fire({
 
                 title: 'Primeros Pasos',
-                text: 'Deberias continuar creando tu primer PROVEEDOR.',
+                text: 'Deberías continuar creando tu primer PROVEEDOR.',
                 icon: 'info',
                 showCancelButton: false,
-
             });
 
             iconoAgenda('providers');
 
             setLvl(6, tokenCSRF);
 
-
-
         }// Cierre Primeros Pasos en "/agenda"
-
 
         // Mensaje Categorias
         if (!respuesta.tutorial && respuesta.tutorial_lvl === 2 && window.location.pathname.includes('/categorias')) {
 
             Swal.fire({
-                title: 'Estas son tus Categorias',
-                text: "En cada Categoria puedes indicar el indice de GANANCIA que deseas aplicar a los articulos. Esto es muy útil para clasificar tus productos y posteriormente para hacer AUMENTOS GENERALES.",
+                title: 'Estas son tus Categorías',
+                text: "En cada Categoría puedes indicar el índice de GANANCIA que deseas aplicar a los artículos. Esto es muy útil para clasificar tus productos y posteriormente para hacer AUMENTOS GENERALES.",
                 icon: 'info',
                 showCancelButton: true,
                 confirmButtonColor: '#0284C7',
                 cancelButtonColor: '#EF4444',
-                cancelButtonText: 'Nada de tutoriales',
+                cancelButtonText: 'Odio los tutoriales',
                 confirmButtonText: 'Genial, sigamos!'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -149,7 +142,7 @@ import Swal from 'sweetalert2';
                     Swal.fire({
 
                         title: 'Primeros Pasos',
-                        text: 'Piensa en cualquier producto de tu inventario: A que Categoria pertenece? También puedes utilizar nombres genericos como "Otros" y una ganancia de 1 (sin ganancia), pero será mas dificil clasificarlos en el futuro.',
+                        text: 'Piensa en cualquier producto de tu inventario: ¿A qué Categoría pertenece? También puedes utilizar nombres genéricos como "Otros" y una ganancia de 1 (sin ganancia), pero será más difícil clasificarlos en el futuro.',
                         icon: 'info',
                         showCancelButton: false,
 
@@ -175,7 +168,7 @@ import Swal from 'sweetalert2';
 
                     Swal.fire(
                         'Tutorial desactivado',
-                        'Puedes volver a activarlo en Ayuda',
+                        'Puedes volver a activarlo en la sección Ayuda.',
                         'success'
                     );
                 }
@@ -209,7 +202,7 @@ import Swal from 'sweetalert2';
                         Swal.fire({
 
                             title: 'Primeros Pasos',
-                            text: 'Cuando estes listo deberias crear tu primer PROVEEDOR.',
+                            text: 'Cuando estes listo deberías crear tu primer PROVEEDOR.',
                             icon: 'info',
                             showCancelButton: false,
 
@@ -226,7 +219,7 @@ import Swal from 'sweetalert2';
 
                     Swal.fire(
                         'Tutorial desactivado',
-                        'Puedes volver a activarlo en Ayuda',
+                        'Puedes volver a activarlo en la sección Ayuda.',
                         'success'
                     );
                 }
@@ -238,12 +231,12 @@ import Swal from 'sweetalert2';
 
             Swal.fire({
                 title: 'Estos son tus Proveedores',
-                text: "En cada Proveedor puedes almacenar todos los datos relacionados con el mismo, también definir el indice de Ganancia que aplicas a cada uno.",
+                text: "En cada Proveedor puedes almacenar todos los datos relacionados con el mismo y definir el índice de Ganancia que aplicas a cada uno.",
                 icon: 'info',
                 showCancelButton: true,
                 confirmButtonColor: '#0284C7',
                 cancelButtonColor: '#EF4444',
-                cancelButtonText: 'Odio los tutoriales',
+                cancelButtonText: 'No más tutoriales',
                 confirmButtonText: 'Genial, sigamos!'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -251,7 +244,7 @@ import Swal from 'sweetalert2';
                     Swal.fire({
 
                         title: 'Primeros Pasos',
-                        text: 'Puedes utilizar nombres genericos como "Otros" y una ganancia de 1 (sin ganancia), pero será mas dificil clasificarlos en el futuro.',
+                        text: 'Puedes utilizar nombres genéricos como "Otros" y una ganancia de 1 (sin ganancia), pero será más difícil clasificarlos en el futuro.',
                         icon: 'info',
                         showCancelButton: false,
 
@@ -278,29 +271,24 @@ import Swal from 'sweetalert2';
 
                     Swal.fire(
                         'Tutorial desactivado',
-                        'Puedes volver a activarlo en Ayuda',
+                        'Puedes volver a activarlo en la sección Ayuda.',
                         'success'
                     );
                 }
             });
         }
 
-
-
         if (!respuesta.tutorial && respuesta.tutorial_lvl === 7 && window.location.pathname.includes('/producto')) {
-
-
-
 
             // Mensaje Agenda
             Swal.fire({
                 title: 'Aquí puedes crear nuevos productos',
-                text: "Solo debes darle un nombre y un precio, también puedes indicar la cotización del Dólar Hoy (prometo recordarlo en futuros productos).",
+                text: "Solo debes darle un nombre y un precio. También puedes indicar la cotización del Dólar Hoy (prometo recordarlo en futuros productos).",
                 icon: 'info',
                 showCancelButton: true,
                 confirmButtonColor: '#0284C7',
                 cancelButtonColor: '#EF4444',
-                cancelButtonText: 'Odio los tutoriales',
+                cancelButtonText: 'Me cansé',
                 confirmButtonText: 'Genial, sigamos!'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -320,7 +308,7 @@ import Swal from 'sweetalert2';
                         Swal.fire({
 
                             title: 'Primeros pasos',
-                            text: 'Cuando hayas creado tu primer producto estará disponible en el BUSCADOR. Ya puedes organizar tu Agenda y añadir todos los productos que quieras.',
+                            text: 'Cuando hayas creado tu primer producto, estará disponible en el BUSCADOR. Ya puedes organizar tu Agenda y añadir todos los productos que desees.',
                             icon: 'info',
                             showCancelButton: false,
 
@@ -339,22 +327,19 @@ import Swal from 'sweetalert2';
 
                     Swal.fire(
                         'Tutorial desactivado',
-                        'Puedes volver a activarlo desde tu perfil',
+                        'Puedes volver a activarlo en la sección Ayuda.',
                         'success'
                     );
                 }
             });
-
-
         }
 
         if (!respuesta.tutorial && respuesta.tutorial_lvl === 8 && window.location.pathname === '/') {
 
-
             Swal.fire({
 
                 title: 'Primeros Pasos',
-                text: 'Ya puedes buscar tu producto! Tienes 3 opciones de busqueda: por listado, por nombre y por código.',
+                text: 'Ya puedes buscar tu producto. Tienes tres opciones de búsqueda: por listado, por nombre y por código.',
                 icon: 'info',
                 showCancelButton: false,
 
@@ -363,7 +348,7 @@ import Swal from 'sweetalert2';
                 Swal.fire({
 
                     title: 'Todo tiene un final...',
-                    text: 'TusListas puede hacer mucho mas por ti y tu comercio/empresa, fue diseñada para organizar tus listas de precios y mantenerlos actualizados. Puedes encontrar toda la información en AYUDA.',
+                    text: 'TusListas puede hacer mucho más por ti y tu comercio/empresa. Fue diseñada para organizar tus listas de precios y mantenerlos actualizados. Puedes encontrar toda la información en la sección Ayuda.',
                     icon: 'info',
                     showCancelButton: false,
 
@@ -372,7 +357,7 @@ import Swal from 'sweetalert2';
                     Swal.fire({
 
                         title: 'Todo tiene un final...',
-                        text: 'Haz finalizado el tutorial Primeros Pasos, eres un usuario especial :)',
+                        text: 'Haz finalizado el tutorial "Primeros Pasos", eres un usuario especial :)',
                         icon: 'info',
                         showCancelButton: false,
     
@@ -383,9 +368,6 @@ import Swal from 'sweetalert2';
                 activarDesactivar(1, tokenCSRF);
             });
         }
-
-
-
 
         function iconoTutorial(elemento, eliminar = false) {
 
@@ -426,10 +408,7 @@ import Swal from 'sweetalert2';
                 icono.remove();
 
             }
-
         }
-
-
 
         // Modifica la elección del usuario (0 ver tutoriales - 1 no ver tutoriales)
         async function activarDesactivar(modificar, token) {
@@ -483,10 +462,6 @@ import Swal from 'sweetalert2';
             }
         }
 
-
-
-
-
         // Consulta si el usuario desea ver tutorial, devuelve bool y tutorial_lvl
         async function consultar() {
 
@@ -501,8 +476,5 @@ import Swal from 'sweetalert2';
                 console.log(error);
             }
         }
-
     }
-
-
 })();

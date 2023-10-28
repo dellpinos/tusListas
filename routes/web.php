@@ -12,6 +12,7 @@ use App\Http\Controllers\APICategorias;
 use App\Http\Controllers\APIOwnerTools;
 use App\Http\Controllers\APIPendientes;
 use App\Http\Controllers\APIFabricantes;
+use App\Http\Controllers\AyudaController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\AumentoController;
@@ -70,6 +71,10 @@ Route::get('/categoria/nueva-categoria', [CategoriaController::class, 'create'])
 Route::post('/categoria/categoria-store', [CategoriaController::class, 'store'])->name('categoria.store');
 Route::get('/categoria/categoria-edit/{categoria}', [CategoriaController::class, 'edit'])->name('categoria.edit');
 Route::post('/categoria/categoria-update', [CategoriaController::class, 'update'])->name('categoria.update');
+
+// Ayuda
+Route::get('/ayuda', [AyudaController::class, 'index'])->name('ayuda');
+Route::get('/ayuda/documentacion', [AyudaController::class, 'documentacion'])->name('documentacion');
 
 /* Tener en cuenta que Fortify crea multiples rutas para manejar la autenticación y los emails de verificación */
 
