@@ -60,6 +60,7 @@ import Swal from 'sweetalert2';
 
                 // Consultar DB
                 const resultado = await paginadorDesactualizados();
+                
 
                 if (resultado.errors) {
                     // Evalua el array "errors" dentro del resultado, identificando el campo y el mensaje
@@ -81,14 +82,15 @@ import Swal from 'sweetalert2';
                     }
                 }
 
-
                 if (resultado.productos.length === 0 || resultado.precios.length === 0) {
 
                     sinResultados();
                     return;
 
                 } else {
+
                     recargarPaginacion(resultado);
+
                 }
             } catch (error) {
                 console.log(error);
@@ -96,13 +98,16 @@ import Swal from 'sweetalert2';
             }
         });
 
-        function recargarPaginacion(resultado) {
+        async function recargarPaginacion(resultado) {
+
+            const contador = await contarModificados();
+
             mensajeInfo.classList.remove('display-none');
 
             mensajeInfo.classList.add('mensaje__warning');
             btnDolarAct.classList.remove('display-none');
 
-            const countProductos = resultado.productos.length;
+            const countProductos = contador.afectados;
 
             mensajeInfo.textContent = countProductos + "  Productos con un valor dolar inferior a U$S " + valor;
             productosArray = resultado.productos;
@@ -114,9 +119,11 @@ import Swal from 'sweetalert2';
             mostrarElementos();
         }
 
-        btnDolarAct.addEventListener('click', () => {
+        btnDolarAct.addEventListener('click', async () => {
 
-            actualizarPrecios();
+            const resultado = await contarModificados(); // retorna un int
+            await alertaUpdate(valor, resultado);
+
         });
 
         async function paginadorDesactualizados() {
@@ -145,7 +152,7 @@ import Swal from 'sweetalert2';
             }
         }
 
-        async function actualizarPrecios() {
+        async function contarModificados() {
             try {
 
                 const url = '/api/aumentos/dolar-count';
@@ -171,7 +178,9 @@ import Swal from 'sweetalert2';
                     return;
                 }
 
-                alertaUpdate(valor, resultado);
+                return resultado;
+
+                // alertaUpdate(valor, resultado);
 
             } catch (error) {
                 console.log('El servidor no responde' + error);
@@ -259,7 +268,6 @@ import Swal from 'sweetalert2';
                             enlaceNumero.forEach(numero => {
                                 numero.addEventListener('click', async (e) => {
 
-
                                     // Modificar page
                                     page = e.target.dataset.page;
                                     try {
@@ -269,7 +277,6 @@ import Swal from 'sweetalert2';
                                     } catch (error) {
                                         console.log(error);
                                     }
-
                                 });
                             });
 
@@ -346,7 +353,7 @@ import Swal from 'sweetalert2';
                             } else {
 
                                 swalWithBootstrapButtons.fire(
-                                    'Ups!',
+                                    'Oops!',
                                     'Surgió un error, no se realizaron cambios',
                                     'error'
                                 );
@@ -406,15 +413,18 @@ import Swal from 'sweetalert2';
         }
         function reiniciarPagina() {
 
+            page = 1;
             dolarInput.value = '';
+            paginacion = '';
             valor = 0;
             preciosArray = [];
             productosArray = [];
             limpiarProductos();
             mensajeInfo.classList.remove('display-none');
-            mensajeInfo.textContent = "Los 5 productos con el dolar mas bajo o desactualizado";
+            mensajeInfo.textContent = "Los productos con el dolar mas bajo o desactualizado";
             btnDolarAct.classList.add('display-none');
             listadoDesactualizados();
+            paginadorDesactualizados();
         }
     }
 })();
