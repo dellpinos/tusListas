@@ -3,11 +3,9 @@
 
 .ayuda {
 
-
     &__grid {
 
         @include m.grid(1, 2rem);
-
         align-items: center;
     }
 
@@ -17,15 +15,27 @@
         justify-content: center;
         align-items: center;
         border: 1px solid v.$gris;
-        padding: 6rem;
+        padding: 4rem 2rem;
         border-radius: 1rem;
 
+        @include m.phone {
+            padding: 6rem;
+        }
+
         h3 {
-            font-size: 3rem;
+            font-size: 2rem;
+
+            @include m.phone {
+                font-size: 3rem;
+            }
         }
 
         p {
-            font-size: 2rem;
+            font-size: 1.4rem;
+
+            @include m.phone {
+                font-size: 1.6rem;
+            }
         }
 
         span {
@@ -60,13 +70,6 @@
     }
 
     &__enlace {
-        font-size: 2rem;
+        font-size: 1.6rem;
     }
-
-
-
-
-
 }
-
-

@@ -1,4 +1,3 @@
-
 (function () {
 
     if (document.querySelector('.ayuda__grid')) {
@@ -14,7 +13,7 @@
 
             boton.addEventListener('click', async () => {
 
-                if(resultado.tutorial) {
+                if (resultado.tutorial) {
                     await activarDesactivar(0, tokenCSRF);
                 } else {
                     await activarDesactivar(1, tokenCSRF);
@@ -23,7 +22,6 @@
                 const respuesta = await consultar();
 
                 cambiarBoton(respuesta.tutorial, boton);
-
 
             });
         });
@@ -46,15 +44,12 @@
                 });
                 const resultado = await respuesta.json();
 
-                console.log(resultado);
-
                 return resultado;
 
             } catch (error) {
                 console.log(error);
             }
         }
-
 
         // Consulta si el usuario desea ver tutorial, devuelve bool y tutorial_lvl
         async function consultar() {
@@ -79,20 +74,12 @@
                 btn.classList.remove('ayuda__boton--inactivo');
                 btn.classList.add('ayuda__boton--activo');
 
-
             } else {
 
                 btn.textContent = "Desactivado";
                 btn.classList.add('ayuda__boton--inactivo');
                 btn.classList.remove('ayuda__boton--activo');
             }
-
         }
-
-
-
-
-
     }
-
 })();

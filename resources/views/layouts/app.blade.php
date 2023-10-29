@@ -7,7 +7,7 @@
 
     <title>TusListas - @yield('titulo')</title>
 
-    <meta name="description" content="App de gestión de precios e inventario">
+    <meta name="description" content="Aplicación de gestión de precios e inventario">
 
     <link rel="icon" href="{{ asset('img/LogoSinFondo.png') }}" type="image/x-icon">
 
