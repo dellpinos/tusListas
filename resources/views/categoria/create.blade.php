@@ -1,4 +1,10 @@
 @extends('layouts.dashboard')
+
+@section('meta')
+    {{-- Esta etiqueta me permite leer el token csrf desde Js --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
+
 @section('titulo')
     Nueva Categoria
 @endsection

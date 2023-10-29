@@ -20,13 +20,13 @@
         </div>
         <div class="ayuda__contenedor">
             <h3>Guia y FAQ</h3>
-            <a href="{{ route('documentacion') }}">
+            <a class="enlace" href="{{ route('documentacion') }}">
                 <p>Ver información de TusListas</p>
             </a>
         </div>
         <div class="ayuda__contenedor">
-            <h3>Servicio Técnico y Feedback</h3>
-            <p><span>Foro: </span> <a href="#">urlejemplo.github.com</a></p>
+            <h3>Soporte y Feedback</h3>
+            <p><span>Foro: </span> <a class="enlace ayuda__enlace" target="_blank" href="https://github.com/dellpinos/tusListas/discussions">TusListas</a></p>
             <p><span>Contacto: </span>tuslistas.app@gmail.com</p>
         </div>
     </div>
