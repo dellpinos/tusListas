@@ -1,0 +1,72 @@
+@use '../base/variables' as v;
+
+// Estilos de SweetAlert2 (alertas)
+
+.swal2-popup {
+    font-size: 1.4rem!important;
+}
+.swal2-cancel {
+
+}
+.btn {
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    margin: 0 1rem;
+    padding: 1rem 1.5rem;
+    font-size: 1.4rem;
+    line-height: 1.25;
+    border-radius: 0.25rem;
+    transition: all 0.15s ease-in-out;
+    font-weight: v.$bold;
+}
+.btn-danger {
+    color: v.$blanco;
+    background-color: v.$azul;
+    border-color: v.$azul;
+
+    &:hover {
+        background-color: darken(v.$azul, 10%);
+    }
+}
+.btn-success {
+    background-color: v.$rojo;
+    transition: all .5s ease;
+    color: v.$blanco;
+
+    &:hover {
+        background-color: darken(v.$rojo, 20%);
+    }
+}
+
+// Clases personalizadas dentro de las alertas Sweert Alers
+
+.sa {
+
+    &__text {
+        line-height: 25px;
+    }
+
+    &__msj-count {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 1.4rem;
+
+    }
+
+    &__alert-tutorial {
+        color: lighten(v.$azul, 20%);
+        font-size: 2rem;
+        margin: 0 .5rem;
+    }
+}
+
+

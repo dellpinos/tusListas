@@ -4,6 +4,7 @@ use App\Http\Controllers\APICodigo;
 use App\Http\Controllers\APIAumentos;
 use App\Http\Controllers\APIBuscador;
 use App\Http\Controllers\APICalculos;
+use App\Http\Controllers\APITutorial;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\APIProductos;
 use App\Http\Controllers\APIProviders;
@@ -11,6 +12,7 @@ use App\Http\Controllers\APICategorias;
 use App\Http\Controllers\APIOwnerTools;
 use App\Http\Controllers\APIPendientes;
 use App\Http\Controllers\APIFabricantes;
+use App\Http\Controllers\AyudaController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\AumentoController;
@@ -49,7 +51,6 @@ Route::get('/ingreso', [IngresoController::class, 'index'])->name('ingreso');
 // Agenda
 Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda');
 
-
 // Fabricantes
 Route::get('/fabricantes', [FabricanteController::class, 'index'])->name('fabricantes');
 Route::get('/fabricante/nuevo-fabricante', [FabricanteController::class, 'create'])->name('fabricante.create');
@@ -70,6 +71,10 @@ Route::get('/categoria/nueva-categoria', [CategoriaController::class, 'create'])
 Route::post('/categoria/categoria-store', [CategoriaController::class, 'store'])->name('categoria.store');
 Route::get('/categoria/categoria-edit/{categoria}', [CategoriaController::class, 'edit'])->name('categoria.edit');
 Route::post('/categoria/categoria-update', [CategoriaController::class, 'update'])->name('categoria.update');
+
+// Ayuda
+Route::get('/ayuda', [AyudaController::class, 'index'])->name('ayuda');
+Route::get('/ayuda/documentacion', [AyudaController::class, 'documentacion'])->name('documentacion');
 
 /* Tener en cuenta que Fortify crea multiples rutas para manejar la autenticación y los emails de verificación */
 
@@ -121,8 +126,13 @@ Route::get('/api/productos/all', [APIProductos::class, 'all']);
 Route::post('/api/productos/destroy', [APIProductos::class, 'destroy']);
 Route::post('/api/productos/update', [APIProductos::class, 'update']);
 
-// Pendientes
+// API Pendientes
 Route::get('/api/pendientes/index', [APIPendientes::class, 'index']);
 Route::get('/api/pendientes/count', [APIPendientes::class, 'count']);
 Route::post('/api/pendientes/create', [APIPendientes::class, 'create']);
 Route::post('/api/pendientes/destroy', [APIPendientes::class, 'destroy']);
+
+// API Tutorial
+Route::get('/api/tutorial/consulta', [APITutorial::class, 'consulta']);
+Route::post('/api/tutorial/modificar', [APITutorial::class, 'modificar']);
+Route::post('/api/tutorial/set-lvl', [APITutorial::class, 'set_lvl']);

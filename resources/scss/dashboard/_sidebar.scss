@@ -168,4 +168,9 @@
         @extend .sidebar__alert;
         
     }
+    &__alert-tutorial {
+        @extend .sidebar__alert;
+        color: lighten(v.$azul, 20%);
+        
+    }
 }

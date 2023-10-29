@@ -1,0 +1,57 @@
+@use '../../base/variables' as v;
+.docu {
+
+
+    &__contenedor-principal {
+        h2 {
+            font-size: 3rem;
+            text-align: start;
+            margin: 4rem 0 1rem 0;
+        }
+
+        h4 {
+            font-size: 2rem;
+            margin: 2rem 0 .5rem 0;
+        }
+
+        ul {
+            padding: 3rem;
+        }
+
+        li {
+            font-size: 1.6rem;
+            list-style-type: circle;
+            line-height: 30px;
+        }
+
+        table {
+            margin: 2rem;
+            background-color: lighten(v.$gris, 40%);
+            padding: 1rem;
+            border-radius: .5rem;
+        }
+
+        th {
+            font-size: 1.6rem;
+            padding: 0 2rem .5rem 0;
+        }
+
+        td {
+            font-size: 1.6rem;
+        }
+    }
+
+    &__img {
+        max-width: 100%;
+        height: auto;
+        padding: 2rem;
+
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid v.$gris;
+        }
+    }
+
+}

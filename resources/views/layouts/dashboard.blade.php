@@ -47,6 +47,11 @@
                             <i class="fa-solid fa-user-gear"></i>
                             <span class="font-regular">Admin</span></a>
                     @endif
+                    <a class="header__enlace font-regular" href="{{ route('ayuda') }}">
+                        <i class="fa-solid fa-circle-info"></i>
+                        Ayuda
+                    </a>
+
                     <a class="header__enlace" href="{{ route('perfil') }}">Hola: <span
                             class="font-regular ">{{ auth()->user()->username }}</span></a>
                     <form method="POST" action="{{ route('logout') }}">
@@ -57,7 +62,7 @@
             @endauth
             @guest
                 <nav class="header__nav">
-                    <a cclass="header__enlace" href="{{ route('login') }}">Login</a>
+                    <a class="header__enlace" href="{{ route('login') }}">Login</a>
                 </nav>
             @endguest
         </div>
@@ -68,7 +73,7 @@
         <aside class="sidebar">
 
             <nav class=" sidebar__nav">
-                <a href="{{ route('buscador') }}"
+                <a href="{{ route('buscador') }}" id="sidebar-buscador"
                     class="sidebar__enlace @if (request()->path() === '/') activo @endif">
                     <i class="fa-solid fa-magnifying-glass sidebar__icono"></i>
                     <p class="sidebar__texto-icono">Buscador</p>
@@ -78,7 +83,7 @@
                     <i class="fa-solid fa-clipboard sidebar__icono"></i>
                     <p class="sidebar__texto-icono">Ingreso</p>
                 </a>
-                <a href="{{ route('producto.create') }}" id="sidebar__new-prod"
+                <a href="{{ route('producto.create') }}" id="sidebar-new-prod"
                     class="sidebar__enlace @if (request()->path() === 'producto/nuevo-producto') activo @endif">
                     <i class="fa-solid fa-plus sidebar__icono"></i>
                     <p class="sidebar__texto-icono">Producto</p>
@@ -99,23 +104,7 @@
                     </a>
                 @endif
 
-                {{-- <a href="{{ route('providers') }}"
-                    class="sidebar__enlace @if (request()->path() === 'providers') activo @endif">
-                    <i class="fa-solid fa-shop sidebar__icono"></i>
-                    <p class="sidebar__texto-icono">Proveedores</p>
-                </a>
-                <a href="{{ route('categorias') }}"
-                    class="sidebar__enlace @if (request()->path() === 'categorias') activo @endif">
-                    <i class="fa-solid fa-folder-open sidebar__icono"></i>
-                    <p class="sidebar__texto-icono">Categorias</p>
-                </a>
-                <a href="{{ route('fabricantes') }}"
-                    class="sidebar__enlace @if (request()->path() === 'fabricantes') activo @endif">
-                    <i class="fa-solid fa-industry sidebar__icono"></i>
-                    <p class="sidebar__texto-icono">Fabricantes</p>
-                </a> --}}
-
-                <a href="{{ route('agenda') }}"
+                <a href="{{ route('agenda') }}" id="sidebar-agenda"
                     class="sidebar__enlace @if (request()->path() === 'agenda') activo @endif">
                     <i class="fa-solid fa-address-card sidebar__icono"></i>
                     <p class="sidebar__texto-icono">Agenda</p>
