@@ -167,7 +167,7 @@ class APIAumentos extends Controller
             'errors' => false
         ]);
     }
-    public function dolar_busqueda(Request $request) // <<<<<<
+    public function dolar_busqueda(Request $request)
     {
 
         // Evalua el rol del usuario
@@ -216,7 +216,7 @@ class APIAumentos extends Controller
             return json_encode("error");
         }
 
-        $precios = Precio::where('dolar', "<", $input)->orderBy('dolar', 'ASC')->offset($paginacion->offset())->limit($registros_por_pagina)->get();
+        $precios = Precio::where('dolar', "<", $input)->where('empresa_id', session('empresa')->id)->orderBy('dolar', 'ASC')->offset($paginacion->offset())->limit($registros_por_pagina)->get();
 
         $productos = [];
         $resultado = [];

@@ -20,19 +20,19 @@
 
                 <div class="aumento-formulario__contenedor-campo">
                     <input type="number" id="aumento-dolar" placeholder="Dolar Hoy"
-                        class="formulario__campo aumento-formulario__campo-dolar">
+                        class="formulario__campo aumento__campo-dolar">
                     <a class="enlace__normal" href="https://dolarhoy.com/cotizaciondolarblue" target="_blank">Consultar
                         Dolar Hoy</a>
 
                 </div>
             </div>
 
-            <a class="formulario__boton" id="btn-dolar">Buscar Desactualizados</a>
+            <a class="formulario__boton aumento__btn-dolar" id="btn-dolar">Buscar Desactualizados</a>
         </div>
-        <div class="aumento-formulario__contenedor-actualizar">
-            <p class="mensaje__info aumento-formulario__mensaje--act" id="desactualizados-info"></p>
+        <div class="aumento__contenedor-actualizar">
+            <p class="mensaje__info aumento__mensaje--act" id="desactualizados-info"></p>
 
-            <a class="formulario__boton aumento-formulario__boton--act display-none" id="btn-dolar-actualizar">Actualizar
+            <a class="formulario__boton aumento__boton--act display-none" id="btn-dolar-actualizar">Actualizar
                 Todos</a>
         </div>
 
