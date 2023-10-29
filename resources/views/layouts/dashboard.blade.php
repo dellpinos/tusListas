@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @yield('meta')
 
-    <meta name="description" content="App de gestión de precios e inventario">
+    <meta name="description" content="Aplicación de gestión de precios e inventario">
     <link rel="icon" href="{{ asset('img/LogoSinFondo.png') }}" type="image/x-icon">
 
     <title>TusListas - @yield('titulo')</title>
@@ -42,12 +42,14 @@
 
                 <nav class="header__nav">
                     @if (auth()->user()->user_type === 'admin' || auth()->user()->user_type === 'owner')
-                        <a class="header__enlace header__enlace--admin" href="{{ route('owner-tools') }}">
+                        <a class="header__enlace header__enlace--admin @if (request()->path() === 'owner-tools') header__enlace--activo @endif
+                        " href="{{ route('owner-tools') }}">
 
                             <i class="fa-solid fa-user-gear"></i>
                             <span class="font-regular">Admin</span></a>
                     @endif
-                    <a class="header__enlace font-regular" href="{{ route('ayuda') }}">
+                    <a class="header__enlace font-regular @if (request()->path() === 'ayuda') header__enlace--activo @endif" 
+                    href="{{ route('ayuda') }}">
                         <i class="fa-solid fa-circle-info"></i>
                         Ayuda
                     </a>
@@ -115,6 +117,11 @@
                     class="sidebar__enlace sidebar__enlace-movil @if (request()->path() === 'perfil') activo @endif">
                     <i class="fa-solid fa-user sidebar__icono"></i>
                     <p class="sidebar__texto-icono">Perfil</p>
+                </a>
+                <a href="{{ route('ayuda') }}"
+                    class="sidebar__enlace sidebar__enlace-movil @if (request()->path() === 'perfil') activo @endif">
+                    <i class="fa-solid fa-circle-info sidebar__icono"></i>
+                    <p class="sidebar__texto-icono">Ayuda</p>
                 </a>
                 @if (auth()->user()->user_type === 'admin' || auth()->user()->user_type === 'owner')
                     <a href="{{ route('owner-tools') }}"

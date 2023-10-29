@@ -121,7 +121,7 @@
     &__button-movil--logout {
 
         align-items: center;
-        color: v.$blanco;
+        color: lighten(v.$gris, 5%);
         gap: 1rem;
         justify-content: center;
         width: 100%;

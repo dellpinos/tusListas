@@ -10,6 +10,9 @@
 @endsection
 
 @section('contenido')
+    <div class="formulario__contenedor-boton">
+        <a href="{{ route('buscador') }}" class="categoria__boton">&laquo; Volver</a>
+    </div>
     <div class="ayuda__grid">
         <div class="ayuda__contenedor">
             <h3>Tutorial Primeros Pasos</h3>
@@ -26,7 +29,8 @@
         </div>
         <div class="ayuda__contenedor">
             <h3>Soporte y Feedback</h3>
-            <p><span>Foro: </span> <a class="enlace ayuda__enlace" target="_blank" href="https://github.com/dellpinos/tusListas/discussions">TusListas</a></p>
+            <p><span>Foro: </span> <a class="enlace ayuda__enlace" target="_blank"
+                    href="https://github.com/dellpinos/tusListas/discussions">TusListas</a></p>
             <p><span>Contacto: </span>tuslistas.app@gmail.com</p>
         </div>
     </div>
