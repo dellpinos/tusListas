@@ -10,12 +10,10 @@
 
             btnMenu.addEventListener('click', () => {
                 sidebar.classList.toggle('sidebar__movil-visible');
+                btnMenu.classList.toggle('header__icono-menu--act');
+
                 body.classList.toggle('scroll-mobile'); // bloquea el scroll
             });
-
-
         });
     }
-
-
 })();
