@@ -45,16 +45,43 @@
     }
     &__ganancia {
         font-size: 2rem;
-        color: v.$verde;
+        color: v.$blanco;
     }
 
     &__contenedor {
         color: v.$blanco;
-        background-color: v.$grisOscuroAzul;
         margin: 3rem 0 3rem 0;
         border-radius: 1rem;
         overflow: hidden;
         white-space: nowrap;
+
+        &--red {
+            @include m.bg-gradient(v.$rojoSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$rojoSobrio, 5%));
+            }
+        }
+
+        &--orange {
+            @include m.bg-gradient(v.$naranjaSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$naranjaSobrio, 5%));
+            }
+        }
+
+        &--green {
+            @include m.bg-gradient(v.$verdeSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$verdeSobrio, 5%));
+            }
+        }
+
+        &--blue {
+            @include m.bg-gradient(v.$azulSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$azulSobrio, 5%));
+            }
+        }
 
 
         h3 {

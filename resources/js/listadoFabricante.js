@@ -80,10 +80,26 @@ import * as helpers from './helpers';
                 return;
             }
 
-            fabricantesArrayFiltrado.forEach(fabricante => {
+            fabricantesArrayFiltrado.forEach((fabricante, indice) => {
 
                 const contenedor = document.createElement('DIV');
                 contenedor.classList.add('fabricante__contenedor', 'swiper-slide');
+
+                const indiceRelativo = indice % 4;
+
+                if (indiceRelativo === 0) {
+                    contenedor.classList.add('fabricante__contenedor--red');
+
+                } else if (indiceRelativo === 1) {
+                    contenedor.classList.add('fabricante__contenedor--blue');
+
+                } else if (indiceRelativo === 2) {
+                    contenedor.classList.add('fabricante__contenedor--green');
+
+                } else if (indiceRelativo === 3) {
+                    contenedor.classList.add('fabricante__contenedor--orange');
+
+                }
 
                 const catHeading = document.createElement('H3');
                 catHeading.textContent = fabricante.nombre;
