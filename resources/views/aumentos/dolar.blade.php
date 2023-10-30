@@ -32,7 +32,7 @@
         <div class="aumento__contenedor-actualizar">
             <p class="mensaje__info aumento__mensaje--act" id="desactualizados-info"></p>
 
-            <a class="formulario__boton aumento__boton--act display-none" id="btn-dolar-actualizar">Actualizar
+            <a class="formulario__boton display-none" id="btn-dolar-actualizar">Actualizar
                 Todos</a>
         </div>
 

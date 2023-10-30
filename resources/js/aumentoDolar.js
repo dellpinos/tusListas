@@ -103,9 +103,9 @@ import Swal from 'sweetalert2';
             const contador = await contarModificados();
 
             mensajeInfo.classList.remove('display-none');
-
             mensajeInfo.classList.add('mensaje__warning');
             btnDolarAct.classList.remove('display-none');
+            btnDolarAct.classList.add('aumento__boton-act');
 
             const countProductos = contador.afectados;
 
@@ -180,8 +180,6 @@ import Swal from 'sweetalert2';
 
                 return resultado;
 
-                // alertaUpdate(valor, resultado);
-
             } catch (error) {
                 console.log('El servidor no responde' + error);
             }
@@ -215,6 +213,7 @@ import Swal from 'sweetalert2';
 
             mensajeInfo.classList.add('display-none');
             table.classList.add('display-none');
+            btnDolar.classList.remove('aumento__boton-act');
             btnDolarAct.classList.add('display-none');
         }
 
@@ -420,8 +419,10 @@ import Swal from 'sweetalert2';
             preciosArray = [];
             productosArray = [];
             limpiarProductos();
+            mensajeInfo.classList.remove('mensaje__warning');
             mensajeInfo.classList.remove('display-none');
             mensajeInfo.textContent = "Los productos con el dolar mas bajo o desactualizado";
+            btnDolarAct.classList.remove('aumento__boton-act');
             btnDolarAct.classList.add('display-none');
             listadoDesactualizados();
             paginadorDesactualizados();
