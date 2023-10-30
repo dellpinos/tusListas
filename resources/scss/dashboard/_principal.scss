@@ -48,7 +48,6 @@
         }
     }
 
-
     &__tabs {
         background-color: v.$azul;
         display: flex;
@@ -95,7 +94,6 @@
         font-weight: v.$bold;
         transition: all .6s ease!important;
 
-
         &:hover {
             background-color: lighten(v.$azul, 10%);
         }
@@ -103,7 +101,8 @@
     
     &__tab-icono {
         box-shadow: 0px -3px 4px v.$blanco inset;
-        
+        width: 100%;
+        text-align: center;
         align-items: center;
         justify-content: center;
         font-size: 2rem;
@@ -115,10 +114,10 @@
         opacity: 1;
         transition: max-height .5s ease, opacity 2s ease;
 
-        display: none;
+        display: none!important;
 
         @include m.tablet {
-            display: flex;
+            display: flex!important;
         }
 
         &--activo {

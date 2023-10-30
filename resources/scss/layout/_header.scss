@@ -101,7 +101,7 @@
         }
 
         @include m.tablet {
-            display: none;
+            display: none!important;
         }
     }
 
