@@ -47,7 +47,6 @@
             text-overflow: ellipsis;
 
         }
-
     }
 
     &__logo {
@@ -73,11 +72,9 @@
 
         @include m.tablet {
             
-
             background-color: v.$grisOscuroAzul;
             box-shadow: none;
             transition: background-color 1s ease, box-shadow .5s ease;
-
             height: 90px;
             max-height: 90px;
             width: 90px;
@@ -103,9 +100,8 @@
 
         }
 
-
         @include m.tablet {
-            display: none;
+            display: none!important;
         }
     }
 
