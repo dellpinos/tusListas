@@ -80,10 +80,26 @@ import * as helpers from './helpers';
                 return;
             }
 
-            providersArrayFiltrado.forEach(provider => {
+            providersArrayFiltrado.forEach((provider, indice) => {
 
                 const contenedor = document.createElement('DIV');
                 contenedor.classList.add('provider__contenedor', 'swiper-slide');
+
+                const indiceRelativo = indice % 4;
+
+                if (indiceRelativo === 0) {
+                    contenedor.classList.add('provider__contenedor--red');
+
+                } else if (indiceRelativo === 1) {
+                    contenedor.classList.add('provider__contenedor--blue');
+
+                } else if (indiceRelativo === 2) {
+                    contenedor.classList.add('provider__contenedor--green');
+
+                } else if (indiceRelativo === 3) {
+                    contenedor.classList.add('provider__contenedor--orange');
+
+                }
 
                 const catHeading = document.createElement('H3');
                 catHeading.textContent = provider.nombre;
@@ -109,7 +125,7 @@ import * as helpers from './helpers';
                 catParrafo5.textContent = "Web: " + provider.web;
 
                 const contenedorSM = document.createElement('DIV');
-                contenedorSM.classList.add('formulario__contenedor-boton', 'formulario__contenedor-boton--sm');
+                contenedorSM.classList.add('provider__contenedor-boton', 'formulario__contenedor-boton--sm');
 
                 const catEnlace = document.createElement('A');
                 catEnlace.setAttribute('href', `/provider/provider-edit/${provider.id}`);

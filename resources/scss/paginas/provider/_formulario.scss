@@ -4,17 +4,29 @@
 .provider-formulario {
 
     &__grid {
-        @include m.grid(1, 2rem);
+        // display: flex;
+        // flex-direction: column;
         margin-bottom: 5rem;
         background-color: v.$blanco;
         padding: 3rem;
         border-radius: .5rem;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        
+        @include m.phone {
+            //@include m.grid(1, 2rem);
+            
+        }
     }
     &__contenedor {
         display: flex;
+        flex-direction: column;
         width: 100%;
         gap: 2rem;
+
+        @include m.phone {
+            flex-direction: row;
+        }
+        
     }
 
     &__contenedor-sm {

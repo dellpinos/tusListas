@@ -4,16 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CategoriaController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
     }
     public function index()
     {
-
         return view('categoria.index');
     }
     public function create()
@@ -25,13 +25,14 @@ class CategoriaController extends Controller
     {
 
         $this->validate($request, [
-            'nombre' => 'required|unique:categorias|max:60|min:3',
+            'nombre' => 'required|string|max:60|min:3|unique:categorias,nombre,NULL,id,empresa_id,' . session('empresa')->id, // Ignora los nombres en otras empresas
             'ganancia' => 'required|numeric|between:1,19.99'
         ]);
 
         Categoria::create([
             'nombre' => $request->nombre,
-            'ganancia' => $request->ganancia
+            'ganancia' => $request->ganancia,
+            'empresa_id' => session('empresa')->id
         ]);
 
         return redirect()->route('categorias');
@@ -46,10 +47,19 @@ class CategoriaController extends Controller
     }
     public function update(Request $request)
     {
-        $categoria = Categoria::find($request->id);
+        $categoria = Categoria::where('id', $request->id)->where('empresa_id', session('empresa')->id)->first();
         
         $this->validate($request, [
-            'nombre' => 'required|max:60|min:3|unique:categorias,nombre,' . $categoria->id,
+
+            'nombre' => [
+                'required',
+                'string',
+                'max:60',
+                'min:3',
+                Rule::unique('categorias', 'nombre')->where(function ($query) {
+                    return $query->where('empresa_id', session('empresa')->id); // solo tiene en cuenta la empresa del usuario
+                })->ignore($categoria->id), // Ignora el registro actual
+            ],
             'ganancia' => 'required|numeric|between:1,19.99'
         ]);
 

@@ -1,0 +1,106 @@
+@use '../../base/variables' as v;
+@use '../../base/mixins' as m;
+
+
+.agenda {
+
+    &__grid {
+        display: flex;
+        flex-direction: column;
+        
+        @include m.tablet {
+            @include m.grid(2, 1rem);
+        }
+    }
+
+    &__elemento-grid {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: .5rem;
+        padding: 3rem 1rem;
+        color: v.$blanco;
+        width: 100%;
+
+        @include m.tablet {
+            padding: 6rem 2rem;
+
+        }
+        
+        &:nth-child(1){
+            @include m.bg-gradient(v.$naranjaSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$naranjaSobrio, 5%));
+            }
+        }
+        &:nth-child(2){
+            @include m.bg-gradient(v.$verdeSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$verdeSobrio, 5%));
+            }
+        }
+        &:nth-child(3){
+            @include m.bg-gradient(v.$rojoSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$rojoSobrio, 5%));
+            }
+        }
+        &:nth-child(4){
+            @include m.bg-gradient(v.$azulSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$azulSobrio, 5%));
+            }
+        }
+
+    }
+
+    &__contenedor-xs {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+    }
+
+    &__icono {
+        font-size: 4rem;
+        margin: 0rem 2rem;
+        
+        @include m.tablet {
+            font-size: 6rem;
+        }
+    }
+
+    &__contador {
+        font-size: 4rem;
+        
+        @include m.tablet {
+            font-size: 6rem;
+        }
+    }
+
+    &__text {
+        font-weight: v.$bold;
+        font-size: 2rem;
+        
+        @include m.tablet {
+            font-size: 3rem;
+        }
+    }
+
+    &__alert-tutorial {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        font-size: 2rem;
+        background-color: lighten(v.$azul, 15%);
+        color: v.$blanco;
+        border-radius: 50%;
+
+        @include m.phone {
+            font-size: 3.6rem;
+            top: 3rem;
+            right: 3rem;
+        }
+
+    }
+}

@@ -1,9 +1,7 @@
 
 // Fuentes
-// $fuente_headings: 'Oswald', sans-serif;
 $fuente_logo: 'Oswald', sans-serif;
 $fuente_textos: 'Roboto', sans-serif;
-
 $fuente_headings: 'Montserrat', sans-serif;
 
 
@@ -14,8 +12,8 @@ $black: 900;
 
 
 // Tamaño de Media Queries
-$telefono: 480px;
-$tablet: 768px;
+$phone: 480px;
+$tablet: 770px;
 $desktop: 1024px;
 
 // Colores
@@ -29,32 +27,19 @@ $grisClaro: #6B7280;
 $grisBlanco: #9CA3AF;
 $grisBlancoClaro: #E6E8ED;
 
-
-$azul: #0284C7;
-
 $gris: #64748B;
 $gris-claro: #F8FAFC;
 
+$azul: #0284C7;
 $rojo: #EF4444;
 $verde: #078F22;
 $amarillo: #D9A421;
 $naranja: #ffa500;
 
-/// <<<
-
-
-// $cyan: #0891B2;
-// $azul: #2563EB;
-// $indigo: #4338CA;
-// $morado: #7C3AED;
-// $naranja:#F59E0B;
-// $rosa: #DB2777;
-// $naranjaOscuro: #ff735c;
-
-// $gris: #6b7280;
-// $grisOscuro: #4B5563;
-// $grisClaro: #f3f4f6;
-// $grisAzul: #385964;
-
+$azulSobrio: #025c99;
+$rojoSobrio: #c42323;
+$verdeSobrio: #086e29;
+$amarilloSobrio: #b3881c;
+$naranjaSobrio: #ff8000;
 
 $separacion: 5rem;

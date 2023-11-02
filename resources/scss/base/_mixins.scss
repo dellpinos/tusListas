@@ -1,8 +1,8 @@
 @use '../base/variables' as v;
 
 /** Media Queries **/
-@mixin telefono {
-    @media (min-width: v.$telefono) {
+@mixin phone {
+    @media (min-width: v.$phone) {
         @content;
     }
 }
@@ -80,4 +80,7 @@
         font-size: 1.4rem;
         font-weight: v.$bold;
     }
+}
+@mixin bg-gradient($bg_color) {
+    background-image: linear-gradient(to left top, $bg_color, lighten($bg_color, 15%));
 }

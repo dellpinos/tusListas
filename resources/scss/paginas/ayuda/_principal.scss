@@ -1,0 +1,75 @@
+@use '../../base/variables' as v;
+@use '../../base/mixins' as m;
+
+.ayuda {
+
+    &__grid {
+
+        @include m.grid(1, 2rem);
+        align-items: center;
+    }
+
+    &__contenedor {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid v.$gris;
+        padding: 4rem 2rem;
+        border-radius: 1rem;
+
+        @include m.phone {
+            padding: 6rem;
+        }
+
+        h3 {
+            font-size: 2rem;
+
+            @include m.phone {
+                font-size: 3rem;
+            }
+        }
+
+        p {
+            font-size: 1.4rem;
+
+            @include m.phone {
+                font-size: 1.6rem;
+            }
+        }
+
+        span {
+            font-weight: v.$bold;
+        }
+    }
+
+    &__contenedor-flex {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    &__boton {
+        padding: 1rem;
+
+        &--activo {
+            background-color: v.$verde;
+
+            &:hover {
+                background-color: darken(v.$verde, 5%);
+            }
+        }
+
+        &--inactivo {
+            background-color: v.$rojo;
+
+            &:hover {
+                background-color: darken(v.$rojo, 10%);
+            }
+        }
+    }
+
+    &__enlace {
+        font-size: 1.6rem;
+    }
+}

@@ -80,10 +80,26 @@ import * as helpers from './helpers';
                 return;
             }
 
-            fabricantesArrayFiltrado.forEach(fabricante => {
+            fabricantesArrayFiltrado.forEach((fabricante, indice) => {
 
                 const contenedor = document.createElement('DIV');
                 contenedor.classList.add('fabricante__contenedor', 'swiper-slide');
+
+                const indiceRelativo = indice % 4;
+
+                if (indiceRelativo === 0) {
+                    contenedor.classList.add('fabricante__contenedor--red');
+
+                } else if (indiceRelativo === 1) {
+                    contenedor.classList.add('fabricante__contenedor--blue');
+
+                } else if (indiceRelativo === 2) {
+                    contenedor.classList.add('fabricante__contenedor--green');
+
+                } else if (indiceRelativo === 3) {
+                    contenedor.classList.add('fabricante__contenedor--orange');
+
+                }
 
                 const catHeading = document.createElement('H3');
                 catHeading.textContent = fabricante.nombre;
@@ -101,7 +117,7 @@ import * as helpers from './helpers';
                 catParrafo3.textContent = "Descripción: " + fabricante.descripcion;
 
                 const contenedorSM = document.createElement('DIV');
-                contenedorSM.classList.add('formulario__contenedor-boton', 'formulario__contenedor-boton--sm');
+                contenedorSM.classList.add('fabricante__contenedor-boton', 'formulario__contenedor-boton--sm');
 
                 const catEnlace = document.createElement('A');
                 catEnlace.setAttribute('href', `/fabricante/fabricante-edit/${fabricante.id}`);
@@ -236,7 +252,7 @@ import * as helpers from './helpers';
                 return resultado;
 
             } catch (error) {
-                console.log('El servidor no responde');
+                console.log('El servidor no responde' + error);
             }
         }
 

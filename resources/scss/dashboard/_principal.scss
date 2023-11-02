@@ -1,4 +1,5 @@
 @use '../base/variables' as v;
+@use '../base/mixins' as m;
 
 
 .dashboard {
@@ -8,31 +9,71 @@
         overflow-y: scroll;
         position: relative;
     }
+    &__contenedor-secundario {
+        
+        margin: 1rem auto;
+        padding: 3rem 1rem 3rem 1rem;
+        
+        @include m.phone {
+            
+            padding: 3rem 2rem 6rem 2rem;
+        }
+
+        @include m.tablet {
+            padding: 3rem 8rem 8rem 8rem;
+            margin: 4rem auto;
+        }
+    }
+
     &__contenedor-tabs {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
+
     }
 
+    &__heading {
+        font-size: 4rem;
+        margin: 2rem 0 3rem 0;
+
+        @include m.phone {
+            font-size: 4rem;
+        }
+        
+        @include m.tablet {
+            margin: 1rem 0 4rem 0;
+            font-size: 4rem;
+            
+        }
+    }
 
     &__tabs {
         background-color: v.$azul;
         display: flex;
         justify-content: space-around;
         color: v.$blanco;
-        max-height: 0;
+        max-height: 6rem;
         overflow: hidden;
         transition: max-height 0.5s ease;
+
+        @include m.tablet {
+            max-height: 0;
+        }
+        
         
         p {
             box-shadow: 0px -3px 4px v.$blanco inset;
             width: 100%;
             text-align: center;
             border-right: 1px solid v.$blanco;
-            opacity: 0;
+            opacity: 1;
             transition: opacity 1.5s ease;
             padding: .5rem 0 .8rem 0;
+
+            @include m.tablet {
+                opacity: 0;
+            }
         }
 
         
@@ -42,7 +83,6 @@
             p {
                 opacity: 1;
             }
-
         }
     }
 
@@ -54,16 +94,15 @@
         font-weight: v.$bold;
         transition: all .6s ease!important;
 
-
         &:hover {
-
             background-color: lighten(v.$azul, 10%);
         }
     }
     
     &__tab-icono {
         box-shadow: 0px -3px 4px v.$blanco inset;
-        display: flex;
+        width: 100%;
+        text-align: center;
         align-items: center;
         justify-content: center;
         font-size: 2rem;
@@ -75,20 +114,18 @@
         opacity: 1;
         transition: max-height .5s ease, opacity 2s ease;
 
+        display: none!important;
+
+        @include m.tablet {
+            display: flex!important;
+        }
+
         &--activo {
             opacity: 0;
             max-height: 0;
             color: v.$azul;
             cursor: default;
 
-            
         }
-    }
-
-    &__contenedor-secundario {
-        
-        margin: 4rem auto;
-        padding: 3rem 8rem 8rem 8rem;
-
     }
 }

@@ -107,33 +107,7 @@
                         <a class="enlace__normal" href="https://dolarhoy.com/cotizaciondolarblue" target="_blank">Consultar
                             Dolar Hoy</a>
                     </div>
-                    <div class="producto-formulario__flex producto-formulario__contenedor-checkbox">
 
-                        @if ($producto_secundario !== '' && $producto_fraccionado)
-                            <a href="{{ route('producto.edit', $producto_secundario) }}"
-                                class="producto-formulario__enlace-fraccionado">Ver Producto No-Fraccionado</a>
-                        @elseif ($producto_secundario !== '' && !$producto_fraccionado)
-                            <a href="{{ route('producto.edit', $producto_secundario) }}"
-                                class="producto-formulario__enlace-fraccionado">Ver Producto Fraccionado</a>
-                        @else
-                            <input type="checkbox" id="check-fraccion" class="  @error('ganancia') borde__error @enderror">
-                        
-
-                        <label for="check-fraccion"
-                            class="formulario__label pointer
-                                                @error('ganancia_fraccion')
-                                                c-red
-                                                @enderror
-                                                @error('contenido_total')
-                                                c-red
-                                                @enderror
-                                                @error('unidad_fraccion')
-                                                c-red
-                                                @enderror
-                                            ">Venta
-                            fraccionado</label>
-                            @endif
-                    </div>
                 </div>
 
                 <div class="producto-formulario__contenedor-sm">
@@ -158,20 +132,26 @@
                     <label for="ganancia" class="formulario__label">Ganancia *</label>
                     <div class="formulario__contenedor-radio" id="contenedor-radios">
 
-                        <label for="ganancia-categoria" class="formulario__label--small">Categoria</label>
-                        <input type="radio" value="categoria" name="ganancia" class="cursor-pointer"
-                            id="ganancia-categoria" @if ($producto_fraccionado) disabled @endif
-                            @if ($producto->ganancia_tipo === 'categoria') checked @endif />
+                        <div class="formulario__contenedor-input-radio">
+                            <label for="ganancia-categoria" class="formulario__label--small">Categoria</label>
+                            <input type="radio" value="categoria" name="ganancia" class="cursor-pointer"
+                                id="ganancia-categoria" @if ($producto_fraccionado) disabled @endif
+                                @if ($producto->ganancia_tipo === 'categoria') checked @endif />
+                        </div>
 
-                        <label for="ganancia-provider" class="formulario__label--small">Proveedor</label>
-                        <input type="radio" value="provider" name="ganancia" class="cursor-pointer"
-                            id="ganancia-provider" @if ($producto_fraccionado) disabled @endif
-                            @if ($producto->ganancia_tipo === 'provider') checked @endif />
+                        <div class="formulario__contenedor-input-radio">
+                            <label for="ganancia-provider" class="formulario__label--small">Proveedor</label>
+                            <input type="radio" value="provider" name="ganancia" class="cursor-pointer"
+                                id="ganancia-provider" @if ($producto_fraccionado) disabled @endif
+                                @if ($producto->ganancia_tipo === 'provider') checked @endif />
+                        </div>
 
-                        <label for="ganancia-personalizada" class="formulario__label--small">Personalizada</label>
-                        <input type="radio" value="personalizada" name="ganancia" class="cursor-pointer"
-                            id="ganancia-personalizada" @if ($producto_fraccionado) disabled @endif
-                            @if ($producto->ganancia_tipo === 'producto') checked @endif />
+                        <div class="formulario__contenedor-input-radio">
+                            <label for="ganancia-personalizada" class="formulario__label--small">Personalizada</label>
+                            <input type="radio" value="personalizada" name="ganancia" class="cursor-pointer"
+                                id="ganancia-personalizada" @if ($producto_fraccionado) disabled @endif
+                                @if ($producto->ganancia_tipo === 'producto') checked @endif />
+                        </div>
                     </div>
                     <div class="formulario__campo-contenedor">
                         <input type="number" step="0.01" min="1" max="19.9" id="ganancia"
@@ -193,6 +173,33 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="producto-formulario__flex producto-formulario__contenedor-checkbox">
+
+                @if ($producto_secundario !== '' && $producto_fraccionado)
+                    <a href="{{ route('producto.edit', $producto_secundario) }}"
+                        class="producto-formulario__enlace-fraccionado">Ver Producto No-Fraccionado</a>
+                @elseif ($producto_secundario !== '' && !$producto_fraccionado)
+                    <a href="{{ route('producto.edit', $producto_secundario) }}"
+                        class="producto-formulario__enlace-fraccionado">Ver Producto Fraccionado</a>
+                @else
+                    <input type="checkbox" id="check-fraccion" class="  @error('ganancia') borde__error @enderror">
+
+
+                    <label for="check-fraccion"
+                        class="formulario__label pointer
+                                        @error('ganancia_fraccion')
+                                        c-red
+                                        @enderror
+                                        @error('contenido_total')
+                                        c-red
+                                        @enderror
+                                        @error('unidad_fraccion')
+                                        c-red
+                                        @enderror
+                                    ">Venta
+                        fraccionado</label>
+                @endif
             </div>
 
             <div id="producto-contenedor-oculto"
@@ -225,8 +232,9 @@
 
                     <div class="formulario__campo-contenedor width-full">
                         <label for="contenido-total" class="formulario__label ">Total de Unidades *</label>
-                        <input type="number" id="contenido-total" name="contenido_total" placeholder="3, 25, 500" min="1" max="9999"
-                            value="{{ $producto->contenido_total }}" @if ($producto_fraccionado) required @endif
+                        <input type="number" id="contenido-total" name="contenido_total" placeholder="3, 25, 500"
+                            min="1" max="9999" value="{{ $producto->contenido_total }}"
+                            @if ($producto_fraccionado) required @endif
                             class="formulario__campo  @error('contenido-total') borde__error @enderror">
                         @error('contenido-total')
                             <p class="alerta__error">{{ $message }}</p>
@@ -258,7 +266,10 @@
             <input type="submit" value="Guardar Cambios" class="formulario__boton">
         </form>
 
-        <button id="producto-destroy" class="formulario__boton formulario__boton--rojo">Eliminar Producto @if ($producto_fraccionado) Fraccionado @endif</button>
+        <button id="producto-destroy" class="formulario__boton formulario__boton--rojo mt-1">Eliminar Producto @if ($producto_fraccionado)
+                Fraccionado
+            @endif
+        </button>
 
     </div>
 @endsection

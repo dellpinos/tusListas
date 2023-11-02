@@ -17,11 +17,18 @@ class APIAumentos extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
     }
 
     public function aumento_categoria(Request $request)
     {
+
+        // Evalua el rol del usuario
+        if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
+            return json_encode([
+                'error' => "Usuario invalido",
+            ]);
+        }
 
         // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
         $validator = Validator::make($request->all(), [
@@ -37,9 +44,10 @@ class APIAumentos extends Controller
             ]);
         }
 
-        // Consultar Todos los productos que corresponden a esta categoria
-        $precios = Precio::where('categoria_id', $request->categoria_id)->get();
-        $categoria = Categoria::find($request->categoria_id);
+        // Consultar Todos los productos que corresponden a esta categoria y la empresa dentro sesión actual
+        $precios = Precio::where('categoria_id', $request->categoria_id)->where('empresa_id', session('empresa')->id)->get();
+
+        $categoria = Categoria::where('id', $request->categoria_id)->where('empresa_id', session('empresa')->id)->first();
 
         $preciosAfectados = count($precios);
         $porcentajeDecimal = 1 + ($request->porcentaje / 100);
@@ -54,7 +62,8 @@ class APIAumentos extends Controller
             'tipo' => 'Categoria',
             'nombre' => $categoria->nombre,
             'username' => auth()->user()->username,
-            'afectados' => $preciosAfectados
+            'afectados' => $preciosAfectados,
+            'empresa_id' => session('empresa')->id
         ]);
 
         return json_encode([
@@ -65,6 +74,13 @@ class APIAumentos extends Controller
 
     public function aumento_provider(Request $request)
     {
+
+        // Evalua el rol del usuario
+        if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
+            return json_encode([
+                'error' => "Usuario invalido",
+            ]);
+        }
 
         // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
         $validator = Validator::make($request->all(), [
@@ -80,8 +96,8 @@ class APIAumentos extends Controller
             ]);
         }
 
-        $precios = Precio::where('provider_id', $request->provider_id)->get();
-        $provider = Provider::find($request->provider_id);
+        $precios = Precio::where('provider_id', $request->provider_id)->where('empresa_id', session('empresa')->id)->get();
+        $provider = Provider::where('id', $request->provider_id)->where('empresa_id', session('empresa')->id)->first();
 
         $preciosAfectados = count($precios);
         $porcentajeDecimal = 1 + ($request->porcentaje / 100);
@@ -96,13 +112,21 @@ class APIAumentos extends Controller
             'tipo' => 'Proveedor',
             'nombre' => $provider->nombre,
             'username' => auth()->user()->username,
-            'afectados' => $preciosAfectados
+            'afectados' => $preciosAfectados,
+            'empresa_id' => session('empresa')->id
         ]);
 
         echo json_encode($preciosAfectados);
     }
     public function aumento_fabricante(Request $request)
     {
+
+        // Evalua el rol del usuario
+        if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
+            return json_encode([
+                'error' => "Usuario invalido",
+            ]);
+        }
 
         // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
         $validator = Validator::make($request->all(), [
@@ -118,8 +142,8 @@ class APIAumentos extends Controller
             ]);
         }
 
-        $precios = Precio::where('fabricante_id', $request->fabricante_id)->get();
-        $fabricante = Fabricante::find($request->fabricante_id);
+        $precios = Precio::where('fabricante_id', $request->fabricante_id)->where('empresa_id', session('empresa')->id)->get();
+        $fabricante = Fabricante::where('id', $request->fabricante_id)->where('empresa_id', session('empresa')->id)->first();
 
         $preciosAfectados = count($precios);
         $porcentajeDecimal = 1 + ($request->porcentaje / 100);
@@ -134,7 +158,8 @@ class APIAumentos extends Controller
             'tipo' => 'Fabricante',
             'nombre' => $fabricante->nombre,
             'username' => auth()->user()->username,
-            'afectados' => $preciosAfectados
+            'afectados' => $preciosAfectados,
+            'empresa_id' => session('empresa')->id
         ]);
 
         return json_encode([
@@ -144,6 +169,13 @@ class APIAumentos extends Controller
     }
     public function dolar_busqueda(Request $request)
     {
+
+        // Evalua el rol del usuario
+        if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
+            return json_encode([
+                'error' => "Usuario invalido",
+            ]);
+        }
 
         // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
         $validator = Validator::make($request->all(), [
@@ -164,7 +196,7 @@ class APIAumentos extends Controller
         $pagina_actual = $request->page;
 
         $pagina_actual = filter_var($pagina_actual, FILTER_VALIDATE_INT);
-        $total_registros = Precio::where('dolar', "<", $input)->count();
+        $total_registros = Precio::where('dolar', "<", $input)->where('empresa_id', session('empresa')->id)->count();
 
         if (!$pagina_actual || $pagina_actual < 1) {
             return json_encode("error");
@@ -184,17 +216,13 @@ class APIAumentos extends Controller
             return json_encode("error");
         }
 
-        $precios = Precio::where('dolar', "<", $input)->orderBy('dolar', 'ASC')->offset($paginacion->offset())->limit($registros_por_pagina)->get();
+        $precios = Precio::where('dolar', "<", $input)->where('empresa_id', session('empresa')->id)->orderBy('dolar', 'ASC')->offset($paginacion->offset())->limit($registros_por_pagina)->get();
 
         $productos = [];
         $resultado = [];
         foreach ($precios as $precio) {
-            $productosTodos = Producto::where('precio_id', $precio->id)->get();
+            $productosTodos = Producto::where('precio_id', $precio->id)->where('empresa_id', session('empresa')->id)->get();
 
-            if ($productosTodos->count() === 0) {
-                $precio->delete(); //// PROVISORIO, elimina un precio sin producto. Resolver al trabajar en delete() de registros
-                return; // retorna, hay que recargar la página para volver a ejecutar hasta que no queden precios sin producto
-            }
             if ($productosTodos->count() > 1) {
                 // Existe Fraccionado
                 foreach ($productosTodos as $producto) {
@@ -202,14 +230,14 @@ class APIAumentos extends Controller
                         // No es el fraccionado
                         $resultado = precioVenta($producto, $precio);
                         $productos[] = $resultado['producto'];
-                        $precio = $resultado['precio']; //????
+                        $precio = $resultado['precio'];
                     }
                 }
             } else {
                 // No existe fraccionado
                 $resultado = precioVenta($productosTodos->first(), $precio);
                 $productos[] = $resultado['producto'];
-                $precio = $resultado['precio']; //????
+                $precio = $resultado['precio'];
             }
         }
 
@@ -223,19 +251,22 @@ class APIAumentos extends Controller
 
     public function dolar_listado()
     {
-        // 10 precios - productos con "dolar" mas bajo
-        $precios = Precio::orderBy('dolar', 'asc')->limit(5)->get();
 
+        // Evalua el rol del usuario
+        if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
+            return json_encode([
+                'error' => "Usuario invalido",
+            ]);
+        }
+
+        // 10 precios - productos con "dolar" mas bajo
+        $precios = Precio::orderBy('dolar', 'asc')->where('empresa_id', session('empresa')->id)->limit(5)->get();
 
         $productos = [];
         $resultado = [];
         foreach ($precios as $precio) {
-            $productosTodos = Producto::where('precio_id', $precio->id)->get();
+            $productosTodos = Producto::where('precio_id', $precio->id)->where('empresa_id', session('empresa')->id)->get();
 
-            if ($productosTodos->count() === 0) {
-                $precio->delete(); //// PROVISORIO, elimina un precio sin producto. Resolver al trabajar en delete() de registros
-                return; // retorna, hay que recargar la página para volver a ejecutar hasta que no queden precios sin producto
-            }
             if ($productosTodos->count() > 1) {
                 // Existe Fraccionado
                 foreach ($productosTodos as $producto) {
@@ -264,6 +295,13 @@ class APIAumentos extends Controller
     public function dolar_count(Request $request)
     {
 
+        // Evalua el rol del usuario
+        if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
+            return json_encode([
+                'error' => "Usuario invalido",
+            ]);
+        }
+
         // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
         $validator = Validator::make($request->all(), [
             'valor' => 'integer|required|min:0|max:10000'
@@ -278,7 +316,7 @@ class APIAumentos extends Controller
 
         // Cuantos registros serán afectados
         $input = $request->valor;
-        $resultado = Precio::where('dolar', "<", $input)->count();
+        $resultado = Precio::where('dolar', "<", $input)->where('empresa_id', session('empresa')->id)->count();
 
         return json_encode([
             'afectados' => $resultado,
@@ -288,6 +326,13 @@ class APIAumentos extends Controller
 
     public function dolar_update(Request $request)
     {
+
+        // Evalua el rol del usuario
+        if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
+            return json_encode([
+                'error' => "Usuario invalido",
+            ]);
+        }
 
         // Con la instancia de Validator puedo validar y luego leer los resultados de la validación
         $validator = Validator::make($request->all(), [
@@ -312,8 +357,7 @@ class APIAumentos extends Controller
             return;
         }
 
-
-        $precios = Precio::where('dolar', "<", $input)->get();
+        $precios = Precio::where('dolar', "<", $input)->where('empresa_id', session('empresa')->id)->get();
 
         foreach ($precios as $precio) {
 
@@ -330,7 +374,8 @@ class APIAumentos extends Controller
             'tipo' => 'Dolar',
             'nombre' => 'Varios',
             'username' => auth()->user()->username,
-            'afectados' => $afectados
+            'afectados' => $afectados,
+            'empresa_id' => session('empresa')->id
         ]);
 
         echo json_encode(true);

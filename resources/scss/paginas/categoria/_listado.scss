@@ -1,26 +1,18 @@
 @use '../../base/variables' as v;
 @use '../../base/mixins' as m;
 
-
 .categoria {
-
     
     &__boton {
         @include m.boton(v.$azul, v.$blanco);
         border-radius: .5rem;
         display: block;
-        padding: 1.5rem 2rem;
-        white-space: nowrap;
 
-        @include m.tablet {
-            max-width: 20%;
-            width: auto;
-        }
-        
         &--eliminar {
-            margin: 1rem 0 0 0;
-            padding: .5rem 1rem .5rem 1rem;
+
             background-color: v.$rojo;
+            padding: .5rem 1rem .5rem 1rem;
+            width: auto;
 
             &:hover {
                 background-color: darken(v.$rojo, 100%);
@@ -29,9 +21,8 @@
         }
 
         &--modificar {
-            margin: 1rem 0 0 0;
-            padding: .5rem 1rem .5rem 1rem;
             background-color: v.$azul;
+            padding: .5rem 1rem .5rem 1rem;
             width: auto;
 
             &:hover {
@@ -47,29 +38,73 @@
 
     &__ganancia {
         font-size: 2rem;
-        color: v.$verde;
+        color: v.$blanco;
     }
 
     &__contenedor {
         color: v.$blanco;
-        background-color: v.$grisOscuroAzul;
-        padding: 2rem; // Este padding provoca que no se vea el utlimo elemento adecuadamente, loop
         margin: 3rem 0 3rem 0;
         border-radius: 1rem;
         overflow: hidden;
         white-space: nowrap;
 
+        &--red {
+            @include m.bg-gradient(v.$rojoSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$rojoSobrio, 5%));
+            }
+        }
+
+        &--orange {
+            @include m.bg-gradient(v.$naranjaSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$naranjaSobrio, 5%));
+            }
+        }
+
+        &--green {
+            @include m.bg-gradient(v.$verdeSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$verdeSobrio, 5%));
+            }
+        }
+
+        &--blue {
+            @include m.bg-gradient(v.$azulSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$azulSobrio, 5%));
+            }
+        }
+        
         h3 {
             text-align: center;
             margin-bottom: 1.5rem;
-            font-size: 6rem;
+            font-size: 3rem;
             overflow: hidden;
             text-overflow: ellipsis;
+            padding: 1rem;
+
+            @include m.phone {
+                font-size: 4rem;
+            }
         }
         
         p {
             overflow: hidden;
             text-overflow: ellipsis;
+            padding: 0 1rem;
+        }
+    }
+    &__contenedor-boton {
+        display: flex;
+        justify-content: space-between;
+        margin: 1.5rem;
+        gap: 1rem;
+        flex-direction: column;
+
+        @include m.tablet {
+            flex-direction: row;
+            gap: 0;
         }
     }
 }

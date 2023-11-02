@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Producto;
+use App\Models\Provider;
 use App\Models\Categoria;
 use App\Models\Fabricante;
 use Illuminate\Database\Eloquent\Model;
@@ -21,23 +22,24 @@ class Precio extends Model
         'contador_update',
         'desc_porc',
         'desc_duracion',
-        'desc_acu'
+        'desc_acu',
+        'empresa_id'
     ];
 
-    public function categoria()
+    public function categorias()
     {
         return $this->belongsTo(Categoria::class);
     }
-    public function fabricante()
+    public function fabricantes()
     {
         return $this->belongsTo(Fabricante::class);
     }
-    public function provider()
+    public function providers()
     {
         return $this->belongsTo(Provider::class);
     }
     public function productos()
     {
-        return $this->hasMany((Producto::class));
+        return $this->belongsTo(Producto::class);
     }
 }

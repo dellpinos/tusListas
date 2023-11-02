@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Empresa;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pendiente extends Model
 {
@@ -14,6 +15,12 @@ class Pendiente extends Model
         'precio',
         'desc_porc',
         'desc_duracion',
-        'stock'
+        'stock',
+        'empresa_id'
     ];
+
+    public function empresas()
+    {
+        return $this->belongsTo(Empresa::class);
+    }
 }

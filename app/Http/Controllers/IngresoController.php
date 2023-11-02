@@ -3,19 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Precio;
-use Illuminate\Http\Request;
 
 class IngresoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
     }
     
     public function index()
     {
         // Dolar mas alto registrado en la DB
-        $precio = Precio::orderBy('dolar', 'desc')->first();
+        $precio = Precio::orderBy('dolar', 'desc')->where('empresa_id', session('empresa')->id)->first();
         $dolar = $precio->dolar ?? 1;
 
         return view('ingreso.index', [

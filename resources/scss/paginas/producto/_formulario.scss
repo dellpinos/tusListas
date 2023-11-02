@@ -4,24 +4,37 @@
 .producto-formulario {
 
     &__grid {
-        @include m.grid(1, 2rem);
+        //@include m.grid(1, 2rem);
         margin-bottom: 5rem;
         background-color: v.$blanco;
         padding: 3rem;
         border-radius: .5rem;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+
+
+    }
+    &__contenedor {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        
+        @include m.phone {
+            flex-direction: row;
+            gap: 2rem;
+        }
     }
 
     &__flex {
         display: flex;
         justify-content: space-between;
-        gap: 2rem;
-    }
+        flex-direction: column;
+        
+        
+        @include m.phone {
+            flex-direction: row;
+            gap: 2rem;
+        }
 
-    &__contenedor {
-        display: flex;
-        width: 100%;
-        gap: 2rem;
     }
 
     &__contenedor-sm {
@@ -39,9 +52,12 @@
     }
 
     &__contenedor-checkbox {
+        display: flex;
+        flex-direction: row;
         justify-content: center;
         align-items: center;
-        margin-bottom: 1rem;
+        margin-bottom: 3rem;
+        gap: 1rem;
 
         label {
             margin: 0;
@@ -65,8 +81,12 @@
         text-align: center;
 
         width: 90%;
-        font-size: 8rem;
+        font-size: 5rem;
         font-weight: v.$bold;
+
+        @include m.phone {
+            font-size: 7rem;
+        }
     }
 
     &__venta-boton {
@@ -116,11 +136,13 @@
         visibility: hidden;
         transition: opacity 2s, max-height 1s, overflow 2s, visibility 2s;
 
+
+
     }
 
     &__contenedor-visible {
         opacity: 1;
-        max-height: 40rem;
+        max-height: 80rem;
         overflow: visible;
         transition: opacity 2s, max-height 1s, overflow 2s, visibility 2s;
         visibility: visible;

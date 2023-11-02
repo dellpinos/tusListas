@@ -1,35 +1,73 @@
 @use '../base/variables' as v;
+@use '../base/mixins' as m;
+
+
+.scroll-mobile { // Bloquea el scroll en moviles
+    overflow: hidden;
+}
 
 .sidebar {
-    padding: 1rem;
+    
     background-color: v.$grisOscuroAzul;
-    width: 12%;
+    width: 100%;
     max-height: 100%;
-    overflow-y: hidden;
-    height: 100vh;
+    overflow: hidden;
+    opacity: 0;
+    height: 0;
+    transition: height 1s ease, opacity 1s ease;
+    
+    @include m.tablet {
+        height: 100vh;
+        width: 12%;
+        overflow-y: hidden;
+        opacity: 1;
+        padding: 1rem;
+    }
+    
+    &__movil-visible {
+        height: 100vh;
+        opacity: 1;
+        padding: 1rem;
+
+    }
 
     &__nav {
         display: grid;
-        gap: .5rem;
+        gap: 1.5rem;
+        height: 80vh;
+        overflow-y: scroll;
+        padding: .5rem .5rem 3rem .5rem;
+
+        @include m.tablet {
+            height: auto;
+            overflow-y: visible;
+            padding: .5rem;
+        
+        }
     }
 
     &__enlace {
         position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        color: v.$blanco;
+        color: lighten(v.$gris, 5%);
         text-align: center;
         transition-property: background-color;
         transition-duration: 300ms;
         text-transform: uppercase;
         font-weight: bold;
         font-size: 1.3rem;
-        padding: 1.5rem;
+        padding: 1rem;
         gap: 1rem;
         width: auto;
         transition: all .5s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        @include m.tablet {
+
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
         &:hover,
         &.activo {
@@ -39,7 +77,59 @@
             color: lighten(v.$azul, 45%);
 
         }
+        &.no-owner {
+            
+            color: v.$gris;
 
+            .sidebar__alert-no-owner {
+                // icono dentro del enlace
+                color: darken(v.$blanco, 10%);
+                font-size: 1.5rem;
+            }
+
+            &:hover {
+                box-shadow: lighten(v.$rojo, 10%) 0px 2px 5px;
+                cursor: not-allowed;
+
+                .sidebar__alert-no-owner {
+                    // icono dentro del enlace
+                }
+            }
+        }
+    }
+
+    // Oculta estos enlaces en pantallas grandes
+    &__enlace-movil {
+        @include m.tablet {
+            display: none;
+        }
+
+        &--logout{
+            &:hover {
+                box-shadow: lighten(v.$rojo, 5%) 0px 2px 5px;
+                color: lighten(v.$rojo, 10%);
+                cursor: pointer;
+
+                p, i{
+                    color: lighten(v.$rojo, 10%);
+                    cursor: pointer;
+                }
+            }
+
+        }
+    }
+    &__button-movil--logout {
+
+        align-items: center;
+        color: lighten(v.$gris, 5%);
+        gap: 1rem;
+        justify-content: center;
+        width: 100%;
+        display: flex;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
     &__icono {
         font-size: 2rem;
@@ -47,15 +137,40 @@
 
     &__texto-icono {
         font-size: 1.4rem;
+        font-weight: v.$bold;
+        text-transform: uppercase;
+
+        &--rojo {
+            color: v.$blanco;
+
+            &:hover {
+
+                cursor: pointer;
+                color: lighten(v.$rojo, 10%);
+            }
+        }
     }
+
     &__alert {
         position: absolute;
         top: 1rem;
         right: 1rem;
         font-size: 2rem;
 
+    }
+
+    &__alert-pendiente {
+        @extend .sidebar__alert;
         color: v.$naranja;
+    }
 
-
+    &__alert-no-owner {
+        @extend .sidebar__alert;
+        
+    }
+    &__alert-tutorial {
+        @extend .sidebar__alert;
+        color: lighten(v.$azul, 20%);
+        
     }
 }

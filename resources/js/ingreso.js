@@ -8,7 +8,7 @@ import * as helpers from './helpers';
         const grid = document.querySelector('#mercaderia-grid');
         const dolarPrevio = document.querySelector('.ingreso__numero');
         let flag = 0; // Saber cuando se obtuvo el primer resultado de la DB
-        let flagIVA = 0; // Flag checkbox IVA - par -> sin IVA / inpar -> con IVA
+        let flagIVA = false; // False -> sin IVA / True -> con IVA
         let arrayCoincidencias = []; // Aqui se almacena el resultado de la DB
         let coincidenciasPantalla = []; // Aqui se almacena el resultado de la DB filtrado
         let precioId = ''; // Precio seleccionado que será almacenado
@@ -54,7 +54,7 @@ import * as helpers from './helpers';
                 }
             });
 
-            btnGuardar.addEventListener('click', (e) => {
+            btnGuardar.addEventListener('click', async (e) => {
 
                 // Validar datos
                 const objV = validarCampos(obj);
@@ -70,25 +70,27 @@ import * as helpers from './helpers';
                     cantidad.classList.remove('b-red', 'b-green');
                 }
 
-                if (!flagIVA % 2 === 0) {
-                    objV.precio = Math.round(objV.precio / 1.21);
-                }
 
+                if(flagIVA) {
+
+                    objV.precio = Math.round(objV.precio / 1.21);
+
+                }
+                
+                console.log(objV.precio);
                 // Almacenar informacion
-                const resultado = almacenarDatos(objV);
+                const resultado = await almacenarDatos(objV);
 
                 if (resultado) {
-
 
                     // Limpiar variables en memoria
                     precioId = '';
                     productoId = '';
-                    flagIVA = 0;
+                    flagIVA = false;
                     desactivarCampos(obj);
                     app();
 
-                    alertPendiente();
-
+                    await alertPendiente();
 
                 }
             });
@@ -175,10 +177,10 @@ import * as helpers from './helpers';
 
             let flagValidacion = [];
             let flagValidacionGral = true;
-            const regexCodigo = /^[a-zA-Z0-9]{4}$/;
+            const regexCodigo = /^[a-zA-Z0-9]{5}$/;
             const regexDescuento = /^[0-9]{1,3}(\.[0-9]{1,3})?$/;
             const regexPrecio = /^[0-9]+(\.[0-9]+)?$/;
-            const regexCantidad = /^(0|[1-9]\d*)$/; // <<<<<<
+            const regexCantidad = /^(0|[1-9]\d*)$/;
 
             descuento.classList.remove('b-red', 'b-green');
             semanas.classList.remove('b-red', 'b-green');
@@ -380,6 +382,19 @@ import * as helpers from './helpers';
         }
         function generarForm() {
 
+            /// crear un label para cada campon e inhabilitarlo con display:none / habilitarlo en mq:phone a la vez que deshabilito los que se encuentran en el HTML
+
+
+            // Añado contenedor y Label para la versión móvil
+            const contenedorLabelCheckbox = document.createElement('DIV');
+            contenedorLabelCheckbox.classList.add('ingreso__contenedor-campo-movil');
+
+            const labelCheckboxMovil = document.createElement('LABEL');
+            labelCheckboxMovil.classList.add('ingreso__label-movil');
+            labelCheckboxMovil.textContent = "Pendiente";
+
+            contenedorLabelCheckbox.appendChild(labelCheckboxMovil);
+
             const contenedorCheck = document.createElement('DIV');
             contenedorCheck.classList.add('formulario__contenedor-checkbox');
 
@@ -388,34 +403,76 @@ import * as helpers from './helpers';
             checkbox.classList.add('formulario__checkbox');
 
             contenedorCheck.appendChild(checkbox);
+            contenedorLabelCheckbox.appendChild(contenedorCheck);
+
+
+            const contenedorLabelCantidad = document.createElement('DIV');
+            contenedorLabelCantidad.classList.add('ingreso__contenedor-campo-movil');
+
+            const labelCantidadMovil = document.createElement('LABEL');
+            labelCantidadMovil.classList.add('ingreso__label-movil');
+            labelCantidadMovil.textContent = "Cantidad";
+
+            contenedorLabelCantidad.appendChild(labelCantidadMovil);
 
             const cantidad = document.createElement('INPUT');
             cantidad.type = 'text';
-            cantidad.classList.add('formulario__campo', 'height-full');
+            cantidad.classList.add('formulario__campo', 'ingreso__campo');
             cantidad.placeholder = "0";
 
+            contenedorLabelCantidad.appendChild(cantidad);
+
+            const contenedorLabelCodigo = document.createElement('DIV');
+            contenedorLabelCodigo.classList.add('ingreso__contenedor-campo-movil');
+
+            const labelCodigoMovil = document.createElement('LABEL');
+            labelCodigoMovil.classList.add('ingreso__label-movil');
+            labelCodigoMovil.textContent = "Código";
+
+            contenedorLabelCodigo.appendChild(labelCodigoMovil);
+
             const contenedorCodigo = document.createElement('DIV');
-            contenedorCodigo.classList.add('relative');
+            contenedorCodigo.classList.add('relative', 'ingreso__campo');
 
             const codigo = document.createElement('INPUT');
             codigo.type = 'text';
-            codigo.classList.add('formulario__campo', 'height-full');
+            codigo.classList.add('formulario__campo');
             codigo.placeholder = "Código";
 
             contenedorCodigo.appendChild(codigo);
+            contenedorLabelCodigo.appendChild(contenedorCodigo);
+
+            const contenedorLabelNombre = document.createElement('DIV');
+            contenedorLabelNombre.classList.add('ingreso__contenedor-campo-movil');
+
+            const labelNombreMovil = document.createElement('LABEL');
+            labelNombreMovil.classList.add('ingreso__label-movil');
+            labelNombreMovil.textContent = "Nombre";
+
+            contenedorLabelNombre.appendChild(labelNombreMovil);
 
             const contenedorNombre = document.createElement('DIV');
-            contenedorNombre.classList.add('relative');
+            contenedorNombre.classList.add('relative', 'ingreso__campo');
 
             const nombre = document.createElement('INPUT');
             nombre.type = 'text';
-            nombre.classList.add('formulario__campo', 'height-full');
+            nombre.classList.add('formulario__campo');
             nombre.placeholder = "Nombre del producto";
 
             contenedorNombre.appendChild(nombre);
+            contenedorLabelNombre.appendChild(contenedorNombre);
+
+            const contenedorLabelPrecio = document.createElement('DIV');
+            contenedorLabelPrecio.classList.add('ingreso__contenedor-campo-movil');
+
+            const labelMovilPrecio = document.createElement('LABEL');
+            labelMovilPrecio.classList.add('ingreso__label-movil');
+            labelMovilPrecio.textContent = "Precio sin IVA";
+
+            contenedorLabelPrecio.appendChild(labelMovilPrecio);
 
             const contenedorPrecio = document.createElement('DIV');
-            contenedorPrecio.classList.add('ingreso__contenedor-precio');
+            contenedorPrecio.classList.add('ingreso__contenedor-precio', 'ingreso__campo');
 
             const contenedorCheckIVA = document.createElement('DIV');
             contenedorCheckIVA.classList.add('ingreso__contenedor-checkboxIVA');
@@ -433,34 +490,60 @@ import * as helpers from './helpers';
             contenedorCheckIVA.appendChild(optIVA);
             contenedorPrecio.appendChild(contenedorCheckIVA);
 
+            contenedorLabelPrecio.appendChild(contenedorPrecio);
+
             contenedorCheckIVA.addEventListener('click', () => {
 
-                if (flagIVA % 2 === 0) {
+                if(!flagIVA) {
+                    // Con IVA
+
+                    flagIVA = true;
                     optIVA.classList.add('ingreso__checkbox-IVA--checked');
                     precio.placeholder = "Precio con IVA";
                     optIVA.textContent = "con IVA";
+                    labelMovilPrecio.textContent = "Precio con IVA";
                     precio.classList.add('ingreso__campo-precio--checked');
-
-
                 } else {
+                    // Sin IVA
 
+                    flagIVA = false;
                     precio.classList.remove('ingreso__campo-precio--checked');
                     optIVA.classList.remove('ingreso__checkbox-IVA--checked');
                     precio.placeholder = "Precio sin IVA";
                     optIVA.textContent = "sin IVA";
-
+                    labelMovilPrecio.textContent = "Precio sin IVA";
                 }
-
-                flagIVA++;
             });
+
+            const contenedorLabelDescuento = document.createElement('DIV');
+            contenedorLabelDescuento.classList.add('ingreso__contenedor-campo-movil');
+
+            const labelDescuentoMovil = document.createElement('LABEL');
+            labelDescuentoMovil.classList.add('ingreso__label-movil');
+            labelDescuentoMovil.textContent = "% Descuento";
+
+            contenedorLabelDescuento.appendChild(labelDescuentoMovil);
 
             const descuento = document.createElement('INPUT');
             descuento.type = 'text';
-            descuento.classList.add('formulario__campo');
+            descuento.classList.add('formulario__campo', 'ingreso__campo');
             descuento.placeholder = "0 %";
 
+            contenedorLabelDescuento.appendChild(descuento);
+
+            const contenedorLabelSemanas = document.createElement('DIV');
+            contenedorLabelSemanas.classList.add('ingreso__contenedor-campo-movil');
+
+            const labelSemanasMovil = document.createElement('LABEL');
+            labelSemanasMovil.classList.add('ingreso__label-movil');
+            labelSemanasMovil.textContent = "Semanas";
+
+            contenedorLabelSemanas.appendChild(labelSemanasMovil);
+
             const semanas = document.createElement('SELECT');
-            semanas.classList.add('formulario__campo');
+            semanas.classList.add('formulario__campo', 'ingreso__campo');
+
+            contenedorLabelSemanas.appendChild(semanas);
 
             for (let i = 0; i <= 8; i++) {
 
@@ -486,15 +569,20 @@ import * as helpers from './helpers';
             <i class="fa-solid fa-trash"></i>
             `;
 
-            grid.appendChild(contenedorCheck);
-            grid.appendChild(cantidad);
-            grid.appendChild(contenedorCodigo);
-            grid.appendChild(contenedorNombre);
-            grid.appendChild(contenedorPrecio);
-            grid.appendChild(descuento);
-            grid.appendChild(semanas);
-            grid.appendChild(btnGuardar);
-            grid.appendChild(btnEliminar);
+            const contenedorBtns = document.createElement('DIV');
+            contenedorBtns.classList.add('ingreso__contenedor-btns');
+
+            contenedorBtns.appendChild(btnGuardar);
+            contenedorBtns.appendChild(btnEliminar);
+
+            grid.appendChild(contenedorLabelCheckbox);
+            grid.appendChild(contenedorLabelCantidad);
+            grid.appendChild(contenedorLabelCodigo);
+            grid.appendChild(contenedorLabelNombre);
+            grid.appendChild(contenedorLabelPrecio);
+            grid.appendChild(contenedorLabelDescuento);
+            grid.appendChild(contenedorLabelSemanas);
+            grid.appendChild(contenedorBtns);
 
             const obj = {
                 checkbox: checkbox,
@@ -598,7 +686,7 @@ import * as helpers from './helpers';
         }
         async function findCodigo(codigo) {
 
-            if (codigo.length === 4) {
+            if (codigo.length === 5) {
                 try {
                     const datos = new FormData();
                     datos.append('filtro_frac', true);
@@ -653,7 +741,6 @@ import * as helpers from './helpers';
                         try {
 
                             const respuesta = await buscarProducto(coincidencia.id);
-
                             const DBproducto = respuesta.producto;
                             const DBprecio = respuesta.precio;
 
@@ -728,21 +815,21 @@ import * as helpers from './helpers';
 
                 if (resultado > 0) {
 
-                    if (!document.querySelector('#sidebar__pendiente-alert')) {
+                    if (!document.querySelector('#sidebar-pendiente-alert')) {
 
-                        const iconoProducto = document.querySelector('#sidebar__new-prod');
+                        const iconoProducto = document.querySelector('#sidebar-new-prod');
                         const notif = document.createElement('I');
 
-                        notif.classList.add('sidebar__alert', 'fa-solid', 'fa-circle-exclamation');
-                        notif.id = 'sidebar__pendiente-alert';
+                        notif.classList.add('sidebar__alert-pendiente', 'fa-solid', 'fa-circle-exclamation');
+                        notif.id = 'sidebar-pendiente-alert';
 
                         iconoProducto.appendChild(notif);
                     }
 
                 } else {
 
-                    if (document.querySelector('#sidebar__pendiente-alert')) {
-                        const notif = document.querySelector('#sidebar__pendiente-alert');
+                    if (document.querySelector('#sidebar-pendiente-alert')) {
+                        const notif = document.querySelector('#sidebar-pendiente-alert');
                         notif.remove();
                     }
                 }
@@ -766,7 +853,6 @@ import * as helpers from './helpers';
             } catch (error) {
                 console.log(error)
             }
-
         }
     }
 })();

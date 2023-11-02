@@ -1,0 +1,78 @@
+@use '../../base/variables' as v;
+@use '../../base/mixins' as m;
+
+.docu {
+
+    &__contenedor-principal {
+
+        h2 {
+            font-size: 2rem;
+            text-align: start;
+            margin: 4rem 0 1rem 0;
+
+            @include m.phone {
+                font-size: 3rem;
+            }
+        }
+
+        h4 {
+            font-size: 2rem;
+            margin: 2rem 0 .5rem 0;
+        }
+
+        ul {
+            padding: 3rem;
+        }
+
+        li {
+            font-size: 1.6rem;
+            list-style-type: circle;
+            line-height: 30px;
+        }
+
+        table {
+            margin: .5rem;
+            background-color: lighten(v.$gris, 40%);
+            padding: .2rem;
+            border-radius: .5rem;
+
+            @include m.phone {
+                padding: 1rem;
+                margin: 2rem;
+
+            }
+        }
+
+        th {
+            font-size: 1.2rem;
+            padding: 0 2rem .5rem 0;
+
+            @include m.phone {
+                font-size: 1.6rem;
+            }
+        }
+
+        td {
+            font-size: 1.2rem;
+            text-align: center;
+
+            @include m.phone {
+                font-size: 1.6rem;
+            }
+        }
+    }
+
+    &__img {
+        max-width: 100%;
+        height: auto;
+        padding: 2rem;
+
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid v.$gris;
+        }
+    }
+
+}

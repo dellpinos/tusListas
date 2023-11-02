@@ -1,0 +1,41 @@
+@use '../../base/variables' as v;
+@use '../../base/mixins' as m;
+
+
+.perfil {
+
+    &__img {
+        max-width: 100%;
+        height: auto;
+        padding: 2rem;
+
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    }
+
+    &__texto {
+        margin: 0;
+        width: 100%;
+        text-align: center;
+        color: v.$gris;
+        font-size: 1.6rem;
+        
+        @include m.tablet {
+            font-size: 3rem;
+        }
+
+        a {
+            color: v.$azul;
+            font-weight: v.$bold;
+    
+            &:hover {
+                color: darken(v.$azul, 10%);
+            }
+
+        }
+
+    }
+}

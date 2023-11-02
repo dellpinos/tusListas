@@ -11,8 +11,8 @@
 
 @section('contenido')
     <div class="formulario__contenedor-boton">
+        <a href="{{ route('agenda') }}" class="categoria__boton">&laquo; Volver</a>
         <a href="{{ route('categoria.create') }}" class="categoria__boton">Crear Categoria</a>
-
         <div class="formulario__contenedor-busqueda">
             <i class="formulario__icono-busqueda fa-solid fa-magnifying-glass"></i>
             <input class="formulario__campo-busqueda" id="categoria-formulario" type="text">

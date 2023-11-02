@@ -1,10 +1,16 @@
 @use '../base/variables' as v;
+@use '../base/mixins' as m;
 
 .header {
 
-    padding: 2rem;
     background-color: v.$grisOscuroAzul;
+    padding: 1rem;
 
+    
+    @include m.tablet {
+        padding: 1rem 2.5rem 1rem 2.5rem;
+
+    }
 
     &__contenedor {
         width: 100%;
@@ -12,26 +18,125 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0 2rem 0 2rem;
+        padding: 0 1rem;
+        
     }
 
-    &__logo {
+    &__contenedor-nombre {
+
+        display: flex;
+
+    }
+
+    &__nombre {
         color: v.$blanco;
         margin: 0;
 
+        display: none;
 
+
+
+        @include m.tablet {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+
+            width: 70rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+        }
     }
+
+    &__logo {
+        height: 65px;
+        max-height: 65px;
+        width: 65px;
+        margin-right: 2rem;
+        border-radius: 50%;
+        padding: .5rem;
+        
+        background-color: darken(v.$azul, 35%);
+            box-shadow: 2px 2px 11px v.$azul,
+                2px 2px 10px v.$azul inset;
+            transition: background-color 3s ease, box-shadow 2s ease;
+
+        &:hover {
+            background-color: darken(v.$azul, 35%);
+            box-shadow: 2px 2px 11px v.$azul,
+                2px 2px 10px v.$azul inset;
+            transition: background-color 3s ease, box-shadow 2s ease;
+            
+        }
+
+        @include m.tablet {
+            
+            background-color: v.$grisOscuroAzul;
+            box-shadow: none;
+            transition: background-color 1s ease, box-shadow .5s ease;
+            height: 90px;
+            max-height: 90px;
+            width: 90px;
+
+        }
+    }
+
+    &__icono-menu {
+        font-size: 3rem;
+        color: v.$blanco;
+        cursor: pointer;
+        transition: color 2.5s ease;
+        margin-right: 1rem;
+
+        @include m.tablet {
+            font-size: 5rem;
+            margin-right: 0;
+        }
+
+        &--act {
+            color: v.$azul;
+            transition: color .5s ease;
+
+        }
+
+        @include m.tablet {
+            display: none!important;
+        }
+    }
+
     &__nav {
         font-size: 1.5rem;
-        display: flex;
-        gap: 2rem;
-        align-items: center;
+        display: none;
+
+        @include m.tablet {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
     }
+
     &__enlace {
         font-weight: v.$bold;
-        color: v.$blanco;
         margin: 0 1rem 0 1rem;
+        color: lighten(v.$gris, 5%);
+        transition: color .5s ease;
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+
+        &:hover {
+
+            color: v.$blanco;
+        }
+
+        &--activo {
+            color: v.$blanco;
+        }
+
+        &--admin {}
     }
+
     &__button {
         color: v.$grisClaro;
         font-weight: v.$bold;
@@ -44,8 +149,7 @@
         width: 100%;
 
         &:hover {
-            color: v.$blanco;
+            color: v.$rojo;
         }
     }
 }
-

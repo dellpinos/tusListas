@@ -4,16 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Provider;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ProviderController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
     }
     public function index()
     {
-
         return view('provider.index');
     }
     public function create()
@@ -24,7 +24,7 @@ class ProviderController extends Controller
     {
         
         $this->validate($request, [
-            'nombre' => 'required|unique:providers|max:60|min:3',
+            'nombre' => 'required|string|max:60|min:3|unique:providers,nombre,NULL,id,empresa_id,' . session('empresa')->id, // Ignora los nombres en otras empresas
             'email' => 'email|nullable',
             'telefono' => ['string', 'nullable', 'max:20', 'min:5', 'regex:/^[0-9 -]*$/'],
             'vendedor' => 'string|max:60|min:3|nullable',
@@ -38,7 +38,8 @@ class ProviderController extends Controller
             'telefono' => $request->telefono,
             'vendedor' => $request->vendedor,
             'web' => $request->web,
-            'ganancia' => $request->ganancia
+            'ganancia' => $request->ganancia,
+            'empresa_id' => session('empresa')->id
         ]);
 
         return redirect()->route('providers');
@@ -53,10 +54,20 @@ class ProviderController extends Controller
     }
     public function update(Request $request)
     {
-        $provider = Provider::find($request->id);
+
+        $provider = Provider::where('id', $request->id)->where('empresa_id', session('empresa')->id)->first();
 
         $this->validate($request, [
-            'nombre' => 'required|max:60|min:3|unique:providers,nombre,' . $provider->id,
+
+            'nombre' => [
+                'required',
+                'max:60',
+                'min:3',
+                'string',
+                Rule::unique('providers', 'nombre')->where(function ($query) {
+                    return $query->where('empresa_id', session('empresa')->id); // solo tiene en cuenta la empresa del usuario
+                })->ignore($provider->id), // Ignora el registro actual
+            ],
             'email' => 'email|nullable',
             'telefono' => ['string', 'nullable', 'max:20', 'min:5', 'regex:/^[0-9 -]*$/'],
             'vendedor' => 'string|max:60|min:3|nullable',
@@ -75,11 +86,5 @@ class ProviderController extends Controller
 
         return redirect()->route('providers');
 
-    }
-    public function destroy(Provider $provider)
-    {
-        $provider->delete();
-
-        return redirect()->route('providers');
     }
 }

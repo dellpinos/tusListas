@@ -79,10 +79,26 @@ import * as helpers from './helpers';
                 return;
             }
 
-            categoriasArrayFiltrado.forEach(categoria => {
+            categoriasArrayFiltrado.forEach((categoria, indice) => {
 
                 const contenedor = document.createElement('DIV');
                 contenedor.classList.add('categoria__contenedor', 'swiper-slide');
+
+                const indiceRelativo = indice % 4;
+
+                if (indiceRelativo === 0) {
+                    contenedor.classList.add('categoria__contenedor--red');
+
+                } else if (indiceRelativo === 1) {
+                    contenedor.classList.add('categoria__contenedor--blue');
+
+                } else if (indiceRelativo === 2) {
+                    contenedor.classList.add('categoria__contenedor--green');
+
+                } else if (indiceRelativo === 3) {
+                    contenedor.classList.add('categoria__contenedor--orange');
+
+                }
 
                 const catHeading = document.createElement('H3');
                 catHeading.textContent = categoria.nombre;
@@ -92,7 +108,7 @@ import * as helpers from './helpers';
                 catParrafo.textContent = "Ganancia: " + categoria.ganancia;
 
                 const contenedorSM = document.createElement('DIV');
-                contenedorSM.classList.add('formulario__contenedor-boton', 'formulario__contenedor-boton--sm');
+                contenedorSM.classList.add('categoria__contenedor-boton', 'formulario__contenedor-boton--sm');
 
                 const catEnlace = document.createElement('A');
                 catEnlace.setAttribute('href', `/categoria/categoria-edit/${categoria.id}`);
