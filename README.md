@@ -25,18 +25,3 @@ Technologies used in the project:
 <p><a href="https://dellpinos.com"> Portfolio</a> Martín del Pino</p>
 <p>Proyecto <a href="https://tasktrack.dellpinos.com"> TaskTrack</a></p>
 
-<style>
-    p {
-        font-family: Arial, Helvetica, sans-serif;
-    }
-h2 {
-margin: 20px 0;
-}
-h1 {
-margin-bottom: 10px;
-}
-
-.bandages img{
-margin: 3px;
-}
-</style>
