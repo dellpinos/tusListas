@@ -38,4 +38,5 @@ margin-bottom: 10px;
 
 .bandages img{
 margin: 3px;
+}
 </style>
