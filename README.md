@@ -13,7 +13,7 @@
   
 <h2>💻 Built with</h2>
 
-Technologies used in the project:
+Tecnologias utilizadas en el proyecto:
 
 *   Laravel 9
 *   JavaScript
@@ -21,7 +21,7 @@ Technologies used in the project:
 *   HTML
 *   MySQL
 
-<h2>Enlaces Importantes</h2>
+<h2>🔗 Enlaces Importantes</h2>
 <p>Página principal de TusListas <a href="https://tuslistas.dellpinos.com">Home</a> <br>
 <a href="https://dellpinos.com"> Portfolio</a> Martín del Pino<br>
 Proyecto <a href="https://tasktrack.dellpinos.com"> TaskTrack</a></p>
