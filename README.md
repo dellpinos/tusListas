@@ -21,7 +21,7 @@ Tecnologias utilizadas en el proyecto:
 *   HTML
 *   MySQL
 
-<h2>🔗 Enlaces Importantes</h2>
+<h2>🔗 Algunos Enlaces</h2>
 <p>Página principal de TusListas <a href="https://tuslistas.dellpinos.com">Home</a> <br>
 <a href="https://dellpinos.com"> Portfolio</a> Martín del Pino<br>
 Proyecto <a href="https://tasktrack.dellpinos.com"> TaskTrack</a></p>
