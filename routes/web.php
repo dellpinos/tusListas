@@ -76,6 +76,7 @@ Route::post('/categoria/categoria-update', [CategoriaController::class, 'update'
 Route::get('/ayuda', [AyudaController::class, 'index'])->name('ayuda');
 Route::get('/ayuda/documentacion', [AyudaController::class, 'documentacion'])->name('documentacion');
 
+
 /* Tener en cuenta que Fortify crea multiples rutas para manejar la autenticación y los emails de verificación */
 
 

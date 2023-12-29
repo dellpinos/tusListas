@@ -19,11 +19,11 @@ class AfterUserAuth
     public function handle(object $event): void
     {
         // Incluyo la empresa del usuario en su sesión
-        $user = $event->user;
+        // $user = $event->user;
 
-        $empresa = Empresa::find($user->empresa_id);
+        // $empresa = Empresa::find($user->empresa_id);
 
-        session()->put('empresa', $empresa);
+        // session()->put('empresa', $empresa);
 
     }
 }
