@@ -20,7 +20,11 @@ class APICategorias extends Controller
 
         $categorias = Categoria::orderBy('nombre', 'asc')->where('empresa_id', session('empresa')->id)->get();
 
-        echo json_encode([
+        // echo json_encode([
+        //     'categorias' => $categorias
+        // ]);
+
+        return response()->json([
             'categorias' => $categorias
         ]);
     }
