@@ -4,12 +4,34 @@
 .header {
 
     background-color: v.$grisOscuroAzul;
-    padding: 1rem;
+    //padding: 1rem;
 
     
     @include m.tablet {
-        padding: 1rem 2.5rem 1rem 2.5rem;
+        // padding: 1rem 2.5rem 1rem 2.5rem;
 
+    }
+
+    &__contact {
+        display: flex;
+        justify-content: flex-end;
+        border-bottom: 1px solid lighten(v.$grisOscuroAzul, 10%);
+    }
+
+    &__contact-contenedor {
+        display: flex;
+        gap: 3rem;
+        padding: .5rem 4rem;
+    }
+
+    &__contact-enlace {
+        color: v.$blanco;
+        font-size: 1.4rem;
+
+        &:hover {
+            color: v.$azul;
+            cursor: pointer;
+        }
     }
 
     &__contenedor {
@@ -18,7 +40,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0 1rem;
+        padding: 1rem 2rem;
         
     }
 

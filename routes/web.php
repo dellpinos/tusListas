@@ -12,6 +12,7 @@ use App\Http\Controllers\APICategorias;
 use App\Http\Controllers\APIOwnerTools;
 use App\Http\Controllers\APIPendientes;
 use App\Http\Controllers\APIFabricantes;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AyudaController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\PerfilController;
@@ -23,6 +24,8 @@ use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\FabricanteController;
 
+// Home
+Route::get('home', [HomeController::class, 'index'])->name('home');
 
 // Buscador
 Route::get('/', [ProductoController::class, 'index'])->name('buscador');

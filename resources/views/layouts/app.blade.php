@@ -26,11 +26,23 @@
 
 <body class="bg-home">
     <header class="header">
+        <div class="header__contact">
+            <div class="header__contact-contenedor">
+                <p class="header__contact-enlace">Login</p>
+                <p class="header__contact-enlace">Contacto</p>
+            </div>
+        </div>
         <div class="header__contenedor">
             <a class="header__contenedor-nombre" href="{{ route('login') }}">
                 <img src="{{ asset('img/LogoSinFondo.png') }}" class="header__logo" alt="Logo Tus Listas">
                 <h1 class=" header__nombre">Tus Listas</h1>
             </a>
+            <div class="btn-slide__contenedor">
+                <button class="btn-slide__btn">
+                    <i class="btn-slide__icon fa-solid fa-circle-arrow-right"></i>
+                    <p class="btn-slide__txt">Crear Cuenta</p>
+                </button>
+            </div>
         </div>
     </header>
 
