@@ -4,6 +4,20 @@
 
 @section('contenido')
 
-<h1>Hola cacerola!</h1>
 
+    @include('home.includes.hero')
+
+    @include('home.includes.video')
+
+    @include('home.includes.cards')
+
+
+
+
+
+
+
+    <div class="home__contenedor-principal">
+
+    </div>
 @endsection

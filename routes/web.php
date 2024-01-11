@@ -25,10 +25,10 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\FabricanteController;
 
 // Home
-Route::get('home', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Buscador
-Route::get('/', [ProductoController::class, 'index'])->name('buscador');
+Route::get('/buscador', [ProductoController::class, 'index'])->name('buscador');
 
 // Empresa
 Route::get('/owner-tools', [EmpresaController::class, 'index'])->name('owner-tools');

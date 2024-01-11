@@ -28,34 +28,30 @@
     <header class="header">
         <div class="header__contact">
             <div class="header__contact-contenedor">
-                <p class="header__contact-enlace">Login</p>
-                <p class="header__contact-enlace">Contacto</p>
+                <a href="{{ route('login') }}" class="header__contact-enlace">Login</a>
+                <a href="#" class="header__contact-enlace">Contacto</a>
             </div>
         </div>
         <div class="header__contenedor">
-            <a class="header__contenedor-nombre" href="{{ route('login') }}">
+            <a class="header__contenedor-nombre" href="{{ route('home') }}">
                 <img src="{{ asset('img/LogoSinFondo.png') }}" class="header__logo" alt="Logo Tus Listas">
                 <h1 class=" header__nombre">Tus Listas</h1>
             </a>
             <div class="btn-slide__contenedor">
-                <button class="btn-slide__btn">
+                <a href="{{ route('register')}}" class="btn-slide__btn">
                     <i class="btn-slide__icon fa-solid fa-circle-arrow-right"></i>
                     <p class="btn-slide__txt">Crear Cuenta</p>
-                </button>
+                </a>
             </div>
         </div>
     </header>
 
-    <main class="contenedor-xl">
+    <main class="home__contenedor-xl">
 
-        <div class="home__contenedor-principal">
 
-            <h2 class="home__heading">
-                @yield('titulo')
-            </h2>
+        
+        @yield('contenido')
 
-            @yield('contenido')
-        </div>
 
     </main>
 

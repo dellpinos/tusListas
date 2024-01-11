@@ -76,7 +76,11 @@
     }
 
     &__txt {
+        display: flex;
+        align-items: center;
         text-transform: uppercase;
         font-weight: v.$bold;
+        font-size: 1.4rem;
+        letter-spacing: 2px;
     }
 }

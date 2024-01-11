@@ -1,0 +1,88 @@
+@use '../base/variables' as v;
+@use '../base/mixins' as m;
+
+
+.cards {
+
+    &__contenedor {
+
+        padding: 5rem 2rem;
+        background-color: lighten(v.$grisClaro, 48%);
+        margin: 5rem;
+        border-radius: 5rem;
+        background-image:
+            url('/public/img/vector-nodo.svg'),
+            url('/public/img/vector-nodo-2.svg');
+        background-position: left top, right bottom;
+        background-repeat: no-repeat;
+
+    }
+
+    &__texto {
+        margin: 2rem 0 8rem 0;
+    }
+
+
+    &__heading {
+        font-size: 6rem;
+        width: 60%;
+        margin: 2rem auto;
+    }
+
+    &__descripcion {
+        margin: 0 auto;
+        text-align: center;
+        width: 50%;
+    }
+
+    &__grid {
+        padding: 0 2rem;
+        margin: 0 5rem;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+    }
+
+    &__card {
+        height: 50rem;
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2rem;
+        text-align: center;
+        padding: 2rem;
+        background-color: rgba(v.$blanco, .5);
+        border-radius: 1rem;
+
+        border-top: 10px solid rgba(v.$blanco, .1);
+        border-bottom: 10px solid rgba(v.$blanco, .1);
+        transition: border-top 1s ease, border-bottom 1s ease, box-shadow 2s ease;
+
+        &:hover {
+            border-top: 10px solid rgba(v.$azulSobrio, .7);
+            border-bottom: 10px solid rgba(v.$azulSobrio, .7);
+            transition: border-top 1s ease, border-bottom 1s ease, box-shadow 2s ease;
+            box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 40px 4px;
+        }
+
+    }
+
+    &__img {}
+
+    &__heading-xs {
+        margin-top: 1rem;
+        margin: 1rem 0 1rem 0;
+        font-size: 2.5rem;
+    }
+
+    &__text-xs {
+        margin-bottom: 3rem;
+    }
+
+    &__link {
+
+    }
+}

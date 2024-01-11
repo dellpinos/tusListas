@@ -1,29 +1,27 @@
 @extends('layouts.app')
 
-@section('titulo')
-
-@endsection
-
 @section('contenido')
+    <div class="home__contenedor-principal">
 
+        <h2 class="home__heading">
 
-    <div class="formulario__contenedor width-full m-0">
+        </h2>
 
-        <p class="perfil__texto">Todavía estamos trabajando en esta parte, deberías <span class="perfil__texto-enlace">
-        <a href="{{ route('buscador') }}">volver</a>    
-        </span></p>
+        <div class="formulario__contenedor width-full m-0">
 
-        {{-- <a class="formulario__boton" href="{{ route('password.request') }}">Cambiar password</a> --}}
+            <p class="perfil__texto">Todavía estamos trabajando en esta parte, deberías <span class="perfil__texto-enlace">
+                    <a href="{{ route('buscador') }}">volver</a>
+                </span></p>
 
-        <div class="perfil__img">
-            <img src="{{ asset('img/working.jpg') }}" alt="Imagen en construcción">
+            {{-- <a class="formulario__boton" href="{{ route('password.request') }}">Cambiar password</a> --}}
+
+            <div class="perfil__img">
+                <img src="{{ asset('img/working.jpg') }}" alt="Imagen en construcción">
+
+            </div>
+
 
         </div>
 
-
     </div>
-
-
-
 @endsection
-
