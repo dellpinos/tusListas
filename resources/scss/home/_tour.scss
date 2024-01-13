@@ -1,0 +1,38 @@
+@use '../base/variables' as v;
+@use '../base/mixins' as m;
+
+
+.tour {
+
+    &__contenedor {
+        text-align: center;
+        padding: 3rem;
+        margin: 5rem 0;
+
+    }
+
+    &__contenedor-card {
+        display: flex;
+        justify-content: center;
+        margin: 5rem 0;
+    }
+
+    &__card {
+        position: relative;
+        border-radius: 3rem;
+        height: 40rem;
+        width: 80rem;
+        background-color:  v.$azul;
+    }
+
+    &__play {
+        position: absolute;
+        font-size: 8rem;
+        color: rgba(v.$blanco, .7);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+
+}

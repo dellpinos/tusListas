@@ -1,12 +1,10 @@
-<div class="cards__contenedor">
+<div class="cards__contenedor" id="cards-contenedor">
 
     <div class="cards__texto">
         <h2 class="cards__heading">Manejo de Inventario y mucho más!</h2>
         <p class="cards__descripcion">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatibus, soluta.
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatibus, soluta.</p>
     </div>
-
-
 
     <div class="cards__grid">
         <div class="cards__card">

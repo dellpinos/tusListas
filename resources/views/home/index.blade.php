@@ -7,17 +7,16 @@
 
     @include('home.includes.hero')
 
-    @include('home.includes.video')
-
+    @include('home.includes.tour')
+    
+    @include('home.includes.contador')
+    
     @include('home.includes.cards')
 
+    @include('home.includes.developer')
 
 
+    <!-- Enlaces y creditos -->
 
 
-
-
-    <div class="home__contenedor-principal">
-
-    </div>
 @endsection

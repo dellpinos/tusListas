@@ -1,0 +1,40 @@
+@use '../base/variables' as v;
+@use '../base/mixins' as m;
+
+.contador {
+
+    &__contenedor {
+        padding: 7rem 0;
+        background-image: linear-gradient(to right, rgba(v.$azul, .9), rgba(v.$azul, .8)),
+        url('/public/img/reunion.jpg');
+        background-position: center center;
+        background-size: 100%;
+    }
+
+    &__grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        row-gap: 5rem;
+    }
+
+    &__card {
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: v.$blanco;
+
+        h4 {
+            font-size: 7rem;
+            margin: 0;
+        }
+
+        p {
+            text-transform: uppercase;
+            font-weight: v.$bold;
+            
+
+        }
+    }
+}
+

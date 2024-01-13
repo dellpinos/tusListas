@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>TusListas - @yield('titulo')</title>
+    <title>TusListas @yield('titulo')</title>
 
     <meta name="description" content="Aplicación de gestión de precios e inventario">
 
@@ -24,8 +24,8 @@
 </head>
 
 
-<body class="bg-home">
-    <header class="header">
+<body class="bg-home relative">
+    <header class="header header-home">
         <div class="header__contact">
             <div class="header__contact-contenedor">
                 <a href="{{ route('login') }}" class="header__contact-enlace">Login</a>
@@ -48,19 +48,24 @@
 
     <main class="home__contenedor-xl">
 
-
-        
         @yield('contenido')
-
 
     </main>
 
     <footer class="footer__contenedor">
-        <span class="footer__nombre">Martín del Pino</span> - Todos los derechos reservados {{ now()->year }}
+        <div class="footer__grid">
 
+            <a href="https://github.com/dellpinos/tusListas/discussions" target="_blank">Foro</a>
+            <a href="#" target="_blank">Contacto</a>
+            <a href="#" target="_blank">Fuente Imagenes</a>
+            <a href="https://www.linkedin.com/in/martin-del-pino/" target="_blank">LinkedIn</a>
+            <a href="https://tuslistas.dellpinos.com/ayuda/documentacion" target="_blank">Info</a>
+
+        </div>
+        <a class="footer__nombre" href="https://dellpinos.com/" target="_blank"><span >Martín del Pino</span> - &copy; Todos los derechos reservados {{ now()->year }}</a>
+        
     </footer>
     @vite('resources/js/app.js')
-
 
 </body>
 

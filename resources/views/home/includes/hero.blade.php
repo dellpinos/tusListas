@@ -11,7 +11,7 @@
             </div>
 
             <div class="btn-slide__contenedor">
-                <a href="#" class="btn-slide__btn">
+                <a href="#cards-contenedor" class="btn-slide__btn">
                     <i class="btn-slide__icon fa-solid fa-circle-arrow-right"></i>
                     <p class="btn-slide__txt">Saber más</p>
                 </a>

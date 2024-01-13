@@ -1,6 +1,14 @@
 @use '../base/variables' as v;
 @use '../base/mixins' as m;
 
+.header-home {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9;
+}
+
 .header {
 
     background-color: v.$grisOscuroAzul;
