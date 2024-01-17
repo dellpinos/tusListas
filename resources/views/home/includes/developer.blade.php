@@ -7,7 +7,7 @@
     <div class="developer__contenedor-card">
         <div class="developer__card">
             <p>
-                TusListas comenzó como una aplicación pequeña con un equipo de desarrollo aún más reducido. Poco a poco, se están implementando nuevas funcionalidades al mismo tiempo que se realiza un mantenimiento constante. Este es un proyecto que sigue la arquitectura RESTful, con el Backend desarrollado en Laravel y MySQL; por otro lado, el Frontend utiliza JavaScript y SASS.
+                TusListas comenzó como una aplicación pequeña. Poco a poco, se están implementando nuevas funcionalidades al mismo tiempo que se realiza un mantenimiento constante. Este es un proyecto que sigue la arquitectura RESTful, con el Backend desarrollado en Laravel y MySQL; por otro lado, el Frontend utiliza JavaScript y SASS.
             </p>
             <div class="developer__links">
                 <a href="https://github.com/dellpinos" target="_blank">¿Quieres ver el código? ¡Te invito a visitar el repositorio en GitHub!</a>

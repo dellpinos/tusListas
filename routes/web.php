@@ -19,13 +19,20 @@ use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\AumentoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\IngresoController;
+use App\Http\Controllers\BlogPostController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\FabricanteController;
 
+/* Rutas Public */
+
 // Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Blog
+Route::get('/blog', [BlogPostController::class, 'index'])->name('blog');
+Route::get('/blog/{post}', [BlogPostController::class, 'show'])->name('blog.show');
 
 // Buscador
 Route::get('/buscador', [ProductoController::class, 'index'])->name('buscador');

@@ -1,9 +1,6 @@
 @extends('layouts.app')
 
-
-
 @section('contenido')
-
 
     @include('home.includes.hero')
 
@@ -12,11 +9,9 @@
     @include('home.includes.contador')
     
     @include('home.includes.cards')
-
+    
+    @include('home.includes.entradas')
+    
     @include('home.includes.developer')
-
-
-    <!-- Enlaces y creditos -->
-
 
 @endsection

@@ -45,6 +45,10 @@
 .height-full {
     height: 100%;
 }
+.height-cero {
+    max-height: 0;
+    opacity: 0;
+}
 .text-right {
     text-align: end;
 }

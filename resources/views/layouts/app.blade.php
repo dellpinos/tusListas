@@ -26,7 +26,7 @@
 
 <body class="bg-home relative">
     <header class="header header-home">
-        <div class="header__contact">
+        <div class="header__contact" id="header-home-contact">
             <div class="header__contact-contenedor">
                 <a href="{{ route('login') }}" class="header__contact-enlace">Login</a>
                 <a href="#" class="header__contact-enlace">Contacto</a>
@@ -55,7 +55,7 @@
     <footer class="footer__contenedor">
         <div class="footer__grid">
 
-            <a href="https://github.com/dellpinos/tusListas/discussions" target="_blank">Foro</a>
+            <a href="{{route('blog')}}" target="_blank">Blog</a>
             <a href="#" target="_blank">Contacto</a>
             <a href="#" target="_blank">Fuente Imagenes</a>
             <a href="https://www.linkedin.com/in/martin-del-pino/" target="_blank">LinkedIn</a>
