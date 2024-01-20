@@ -12,7 +12,7 @@
             <div>
 
                 <p class="tour__card-heading">TusListas<br> en dos minutos</p>
-                <p class="tour__card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, natus sint. Architecto quis, error consectetur optio expedita ipsa omnis nobis repellat itaque, veniam ea.</p>
+                <p class="tour__card-text">Una vista rápida de la aplicación. Descubre sus características clave, funcionalidades y cómo puede hacer tu vida más fácil.</p>
             </div>
             
         </div>

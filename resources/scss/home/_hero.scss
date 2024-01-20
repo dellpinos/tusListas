@@ -10,10 +10,8 @@
         padding: 5rem;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-
-        
         background-image: linear-gradient(to right, rgba(v.$blanco, .5), rgba(v.$blanco, .1)),
-        url('/public/img/hero.jpg');
+        image-set( url('/public/img/hero.avif') 1x, url('/public/img/hero.webp') 1x, url('/public/img/hero.jpg') 1x);
         background-position: center top;
         background-size: 100%;
     }

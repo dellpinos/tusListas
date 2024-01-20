@@ -30,6 +30,12 @@ use App\Http\Controllers\FabricanteController;
 // Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// Contacto
+Route::get('/contacto', [HomeController::class, 'contacto'])->name('contacto');
+
+// Fuente
+Route::get('/fuentes', [HomeController::class, 'fuentes'])->name('fuentes');
+
 // Blog
 Route::get('/blog', [BlogPostController::class, 'index'])->name('blog');
 Route::get('/blog/{post}', [BlogPostController::class, 'show'])->name('blog.show');
@@ -83,7 +89,7 @@ Route::get('/categoria/categoria-edit/{categoria}', [CategoriaController::class,
 Route::post('/categoria/categoria-update', [CategoriaController::class, 'update'])->name('categoria.update');
 
 // Ayuda
-Route::get('/ayuda', [AyudaController::class, 'index'])->name('ayuda');
+Route::get('/ayuda', [AyudaController::class, 'index'])->middleware(['auth', 'verified', 'empresa.asignar'])->name('ayuda');
 Route::get('/ayuda/documentacion', [AyudaController::class, 'documentacion'])->name('documentacion');
 
 

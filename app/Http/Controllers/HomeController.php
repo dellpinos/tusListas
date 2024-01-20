@@ -29,4 +29,14 @@ class HomeController extends Controller
             'posts' => $posts
         ]);
     }
+
+    public function contacto()
+    {
+        return view('home.contacto');
+    }
+    public function fuentes()
+    {
+        return view('home.fuentes');
+        
+    }
 }

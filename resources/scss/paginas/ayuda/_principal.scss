@@ -3,6 +3,12 @@
 
 .ayuda {
 
+    &__contenedor-xl {
+        width: 95%;
+        margin: 2rem auto;
+        padding: 2rem;
+    }
+
     &__grid {
 
         @include m.grid(1, 2rem);

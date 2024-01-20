@@ -29,7 +29,7 @@
         <div class="header__contact" id="header-home-contact">
             <div class="header__contact-contenedor">
                 <a href="{{ route('login') }}" class="header__contact-enlace">Login</a>
-                <a href="#" class="header__contact-enlace">Contacto</a>
+                <a href="{{ route('contacto') }}" class="header__contact-enlace">Contacto</a>
             </div>
         </div>
         <div class="header__contenedor">
@@ -55,11 +55,11 @@
     <footer class="footer__contenedor">
         <div class="footer__grid">
 
-            <a href="{{route('blog')}}" target="_blank">Blog</a>
-            <a href="#" target="_blank">Contacto</a>
-            <a href="#" target="_blank">Fuente Imagenes</a>
+            <a href="{{ route('blog') }}" >Blog</a>
+            <a href="{{ route('contacto') }}" >Contacto</a>
+            <a href="{{ route('fuentes') }}" >Fuente Imagenes</a>
             <a href="https://www.linkedin.com/in/martin-del-pino/" target="_blank">LinkedIn</a>
-            <a href="https://tuslistas.dellpinos.com/ayuda/documentacion" target="_blank">Info</a>
+            <a href="{{ route('documentacion') }}" >Info</a>
 
         </div>
         <a class="footer__nombre" href="https://dellpinos.com/" target="_blank"><span >Martín del Pino</span> - &copy; Todos los derechos reservados {{ now()->year }}</a>

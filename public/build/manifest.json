@@ -15,6 +15,42 @@
     "file": "assets/fa-solid-900-886c8611.woff2",
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
   },
+  "public/img/hero.avif": {
+    "file": "assets/hero-95c7656f.avif",
+    "src": "public/img/hero.avif"
+  },
+  "public/img/hero.jpg": {
+    "file": "assets/hero-48ea6cf1.jpg",
+    "src": "public/img/hero.jpg"
+  },
+  "public/img/hero.webp": {
+    "file": "assets/hero-3c1e60f3.webp",
+    "src": "public/img/hero.webp"
+  },
+  "public/img/reunion.avif": {
+    "file": "assets/reunion-a7c65bef.avif",
+    "src": "public/img/reunion.avif"
+  },
+  "public/img/reunion.jpg": {
+    "file": "assets/reunion-05645b8f.jpg",
+    "src": "public/img/reunion.jpg"
+  },
+  "public/img/reunion.webp": {
+    "file": "assets/reunion-d28ad4f4.webp",
+    "src": "public/img/reunion.webp"
+  },
+  "public/img/svg/github.svg": {
+    "file": "assets/github-731e9770.svg",
+    "src": "public/img/svg/github.svg"
+  },
+  "public/img/vector-nodo-2.svg": {
+    "file": "assets/vector-nodo-2-de9fd7a8.svg",
+    "src": "public/img/vector-nodo-2.svg"
+  },
+  "public/img/vector-nodo.svg": {
+    "file": "assets/vector-nodo-aa92fcbf.svg",
+    "src": "public/img/vector-nodo.svg"
+  },
   "resources/js/app.css": {
     "file": "assets/app-a5c3f752.css",
     "src": "resources/js/app.css"
@@ -23,12 +59,12 @@
     "css": [
       "assets/app-a5c3f752.css"
     ],
-    "file": "assets/app-eba6e6eb.js",
+    "file": "assets/app-741b43da.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   },
   "resources/scss/app.scss": {
-    "file": "assets/app-2e994e07.css",
+    "file": "assets/app-54c1974e.css",
     "isEntry": true,
     "src": "resources/scss/app.scss"
   }
