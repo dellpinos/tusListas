@@ -1,0 +1,115 @@
+@use '../base/variables' as v;
+@use '../base/mixins' as m;
+
+
+.entradas {
+
+    &__contenedor {
+
+        margin: 10rem 0 10rem 0;
+        border-radius: 5rem;
+
+    }
+
+    &__texto {
+        padding: 0 8rem;
+        margin: 0 0 5rem 0;
+        display: flex;
+        justify-content: space-between;
+    }
+
+
+    &__heading {
+        font-size: 5rem;
+        width: 60%;
+        margin: 1rem 0;
+        text-align: start;
+    }
+
+    &__contenedor-btn {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+    }
+
+    &__descripcion {
+        margin: 0 auto;
+        text-align: center;
+        width: 50%;
+    }
+
+    &__grid {
+        padding: 0 2rem;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+
+    &__card {
+
+        box-shadow: 0px 0px 5px v.$gris;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2rem;
+        text-align: center;
+        padding: 2rem;
+        background-color: rgba(v.$blanco, .5);
+        border-radius: 1rem;
+
+        border-top: 10px solid rgba(v.$blanco, .1);
+        border-bottom: 10px solid rgba(v.$blanco, .1);
+        transition: border-top 1s ease, border-bottom 1s ease, box-shadow 2s ease;
+
+        &:hover {
+            border-top: 10px solid rgba(v.$azulSobrio, .7);
+            border-bottom: 10px solid rgba(v.$azulSobrio, .7);
+            transition: border-top 1s ease, border-bottom 1s ease, box-shadow 2s ease;
+            box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 40px 4px;
+        }
+
+    }
+
+    &__heading-xs {
+
+        margin: 1.5rem 0 1rem 0;
+        font-size: 2.5rem;
+        text-align: start;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    &__text-xs {
+        margin-bottom: 2rem;
+        text-align: start;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    &__link {
+
+        width: 100%;
+        text-align: end;
+
+        
+        a {
+            color: v.$azul;
+            font-size: 1.8rem;
+            transition: color .3s ease;
+            
+            &:hover {
+                color: v.$naranjaSobrio;
+                transition: color .3s ease;
+            }
+        }
+    }
+
+
+}

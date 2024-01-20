@@ -1,0 +1,82 @@
+@use '../base/variables' as v;
+@use '../base/mixins' as m;
+
+
+.developer {
+
+    &__contenedor {
+        text-align: center;
+        padding: 6rem 20rem;
+        margin: 10rem 0;
+
+        background-image:
+            url('/public/img/svg/github.svg');
+        background-position: 100% 20%;
+        background-repeat: no-repeat;
+        background-size: 72rem;
+
+        h3 {
+            font-size: 5rem;
+        }
+
+    }
+
+    &__name {
+        font-size: 1.8rem;
+
+        span {
+            font-weight: v.$bold;
+        }
+    }
+
+    &__contenedor-card {
+
+        height: 50rem;
+        display: flex;
+        align-items: center;
+
+    }
+
+    &__card {
+
+        width: 90%;
+
+        p {
+            text-shadow: 0px 0px 3px v.$blanco;
+            border-radius: 3rem;
+            background-image: linear-gradient(to right, rgba(v.$blanco, .1), rgba(v.$azul, .4)),;
+            text-align: start;
+            font-size: 2rem;
+            line-height: 2.2;
+            padding: 4rem 1.5rem;
+
+        }
+    }
+
+    &__links {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        margin-top: 4rem;
+
+        a {
+            @include m.boton(v.$azul, v.$blanco);
+            border-radius: .5rem;
+            
+            @include m.tablet {
+                width: 100%;
+            }
+        }
+    }
+
+    // &__play {
+    //     position: absolute;
+    //     font-size: 8rem;
+    //     color: rgba(v.$blanco, .7);
+    //     top: 50%;
+    //     left: 50%;
+    //     transform: translate(-50%, -50%);
+    // }
+
+
+}

@@ -12,20 +12,36 @@ use App\Http\Controllers\APICategorias;
 use App\Http\Controllers\APIOwnerTools;
 use App\Http\Controllers\APIPendientes;
 use App\Http\Controllers\APIFabricantes;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AyudaController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\AumentoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\IngresoController;
+use App\Http\Controllers\BlogPostController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\FabricanteController;
 
+/* Rutas Public */
+
+// Home
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Contacto
+Route::get('/contacto', [HomeController::class, 'contacto'])->name('contacto');
+
+// Fuente
+Route::get('/fuentes', [HomeController::class, 'fuentes'])->name('fuentes');
+
+// Blog
+Route::get('/blog', [BlogPostController::class, 'index'])->name('blog');
+Route::get('/blog/{post}', [BlogPostController::class, 'show'])->name('blog.show');
 
 // Buscador
-Route::get('/', [ProductoController::class, 'index'])->name('buscador');
+Route::get('/buscador', [ProductoController::class, 'index'])->name('buscador');
 
 // Empresa
 Route::get('/owner-tools', [EmpresaController::class, 'index'])->name('owner-tools');
@@ -73,7 +89,7 @@ Route::get('/categoria/categoria-edit/{categoria}', [CategoriaController::class,
 Route::post('/categoria/categoria-update', [CategoriaController::class, 'update'])->name('categoria.update');
 
 // Ayuda
-Route::get('/ayuda', [AyudaController::class, 'index'])->name('ayuda');
+Route::get('/ayuda', [AyudaController::class, 'index'])->middleware(['auth', 'verified', 'empresa.asignar'])->name('ayuda');
 Route::get('/ayuda/documentacion', [AyudaController::class, 'documentacion'])->name('documentacion');
 
 

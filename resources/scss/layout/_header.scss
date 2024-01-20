@@ -1,15 +1,52 @@
 @use '../base/variables' as v;
 @use '../base/mixins' as m;
 
+.header-home {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9;
+
+}
+
 .header {
 
     background-color: v.$grisOscuroAzul;
-    padding: 1rem;
+    box-shadow: 5px 0 10px rgba(v.$azul, 1);
 
-    
+
     @include m.tablet {
-        padding: 1rem 2.5rem 1rem 2.5rem;
+        // padding: 1rem 2.5rem 1rem 2.5rem;
 
+    }
+
+    &__contact {
+        display: flex;
+        justify-content: flex-end;
+        border-bottom: 1px solid lighten(v.$grisOscuroAzul, 10%);
+
+        max-height: 5rem;
+        overflow: hidden;
+        transition: max-height 1s ease;
+    }
+
+    &__contact-contenedor {
+        display: flex;
+        gap: 3rem;
+        padding: 1rem 4rem;
+    }
+
+    &__contact-enlace {
+        color: v.$blanco;
+        font-size: 1.4rem;
+        transition: color .3s ease;
+
+        &:hover {
+            color: v.$azul;
+            cursor: pointer;
+            transition: color .3s ease;
+        }
     }
 
     &__contenedor {
@@ -18,8 +55,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0 1rem;
-        
+        padding: 1rem 2rem;
+
     }
 
     &__contenedor-nombre {
@@ -56,22 +93,22 @@
         margin-right: 2rem;
         border-radius: 50%;
         padding: .5rem;
-        
+
         background-color: darken(v.$azul, 35%);
-            box-shadow: 2px 2px 11px v.$azul,
-                2px 2px 10px v.$azul inset;
-            transition: background-color 3s ease, box-shadow 2s ease;
+        box-shadow: 2px 2px 11px v.$azul,
+            2px 2px 10px v.$azul inset;
+        transition: background-color 3s ease, box-shadow 2s ease;
 
         &:hover {
             background-color: darken(v.$azul, 35%);
             box-shadow: 2px 2px 11px v.$azul,
                 2px 2px 10px v.$azul inset;
             transition: background-color 3s ease, box-shadow 2s ease;
-            
+
         }
 
         @include m.tablet {
-            
+
             background-color: v.$grisOscuroAzul;
             box-shadow: none;
             transition: background-color 1s ease, box-shadow .5s ease;
@@ -101,7 +138,7 @@
         }
 
         @include m.tablet {
-            display: none!important;
+            display: none !important;
         }
     }
 

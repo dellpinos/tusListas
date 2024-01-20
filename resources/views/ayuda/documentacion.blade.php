@@ -1,18 +1,10 @@
-@extends('layouts.dashboard')
-
-@section('meta')
-    {{-- Esta etiqueta me permite leer el token csrf desde Js --}}
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-@endsection
-
-@section('titulo')
-    Guia
-@endsection
+@extends('layouts.app')
 
 @section('contenido')
-    <div class="formulario__contenedor-boton">
-        <a href="{{ route('ayuda') }}" class="categoria__boton">&laquo; Volver</a>
-    </div>
+
+<div class="docu__contenedor-xl">
+
+    <h2>Guia</h2>
 
     <div class="docu__contenedor-principal">
         <p>TusListas tiene como objetivo principal organizar el inventario de tu comercio o empresa, permitiéndote
@@ -32,13 +24,13 @@
                 Nombre de la Empresa - Estadísticas</li>
             <li>Responsive: Compatible con Todos tus Dispositivos</li>
         </ul>
-        <h2>Buscador:</h2>
+        <h2 id="docu-heading-buscador">Buscador:</h2>
         <p>El buscador te permite listar todos los productos, filtrarlos y ordenarlos para facilitar la búsqueda. También
             puedes buscar por nombre o por código; este código único se genera automáticamente al crear el producto.</p>
         <div class="docu__img">
             <img src="{{ asset('img/docu_tabs.png') }}" alt="Tabs Buscador">
         </div>
-        <h2>Ingreso de Mercadería:</h2>
+        <h2 id="docu-heading-ingreso">Ingreso de Mercadería:</h2>
         <p>El Ingreso de Mercadería se basa en como se presentan las facturas, remitos o boletas de un distribuidor o
             proveedor. Aquí puedes registrar la mercadería ingresada, evitando duplicados mediante dos buscadores: uno por
             códigos de productos y otro por nombre. Esta sección te permite verificar que los precios sigan vigentes y
@@ -224,7 +216,7 @@
                 tanto un Proveedor como un Fabricante, aunque compartan la mayoría de los datos. Luego, es indistinto cuál
                 se utiliza para el Aumento General de los artículos que provee.</li>
         </ul>
-        <h2>Herramientas del Propietario:</h2>
+        <h2 id="docu-heading-propietario">Herramientas del Propietario:</h2>
         <p>Al momento de crear una nueva empresa/comercio, también estás creando una cuenta con el rol de administrador, que
             es el dueño de la empresa. Un administrador tiene acceso a herramientas que le permiten invitar a otros
             usuarios, cambiar el nombre de la empresa, eliminar miembros, acceder a estadísticas y realizar Aumentos
@@ -251,7 +243,7 @@
         <h4>Cambiar nombre de la empresa</h4>
         <p>El usuario administrador puede cambiar el nombre de la empresa en cualquier momento, el resto de los usuarios
             solo visualiza este cambio después de haber cerrado sesión una vez.</p>
-        <h4>En todos tus dispositivos</h4>
+        <h4 id="docu-heading-responsive">En todos tus dispositivos</h4>
         <p>TusListas funciona en dispositivos móviles sin necesidad de &quot;descargar una aplicación&quot; y se ejecuta
             dentro de cualquier navegador que tengas instalado. Esto es muy útil para que utilices el buscador y consultes
             cualquier producto en cualquier momento, pero dificulta utilizar herramientas como el Ingreso de Mercadería o
@@ -259,4 +251,6 @@
             estas herramientas y es la más aconsejable.</p>
 
     </div>
+
+</div>
 @endsection()

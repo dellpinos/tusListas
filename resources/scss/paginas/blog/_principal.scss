@@ -1,0 +1,81 @@
+@use '../../base/variables' as v;
+@use '../../base/mixins' as m;
+
+
+.blog {
+
+    &__contenedor {
+        width: 95%;
+        margin: 2rem auto;
+        padding: 2rem;
+    }
+
+
+    &__grid {
+        margin: 8rem 0 12rem 0;
+        display: flex;
+        flex-direction: column;
+        gap: 5rem;
+    }
+
+    &__entrada {
+
+        position: relative;
+        color: v.$negro;
+        padding: 4rem;
+        border: 2px solid v.$gris;
+        display: flex;
+        gap: 2rem;
+        border-radius: 1rem;
+        transition: all .5s ease;
+
+        &-seguir {
+            position: absolute;
+            bottom: 6%;
+            right: 5%;
+            color: v.$azul;
+            letter-spacing: 1px;
+
+            overflow-x: 0;
+            opacity: 0;
+            transition: opacity .5s ease;
+        }
+
+        &:hover {
+            border: 2px solid v.$azul;
+            background-color: lighten(v.$azul, 58%);
+
+            .blog__entrada-seguir {
+                transition: opacity .5s ease;
+
+                opacity: 1;
+            }
+        }
+
+    }
+
+    &__entrada-texto {
+
+
+        h3 {
+
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        p {
+
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    }
+
+
+
+
+
+}
