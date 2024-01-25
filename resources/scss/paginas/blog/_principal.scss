@@ -6,8 +6,21 @@
 
     &__contenedor {
         width: 95%;
-        margin: 2rem auto;
-        padding: 2rem;
+        margin: 5rem auto;
+        
+        @include m.tablet {
+            padding: 2rem;
+            margin: 2rem auto;
+            
+        }
+
+        h2 {
+            font-size: 4rem;
+
+            @include m.tablet {
+                font-size: 8rem;
+            }
+        }
     }
 
 
@@ -22,32 +35,59 @@
 
         position: relative;
         color: v.$negro;
-        padding: 4rem;
-        border: 2px solid v.$gris;
+        padding-bottom: 5rem;
+        border-bottom: 1px solid v.$gris;
         display: flex;
+        flex-direction: column;
         gap: 2rem;
-        border-radius: 1rem;
         transition: all .5s ease;
+        
+        img {
+            width: 100%;
+
+            @include m.tablet {
+                width: 300px;
+            }
+        }
+        
+        @include m.tablet {
+            
+            padding: 4rem;
+            flex-direction: row;
+            border-radius: 1rem;
+            border: 2px solid v.$gris;
+            
+        }
 
         &-seguir {
             position: absolute;
-            bottom: 6%;
+            bottom: 2%;
             right: 5%;
             color: v.$azul;
             letter-spacing: 1px;
 
-            overflow-x: 0;
-            opacity: 0;
-            transition: opacity .5s ease;
+
+
+            @include m.tablet {
+                bottom: 6%;
+                
+                overflow-x: 0;
+                opacity: 0;
+                transition: opacity .5s ease;
+                
+            }
         }
 
         &:hover {
-            border: 2px solid v.$azul;
-            background-color: lighten(v.$azul, 58%);
+
+
+            @include m.tablet {
+                border: 2px solid v.$azul;
+                background-color: lighten(v.$azul, 58%);
+            }
 
             .blog__entrada-seguir {
                 transition: opacity .5s ease;
-
                 opacity: 1;
             }
         }
@@ -56,6 +96,11 @@
 
     &__entrada-texto {
 
+        padding: 1rem;
+
+        @include m.tablet {
+            padding: 0;
+        }
 
         h3 {
 
@@ -63,6 +108,13 @@
             -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            font-size: 2.8rem;
+            margin: 1rem 0;
+
+            @include m.tablet {
+                font-size: 4rem;
+                margin-bottom: 2.5rem;
+            }
         }
 
         p {

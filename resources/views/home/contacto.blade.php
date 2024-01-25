@@ -20,5 +20,5 @@
             <p><span>Contacto: </span>tuslistas.app@gmail.com</p>
         </div>
     </div>
-</div>
+</div> 
 @endsection
