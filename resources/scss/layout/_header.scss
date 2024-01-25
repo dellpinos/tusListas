@@ -15,26 +15,38 @@
     background-color: v.$grisOscuroAzul;
     box-shadow: 5px 0 10px rgba(v.$azul, 1);
 
-
     @include m.tablet {
         // padding: 1rem 2.5rem 1rem 2.5rem;
 
     }
 
     &__contact {
+
         display: flex;
         justify-content: flex-end;
         border-bottom: 1px solid lighten(v.$grisOscuroAzul, 10%);
-
-        max-height: 5rem;
+        max-height: 8rem;
         overflow: hidden;
         transition: max-height 1s ease;
+        
+        @include m.tablet {
+            max-height: 5rem;
+            
+        }
     }
 
     &__contact-contenedor {
+        width: 100%;
         display: flex;
+        justify-content: space-around;
         gap: 3rem;
-        padding: 1rem 4rem;
+        padding: 2rem 4rem;
+
+        @include m.tablet {
+            width: auto;
+            padding: 1rem 4rem;
+            
+        }
     }
 
     &__contact-enlace {
@@ -68,10 +80,7 @@
     &__nombre {
         color: v.$blanco;
         margin: 0;
-
         display: none;
-
-
 
         @include m.tablet {
             display: flex;

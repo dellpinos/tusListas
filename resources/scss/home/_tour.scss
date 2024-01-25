@@ -6,50 +6,67 @@
 
     &__contenedor {
         text-align: center;
-        padding: 3rem;
-        margin: 5rem 0;
+        padding: 0;
+        margin: 6rem 0;
+        
+        @include m.tablet {
+            padding: 3rem;
+            margin: 5rem 0;
+        }
+
+        h3 {
+
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+
+            @include m.tablet {
+                font-size: 4rem;
+                margin-bottom: 2.5rem;
+            }
+        }
+
+        p {
+            font-size: 1.4rem;
+            @include m.tablet {
+                font-size: 1.8rem;
+            }
+        }
 
     }
 
     &__contenedor-card {
         display: flex;
         justify-content: center;
-        margin: 5rem 0;
+        margin: 2rem 0;
+
+        @include m.tablet {
+            margin: 5rem 0;
+        }
     }
 
     &__card {
         position: relative;
         border-radius: 3rem;
-        height: 45rem;
-        width: 80rem;
+        height: 25rem;
+        width: 95%;
         background-color: v.$azul;
         background: linear-gradient(130deg, v.$grisOscuroAzul 50%, v.$azul 50%),
-            linear-gradient(130deg, v.$grisOscuroAzul 55%, v.$azul 40%);
-
-        //         background-color:hsla(200,98%,39%,1);
-        // background-image:
-        // radial-gradient(at 35% 49%, hsla(200,98%,39%,1) 0px, transparent 50%),
-        // radial-gradient(at 68% 80%, hsla(200,98%,39%,1) 0px, transparent 50%),
-        // radial-gradient(at 88% 96%, hsla(215,27%,16%,1) 0px, transparent 50%),
-        // radial-gradient(at 2% 100%, hsla(7,0%,100%,1) 0px, transparent 50%),
-        // radial-gradient(at 0% 3%, hsla(215,27%,16%,1) 0px, transparent 50%),
-        // radial-gradient(at 66% 18%, hsla(339,0%,100%,1) 0px, transparent 50%);
-
-
-        // background-color:hsla(215,27%,16%,1);
-        // background-image:
-        // radial-gradient(at 35% 49%, hsla(215,27%,16%,1) 0px, transparent 50%),
-        // radial-gradient(at 88% 96%, hsla(215,27%,16%,1) 0px, transparent 50%),
-        // radial-gradient(at 2% 100%, hsla(39,78%,71%,1) 0px, transparent 50%),
-        // radial-gradient(at 66% 18%, hsla(39,78%,71%,1) 0px, transparent 50%),
-        // radial-gradient(at 68% 80%, hsla(215,0%,100%,1) 0px, transparent 50%),
-        // radial-gradient(at 0% 3%, hsla(215,27%,16%,1) 0px, transparent 50%);
-
-
+        linear-gradient(130deg, v.$grisOscuroAzul 55%, v.$azul 40%);
+        
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
         align-items: center;
-        gap: 8rem;
+        gap: 0;
+        
+        @include m.tablet {
+            width: 80rem;
+            height: 45rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 8rem;
+            
+        }
 
     }
 
@@ -60,52 +77,70 @@
         font-weight: v.$bold;
         margin-bottom: 4rem;
         line-height: 1.5;
+        display: none;
+
+        @include m.tablet {
+            display: block;
+        }
     }
 
     &__card-text {
         color: v.$blanco;
         padding: 0 1rem;
+
+        display: none;
+
+        @include m.tablet {
+            display: block;
+        }
     }
 
     &__card-logo {
-        width: 30rem;
-        height: 30rem;
+        width: 20rem;
+        height: 20rem;
+
+
+
+        @include m.tablet {
+            width: 30rem;
+            height: 30rem;
+        }
 
     }
 
     &__play {
         position: absolute;
         border-radius: 50%;
-        font-size: 8rem;
+        font-size: 4rem;
         color: rgba(v.$blanco, .8);
         top: 50%;
         left: 50%;
         cursor: pointer;
 
         box-shadow: 0 0 5px rgba(v.$blanco, 1) inset;
-
         transition: box-shadow 0s ease;
-
         animation: pulso 2s infinite;
 
+        @include m.tablet {
+            font-size: 8rem;
+
+        }
     }
-
-
 
     @keyframes pulso {
         0% {
-          transform: translate(-50%, -50%) scale(1.2);
-          box-shadow: 0 0 0 0 rgba(v.$blanco, 0.9);
+            transform: translate(-50%, -50%) scale(1.2);
+            box-shadow: 0 0 0 0 rgba(v.$blanco, 0.9);
         }
-      
+
         50% {
-          transform: translate(-50%, -50%);
-          box-shadow: 0 0 10px 45px rgba(52, 152, 219, 0);
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px 45px rgba(52, 152, 219, 0);
         }
-      
+
         100% {
-          transform: translate(-50%, -50%) scale(1);
+            transform: translate(-50%, -50%) scale(1);
 
         }
-      }
+    }
 }
