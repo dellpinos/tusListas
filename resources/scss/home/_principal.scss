@@ -5,7 +5,12 @@
 
     &__contenedor-xl {
         width: 100%;
-        margin-top: 14.5rem;
+        margin-top: 14rem;
+        
+        @include m.tablet {
+            
+            margin-top: 14.5rem;
+        }
 
     }
 

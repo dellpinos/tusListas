@@ -6,10 +6,16 @@
 
         <div class="blog__show-grid">
             <div class="blog__show-autor">
-                <img src="{{ asset('img/LogoSinFondo.png') }}" class="blog__show-logo" alt="Logo Tus Listas">
-                <p class="blog__show-empresa">{{ $post->user->empresa->name }}</p>
-                <p class="blog__show-nombre">{{ $post->user->name }}</p>
-                <p class="blog__show-fecha">{{ $post->created_at->diffForHumans() }}</p>
+                <div class="blog__show-contenedor-logo">
+                    <img src="{{ asset('img/LogoSinFondo.png') }}" class="blog__show-logo" alt="Logo Tus Listas">
+                    <p class="blog__show-empresa">{{ $post->user->empresa->name }}</p>
+
+                </div>
+                <div class="blog__show-contenedor-nombre">
+                    <p class="blog__show-nombre">{{ $post->user->name }}</p>
+                    <p class="blog__show-fecha">{{ $post->created_at->diffForHumans() }}</p>
+
+                </div>
             </div>
 
             <picture>

@@ -1,29 +1,46 @@
 @use '../base/variables' as v;
 @use '../base/mixins' as m;
 
-
-
 .hero {
 
     &__contenedor {
-        min-height: 80rem;
-        padding: 5rem;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        min-height: 30rem;
+        max-height: 40rem;
+        padding: 2rem 5rem;
+        display: flex;
+
         background-image: linear-gradient(to right, rgba(v.$blanco, .5), rgba(v.$blanco, .1)),
         image-set( url('/public/img/hero.avif') 1x, url('/public/img/hero.webp') 1x, url('/public/img/hero.jpg') 1x);
-        background-position: center top;
-        background-size: 100%;
+        background-position: top right;
+        background-size: 150%;
+        background-repeat: no-repeat;
+        
+        
+        @include m.tablet {
+            min-height: 80rem;
+            padding: 5rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            background-size: 100%;
+            background-position: center top;
+            
+        }
     }
 
     &__texto {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-end;
         gap: 5rem;
-        height: 70%;
-        margin: 6rem 0;
         
+        margin: 0;
+        
+        @include m.tablet {
+            
+            margin: 6rem 0;
+            height: 70%;
+            justify-content: center;
+        }
     }
     
     &__heading {
@@ -31,27 +48,32 @@
         text-align: start;
         margin: 0;
         font-family: v.$fuente_logo;
-        font-size: 8rem;
-        line-height: 12rem;
+        font-size: 2.8rem;
+
+        
+        @include m.tablet {
+            font-size: 8rem;
+            line-height: 12rem;
+        }
     }
 
     &__descripcion {
         font-size: 1.8rem;
+        display: none;
+        
+        @include m.tablet {
+            display: block;
+        }
     }
 
     &__btns {
-        display: flex;
-        justify-content: center;
         gap: 5rem;
+        display: none;
+        
+        @include m.tablet {
+            display: flex;
+            justify-content: center;
+
+        }
     }
-
-    
-
-
 }
-
-    /// Ejemplo de hero con graficos, imagen y linear gradient
-        // background-image: url(../img/grafico.svg),
-        // url(../img/grafico.svg),
-        // linear-gradient(to right, rgba(v.$negro, 1), rgba(v.$negro, .5)),
-        // image-set( url( ../img/header.avif) 1x, url( ../img/header.webp) 1x, url( ../img/header.jpg) 1x);

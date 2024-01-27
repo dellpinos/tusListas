@@ -6,15 +6,21 @@
 
     &__contenedor {
 
-        padding: 5rem 2rem;
+        padding: 3rem 1rem;
         background-color: lighten(v.$grisClaro, 48%);
-        margin: 5rem;
-        border-radius: 5rem;
+        
+        
         background-image:
-            url('/public/img/vector-nodo.svg'),
-            url('/public/img/vector-nodo-2.svg');
+        url('/public/img/vector-nodo.svg'),
+        url('/public/img/vector-nodo-2.svg');
         background-position: left top, right bottom;
         background-repeat: no-repeat;
+        
+        @include m.tablet {
+            padding: 5rem 2rem;
+            margin: 5rem;
+            border-radius: 5rem;
+        }
 
     }
 
@@ -24,27 +30,46 @@
 
 
     &__heading {
-        font-size: 6rem;
-        width: 60%;
+        font-size: 2.8rem;
+        width: 100%;
         margin: 2rem auto;
+        
+        @include m.tablet {
+            font-size: 6rem;
+            width: 60%;
+            
+        }
     }
 
     &__descripcion {
         margin: 0 auto;
         text-align: center;
-        width: 50%;
+        width: 100%;
+        font-size: 1.4rem;
+        
+        @include m.tablet {
+            
+            font-size: 1.6rem;
+            width: 50%;
+        }
     }
 
     &__grid {
-        padding: 0 2rem;
-        margin: 0 5rem;
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        padding: 0 1rem;
+        display: flex;
+        flex-direction: column;
         gap: 2rem;
+
+        @include m.tablet {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 0 5rem;
+        }
     }
 
     &__card {
-        height: 50rem;
+        height: 40rem;
         width: 100%;
 
         display: flex;
@@ -61,6 +86,10 @@
         border-bottom: 10px solid rgba(v.$blanco, .1);
         transition: border-top 1s ease, border-bottom 1s ease, box-shadow 2s ease;
 
+        @include m.tablet {
+            height: 50rem;
+        }
+
         &:hover {
             border-top: 10px solid rgba(v.$azulSobrio, .7);
             border-bottom: 10px solid rgba(v.$azulSobrio, .7);
@@ -70,19 +99,27 @@
 
     }
 
-    &__img {}
 
     &__heading-xs {
         margin-top: 1rem;
         margin: 1rem 0 1rem 0;
-        font-size: 2.5rem;
+        font-size: 2rem;
+        
+        @include m.tablet {
+            font-size: 2.5rem;
+            
+        }
     }
 
     &__text-xs {
         margin-bottom: 3rem;
+        font-size: 1.4rem;
+        
+        @include m.tablet {
+            font-size: 1.6rem;
+            
+        }
     }
 
-    &__link {
 
-    }
 }

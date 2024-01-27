@@ -10,13 +10,8 @@
         gap: 6rem;
         background-color: v.$grisOscuroAzul;
         color: v.$blanco;
-
-
         text-align: center;
-
         font-size: 1.4rem;
-
-        
         padding: 2rem;
         height: auto;
         
@@ -30,8 +25,16 @@
     }
 
     &__grid {
-        display: flex;
-        justify-content: space-around;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2.5rem;
+
+
+        @include m.tablet {
+            display: flex;
+            justify-content: space-around;
+            gap: 0;
+        }
 
         a {
             text-align: start;
@@ -55,13 +58,21 @@
     &__nombre {
 
         color: v.$blanco;
-        font-size: 1.8rem;
-        margin-top: 2rem;
+        font-size: 1.2rem;
+
         text-transform: uppercase;
         letter-spacing: 5px;
-
+        line-height: 2;
+        
         span {
             font-weight: v.$bold;
+        }
+        
+        @include m.tablet {
+            font-size: 1.8rem;
+            line-height: inherit;
+            margin-top: 2rem;
+            
         }
 
     }

@@ -7,6 +7,15 @@
         width: 95%;
         margin: 2rem auto;
         padding: 2rem;
+
+        h2 {
+            font-size: 5rem;
+            
+            @include m.tablet {
+                font-size: 8rem;
+                
+            }
+        }
     }
 
     &__grid {
