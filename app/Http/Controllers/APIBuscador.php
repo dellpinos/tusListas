@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Precio;
 use App\Models\Producto;
+use App\Models\Categoria;
 use App\Models\Paginacion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Fabricante;
+use App\Models\Provider;
 use Illuminate\Support\Facades\Validator;
 
 class APIBuscador extends Controller
@@ -20,13 +23,42 @@ class APIBuscador extends Controller
     public function index(Request $request)
     {
 
-        // Listar todos los productos paginados
+        $busc_nombre = $request->termino ?? null;
+        $busc_categoria = $request->categoria ?? null;
+        $busc_fabricante = $request->fabricante ?? null;
+        $busc_provider = $request->provider ?? null;
+
+        $orden = $request->orden ?? 'ASC';
+
         $registros_por_pagina = 15;
 
         $pagina_actual = $request->page;
 
+
         $pagina_actual = filter_var($pagina_actual, FILTER_VALIDATE_INT);
-        $total_registros = Producto::where('empresa_id', session('empresa')->id)->count();
+
+
+
+
+        // Listar todos los productos paginados
+        $total_registros = Producto::all()
+        ->when($busc_nombre, function ($query) use ($busc_nombre) {
+            $query->where('nombre', 'LIKE', "%" . $busc_nombre . "%");
+        })
+        ->when($busc_categoria, function ($query) use ($busc_categoria) {
+            $query->where('categoria_id', $busc_categoria);
+        })
+        ->when($busc_fabricante, function ($query) use ($busc_fabricante) {
+            $query->where('fabricante_id', $busc_fabricante);
+        })
+        ->when($busc_provider, function ($query) use ($busc_provider) {
+            $query->where('provider_id', $busc_provider);
+        })
+        ->where('empresa_id', session('empresa')->id)
+        ->count();
+
+
+
 
 
 
@@ -35,6 +67,8 @@ class APIBuscador extends Controller
         }
 
         if ($total_registros < 1) {
+
+
             echo json_encode([
                 'productos' => [],
                 'precios' => []
@@ -42,20 +76,89 @@ class APIBuscador extends Controller
             return;
         }
 
-       $paginacion = new Paginacion($pagina_actual, $registros_por_pagina, $total_registros); // Creo la instancia con "la forma de una paginacion"
+        $paginacion = new Paginacion($pagina_actual, $registros_por_pagina, $total_registros); // Creo la instancia con "la forma de una paginacion"
 
         if ($paginacion->totalPaginas() < $pagina_actual) {
             return json_encode("error");
         }
 
-        $productos = Producto::orderBy('nombre', 'ASC')->where('empresa_id', session('empresa')->id)->offset($paginacion->offset())->limit($registros_por_pagina)->get();
+
+
+
+
+
+
+
+        // Agregar condiciones de filtros
+
+        // $productos = Producto::orderBy('nombre', 'ASC')->where('empresa_id', session('empresa')->id)->offset($paginacion->offset())->limit($registros_por_pagina)->get();
+
+
+
+
+        // Consulta y ordenamientos:
+
+
+
+
+
+
+        $productos = Producto::orderBy('nombre', $orden)
+            ->when($busc_nombre, function ($query) use ($busc_nombre) {
+                $query->where('nombre', 'LIKE', "%" . $busc_nombre . "%");
+            })
+
+            ->when($busc_categoria, function ($query) use ($busc_categoria) {
+                $query->where('categoria_id', $busc_categoria);
+            })
+            ->when($busc_fabricante, function ($query) use ($busc_fabricante) {
+                $query->where('fabricante_id', $busc_fabricante);
+            })
+            ->when($busc_provider, function ($query) use ($busc_provider) {
+                $query->where('provider_id', $busc_provider);
+            })
+
+            ->where('empresa_id', session('empresa')->id)
+            ->offset($paginacion->offset())
+            ->limit($registros_por_pagina)
+            ->get();
+
+
+
+
+
+
+        // $vacantes = Vacante::when($this->termino, function($query) {
+        //     $query->where('titulo', 'LIKE', "%" . $this->termino . "%");
+        // })
+        // ->when($this->termino, function($query) {
+        //     $query->orWhere('empresa', 'LIKE', "%" . $this->termino . "%");
+        // })
+        // ->when($this->categoria, function($query) {
+        //     $query->where('categoria_id', $this->categoria);
+        // })
+        // ->when($this->salario, function($query) {
+        //     $query->where('salario_id', $this->salario);
+        // })
+        // ->paginate(20);
+
+
+
+
+
+
+        // $productos = Producto::orderBy('nombre', 'ASC')->where('empresa_id', session('empresa')->id)->offset($paginacion->offset())->limit($registros_por_pagina)->get();
 
         $precios = [];
         $resultado = [];
 
         foreach ($productos as $producto) {
 
+
+
             $precio = Precio::where('id', $producto->precio_id)->where('empresa_id', session('empresa')->id)->first();
+
+            // buscar categoria de cada uno
             $resultado = precioVenta($producto, $precio);
 
             $precios[] = $resultado['precio'];
@@ -155,5 +258,22 @@ class APIBuscador extends Controller
             return;
         }
         echo json_encode($resultado);
+    }
+
+    public function consultar_CFP(Request $request)
+    {
+        // Categorias, Fabricantes y Proveedores
+
+        $categorias = Categoria::where('empresa_id', session('empresa')->id)->get();
+        $providers = Provider::where('empresa_id', session('empresa')->id)->get();
+        $fabricantes = Fabricante::where('empresa_id', session('empresa')->id)->get();
+
+
+
+        echo json_encode([
+            'categorias' => $categorias,
+            'providers' => $providers,
+            'fabricantes' => $fabricantes
+        ]);
     }
 }

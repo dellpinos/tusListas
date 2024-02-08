@@ -1,0 +1,63 @@
+@use '../../base/variables' as v;
+@use '../../base/mixins' as m;
+
+.buscador-listado {
+
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    &__grid {
+
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    &__flex {
+        display: flex;
+        justify-content: center;
+    }
+
+    &__dropdown {
+        text-align: center;
+
+        font-size: 1.6rem;
+        padding: 1rem;
+        background-color: v.$blanco;
+
+        box-shadow: v.$grisBlanco 0px 5px 15px inset;
+        border: 2px solid v.$blanco;
+        transition: border .3s ease, color .3s ease;
+        color: v.$negro;
+
+        &:hover {
+            border: 2px solid lighten(v.$azul, 35%);
+            color: lighten(v.$azul, 35%);
+
+        }
+    }
+
+    &__input {
+
+        font-size: 1.6rem;
+        border-radius: .5rem;
+        background-color: v.$blanco;
+        width: 50%;
+
+        box-shadow: v.$grisBlanco 0px 5px 15px inset;
+        border: 2px solid v.$blanco;
+        padding: 1.5rem;
+        transition: border .3s ease, color .3s ease;
+        color: v.$negro;
+
+        &:hover {
+            border: 2px solid lighten(v.$azul, 35%);
+
+
+        }
+    }
+
+
+
+}

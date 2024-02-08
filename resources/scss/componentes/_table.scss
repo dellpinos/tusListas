@@ -18,6 +18,19 @@
 
     &__th {
         padding: 1rem;
+
+        i {
+            margin-left: 1rem;
+            opacity: 0;
+            transition: opacity .3s ease;
+        }
+
+        &:hover {
+            i {
+
+                opacity: 1;
+            }
+        }
     }
 
     &__tr {
