@@ -18,6 +18,8 @@ body {
     flex-direction: column;
     font-family: v.$fuente_textos;
     margin: 0;
+
+    padding-right: 0!important; // Corrige error en la ventana modal de Sweet Alert (estoy evitando que genere el padding-right: 15px;
 }
 textarea, input, label, a {
     font-family: v.$fuente_textos;
