@@ -248,7 +248,13 @@ import * as helpers from './helpers';
                 // Consultar todos los productos de la DB
                 const resultado = await paginadorTodos(cat, fab, prov, term, orden);
 
+
                 
+
+                console.log("Resultado VVV VVV");
+                console.log(resultado);
+
+
 
 
                 if (resultado.productos.length === 0 || resultado.precios.length === 0) {
@@ -260,6 +266,8 @@ import * as helpers from './helpers';
 
                     // // Generar table y thead
                     // const tbody = generarTabla();
+
+
                     const tablaPaginacion = generarPaginacion();
                     // Renderizar productos paginados
                     recargarPaginacion(resultado, tbody, tablaPaginacion);
@@ -300,7 +308,9 @@ import * as helpers from './helpers';
             const selectCategoria = document.createElement('SELECT');
             selectCategoria.classList.add('buscador-listado__dropdown');
             selectCategoria.addEventListener('change', () => {
+
                 categoriaSeleccionada = selectCategoria.value;
+                console.log('Buscando');
 
                 // Leer filtros y reutilizar funcion de "paginarTodos"
                 // limpiarContenedor();
@@ -590,20 +600,20 @@ import * as helpers from './helpers';
                                         if (e.target.dataset.btn === 'siguiente') {
                                             // regenerar HTML
                                             page++;
-                                            // const resultado = await paginadorTodos();
+                                             const resultado = await paginadorTodos();
 
                                             console.log(resultado);
                                             renderizarRegistrosTabla(categoriaSeleccionada, fabricanteSeleccionada, providerSeleccionada, terminoValue, orden);
 
-                                            //recargarPaginacion(resultado, tbody, tablaPaginacion);
+                                            recargarPaginacion(resultado, tbody, tablaPaginacion);
 
                                             return;
 
                                         } else {
                                             // regenerar HTML
                                             page--;
-                                            // const resultado = await paginadorTodos();
-                                            // recargarPaginacion(resultado, tbody, tablaPaginacion);
+                                             const resultado = await paginadorTodos();
+                                             recargarPaginacion(resultado, tbody, tablaPaginacion);
                                             renderizarRegistrosTabla(categoriaSeleccionada, fabricanteSeleccionada, providerSeleccionada, terminoValue, orden);
                                             return;
                                         }
@@ -630,9 +640,14 @@ import * as helpers from './helpers';
 
         function limpiarTabla(tbody) {
             const paginacion = document.querySelector('#tabla-buscador-paginacion');
+
+            // PROVISORIO <<<
+            tbody = document.querySelector('.table__tbody');
+            if(document.querySelector('.mensaje__info')) document.querySelector('.mensaje__info').remove();
+            if(document.querySelector('.paginacion')) document.querySelector('.paginacion').remove();
             page = 1; // reiniciar paginador
 
-
+            
             while (tbody.firstChild) {
                 tbody.removeChild(tbody.firstChild);
             }
