@@ -249,6 +249,8 @@ import * as helpers from './helpers';
                 const resultado = await paginadorTodos(cat, fab, prov, term, orden);
 
 
+
+
                 
 
                 console.log("Resultado VVV VVV");

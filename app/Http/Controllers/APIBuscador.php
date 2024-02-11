@@ -23,10 +23,12 @@ class APIBuscador extends Controller
     public function index(Request $request)
     {
 
-        $busc_nombre = $request->termino ?? null;
-        $busc_categoria = $request->categoria ?? null;
-        $busc_fabricante = $request->fabricante ?? null;
-        $busc_provider = $request->provider ?? null;
+        $busc_nombre = $request->termino;
+        $busc_categoria = $request->categoria;
+        $busc_fabricante = $request->fabricante;
+        $busc_provider = $request->provider;
+
+        dd($busc_categoria);
 
         $orden = $request->orden ?? 'ASC';
 
@@ -37,8 +39,8 @@ class APIBuscador extends Controller
 
         $pagina_actual = filter_var($pagina_actual, FILTER_VALIDATE_INT);
 
-
-
+        
+        // Siempre retorna el total de los registros en la DB "45"
 
         // Listar todos los productos paginados
         $total_registros = Producto::all()
@@ -59,7 +61,7 @@ class APIBuscador extends Controller
 
 
 
-
+        dd($total_registros);
 
 
         if (!$pagina_actual || $pagina_actual < 1) {
@@ -81,6 +83,7 @@ class APIBuscador extends Controller
         if ($paginacion->totalPaginas() < $pagina_actual) {
             return json_encode("error");
         }
+
 
 
 
