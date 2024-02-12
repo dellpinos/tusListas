@@ -28,7 +28,8 @@ class APIBuscador extends Controller
         $busc_fabricante = $request->fabricante;
         $busc_provider = $request->provider;
 
-        dd($busc_categoria);
+
+
 
         $orden = $request->orden ?? 'ASC';
 
@@ -43,10 +44,28 @@ class APIBuscador extends Controller
         // Siempre retorna el total de los registros en la DB "45"
 
         // Listar todos los productos paginados
-        $total_registros = Producto::all()
+        // $total_registros = Producto::all()
+        // ->when($busc_nombre, function ($query) use ($busc_nombre) {
+        //     $query->where('nombre', 'LIKE', "%" . $busc_nombre . "%");
+        // })
+        // ->when($busc_categoria, function ($query) use ($busc_categoria) {
+        //     $query->where('categoria_id', $busc_categoria);
+        // })
+        // ->when($busc_fabricante, function ($query) use ($busc_fabricante) {
+        //     $query->where('fabricante_id', $busc_fabricante);
+        // })
+        // ->when($busc_provider, function ($query) use ($busc_provider) {
+        //     $query->where('provider_id', $busc_provider);
+        // })
+        // ->where('empresa_id', session('empresa')->id)
+        // ->count();
+
+
+        $total_registros = Producto::orderBy('nombre', $orden)
         ->when($busc_nombre, function ($query) use ($busc_nombre) {
             $query->where('nombre', 'LIKE', "%" . $busc_nombre . "%");
         })
+
         ->when($busc_categoria, function ($query) use ($busc_categoria) {
             $query->where('categoria_id', $busc_categoria);
         })
@@ -56,12 +75,14 @@ class APIBuscador extends Controller
         ->when($busc_provider, function ($query) use ($busc_provider) {
             $query->where('provider_id', $busc_provider);
         })
+
         ->where('empresa_id', session('empresa')->id)
         ->count();
 
 
 
-        dd($total_registros);
+
+
 
 
         if (!$pagina_actual || $pagina_actual < 1) {

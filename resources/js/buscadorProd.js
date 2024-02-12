@@ -42,6 +42,13 @@ import * as helpers from './helpers';
         let arrayCoincidencias = []; // Aqui se almacena el resultado de la DB
         let coincidenciasPantalla = []; // Aqui se almacena el resultado de la DB filtrado
 
+        let categoriaSeleccionada = '';
+        let fabricanteSeleccionada = '';
+        let providerSeleccionada = '';
+        let terminoValue = '';
+        let orden = 'ASC';
+
+
         document.addEventListener('DOMContentLoaded', () => {
 
             tabs.classList.add('dashboard__tabs--activo');
@@ -241,17 +248,17 @@ import * as helpers from './helpers';
             // Generar table y thead
         });
 
-        async function renderizarRegistrosTabla(cat = null, fab = null, prov = null, term = null, orden = null) {
+        async function renderizarRegistrosTabla() {
 
             try {
 
                 // Consultar todos los productos de la DB
-                const resultado = await paginadorTodos(cat, fab, prov, term, orden);
+                const resultado = await paginadorTodos();
 
 
 
 
-                
+
 
                 console.log("Resultado VVV VVV");
                 console.log(resultado);
@@ -279,11 +286,7 @@ import * as helpers from './helpers';
             }
         }
 
-        let categoriaSeleccionada = '2';
-        let fabricanteSeleccionada = '';
-        let providerSeleccionada = '';
-        let terminoValue = '';
-        let orden = 'ASC';
+
 
 
 
@@ -312,13 +315,8 @@ import * as helpers from './helpers';
             selectCategoria.addEventListener('change', () => {
 
                 categoriaSeleccionada = selectCategoria.value;
-                console.log('Buscando');
-
-                // Leer filtros y reutilizar funcion de "paginarTodos"
-                // limpiarContenedor();
-                //generarFiltrosHTML();
-
-                renderizarRegistrosTabla(categoriaSeleccionada, fabricanteSeleccionada, providerSeleccionada, terminoValue, orden);
+                page = 1; // reiniciar paginador
+                renderizarRegistrosTabla();
 
             });
 
@@ -326,6 +324,7 @@ import * as helpers from './helpers';
             const optCategoria = document.createElement('OPTION');
             optCategoria.textContent = "-- Seleccionar --";
             optCategoria.selected = true;
+            optCategoria.value = '';
 
             selectCategoria.appendChild(optCategoria);
 
@@ -340,12 +339,19 @@ import * as helpers from './helpers';
 
             const selectFabricante = document.createElement('SELECT');
             selectFabricante.classList.add('buscador-listado__dropdown');
+            selectFabricante.addEventListener('change', () => {
+
+                fabricanteSeleccionada = selectFabricante.value;
+                page = 1; // reiniciar paginador
+                renderizarRegistrosTabla();
+
+            });
 
             // Default
             const optFabricante = document.createElement('OPTION');
             optFabricante.textContent = "-- Seleccionar --";
-            optFabricante.disabled = true;
             optFabricante.selected = true;
+            optFabricante.value = '';
 
             selectFabricante.appendChild(optFabricante);
 
@@ -360,12 +366,19 @@ import * as helpers from './helpers';
 
             const selectProveedor = document.createElement('SELECT');
             selectProveedor.classList.add('buscador-listado__dropdown');
+            selectProveedor.addEventListener('change', () => {
+
+                providerSeleccionada = selectProveedor.value;
+                page = 1; // reiniciar paginador
+                renderizarRegistrosTabla();
+
+            });
 
             // Default
             const optProveedor = document.createElement('OPTION');
             optProveedor.textContent = "-- Seleccionar --";
-            optProveedor.disabled = true;
             optProveedor.selected = true;
+            optProveedor.value = '';
 
             selectProveedor.appendChild(optProveedor);
 
@@ -383,6 +396,19 @@ import * as helpers from './helpers';
             buscadorFiltros.placeholder = "Nombre del producto";
             buscadorFiltros.type = "text";
 
+            buscadorFiltros.addEventListener('input', (e) => {
+
+                if(e.target.value.length >= 3) {
+                    page = 1; // reiniciar paginador
+                    terminoValue = e.target.value;
+                    renderizarRegistrosTabla();
+                } else {
+                    page = 1; // reiniciar paginador
+                    terminoValue = '';
+                    renderizarRegistrosTabla();
+                }
+            });
+
             const btnBuscar = document.createElement('BUTTON');
             btnBuscar.type = 'submit';
             btnBuscar.textContent = "Buscar";
@@ -396,9 +422,9 @@ import * as helpers from './helpers';
             btnBuscar.addEventListener('click', (e) => {
 
                 // Leer filtros y reutilizar funcion de "paginarTodos"
-                limpiarTabla();
-                generarFiltrosHTML();
-                renderizarRegistrosTabla(categoriaSeleccionada, fabricanteSeleccionada, providerSeleccionada, terminoValue, orden);
+                // limpiarTabla();
+                // generarFiltrosHTML();
+                // renderizarRegistrosTabla();
 
             });
 
@@ -488,13 +514,10 @@ import * as helpers from './helpers';
             }
         }
 
-        async function paginadorTodos(cat = null, fab = null, prov = null, term = null, orden = null) {
+        async function paginadorTodos() {
 
             try {
                 const url = '/api/buscador/todos';
-
-
-
 
                 // Agregar filtros y ordenamientos <<<<<<<
 
@@ -502,11 +525,14 @@ import * as helpers from './helpers';
 
                 const datos = new FormData();
                 datos.append('page', page);
-                if (cat) datos.append('categoria', cat);
-                if (fab) datos.append('fabricante', fab);
-                if (prov) datos.append('provider', prov);
-                if (term) datos.append('termino', term);
+                if (categoriaSeleccionada) datos.append('categoria', categoriaSeleccionada);
+                if (fabricanteSeleccionada) datos.append('fabricante', fabricanteSeleccionada);
+                if (providerSeleccionada) datos.append('provider', providerSeleccionada);
+                if (terminoValue) datos.append('termino', terminoValue);
                 if (orden) datos.append('orden', orden);
+
+                console.log("DATOS! VVVV");
+                console.log(datos);
 
                 const respuesta = await fetch(url, {
                     method: 'POST',
@@ -601,22 +627,24 @@ import * as helpers from './helpers';
 
                                         if (e.target.dataset.btn === 'siguiente') {
                                             // regenerar HTML
+                                            console.log(page + " page")
                                             page++;
-                                             const resultado = await paginadorTodos();
+                                            console.log(page + " page")
+                                            // const resultado = await paginadorTodos();
 
-                                            console.log(resultado);
-                                            renderizarRegistrosTabla(categoriaSeleccionada, fabricanteSeleccionada, providerSeleccionada, terminoValue, orden);
+                                            // console.log(resultado);
+                                            renderizarRegistrosTabla();
 
-                                            recargarPaginacion(resultado, tbody, tablaPaginacion);
+                                            // recargarPaginacion(resultado, tbody, tablaPaginacion);
 
                                             return;
 
                                         } else {
                                             // regenerar HTML
                                             page--;
-                                             const resultado = await paginadorTodos();
-                                             recargarPaginacion(resultado, tbody, tablaPaginacion);
-                                            renderizarRegistrosTabla(categoriaSeleccionada, fabricanteSeleccionada, providerSeleccionada, terminoValue, orden);
+                                            // const resultado = await paginadorTodos();
+                                            // recargarPaginacion(resultado, tbody, tablaPaginacion);
+                                            renderizarRegistrosTabla();
                                             return;
                                         }
                                     } catch (error) {
@@ -645,11 +673,11 @@ import * as helpers from './helpers';
 
             // PROVISORIO <<<
             tbody = document.querySelector('.table__tbody');
-            if(document.querySelector('.mensaje__info')) document.querySelector('.mensaje__info').remove();
-            if(document.querySelector('.paginacion')) document.querySelector('.paginacion').remove();
-            page = 1; // reiniciar paginador
+            if (document.querySelector('.mensaje__info')) document.querySelector('.mensaje__info').remove();
+            if (document.querySelector('.paginacion')) document.querySelector('.paginacion').remove();
 
-            
+
+
             while (tbody.firstChild) {
                 tbody.removeChild(tbody.firstChild);
             }
@@ -683,7 +711,7 @@ import * as helpers from './helpers';
             const mensajeNoResult = document.createElement('DIV');
 
             mensajeNoResult.innerHTML = `<p class="mensaje__info mb-4">
-            No hay productos, deberías crear el primero
+            No hay resultados
             </p>`;
 
             contenedorPrincipal.appendChild(mensajeNoResult);
