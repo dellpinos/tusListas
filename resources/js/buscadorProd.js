@@ -46,7 +46,8 @@ import * as helpers from './helpers';
         let fabricanteSeleccionada = '';
         let providerSeleccionada = '';
         let terminoValue = '';
-        let orden = 'ASC';
+        let orden = "ASC";
+
 
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -255,17 +256,6 @@ import * as helpers from './helpers';
                 // Consultar todos los productos de la DB
                 const resultado = await paginadorTodos();
 
-
-
-
-
-
-                console.log("Resultado VVV VVV");
-                console.log(resultado);
-
-
-
-
                 if (resultado.productos.length === 0 || resultado.precios.length === 0) {
 
                     sinResultados(); /// Mensaje "sin resultados"
@@ -274,8 +264,6 @@ import * as helpers from './helpers';
                 } else {
 
                     // // Generar table y thead
-                    // const tbody = generarTabla();
-
 
                     const tablaPaginacion = generarPaginacion();
                     // Renderizar productos paginados
@@ -316,13 +304,14 @@ import * as helpers from './helpers';
 
                 categoriaSeleccionada = selectCategoria.value;
                 page = 1; // reiniciar paginador
+                orden = 'ASC';
                 renderizarRegistrosTabla();
 
             });
 
             // Default
             const optCategoria = document.createElement('OPTION');
-            optCategoria.textContent = "-- Seleccionar --";
+            optCategoria.textContent = "-- Seleccionar Categoria --";
             optCategoria.selected = true;
             optCategoria.value = '';
 
@@ -343,13 +332,14 @@ import * as helpers from './helpers';
 
                 fabricanteSeleccionada = selectFabricante.value;
                 page = 1; // reiniciar paginador
+                orden = 'ASC';
                 renderizarRegistrosTabla();
 
             });
 
             // Default
             const optFabricante = document.createElement('OPTION');
-            optFabricante.textContent = "-- Seleccionar --";
+            optFabricante.textContent = "-- Seleccionar Fabricante --";
             optFabricante.selected = true;
             optFabricante.value = '';
 
@@ -370,13 +360,14 @@ import * as helpers from './helpers';
 
                 providerSeleccionada = selectProveedor.value;
                 page = 1; // reiniciar paginador
+                orden = 'ASC';
                 renderizarRegistrosTabla();
 
             });
 
             // Default
             const optProveedor = document.createElement('OPTION');
-            optProveedor.textContent = "-- Seleccionar --";
+            optProveedor.textContent = "-- Seleccionar Proveedor --";
             optProveedor.selected = true;
             optProveedor.value = '';
 
@@ -398,12 +389,14 @@ import * as helpers from './helpers';
 
             buscadorFiltros.addEventListener('input', (e) => {
 
-                if(e.target.value.length >= 3) {
+                if (e.target.value.length >= 3) {
                     page = 1; // reiniciar paginador
+                    orden = 'ASC';
                     terminoValue = e.target.value;
                     renderizarRegistrosTabla();
                 } else {
                     page = 1; // reiniciar paginador
+                    orden = 'ASC';
                     terminoValue = '';
                     renderizarRegistrosTabla();
                 }
@@ -411,12 +404,8 @@ import * as helpers from './helpers';
 
             const btnReset = document.createElement('BUTTON');
             btnReset.type = 'submit';
-            btnReset.textContent = "Reset";
-            btnReset.classList.add('formulario__boton');
-
-            /** Ordenamientos */
-
-
+            btnReset.innerHTML = '<i class="fa-solid fa-rotate"></i>';
+            btnReset.classList.add('formulario__boton', 'buscador-listado__btn-reset');
 
             /** Buscador */
             btnReset.addEventListener('click', (e) => {
@@ -436,11 +425,6 @@ import * as helpers from './helpers';
                 orden = 'ASC';
                 renderizarRegistrosTabla();
 
-
-                // Leer filtros y reutilizar funcion de "paginarTodos"
-                // limpiarTabla();
-                // generarFiltrosHTML();
-                // renderizarRegistrosTabla();
 
             });
 
@@ -474,23 +458,15 @@ import * as helpers from './helpers';
             const tabla = document.createElement('TABLE');
             tabla.classList.add('table');
 
-
-
-
-            /// Puedo modificar las columnas   <<<<< <<<<<< <<<<
             tabla.innerHTML = `
             <thead class="table__thead">
                 <tr>
                     <th scope="col" class="table__th">Código</th>
-                    <th scope="col" class="table__th pointer">
+                    <th scope="col" class="table__th pointer" id="filtros-orden-nombre">
                         Nombre
                         <i class="fa-solid fa-sort"></i>
                     </th>
-                    <th scope="col" class="table__th pointer">
-                        Precio Venta
-                        <i class="fa-solid fa-sort"></i>
-                    </th>
-
+                    <th scope="col" class="table__th">Precio Venta</th>
                     <th scope="col" class="table__th">Categoria</th>
                     <th scope="col" class="table__th">Enlace</th>
                 </tr>
@@ -504,6 +480,20 @@ import * as helpers from './helpers';
 
             contenedorPrincipal.appendChild(tabla);
             contenedorPrincipal.classList.add('x-scroll');
+
+            document.querySelector('#filtros-orden-nombre').addEventListener('click', () => {
+                // cambiar orden
+
+                if (orden === "ASC") {
+                    orden = "DESC"
+                } else {
+                    orden = "ASC";
+                }
+                //hacer consulta y renderizar resultados
+                page = 1; // reiniciar paginador
+                renderizarRegistrosTabla();
+
+            });
             return tablaBody;
 
         }
@@ -603,13 +593,15 @@ import * as helpers from './helpers';
                         }
                         iteracion++;
 
+                        console.log(producto);
+
                         producto.venta = helpers.redondear(producto.venta);
                         tbody.innerHTML += `                        
                         <tr class="table__tr">
                         <td class="table__td">${producto.codigo.toUpperCase()}</td>
                         <td class="table__td">${producto.nombre}</td>
-                        <td class="table__td">$ ${precio.precio}</td>
                         <td class="table__td ${claseDescuento}">$ ${producto.venta} ${unidadFraccion}</td>
+                        <td class="table__td">${producto.categoria}</td>
                         <td class="table__td"><a class="table__accion table__accion--editar" href="/producto/producto-show/${producto.id}">Ver</a></td>
                         </tr>
                     `;
@@ -643,9 +635,7 @@ import * as helpers from './helpers';
 
                                         if (e.target.dataset.btn === 'siguiente') {
                                             // regenerar HTML
-                                            console.log(page + " page")
                                             page++;
-                                            console.log(page + " page")
                                             // const resultado = await paginadorTodos();
 
                                             // console.log(resultado);
@@ -692,8 +682,6 @@ import * as helpers from './helpers';
             if (document.querySelector('.mensaje__info')) document.querySelector('.mensaje__info').remove();
             if (document.querySelector('.paginacion')) document.querySelector('.paginacion').remove();
 
-
-
             while (tbody.firstChild) {
                 tbody.removeChild(tbody.firstChild);
             }
@@ -705,18 +693,6 @@ import * as helpers from './helpers';
 
 
         }
-
-        // function limpiarTabla(tbody, paginacion = '') {
-        //     while (tbody.firstChild) {
-        //         tbody.removeChild(tbody.firstChild);
-        //     }
-        //     if (paginacion) {
-        //         while (paginacion.firstChild) {
-        //             paginacion.removeChild(paginacion.firstChild);
-        //         }
-        //     }
-
-        // }
 
 
         function sinResultados() {

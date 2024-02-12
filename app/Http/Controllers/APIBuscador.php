@@ -28,44 +28,20 @@ class APIBuscador extends Controller
         $busc_fabricante = $request->fabricante;
         $busc_provider = $request->provider;
 
+        // Orden - ASC o DESC
+        $orden = $request->orden ?? "ASC";
 
-
-
-        $orden = $request->orden ?? 'ASC';
 
         $registros_por_pagina = 15;
-
         $pagina_actual = $request->page;
-
-
         $pagina_actual = filter_var($pagina_actual, FILTER_VALIDATE_INT);
 
-        
-        // Siempre retorna el total de los registros en la DB "45"
-
-        // Listar todos los productos paginados
-        // $total_registros = Producto::all()
-        // ->when($busc_nombre, function ($query) use ($busc_nombre) {
-        //     $query->where('nombre', 'LIKE', "%" . $busc_nombre . "%");
-        // })
-        // ->when($busc_categoria, function ($query) use ($busc_categoria) {
-        //     $query->where('categoria_id', $busc_categoria);
-        // })
-        // ->when($busc_fabricante, function ($query) use ($busc_fabricante) {
-        //     $query->where('fabricante_id', $busc_fabricante);
-        // })
-        // ->when($busc_provider, function ($query) use ($busc_provider) {
-        //     $query->where('provider_id', $busc_provider);
-        // })
-        // ->where('empresa_id', session('empresa')->id)
-        // ->count();
 
 
         $total_registros = Producto::orderBy('nombre', $orden)
         ->when($busc_nombre, function ($query) use ($busc_nombre) {
             $query->where('nombre', 'LIKE', "%" . $busc_nombre . "%");
         })
-
         ->when($busc_categoria, function ($query) use ($busc_categoria) {
             $query->where('categoria_id', $busc_categoria);
         })
@@ -75,7 +51,6 @@ class APIBuscador extends Controller
         ->when($busc_provider, function ($query) use ($busc_provider) {
             $query->where('provider_id', $busc_provider);
         })
-
         ->where('empresa_id', session('empresa')->id)
         ->count();
 
@@ -176,17 +151,18 @@ class APIBuscador extends Controller
         $precios = [];
         $resultado = [];
 
+
         foreach ($productos as $producto) {
 
-
-
             $precio = Precio::where('id', $producto->precio_id)->where('empresa_id', session('empresa')->id)->first();
-
+            $categoria = Categoria::where('id', $producto->categoria_id)->where('empresa_id', session('empresa')->id)->first();
             // buscar categoria de cada uno
             $resultado = precioVenta($producto, $precio);
 
             $precios[] = $resultado['precio'];
             $producto = $resultado['producto'];
+            $producto->categoria = $categoria->nombre;
+
         }
 
         echo json_encode([
@@ -284,15 +260,13 @@ class APIBuscador extends Controller
         echo json_encode($resultado);
     }
 
-    public function consultar_CFP(Request $request)
+    public function consultar_CFP()
     {
         // Categorias, Fabricantes y Proveedores
 
         $categorias = Categoria::where('empresa_id', session('empresa')->id)->get();
         $providers = Provider::where('empresa_id', session('empresa')->id)->get();
         $fabricantes = Fabricante::where('empresa_id', session('empresa')->id)->get();
-
-
 
         echo json_encode([
             'categorias' => $categorias,

@@ -5,13 +5,14 @@
 
     margin-bottom: 2rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: 2rem;
 
     &__grid {
 
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 3fr) 1fr;
+
     }
 
     &__flex {
@@ -34,7 +35,6 @@
         &:hover {
             border: 2px solid lighten(v.$azul, 35%);
             color: lighten(v.$azul, 35%);
-
         }
     }
 
@@ -43,7 +43,7 @@
         font-size: 1.6rem;
         border-radius: .5rem;
         background-color: v.$blanco;
-        width: 50%;
+        width: 95%;
 
         box-shadow: v.$grisBlanco 0px 5px 15px inset;
         border: 2px solid v.$blanco;
@@ -56,6 +56,11 @@
 
 
         }
+    }
+
+    &__btn-reset {
+        width: auto;
+        margin-left: 2rem;
     }
 
 

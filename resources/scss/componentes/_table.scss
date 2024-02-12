@@ -20,17 +20,15 @@
         padding: 1rem;
 
         i {
-            margin-left: 1rem;
-            opacity: 0;
-            transition: opacity .3s ease;
+            margin-left: 1.5rem;
         }
-
         &:hover {
             i {
-
-                opacity: 1;
+                color: lighten(v.$azul, 10%);
             }
         }
+
+
     }
 
     &__tr {
