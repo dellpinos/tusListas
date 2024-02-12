@@ -409,17 +409,33 @@ import * as helpers from './helpers';
                 }
             });
 
-            const btnBuscar = document.createElement('BUTTON');
-            btnBuscar.type = 'submit';
-            btnBuscar.textContent = "Buscar";
-            btnBuscar.classList.add('formulario__boton');
+            const btnReset = document.createElement('BUTTON');
+            btnReset.type = 'submit';
+            btnReset.textContent = "Reset";
+            btnReset.classList.add('formulario__boton');
 
             /** Ordenamientos */
 
 
 
             /** Buscador */
-            btnBuscar.addEventListener('click', (e) => {
+            btnReset.addEventListener('click', (e) => {
+
+                e.preventDefault();
+
+                page = 1; // reiniciar paginador
+                categoriaSeleccionada = '';
+                fabricanteSeleccionada = '';
+                providerSeleccionada = '';
+                terminoValue = '';
+                buscadorFiltros.value = '';
+                selectCategoria.selectedIndex = 0;
+                selectProveedor.selectedIndex = 0;
+                selectFabricante.selectedIndex = 0;
+
+                orden = 'ASC';
+                renderizarRegistrosTabla();
+
 
                 // Leer filtros y reutilizar funcion de "paginarTodos"
                 // limpiarTabla();
@@ -434,7 +450,7 @@ import * as helpers from './helpers';
             grid.appendChild(selectCategoria);
             grid.appendChild(selectFabricante);
             grid.appendChild(selectProveedor);
-            grid.appendChild(btnBuscar);
+            grid.appendChild(btnReset);
             filtros.appendChild(grid);
             filtros.appendChild(gridDos);
             contenedorPrincipal.appendChild(filtros);
