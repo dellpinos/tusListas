@@ -16,7 +16,7 @@
             {{-- <a class="formulario__boton" href="{{ route('password.request') }}">Cambiar password</a> --}}
 
             <div class="perfil__img">
-                <img src="{{ asset('img/working.jpg') }}" alt="Imagen en construcción">
+                <img src="{{ asset('img/svg/vectorWorking.svg') }}" alt="Imagen en construcción">
 
             </div>
 
