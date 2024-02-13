@@ -43,9 +43,9 @@
                 <thead class="table__thead">
                     <tr>
                         <th scope="col" class="table__th">Dolar</th>
-                        <th scope="col" class="table__th">Código</th>
+                        <th scope="col" class="table__th table__ocultar">Código</th>
                         <th scope="col" class="table__th">Nombre</th>
-                        <th scope="col" class="table__th">Precio Costo</th>
+                        <th scope="col" class="table__th table__ocultar">Precio Costo</th>
                         <th scope="col" class="table__th">Precio Venta</th>
                         <th scope="col" class="table__th">Fecha</th>
                         <th scope="col" class="table__th">Enlace</th>

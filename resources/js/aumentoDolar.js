@@ -237,10 +237,10 @@ import Swal from 'sweetalert2';
                         const fechaUTC = new Date(Date.UTC(year, mes, dia));
 
                         const opciones = {
-                            weekday: 'long',
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
+
+                            year: '2-digit',
+                            month: '2-digit',
+                            day: '2-digit'
                         }
                         const fechaFormateada = fechaUTC.toLocaleDateString('es-AR', opciones);
 
@@ -250,13 +250,17 @@ import Swal from 'sweetalert2';
 
                         contRegistros.innerHTML += `                        
                         <tr class="table__tr">
-                        <td class="table__td">${precio.dolar}</td>
-                        <td class="table__td">${producto.codigo.toUpperCase()}</td>
-                        <td class="table__td">${producto.nombre}</td>
-                        <td class="table__td">$ ${precio.precio}</td>
-                        <td class="table__td">$ ${producto.venta} ${producto.unidad_fraccion}</td>
-                        <td class="table__td">${fechaFormateada}</td>
-                        <td class="table__td"><a class="table__accion table__accion--editar" href="/producto/producto-show/${producto.id}">Ver</a></td>
+                            <td class="table__td">${precio.dolar}</td>
+                            <td class="table__td table__ocultar">${producto.codigo.toUpperCase()}</td>
+                            <td class="table__td">${producto.nombre}</td>
+                            <td class="table__td table__ocultar">$ ${precio.precio}</td>
+                            <td class="table__td">$ ${producto.venta} ${producto.unidad_fraccion}</td>
+                            <td class="table__td">${fechaFormateada}</td>
+                            <td class="table__td">
+                                <a class="table__accion table__accion--editar" href="/producto/producto-show/${producto.id}">
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
+                            </td>
                         </tr>
                     `;
 

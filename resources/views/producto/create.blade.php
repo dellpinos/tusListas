@@ -215,7 +215,7 @@
                 <div class="formulario__campo-contenedor width-full">
                     <label for="contenido-total" class="formulario__label">Total de Unidades *</label>
                     <input type="number" id="contenido-total" name="contenido_total" placeholder="25, 3, 500"
-                        min="1" max="9999"
+                        min="1" max="9999" step="any"
                         class="formulario__campo  @error('contenido_total') borde__error @enderror"
                         value="{{ old('contenido_total') }}">
                     @error('contenido_total')

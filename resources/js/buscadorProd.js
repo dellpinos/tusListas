@@ -9,34 +9,42 @@ import * as helpers from './helpers';
         const headingPrincipal = document.querySelector('.dashboard__heading');
         const tabsIcono = document.querySelector('.dashboard__tab-icono');
 
-        /* Paginación */
         // Virtual DOM
         let productosArray = {};
         let preciosArray = {};
 
-        // pagina actual
+        /* Paginación */
+        // Página actual
         let page = 1;
 
-        // paginacion
+        // Paginación
         let paginacion = '';
+
+        // Encabezado tabla
+        let tbody = '';
 
         /* Opciones de busqueda */
         const tabTodos = document.querySelector('#dashboard__tab-todos');
         const tabProrducto = document.querySelector('#dashboard__tab-producto');
         const tabCodigo = document.querySelector('#dashboard__tab-codigo');
 
-        let tipoBusqueda = 'producto';
-
         /* Buscador */
         let contenedorInput = '';
         let inputProductoFalso = '';
         let cardProducto = '';
-        let contenedorSecundario = '';
+        let tipoBusqueda = 'producto'; // Tab Actual
 
         const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         let flag = 0; // Saber cuando se obtuvo el primer resultado de la DB
         let arrayCoincidencias = []; // Aqui se almacena el resultado de la DB
         let coincidenciasPantalla = []; // Aqui se almacena el resultado de la DB filtrado
+
+        /* Filtros y Ordenamientos */
+        let categoriaSeleccionada = '';
+        let fabricanteSeleccionada = '';
+        let providerSeleccionada = '';
+        let terminoValue = '';
+        let orden = "ASC";
 
         document.addEventListener('DOMContentLoaded', () => {
 
@@ -60,7 +68,30 @@ import * as helpers from './helpers';
 
             });
 
-            // Buscador Producto
+            // Buscador Principal / Producto
+            generarBuscador();
+
+            inputProductoFalso.addEventListener('click', function () {
+
+                generarHTML();
+            });
+
+        });
+
+        // Listeners a cada Tab
+        tabCodigo.addEventListener('click', () => {
+
+            enlaceBusquedaCodigo();
+
+        });
+
+        tabProrducto.addEventListener('click', () => {
+
+            tipoBusqueda = "producto";
+            headingPrincipal.textContent = "Buscador";
+
+            // recargar archivo
+            limpiarContenedor();
             generarBuscador();
 
             inputProductoFalso.addEventListener('click', function () {
@@ -68,12 +99,19 @@ import * as helpers from './helpers';
                 // insertar html
                 generarHTML();
             });
-
         });
 
-        tabCodigo.addEventListener('click', () => {
+        tabTodos.addEventListener('click', async () => {
 
-            enlaceBusquedaCodigo();
+            // Eliminar contenido
+            limpiarContenedor();
+
+            headingPrincipal.textContent = "Todos los productos";
+
+            // generar HTML filtros
+            await generarFiltrosHTML();
+            tbody = generarTabla();
+            await renderizarRegistrosTabla();
 
         });
 
@@ -83,9 +121,7 @@ import * as helpers from './helpers';
             headingPrincipal.textContent = "Buscar código";
 
             limpiarContenedor();
-
             generarBuscador();
-
             busquedaCodigo();
         }
 
@@ -180,22 +216,6 @@ import * as helpers from './helpers';
             }
         }
 
-        tabProrducto.addEventListener('click', () => {
-
-            tipoBusqueda = "producto";
-            headingPrincipal.textContent = "Buscador";
-
-            // recargar archivo
-            limpiarContenedor();
-            generarBuscador();
-
-            inputProductoFalso.addEventListener('click', function () {
-
-                // insertar html
-                generarHTML();
-            });
-        });
-
         function generarBuscador() {
 
             contenedorInput = document.createElement('DIV');
@@ -219,12 +239,9 @@ import * as helpers from './helpers';
 
         }
 
-        tabTodos.addEventListener('click', async () => {
 
-            // Eliminar contenido
-            limpiarContenedor();
 
-            headingPrincipal.textContent = "Todos los productos";
+        async function renderizarRegistrosTabla() {
 
             try {
 
@@ -239,7 +256,7 @@ import * as helpers from './helpers';
                 } else {
 
                     // Generar table y thead
-                    const tbody = generarTabla();
+
                     const tablaPaginacion = generarPaginacion();
                     // Renderizar productos paginados
                     recargarPaginacion(resultado, tbody, tablaPaginacion);
@@ -247,11 +264,172 @@ import * as helpers from './helpers';
             } catch (error) {
                 console.log(error);
             }
-        });
+        }
+
+        async function generarFiltrosHTML() {
+
+            // consultar DB
+            const optsFiltros = await consultarCFP();
+
+            const filtros = document.createElement('FORM');
+            filtros.classList.add('buscador-listado');
+            filtros.addEventListener('submit', (e) => {
+                e.preventDefault();
+            });
+
+            const grid = document.createElement('DIV');
+            grid.classList.add('buscador-listado__grid');
+
+            const gridDos = document.createElement('DIV');
+            gridDos.classList.add('buscador-listado__flex');
+
+            /** Filtros */
+            const selectCategoria = document.createElement('SELECT');
+            selectCategoria.classList.add('buscador-listado__dropdown');
+            selectCategoria.addEventListener('change', () => {
+
+                categoriaSeleccionada = selectCategoria.value;
+                page = 1; // reiniciar paginador
+                orden = 'ASC';
+                renderizarRegistrosTabla();
+
+            });
+
+            // Default
+            const optCategoria = document.createElement('OPTION');
+            optCategoria.textContent = "-- Seleccionar Categoria --";
+            optCategoria.selected = true;
+            optCategoria.value = '';
+
+            selectCategoria.appendChild(optCategoria);
+
+            // Cada categoria
+            optsFiltros.categorias.forEach(cat => {
+                const optCategoria = document.createElement('OPTION');
+                optCategoria.value = cat.id;
+                optCategoria.textContent = cat.nombre;
+
+                selectCategoria.appendChild(optCategoria);
+            });
+
+            const selectFabricante = document.createElement('SELECT');
+            selectFabricante.classList.add('buscador-listado__dropdown');
+            selectFabricante.addEventListener('change', () => {
+
+                fabricanteSeleccionada = selectFabricante.value;
+                page = 1; // reiniciar paginador
+                orden = 'ASC'; // reiniciar orden
+                renderizarRegistrosTabla();
+
+            });
+
+            // Default
+            const optFabricante = document.createElement('OPTION');
+            optFabricante.textContent = "-- Seleccionar Fabricante --";
+            optFabricante.selected = true;
+            optFabricante.value = '';
+
+            selectFabricante.appendChild(optFabricante);
+
+            // Cada Fabricante
+            optsFiltros.fabricantes.forEach(fab => {
+                const optFabricante = document.createElement('OPTION');
+                optFabricante.value = fab.id;
+                optFabricante.textContent = fab.nombre;
+
+                selectFabricante.appendChild(optFabricante);
+            });
+
+            const selectProveedor = document.createElement('SELECT');
+            selectProveedor.classList.add('buscador-listado__dropdown');
+            selectProveedor.addEventListener('change', () => {
+
+                providerSeleccionada = selectProveedor.value;
+                page = 1; // reiniciar paginador
+                orden = 'ASC'; // reiniciar orden
+                renderizarRegistrosTabla();
+
+            });
+
+            // Default
+            const optProveedor = document.createElement('OPTION');
+            optProveedor.textContent = "-- Seleccionar Proveedor --";
+            optProveedor.selected = true;
+            optProveedor.value = '';
+
+            selectProveedor.appendChild(optProveedor);
+
+            // Cada Proveedor
+            optsFiltros.providers.forEach(fab => {
+                const optProveedor = document.createElement('OPTION');
+                optProveedor.value = fab.id;
+                optProveedor.textContent = fab.nombre;
+
+                selectProveedor.appendChild(optProveedor);
+            });
+
+            // Input Text, Buscador
+            const buscadorFiltros = document.createElement('INPUT');
+            buscadorFiltros.classList.add('buscador-listado__input');
+            buscadorFiltros.placeholder = "Nombre del producto";
+            buscadorFiltros.type = "text";
+
+            buscadorFiltros.addEventListener('input', (e) => {
+
+                if (e.target.value.length >= 3) {
+                    page = 1; // reiniciar paginador
+                    orden = 'ASC'; // reiniciar orden
+                    terminoValue = e.target.value;
+                    renderizarRegistrosTabla();
+                } else {
+                    page = 1; // reiniciar paginador
+                    orden = 'ASC'; // reiniciar orden
+                    terminoValue = '';
+                    renderizarRegistrosTabla();
+                }
+            });
+
+            const btnReset = document.createElement('BUTTON');
+            btnReset.type = 'submit';
+            btnReset.innerHTML = '<i class="fa-solid fa-rotate"></i>';
+            btnReset.classList.add('formulario__boton', 'buscador-listado__btn-reset');
+
+            /** Btn Reset */
+            btnReset.addEventListener('click', (e) => {
+
+                e.preventDefault();
+
+                /* Reiniciar variables globales */
+                page = 1;
+                categoriaSeleccionada = '';
+                fabricanteSeleccionada = '';
+                providerSeleccionada = '';
+                terminoValue = '';
+                buscadorFiltros.value = '';
+                selectCategoria.selectedIndex = 0;
+                selectProveedor.selectedIndex = 0;
+                selectFabricante.selectedIndex = 0;
+
+                orden = 'ASC';
+                renderizarRegistrosTabla();
+
+            });
+
+            gridDos.appendChild(buscadorFiltros);
+
+            grid.appendChild(selectCategoria);
+            grid.appendChild(selectFabricante);
+            grid.appendChild(selectProveedor);
+            grid.appendChild(btnReset);
+            filtros.appendChild(grid);
+            filtros.appendChild(gridDos);
+            contenedorPrincipal.appendChild(filtros);
+        }
 
         function generarPaginacion() {
 
             const tablaPaginacion = document.createElement('DIV');
+            tablaPaginacion.id = 'tabla-buscador-paginacion';
             contenedorPrincipal.appendChild(tablaPaginacion);
 
             return tablaPaginacion;
@@ -261,13 +439,17 @@ import * as helpers from './helpers';
 
             const tabla = document.createElement('TABLE');
             tabla.classList.add('table');
+
             tabla.innerHTML = `
             <thead class="table__thead">
                 <tr>
-                    <th scope="col" class="table__th">Código</th>
-                    <th scope="col" class="table__th">Nombre</th>
-                    <th scope="col" class="table__th">Precio Costo</th>
+                    <th scope="col" class="table__th table__ocultar">Código</th>
+                    <th scope="col" class="table__th pointer" id="filtros-orden-nombre">
+                        Nombre
+                        <i class="fa-solid fa-sort"></i>
+                    </th>
                     <th scope="col" class="table__th">Precio Venta</th>
+                    <th scope="col" class="table__th table__ocultar">Categoria</th>
                     <th scope="col" class="table__th">Enlace</th>
                 </tr>
             </thead>
@@ -280,8 +462,41 @@ import * as helpers from './helpers';
 
             contenedorPrincipal.appendChild(tabla);
             contenedorPrincipal.classList.add('x-scroll');
-            return tablaBody;
 
+            document.querySelector('#filtros-orden-nombre').addEventListener('click', () => {
+                // cambiar orden
+
+                if (orden === "ASC") {
+                    orden = "DESC"
+                } else {
+                    orden = "ASC";
+                }
+                // hacer consulta y renderizar resultados
+                page = 1; // reiniciar paginador
+                renderizarRegistrosTabla();
+
+            });
+            return tablaBody;
+        }
+
+        async function consultarCFP() {
+
+            // Consultar Categorias, Fabricantes y Providers
+            try {
+                const url = '/api/buscador/consultarCFP';
+
+                const respuesta = await fetch(url, {
+                    headers: {
+                        'X-CSRF-TOKEN': tokenCSRF
+                    },
+                });
+
+                const resultado = await respuesta.json();
+                return resultado;
+
+            } catch (error) {
+                console.log(error);
+            }
         }
 
         async function paginadorTodos() {
@@ -291,6 +506,11 @@ import * as helpers from './helpers';
 
                 const datos = new FormData();
                 datos.append('page', page);
+                if (categoriaSeleccionada) datos.append('categoria', categoriaSeleccionada);
+                if (fabricanteSeleccionada) datos.append('fabricante', fabricanteSeleccionada);
+                if (providerSeleccionada) datos.append('provider', providerSeleccionada);
+                if (terminoValue) datos.append('termino', terminoValue);
+                if (orden) datos.append('orden', orden);
 
                 const respuesta = await fetch(url, {
                     method: 'POST',
@@ -301,7 +521,6 @@ import * as helpers from './helpers';
                 });
 
                 const resultado = await respuesta.json();
-
                 return resultado;
 
             } catch (error) {
@@ -321,7 +540,7 @@ import * as helpers from './helpers';
 
         function mostrarElementos(tbody, tablaPaginacion) {
 
-            limpiarTabla(tbody, tablaPaginacion);
+            limpiarTabla();
 
             productosArray.forEach(producto => { // Cada producto
 
@@ -348,10 +567,10 @@ import * as helpers from './helpers';
                         producto.venta = helpers.redondear(producto.venta);
                         tbody.innerHTML += `                        
                         <tr class="table__tr">
-                        <td class="table__td">${producto.codigo.toUpperCase()}</td>
+                        <td class="table__td table__ocultar">${producto.codigo.toUpperCase()}</td>
                         <td class="table__td">${producto.nombre}</td>
-                        <td class="table__td">$ ${precio.precio}</td>
                         <td class="table__td ${claseDescuento}">$ ${producto.venta} ${unidadFraccion}</td>
+                        <td class="table__td table__ocultar">${producto.categoria}</td>
                         <td class="table__td"><a class="table__accion table__accion--editar" href="/producto/producto-show/${producto.id}">Ver</a></td>
                         </tr>
                     `;
@@ -386,16 +605,13 @@ import * as helpers from './helpers';
                                         if (e.target.dataset.btn === 'siguiente') {
                                             // regenerar HTML
                                             page++;
-                                            const resultado = await paginadorTodos();
-                                            recargarPaginacion(resultado, tbody, tablaPaginacion);
-
+                                            renderizarRegistrosTabla();
                                             return;
 
                                         } else {
                                             // regenerar HTML
                                             page--;
-                                            const resultado = await paginadorTodos();
-                                            recargarPaginacion(resultado, tbody, tablaPaginacion);
+                                            renderizarRegistrosTabla();
                                             return;
                                         }
                                     } catch (error) {
@@ -419,25 +635,32 @@ import * as helpers from './helpers';
             }
         }
 
-        function limpiarTabla(tbody, paginacion = '') {
+        function limpiarTabla() {
+            const paginacion = document.querySelector('#tabla-buscador-paginacion');
+            tbody = document.querySelector('.table__tbody');
+
+            // Eliminar contenido tabla
             while (tbody.firstChild) {
                 tbody.removeChild(tbody.firstChild);
             }
-            if (paginacion) {
-                while (paginacion.firstChild) {
-                    paginacion.removeChild(paginacion.firstChild);
-                }
-            }
 
+            // Eliminar paginación
+            while (paginacion.firstChild) {
+                paginacion.removeChild(paginacion.firstChild);
+            }
+            if (document.querySelector('.mensaje__info')) document.querySelector('.mensaje__info').remove();
+            if (document.querySelector('.paginacion')) document.querySelector('.paginacion').remove();
         }
+
+
         function sinResultados() {
 
-            limpiarContenedor();
+            limpiarTabla();
 
             const mensajeNoResult = document.createElement('DIV');
 
             mensajeNoResult.innerHTML = `<p class="mensaje__info mb-4">
-            No hay productos, deberías crear el primero
+            No hay resultados
             </p>`;
 
             contenedorPrincipal.appendChild(mensajeNoResult);
@@ -459,7 +682,6 @@ import * as helpers from './helpers';
             inputProducto.name = 'producto-nombre';
             inputProducto.classList.add('buscador__campo', 'buscador__campo-focus');
             inputProducto.placeholder = 'Nombre del producto';
-
 
             if (inputProductoFalso.value) {
                 inputProducto.value = inputProductoFalso.value;
@@ -517,6 +739,7 @@ import * as helpers from './helpers';
                         enlaceCodigo.addEventListener('click', enlaceBusquedaCodigo);
                         enlaceCodigo.classList.add('enlace__mensaje');
 
+                        // Este mensaje se completa con un enlace
                         mensajeSinResult.textContent = `
                         No hay resultados, deberías 
                         `;
@@ -544,7 +767,7 @@ import * as helpers from './helpers';
             } catch (error) {
                 console.log(error);
             }
-            if (flag) { // aqui puedo filtrar el array en memoria
+            if (flag) { // filtrar el array en memoria
 
                 buscarCoincidenciasMemoria(e, lista, contenedorOpciones);
             }

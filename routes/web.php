@@ -104,6 +104,11 @@ Route::post('/api/buscador/producto', [APIBuscador::class, 'nombre_producto']);
 Route::post('/api/buscador/producto-codigo', [APIBuscador::class, 'codigo_producto']);
 Route::post('/api/buscador/producto-individual', [APIBuscador::class, 'producto_individual']);
 
+
+Route::get('/api/buscador/consultarCFP', [APIBuscador::class, 'consultar_CFP']);
+
+
+
 // API OwnerTools
 Route::get('/api/owner-tools/all', [APIOwnerTools::class, 'all']);
 Route::get('/api/owner-tools/name', [APIOwnerTools::class, 'name']);
