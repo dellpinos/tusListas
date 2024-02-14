@@ -93,11 +93,15 @@ https://sweetalert2.github.io/#ajax-request`),Xs(t),typeof t.title=="string"&&(t
             </thead>
             `;const O=document.createElement("TBODY");return O.classList.add("table__tbody"),M.appendChild(O),f.appendChild(M),f.classList.add("x-scroll"),document.querySelector("#filtros-orden-nombre").addEventListener("click",()=>{N==="ASC"?N="DESC":N="ASC",h=1,Y()}),O},ce=function(M,O,G){c=M.productos,v=M.precios,E=M.paginacion,re(O,G)},re=function(M,O){pe(),c.forEach(G=>{let oe=0;v.forEach(W=>{let Q="";G.unidad_fraccion&&(Q=G.unidad_fraccion);let ae="";if(W.desc_porc&&(ae="c-red"),W.id===G.precio_id){if(oe>=1)return;oe++,G.venta=Re(G.venta),M.innerHTML+=`                        
                         <tr class="table__tr">
-                        <td class="table__td table__ocultar">${G.codigo.toUpperCase()}</td>
-                        <td class="table__td">${G.nombre}</td>
-                        <td class="table__td ${ae}">$ ${G.venta} ${Q}</td>
-                        <td class="table__td table__ocultar">${G.categoria}</td>
-                        <td class="table__td"><a class="table__accion table__accion--editar" href="/producto/producto-show/${G.id}">Ver</a></td>
+                            <td class="table__td table__ocultar">${G.codigo.toUpperCase()}</td>
+                            <td class="table__td">${G.nombre}</td>
+                            <td class="table__td ${ae}">$ ${G.venta} ${Q}</td>
+                            <td class="table__td table__ocultar">${G.categoria}</td>
+                            <td class="table__td">
+                                <a class="table__accion table__accion--editar" href="/producto/producto-show/${G.id}">
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
+                            </td>
                         </tr>
                     `,E!==""&&(O.innerHTML=E,document.querySelectorAll("[data-page]").forEach(fe=>{fe.addEventListener("click",async Pe=>{h=Pe.target.dataset.page;try{const Ee=await de();ce(Ee,M,O)}catch(Ee){console.log(Ee)}})}),document.querySelectorAll("[data-btn]").forEach(fe=>{fe.addEventListener("click",async Pe=>{try{if(Pe.target.dataset.btn==="siguiente"){h++,Y();return}else{h--,Y();return}}catch(Ee){console.log(Ee)}})}))}})})},me=function(){for(f.classList.remove("x-scroll");f.firstChild;)f.removeChild(f.firstChild)},pe=function(){const M=document.querySelector("#tabla-buscador-paginacion");for(P=document.querySelector(".table__tbody");P.firstChild;)P.removeChild(P.firstChild);for(;M.firstChild;)M.removeChild(M.firstChild);document.querySelector(".mensaje__info")&&document.querySelector(".mensaje__info").remove(),document.querySelector(".paginacion")&&document.querySelector(".paginacion").remove()},be=function(){pe();const M=document.createElement("DIV");M.innerHTML=`<p class="mensaje__info mb-4">
             No hay resultados

@@ -1,7 +1,7 @@
 
 <div class="tour__contenedor">
 
-    <h3>Tour en dos minutos</h3>
+    <h3>Tour en tres minutos</h3>
     <p>Conoce TusListas en una demo de tres minutos</p>
 
     <div class="tour__contenedor-card">

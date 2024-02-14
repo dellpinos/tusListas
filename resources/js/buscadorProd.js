@@ -567,11 +567,15 @@ import * as helpers from './helpers';
                         producto.venta = helpers.redondear(producto.venta);
                         tbody.innerHTML += `                        
                         <tr class="table__tr">
-                        <td class="table__td table__ocultar">${producto.codigo.toUpperCase()}</td>
-                        <td class="table__td">${producto.nombre}</td>
-                        <td class="table__td ${claseDescuento}">$ ${producto.venta} ${unidadFraccion}</td>
-                        <td class="table__td table__ocultar">${producto.categoria}</td>
-                        <td class="table__td"><a class="table__accion table__accion--editar" href="/producto/producto-show/${producto.id}">Ver</a></td>
+                            <td class="table__td table__ocultar">${producto.codigo.toUpperCase()}</td>
+                            <td class="table__td">${producto.nombre}</td>
+                            <td class="table__td ${claseDescuento}">$ ${producto.venta} ${unidadFraccion}</td>
+                            <td class="table__td table__ocultar">${producto.categoria}</td>
+                            <td class="table__td">
+                                <a class="table__accion table__accion--editar" href="/producto/producto-show/${producto.id}">
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
+                            </td>
                         </tr>
                     `;
 
