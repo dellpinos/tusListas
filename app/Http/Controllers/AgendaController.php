@@ -13,7 +13,7 @@ class AgendaController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth', 'verified']);
+        $this->middleware(['auth', 'verified', 'empresa.asignar']);
     }
 
     public function index()

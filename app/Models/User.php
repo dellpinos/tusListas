@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Models\Empresa;
+use App\Models\BlogPost;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -49,8 +50,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
-    public function empresas()
+    public function empresa()
     {
         return $this->belongsTo(Empresa::class);
+    }
+
+    public function blog_posts()
+    {
+        return $this->hasMany(BlogPost::class);
     }
 }

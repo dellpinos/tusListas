@@ -1,0 +1,102 @@
+@use '../base/variables' as v;
+@use '../base/mixins' as m;
+
+
+.btn-slide {
+
+    &__contenedor {
+        border: 2px solid v.$blanco;
+        border-radius: 10rem;
+    }
+
+    &__btn {
+
+        display: flex;
+        position: relative;
+        color: v.$blanco;
+        border: 3px solid v.$grisOscuroAzul;
+        gap: 1rem;
+        padding: .5rem 1rem;
+        border-radius: 10rem;
+        background: linear-gradient(70deg, v.$blanco 50%, v.$grisOscuroAzul 50%);
+        background-size: 300%;
+        background-position: 100%;
+        transition: 1.5s;
+
+        @include m.tablet {
+            padding: .2rem 2rem .2rem .2rem;
+            gap: 2rem;
+        }
+
+        .btn-slide__icon {
+            transition: rotate .5s ease;
+        }
+
+        &:hover {
+            cursor: pointer;
+            background-position: 0;
+            color: v.$grisOscuroAzul;
+
+            .btn-slide__icon {
+                transition: rotate .5s ease;
+                rotate: 360deg;
+            }
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(70deg, v.$grisOscuroAzul 50%, transparent 50%);
+            border-radius: 10rem;
+            z-index: -1;
+            background-size: 300%;
+            background-position: 100%;
+            transition: 1.5s;
+
+            .btn-slide__icon {
+                transition: rotate .5s ease;
+            }
+
+            &:hover {
+                background-position: 0;
+                color: v.$grisOscuroAzul;
+
+                .btn-slide__icon {
+                    transition: rotate .5s ease;
+                    rotate: 360deg;
+                }
+            }
+        }
+    }
+
+    &__icon {
+
+        font-size: 1.5rem;
+        border-radius: 50%;
+        display: none!important;
+
+        @include m.tablet {
+            font-size: 3rem;
+            display: block!important;
+        }
+
+    }
+
+    &__txt {
+        display: flex;
+        align-items: center;
+        text-transform: uppercase;
+        font-weight: v.$bold;
+        font-size: 1.2rem;
+        letter-spacing: 1.5px;
+
+        @include m.tablet {
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+        }
+    }
+}

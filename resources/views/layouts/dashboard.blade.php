@@ -30,7 +30,7 @@
 <body class=" bg-dashboard">
     <header class="header">
         <div class="header__contenedor">
-            <a class="header__contenedor-nombre" href="{{ route('buscador') }}">
+            <a class="header__contenedor-nombre" href="{{ route('home') }}">
                 <img src="{{ asset('img/LogoSinFondo.png') }}" class="header__logo" alt="Logo Tus Listas">
                 <h1 class=" header__nombre">Tus Listas - {{ session('empresa')->name }}</h1>
             </a>
@@ -74,7 +74,7 @@
 
             <nav class=" sidebar__nav">
                 <a href="{{ route('buscador') }}" id="sidebar-buscador"
-                    class="sidebar__enlace @if (request()->path() === '/') activo @endif">
+                    class="sidebar__enlace @if (request()->path() === 'buscador') activo @endif">
                     <i class="fa-solid fa-magnifying-glass sidebar__icono"></i>
                     <p class="sidebar__texto-icono">Buscador</p>
                 </a>

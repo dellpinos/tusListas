@@ -1,0 +1,98 @@
+@use '../base/variables' as v;
+@use '../base/mixins' as m;
+
+
+.developer {
+
+    &__contenedor {
+        text-align: center;
+        padding: 3rem 2rem;
+
+
+        background-image:
+            url('/public/img/svg/github.svg');
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 150%;
+        
+        h3 {
+            font-size: 2.8rem;
+            
+            @include m.tablet {
+                font-size: 5rem;
+                
+            }
+        }
+        
+        @include m.tablet {
+            padding: 6rem 20rem 20rem 20rem;
+            background-size: 72rem;
+            background-position: 100% 20%;
+
+        }
+
+    }
+
+    &__name {
+        font-size: 1.8rem;
+
+        span {
+            font-weight: v.$bold;
+        }
+    }
+
+    &__contenedor-card {
+
+
+        display: flex;
+        align-items: center;
+        
+        @include m.tablet {
+            height: 50rem;
+            
+        }
+
+    }
+
+    &__card {
+
+        width: 100%;
+        
+        @include m.tablet {
+            width: 90%;
+            
+        }
+
+        p {
+            text-shadow: 0px 0px 3px v.$blanco;
+            border-radius: 3rem;
+            background-image: linear-gradient(to right, rgba(v.$blanco, .1), rgba(v.$azul, .4)),;
+            text-align: start;
+            font-size: 1.4rem;
+            line-height: 2.2;
+            padding: 4rem 1.5rem;
+
+            @include m.tablet {
+                font-size: 2rem;
+            }
+
+        }
+
+    }
+
+    &__links {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        margin-top: 4rem;
+
+        a {
+            @include m.boton(v.$azul, v.$blanco);
+            border-radius: .5rem;
+            
+            @include m.tablet {
+                width: 100%;
+            }
+        }
+    }
+}

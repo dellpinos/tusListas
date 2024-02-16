@@ -5,28 +5,75 @@
 .footer {
 
     &__contenedor {
-        background-color: v.$grisBlanco;
+        display: flex;
+        flex-direction: column;
+        gap: 6rem;
+        background-color: v.$grisOscuroAzul;
         color: v.$blanco;
-        font-weight: v.$bold;
-        margin: 10rem 0 0 0;
         text-align: center;
-        padding: 4rem;
         font-size: 1.4rem;
-        text-transform: uppercase;
-        
-        line-height: 3rem;
+        padding: 2rem;
+        height: auto;
         
         @include m.phone {
             font-size: 1.8rem;
         }
         @include m.tablet {
-            line-height: 0;
+
         }
 
     }
 
+    &__grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2.5rem;
+
+
+        @include m.tablet {
+            display: flex;
+            justify-content: space-around;
+            gap: 0;
+        }
+
+        a {
+            text-align: start;
+            width: 100%;
+            border-left: 1px solid v.$blanco;
+            padding-left: 2rem;
+            color: v.$blanco;
+            transition: color .3s ease, border-color .3s ease;
+            border-color: v.$blanco;
+            
+            &:hover {
+                transition: color .3s ease, border-color .3s ease;
+                
+                border-color: v.$azul;
+                color: v.$azul;
+            }
+        }
+    }
+
+
     &__nombre {
-        text-transform: none;
+
+        color: v.$blanco;
+        font-size: 1.2rem;
+
+        text-transform: uppercase;
+        letter-spacing: 5px;
+        line-height: 2;
+        
+        span {
+            font-weight: v.$bold;
+        }
+        
+        @include m.tablet {
+            font-size: 1.8rem;
+            line-height: inherit;
+            margin-top: 2rem;
+            
+        }
 
     }
 }

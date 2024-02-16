@@ -26,7 +26,7 @@ import Swal from 'sweetalert2';
 
             const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-            if (respuesta.tutorial_lvl === 0 && window.location.pathname === '/') {
+            if (respuesta.tutorial_lvl === 0 && window.location.pathname === '/buscador') {
                 // Iniciar tutorial
 
                 Swal.fire({
@@ -408,7 +408,7 @@ import Swal from 'sweetalert2';
 
                 iconoSidebar('buscador');
 
-                if (window.location.pathname === '/') {
+                if (window.location.pathname === '/buscador') {
 
                     Swal.fire({
 

@@ -1,20 +1,22 @@
 @extends('layouts.app')
 
-@section('titulo')
-    Debes confirmar tu email
-@endsection
-
 @section('contenido')
+    <div class="home__contenedor-principal">
 
-<div class="formulario__contenedor-md">
+        <h2 class="home__heading">
+            Cambiar Password
+        </h2>
 
-    <p class="mensaje__info mensaje__warning">Te hemos enviado un correo electronico para que confirmes tu casilla de correo, no olvides revisar el spam.</p>
+        <div class="formulario__contenedor-md">
 
-</div>
+            <p class="mensaje__info mensaje__warning">Te hemos enviado un correo electronico para que confirmes tu casilla de
+                correo, no olvides revisar el spam.</p>
 
-<div class="formulario__opciones-contenedor mb-10">
-    <a href="{{ route('login') }}" class="formulario__opciones-enlace">Ya tienes una cuenta?</a>
-</div>
+        </div>
 
+        <div class="formulario__opciones-contenedor mb-10">
+            <a href="{{ route('login') }}" class="formulario__opciones-enlace">Ya tienes una cuenta?</a>
+        </div>
+
+    </div>
 @endsection
-

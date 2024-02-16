@@ -16,6 +16,9 @@
     width: 100%;
     display: flex;
 }
+.scroll-smooth {
+    scroll-behavior: smooth;
+}
 .no-scroll {
     overflow-y: hidden;
 }
@@ -41,6 +44,10 @@
 }
 .height-full {
     height: 100%;
+}
+.height-cero {
+    max-height: 0;
+    opacity: 0;
 }
 .text-right {
     text-align: end;
