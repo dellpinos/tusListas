@@ -12,7 +12,7 @@
 @section('contenido')
     <div class="formulario__contenedor-boton">
         <a href="{{ route('buscador') }}" class="categoria__boton">&laquo; Volver</a>
-        <a href="#" class="categoria__boton"> Estadísticas <i class="owner__icono fa-solid fa-chart-pie"></i></a>
+        <a href="{{ route('estadisticas') }}" class="categoria__boton"> Estadísticas <i class="owner__icono fa-solid fa-chart-pie"></i></a>
     </div>
 
     <div class="owner__contenedor-sm">

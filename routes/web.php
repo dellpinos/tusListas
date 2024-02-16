@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\APIStats;
 use App\Http\Controllers\APICodigo;
 use App\Http\Controllers\APIAumentos;
 use App\Http\Controllers\APIBuscador;
@@ -45,6 +46,7 @@ Route::get('/buscador', [ProductoController::class, 'index'])->name('buscador');
 
 // Empresa
 Route::get('/owner-tools', [EmpresaController::class, 'index'])->name('owner-tools');
+Route::get('/owner-tools/stats', [EmpresaController::class, 'estadisticas'])->name('estadisticas');
 
 
 Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil');
@@ -103,11 +105,7 @@ Route::post('/api/buscador/todos', [APIBuscador::class, 'index']);
 Route::post('/api/buscador/producto', [APIBuscador::class, 'nombre_producto']);
 Route::post('/api/buscador/producto-codigo', [APIBuscador::class, 'codigo_producto']);
 Route::post('/api/buscador/producto-individual', [APIBuscador::class, 'producto_individual']);
-
-
 Route::get('/api/buscador/consultarCFP', [APIBuscador::class, 'consultar_CFP']);
-
-
 
 // API OwnerTools
 Route::get('/api/owner-tools/all', [APIOwnerTools::class, 'all']);
@@ -115,6 +113,10 @@ Route::get('/api/owner-tools/name', [APIOwnerTools::class, 'name']);
 Route::post('/api/owner-tools/destroy', [APIOwnerTools::class, 'destroy']);
 Route::post('/api/owner-tools/update', [APIOwnerTools::class, 'update']);
 Route::post('/api/owner-tools/send', [APIOwnerTools::class, 'send']);
+
+// API Stats
+Route::get('/api/stats/buscados', [APIStats::class, 'buscados']);
+Route::get('/api/stats/stock', [APIStats::class, 'stock']);
 
 // API Calculos
 Route::post('/api/calculo/ganancia', [APICalculos::class, 'calculo_ganancia']);

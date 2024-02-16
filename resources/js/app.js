@@ -16,5 +16,6 @@ import './menuMovil';
 import './tutorial';
 import './ayuda';
 import './home';
+import './chart';
 
 

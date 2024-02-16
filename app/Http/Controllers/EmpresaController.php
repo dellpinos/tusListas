@@ -26,4 +26,10 @@ class EmpresaController extends Controller
             'contador_users' => $users
         ]);
     }
+
+    public function estadisticas() {
+
+        return view('empresa.estadisticas');
+
+    }
 }
