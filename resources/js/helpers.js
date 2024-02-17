@@ -8,3 +8,11 @@ export function firstCap(string) {
 export function redondear(numero) {
     return Math.ceil(numero / 10) * 10;
 }
+
+/* Formatear número como dinero */
+export const formatearDinero = cantidad => {
+    return cantidad.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    })
+}

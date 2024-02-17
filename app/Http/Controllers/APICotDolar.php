@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dolar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -22,6 +23,10 @@ class APICotDolar extends Controller
 
         $data = $respuesta->json();
 
-        dd($data[count($data) - 1]);
+        Dolar::create([
+            "valor" => $data[count($data) - 1]["v"],
+            "fecha" => $data[count($data) - 1]["d"]
+        ]);
+
     }
 }

@@ -1,4 +1,5 @@
 import Chart from 'chart.js/auto';
+import * as helpers from './helpers';
 
 ( function() {
 
@@ -15,6 +16,8 @@ import Chart from 'chart.js/auto';
                 const masStock = await stock();
 
                 graficoBuscados(masBuscados.buscados);
+                // document.querySelector('#stats-total-invertido').textContent = helpers.formatearDinero(masBuscados.total_invertido);
+            
                 graficoStock(masStock.stock);
 
 
