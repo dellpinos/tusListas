@@ -53,6 +53,9 @@
 
         <div style="width: 800px;"><canvas id="stats-buscados"></canvas></div>
         <div style="width: 800px;"><canvas id="stats-stock"></canvas></div>
+        <div style="width: 800px;"><canvas id="stats-categorias"></canvas></div>
+        <div style="width: 800px;"><canvas id="stats-providers"></canvas></div>
+        <div style="width: 800px;"><canvas id="stats-fabricantes"></canvas></div>
 
     </div>
 @endsection()

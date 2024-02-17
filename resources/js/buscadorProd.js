@@ -947,6 +947,16 @@ import * as helpers from './helpers';
                             <div class="producto__contenedor-precio">
                                 <p class="producto__card-precio">$ ${resultado.producto.venta}<span class="font-bold"> ${resultado.producto.unidad_fraccion}</span></p>
                                 <div class="producto__btn-opts">
+
+                                    <a href="/producto/producto-edit/${resultado.producto.id}" class="producto__btn-venta">
+                                        Venta
+                                        <p>1</p>
+                                        <div class="producto__btns-arrows">
+                                        
+                                            <i class="fa-solid fa-square-caret-up"></i>
+                                            <i class="fa-solid fa-square-caret-down"></i>
+                                        </div>
+                                    </a>
                                     <a href="/producto/producto-edit/${resultado.producto.id}" class="producto__card-contenedor-boton producto__boton producto__boton--verde">Editar</a>
                                 </div>
                             </div>

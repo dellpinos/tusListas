@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dolar;
+use App\Models\Compra;
 use App\Models\Pendiente;
 use Illuminate\Http\Request;
 
@@ -39,6 +41,17 @@ class APIPendientes extends Controller
 
         ]);
 
+        // Dolar Actual
+        $dolar_hoy = Dolar::orderBy('fecha', 'DESC')->first();
+        $monto_compra = (intval($request->precio) * $request->cantidad) / intval($dolar_hoy->valor);
+
+        // Almaceno compra
+        $compra = Compra::create([
+            'monto_dolar' => $monto_compra,
+            'empresa_id' => session('empresa')->id,
+        ]);
+
+        // Almaceno Pendiente
         $pendiente = Pendiente::create([
             'nombre' => $request->nombre,
             'precio' => $request->precio,

@@ -19,6 +19,9 @@ import * as helpers from './helpers';
                 // document.querySelector('#stats-total-invertido').textContent = helpers.formatearDinero(masBuscados.total_invertido);
             
                 graficoStock(masStock.stock);
+                graficoCategorias(masBuscados.categorias_datos);
+                graficoProviders(masBuscados.providers_datos);
+                graficoFabricantes(masBuscados.fabricantes_datos);
 
 
             }
@@ -65,6 +68,80 @@ import * as helpers from './helpers';
                 }
             }
 
+            ///
+            // const config = {
+            //     type: 'pie',
+            //     data: data,
+            //     options: {
+            //       responsive: true,
+            //       plugins: {
+            //         legend: {
+            //           position: 'top',
+            //         },
+            //         title: {
+            //           display: true,
+            //           text: 'Chart.js Pie Chart'
+            //         }
+            //       }
+            //     },
+            //   };
+            ///
+
+            function graficoCategorias(resultadoCategoria) {
+                new Chart(
+                  document.getElementById('stats-categorias'),
+                  {
+                    type: 'pie',
+                    data: {
+                      labels: resultadoCategoria.map(producto => producto.nombre),
+                      datasets: [
+                        {
+                          label: 'Categorias',
+                          data: resultadoCategoria.map(producto => producto.cantidad)
+                        }
+                      ]
+                    }
+                  }
+                );
+            }
+
+            function graficoProviders(resultadoProvider) {
+                new Chart(
+                  document.getElementById('stats-providers'),
+                  {
+                    type: 'pie',
+                    data: {
+                      labels: resultadoProvider.map(producto => producto.nombre),
+                      datasets: [
+                        {
+                          label: 'Providers',
+                          data: resultadoProvider.map(producto => producto.cantidad)
+                        }
+                      ]
+                    }
+                  }
+                );
+            }
+
+            function graficoFabricantes(resultadoFabricante) {
+                new Chart(
+                  document.getElementById('stats-fabricantes'),
+                  {
+                    type: 'pie',
+                    data: {
+                      labels: resultadoFabricante.map(producto => producto.nombre),
+                      datasets: [
+                        {
+                          label: 'Fabricantes',
+                          data: resultadoFabricante.map(producto => producto.cantidad)
+                        }
+                      ]
+                    }
+                  }
+                );
+            }
+
+
             function graficoStock(masStock) {
                 new Chart(
                   document.getElementById('stats-stock'),
@@ -81,7 +158,6 @@ import * as helpers from './helpers';
                     }
                   }
                 );
-
             }
             
 

@@ -10,7 +10,7 @@
 @endsection
 
 @section('contenido')
-<p class="mensaje__info">Dolar aplicado a esta mercaderia: U$S <span class="ingreso__numero">{{intval($dolar)}}</span></p>
+<p class="mensaje__info">Dolar aplicado a esta mercaderia: U$S <span class="ingreso__numero">{{ number_format($dolar_hoy->valor, 0, ',', '.') }}</span></p>
     <div class="ingreso__contenedor">
 
         <h3>Ingreso de Productos</h3>

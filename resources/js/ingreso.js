@@ -70,14 +70,11 @@ import * as helpers from './helpers';
                     cantidad.classList.remove('b-red', 'b-green');
                 }
 
-
                 if(flagIVA) {
-
                     objV.precio = Math.round(objV.precio / 1.21);
 
                 }
                 
-                console.log(objV.precio);
                 // Almacenar informacion
                 const resultado = await almacenarDatos(objV);
 
