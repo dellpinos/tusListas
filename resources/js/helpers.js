@@ -16,3 +16,17 @@ export const formatearDinero = cantidad => {
         currency: 'USD'
     })
 }
+
+export const formatearDineroSinDecimales = cantidad => {
+
+    let resultado = Number(cantidad);
+
+    resultado = resultado.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: 0,
+        useGrouping: true
+    })
+    // utiliza punto para reemplazar la coma
+    return resultado.replace(',', '.');
+}

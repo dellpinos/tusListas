@@ -125,34 +125,49 @@
         &--oferta {
             color: v.$rojo;
         }
+
+
     }
 
     &__btn-venta {
         display: flex;
         align-items: center;
-        gap: 2rem;
         color: v.$blanco;
-        background-color: v.$azul;
-        font-size: 1.6rem;
-        padding: 0 0 0 3rem;
+        background-color: v.$verde;
+        font-size: 1.8rem;
         font-weight: v.$bold;
-
+        text-transform: uppercase;
         margin: 2rem;
-        transition: background-color .5s ease;
-
-        &:hover {
-            background-color: darken(v.$azul, 10%);
-        }
-
-
         border-radius: .5rem;
+
+        button {
+            background-color: inherit;
+            border: none;
+            font-size: inherit;
+            text-transform: inherit;
+            font-weight: inherit;
+
+        }
 
         p {
             font-size: 2.5rem;
         }
 
-
-
+    }
+    &__numero {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+        color: v.$blanco;
+        height: 100%;
+        padding: 0 0 0 3rem;
+        border-radius: .5rem;
+        transition: background-color .5s ease;
+        min-width: 17rem;
+        &:hover {
+            background-color: darken(v.$verde, 10%);
+            cursor: pointer;
+        }
     }
 
     &__btns-arrows {
@@ -164,6 +179,10 @@
             border: 1px solid rgba(v.$blanco, .7);
             padding: .5rem;
             font-size: 2rem;
+            &:hover {
+                color: v.$naranja;
+                cursor: pointer;
+            }
         }
         
         i:nth-child(1) {
