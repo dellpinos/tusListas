@@ -25,8 +25,8 @@ class ProductoController extends Controller
     {
 
         // prueba consulta dolar
-        // $prueba = new APICotDolar;
-        // $prueba->consultaDolar();
+        $prueba = new APICotDolar;
+        $prueba->consultaDolar();
 
         return view('producto.buscador');
     }

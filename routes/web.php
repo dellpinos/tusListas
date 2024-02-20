@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\APIStats;
 use App\Http\Controllers\APICodigo;
+use App\Http\Controllers\APIVentas;
 use App\Http\Controllers\APIAumentos;
 use App\Http\Controllers\APIBuscador;
 use App\Http\Controllers\APICalculos;
@@ -160,3 +161,6 @@ Route::post('/api/pendientes/destroy', [APIPendientes::class, 'destroy']);
 Route::get('/api/tutorial/consulta', [APITutorial::class, 'consulta']);
 Route::post('/api/tutorial/modificar', [APITutorial::class, 'modificar']);
 Route::post('/api/tutorial/set-lvl', [APITutorial::class, 'set_lvl']);
+
+// API Ventas
+Route::post('/api/ventas/create', [APIVentas::class, 'nueva_venta']);

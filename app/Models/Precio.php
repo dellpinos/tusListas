@@ -38,8 +38,13 @@ class Precio extends Model
     {
         return $this->belongsTo(Provider::class);
     }
-    public function productos()
+    // Debo revisar todas estas relaciones, esta tuve que corregirla (estaba invertida)
+    public function producto()
     {
-        return $this->belongsTo(Producto::class);
+        return $this->hasMany(Producto::class);
     }
+    // public function productos()
+    // {
+    //     return $this->belongsTo(Producto::class);
+    // }
 }

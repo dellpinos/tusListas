@@ -20,17 +20,6 @@ class APIStats extends Controller
         $precios_todos = Precio::where('empresa_id', session('empresa')->id)->get();
         $total_invertido = 0;
 
-        // $categorias = [];
-        // foreach($categorias as $categoria) {
-
-        //     if($producto->categoria_id)
-
-        // }
-        // $categoria = [
-        //     'nombre' => '',
-        //     'cantidad' => 0
-        // ];
-
         $cantidad_por_categoria = [];
         $categorias_datos = [];
         $cantidad_por_provider = [];
