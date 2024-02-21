@@ -95,7 +95,8 @@ class APIStats extends Controller
 
     // Puedo unir todas las consultas en un solo metodo, las stats siempre se van a cargar todas juntas
 
-    public function stock() {
+    public function stock()
+    {
         $stock = Producto::orderBy('stock', 'DESC')->where('empresa_id', session('empresa')->id)->limit(10)->get();
 
         

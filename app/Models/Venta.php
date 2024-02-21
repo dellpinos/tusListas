@@ -12,7 +12,8 @@ class Venta extends Model
     protected $fillable = [
         'monto_dolar',
         'empresa_id',
-        'producto_id'
+        'producto_id',
+        'monto'
     ];
 
     public function empresas()

@@ -9,35 +9,52 @@ use Illuminate\Http\Request;
 
 class APIVentas extends Controller
 {
+    public function index()
+    {
+        $ventas = Venta::all();
+
+        echo json_encode([
+            'ventas' => $ventas
+        ]);
+    }
     public function nueva_venta(Request $request)
     {
-
-        // estoy almacenando el precio de costo, debo almacenar la ganancia
 
         // Dolar Actual
         $dolar_hoy = Dolar::orderBy('fecha', 'DESC')->first();
         $producto = Producto::find($request->id);
-
+        
+        // Venta sin descuento
+        $calculo_ganancia = 0;
+        $total = 0;
+        $total_dolar = 0;
         $ganancia = 1;
-        if($producto->ganancia_tipo === 'provider') {
+        
+        // Tipo de ganancia
+        if ($producto->ganancia_tipo === 'provider') {
             $ganancia = $producto->provider->ganancia;
-
-        } else if($producto->ganancia_tipo === 'categoria') {
+        } else if ($producto->ganancia_tipo === 'categoria') {
             $ganancia = $producto->categoria->ganancia;
-
-        } else if($producto->ganancia_tipo === 'producto') {
+        } else if ($producto->ganancia_tipo === 'producto') {
             $ganancia = $producto->ganancia_prod;
         }
 
-        $calculo_ganancia = (($producto->precio->precio * 1.21) * $ganancia) - ($producto->precio->precio * 1.21);
-
+        $venta = ($producto->precio->precio * 1.21) * $ganancia;
+        
         // Calcular ingreso en dolares
         if (!$producto->precio->desc_porc) {
             // No tiene descuento
-            $total_dolar = ($calculo_ganancia * $request->cantidad_vendida) / $dolar_hoy->valor;
+            $calculo_ganancia = $venta - ($producto->precio->precio * 1.21);
+            $total = $calculo_ganancia * $request->cantidad_vendida;
+            $total_dolar = $total / $dolar_hoy->valor;
+
         } else {
-            // Tiene descuento
-            $total_dolar = (($calculo_ganancia * ($producto->precio->desc_porc / 100)) * $request->cantidad_vendida) / $dolar_hoy->valor;
+            // Tiene descuento - Aplicar descuento
+            $venta_descuento = $venta - ($venta * ($producto->precio->desc_porc / 100));
+            $calculo_ganancia = $venta_descuento - ($producto->precio->precio * 1.21);
+            $total = $calculo_ganancia * $request->cantidad_vendida;
+            $total_dolar = $total / $dolar_hoy->valor;
+            
         }
 
         // No se resta el stock de productos fraccionados
@@ -50,6 +67,7 @@ class APIVentas extends Controller
         $respuesta = Venta::create([
             'empresa_id' => session('empresa')->id,
             'producto_id' => $request->id,
+            'monto' => $total,
             'monto_dolar' => $total_dolar
         ]);
 

@@ -68,6 +68,56 @@ import * as helpers from './helpers';
                 }
             }
 
+            consulta();
+            async function consulta () {
+                const ventasTodas = await ventas();
+                console.log(ventasTodas);
+    
+                const comprasTodas = await compras();
+                console.log(comprasTodas);
+                
+            }
+
+            async function ventas() {
+
+                // Consultar Categorias, Fabricantes y Providers
+                try {
+                    const url = '/api/ventas/all';
+    
+                    const respuesta = await fetch(url, {
+                        headers: {
+                            'X-CSRF-TOKEN': tokenCSRF
+                        },
+                    });
+    
+                    const resultado = await respuesta.json();
+                    return resultado;
+    
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
+            async function compras() {
+
+                // Consultar Categorias, Fabricantes y Providers
+                try {
+                    const url = '/api/compras/all';
+    
+                    const respuesta = await fetch(url, {
+                        headers: {
+                            'X-CSRF-TOKEN': tokenCSRF
+                        },
+                    });
+    
+                    const resultado = await respuesta.json();
+                    return resultado;
+    
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
             ///
             // const config = {
             //     type: 'pie',

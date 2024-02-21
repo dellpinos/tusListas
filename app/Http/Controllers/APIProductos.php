@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dolar;
+use App\Models\Compra;
 use App\Models\Precio;
 use App\Models\Producto;
 use App\Models\Fabricante;
@@ -29,7 +31,7 @@ class APIProductos extends Controller
     {
         $id = filter_var($request->id, FILTER_VALIDATE_INT);
 
-        if(!$id) {
+        if (!$id) {
             echo json_encode("Algo salió mal :( ");
             return;
         }
@@ -140,20 +142,25 @@ class APIProductos extends Controller
         $precio->precio = $request->precio;
         $precio->desc_porc = $request->descuento;
         $precio->desc_duracion = $request->semanas;
-        
-        if(!is_null($request->descuento)) {
+
+        if (!is_null($request->descuento)) {
             $precio->increment('desc_acu');
         }
 
-        if(!is_null($request->cantidad)) {
+        if (!is_null($request->cantidad)) {
             $producto->stock += $request->cantidad;
         }
-        
+
         $resultado = $producto->save();
-        if($resultado) {
+
+        // Almacenar compra
+        $compra = new APICompras;
+        $compra->nueva_compra($request);
+
+        if ($resultado) {
             $respuesta = $precio->save();
 
-            if($respuesta) {
+            if ($respuesta) {
                 echo json_encode($respuesta);
             }
         } else {

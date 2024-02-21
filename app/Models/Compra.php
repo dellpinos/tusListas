@@ -11,7 +11,8 @@ class Compra extends Model
 
     protected $fillable = [
         'monto_dolar',
-        'empresa_id'
+        'empresa_id',
+        'monto'
     ];
 
     public function empresas()

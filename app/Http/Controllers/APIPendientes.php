@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dolar;
-use App\Models\Compra;
 use App\Models\Pendiente;
 use Illuminate\Http\Request;
 
@@ -20,14 +18,12 @@ class APIPendientes extends Controller
         $pendiente = Pendiente::orderBy('created_at', 'asc')->where('empresa_id', session('empresa')->id)->first();
 
         echo json_encode($pendiente);
-
     }
     public function count()
     {
         $pendientes = Pendiente::where('empresa_id', session('empresa')->id)->count();
 
         echo json_encode($pendientes);
-
     }
     public function create(Request $request)
     {
@@ -41,15 +37,10 @@ class APIPendientes extends Controller
 
         ]);
 
-        // Dolar Actual
-        $dolar_hoy = Dolar::orderBy('fecha', 'DESC')->first();
-        $monto_compra = (intval($request->precio) * $request->cantidad) / intval($dolar_hoy->valor);
+        // Almacenar Compra
+        $compra = new APICompras;
+        $compra->nueva_compra($request);
 
-        // Almaceno compra
-        $compra = Compra::create([
-            'monto_dolar' => $monto_compra,
-            'empresa_id' => session('empresa')->id,
-        ]);
 
         // Almaceno Pendiente
         $pendiente = Pendiente::create([
@@ -68,7 +59,7 @@ class APIPendientes extends Controller
 
         $id = filter_var($request->id, FILTER_VALIDATE_INT);
 
-        if(!$id) {
+        if (!$id) {
             echo json_encode("Algo salió mal :( ");
             return;
         }
@@ -77,6 +68,5 @@ class APIPendientes extends Controller
         $resultado = $pendiente->delete();
 
         echo json_encode($resultado);
-
     }
 }
