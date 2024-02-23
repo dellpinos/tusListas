@@ -12,8 +12,6 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-// pueba consulta dolar
-// use App\Http\Controllers\APICotDolar; 
 
 class ProductoController extends Controller
 {

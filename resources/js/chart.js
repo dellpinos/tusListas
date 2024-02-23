@@ -7,6 +7,7 @@ import * as helpers from './helpers';
         if(document.querySelector("#contenedor-stats")) {
 
             const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const gananciaMesActual = document.querySelector("#stats-ganancia-mes-actual");
 
             cargarGraficos();
 
@@ -22,6 +23,7 @@ import * as helpers from './helpers';
                 graficoCategorias(masBuscados.categorias_datos);
                 graficoProviders(masBuscados.providers_datos);
                 graficoFabricantes(masBuscados.fabricantes_datos);
+
 
 
             }
@@ -68,85 +70,24 @@ import * as helpers from './helpers';
                 }
             }
 
-            consulta();
-            async function consulta () {
-                const ventasTodas = await ventas();
-                console.log(ventasTodas);
-    
-                const comprasTodas = await compras();
-                console.log(comprasTodas);
-                
-            }
 
-            async function ventas() {
 
-                // Consultar Categorias, Fabricantes y Providers
-                try {
-                    const url = '/api/ventas/all';
-    
-                    const respuesta = await fetch(url, {
-                        headers: {
-                            'X-CSRF-TOKEN': tokenCSRF
-                        },
-                    });
-    
-                    const resultado = await respuesta.json();
-                    return resultado;
-    
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-
-            async function compras() {
-
-                // Consultar Categorias, Fabricantes y Providers
-                try {
-                    const url = '/api/compras/all';
-    
-                    const respuesta = await fetch(url, {
-                        headers: {
-                            'X-CSRF-TOKEN': tokenCSRF
-                        },
-                    });
-    
-                    const resultado = await respuesta.json();
-                    return resultado;
-    
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-
-            ///
-            // const config = {
-            //     type: 'pie',
-            //     data: data,
-            //     options: {
-            //       responsive: true,
-            //       plugins: {
-            //         legend: {
-            //           position: 'top',
-            //         },
-            //         title: {
-            //           display: true,
-            //           text: 'Chart.js Pie Chart'
-            //         }
-            //       }
-            //     },
-            //   };
-            ///
 
             function graficoCategorias(resultadoCategoria) {
                 new Chart(
                   document.getElementById('stats-categorias'),
                   {
+                    options: {
+                        plugins: {
+                            legend: false
+                        }
+                    },
                     type: 'pie',
                     data: {
                       labels: resultadoCategoria.map(producto => producto.nombre),
                       datasets: [
                         {
-                          label: 'Categorias',
+                          label: 'Productos',
                           data: resultadoCategoria.map(producto => producto.cantidad)
                         }
                       ]
@@ -159,12 +100,17 @@ import * as helpers from './helpers';
                 new Chart(
                   document.getElementById('stats-providers'),
                   {
+                    options: {
+                        plugins: {
+                            legend: false
+                        }
+                    },
                     type: 'pie',
                     data: {
                       labels: resultadoProvider.map(producto => producto.nombre),
                       datasets: [
                         {
-                          label: 'Providers',
+                          label: 'Productos',
                           data: resultadoProvider.map(producto => producto.cantidad)
                         }
                       ]
@@ -177,12 +123,17 @@ import * as helpers from './helpers';
                 new Chart(
                   document.getElementById('stats-fabricantes'),
                   {
+                    options: {
+                        plugins: {
+                            legend: false
+                        }
+                    },
                     type: 'pie',
                     data: {
                       labels: resultadoFabricante.map(producto => producto.nombre),
                       datasets: [
                         {
-                          label: 'Fabricantes',
+                          label: 'Productos',
                           data: resultadoFabricante.map(producto => producto.cantidad)
                         }
                       ]
@@ -228,6 +179,109 @@ import * as helpers from './helpers';
                   }
                 );
 
+            }
+            
+
+            function graficoVentas(ventas) {
+
+                new Chart(
+                  document.getElementById('stats-ventas'),
+                  {
+
+                    type: 'line',
+                    data: {
+                        labels: ventas.map(venta => venta.mes),
+                        datasets: [{
+                          label: 'Ventas Anuales',
+                          data: ventas.map(venta => venta.ganancia),
+                          fill: false,
+                          borderColor: 'rgb(75, 192, 192)',
+                          tension: 0.1
+                        }]
+
+                    }
+                  }
+                );
+            }
+
+            function graficoCompras(compras) {
+
+                console.log(compras);
+
+                new Chart(
+                  document.getElementById('stats-compras'),
+                  {
+
+                    type: 'line',
+                    data: {
+                        labels: compras.map(compra => compra.mes),
+                        datasets: [{
+                          label: 'Compras Anuales',
+                          data: compras.map(compra => compra.gasto),
+                          fill: false,
+                          borderColor: 'rgb(75, 192, 192)',
+                          tension: 0.1
+                        }]
+
+                    }
+                  }
+                );
+            }
+
+
+
+
+            consulta();
+            async function consulta () {
+                const ventasTodas = await ventas();
+                graficoVentas(ventasTodas);
+                gananciaMesActual.textContent = "$ " + helpers.formatearDinero(ventasTodas[ventasTodas.length - 1].ganancia);
+
+    
+                const comprasTodas = await compras();
+                graficoCompras(comprasTodas);
+
+                
+            }
+
+            async function ventas() {
+
+                // Consultar Categorias, Fabricantes y Providers
+                try {
+                    const url = '/api/ventas/all';
+    
+                    const respuesta = await fetch(url, {
+                        headers: {
+                            'X-CSRF-TOKEN': tokenCSRF
+                        },
+                    });
+    
+                    const resultado = await respuesta.json();
+                    return resultado;
+    
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
+            async function compras() {
+
+                // Consultar Categorias, Fabricantes y Providers
+                try {
+                    const url = '/api/compras/all';
+    
+                    const respuesta = await fetch(url, {
+                        headers: {
+                            'X-CSRF-TOKEN': tokenCSRF
+                        },
+                    });
+    
+                    const resultado = await respuesta.json();
+                    return resultado;
+    
+                } catch (error) {
+                    console.log(error);
+                }
             }
 
 

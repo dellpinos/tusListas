@@ -10,6 +10,8 @@
 @endsection
 
 @section('contenido')
+
+
     <div class="formulario__contenedor-boton">
         <a href="{{ route('owner-tools') }}" class="categoria__boton">&laquo; Volver</a>
         {{-- <a href="{{ route('estadisticas') }}" class="categoria__boton"> Estadísticas <i class="owner__icono fa-solid fa-chart-pie"></i></a> --}}
@@ -36,26 +38,61 @@
             <div class="stats__contenedor-card stats__contenedor-card--blue">
                 <p class="stats__cards-descrip">Cotización Dolar Blue</p>
                 <p class="stats__cards-numero">$ {{ number_format($dolar_hoy->valor, 0, ',', '.') }}</p>
-                <p class="stats__cards-descrip">{{ date("d/m/y", strtotime($dolar_hoy->fecha))}}</p>
+                <p class="stats__cards-descrip">{{ date('d/m/y', strtotime($dolar_hoy->fecha)) }}</p>
 
             </div>
             <div class="stats__contenedor-card stats__contenedor-card--red">
                 <p class="stats__cards-descrip">Ganancia Mes Actual</p>
-                <p class="stats__cards-numero">$ ####</p>
+                <p class="stats__cards-numero" id="stats-ganancia-mes-actual">$ ####</p>
 
             </div>
 
         </div>
 
 
+        <div class="stats__contenedor-graficos-xl">
+            <div class="stats__contenedor-graficos-bar">
+
+                <div class="stats__grafico-bar"><canvas id="stats-buscados"></canvas></div>
+                <div class="stats__grafico-bar"><canvas id="stats-stock"></canvas></div>
 
 
+                <div class="stats__grafico-bar"><canvas id="stats-ventas"></canvas></div>
+                <div class="stats__grafico-bar"><canvas id="stats-compras"></canvas></div>
 
-        <div style="width: 800px;"><canvas id="stats-buscados"></canvas></div>
-        <div style="width: 800px;"><canvas id="stats-stock"></canvas></div>
-        <div style="width: 800px;"><canvas id="stats-categorias"></canvas></div>
-        <div style="width: 800px;"><canvas id="stats-providers"></canvas></div>
-        <div style="width: 800px;"><canvas id="stats-fabricantes"></canvas></div>
+                
+                <div class="stats__grafico-bar"><canvas id="stats-ventas-compras"></canvas></div>
+                </div>
+        
+                <div class="stats__contenedor-graficos-pie">
+                    <div class="stats__listado">
+                        <h4>Mayores Descuentos</h4>
+                        <ol>
+                            @foreach ($productos_principales_desc as $producto)
 
-    </div>
+                            <li>{{ $producto->nombre }} _ <span>{{ $producto->precio->desc_porc}} %</span></li>
+                                
+                            @endforeach
+
+                        </ol>
+                    </div>
+                    <div class="stats__grafico-pie">
+                        <h4>Cantidad de Productos por Categoria</h4>
+                        <div ><canvas id="stats-categorias"></canvas></div>
+                    </div>
+                    <div class="stats__grafico-pie">
+                        <h4>Cantidad de Productos por Proveedor</h4>
+                            
+                        <div ><canvas id="stats-providers"></canvas></div>
+                    </div>
+                    <div class="stats__grafico-pie">
+                        <h4>Cantidad de Productos por Fabricante</h4>
+                        
+                        <div ><canvas id="stats-fabricantes"></canvas></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
 @endsection()
