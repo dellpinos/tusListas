@@ -32,12 +32,20 @@ class EmpresaController extends Controller
 
     public function stock()
     {
+        // Evalua el rol del usuario
+        if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
+            return redirect(route('buscador'));
+        }
 
         return view('empresa.stock');
     }
 
     public function estadisticas()
     {
+        // Evalua el rol del usuario
+        if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin') {
+            return redirect(route('buscador'));
+        }
 
         $productos_todos = Producto::where('empresa_id', session('empresa')->id)->get();
         $precios_todos = Precio::where('empresa_id', session('empresa')->id)->get();
@@ -48,26 +56,18 @@ class EmpresaController extends Controller
         $stock_critico = 0;
         $productos_principales_desc = [];
 
-
         foreach ($precios_principales_desc as $precio_desc) {
 
             foreach ($productos_todos as $producto) {
 
                 if ($producto->precio_id === $precio_desc->id) {
 
-
-
                     $productos_principales_desc[] = $producto;
                 }
             }
         }
 
-
-
         foreach ($productos_todos as $producto) {
-
-
-
 
             foreach ($precios_todos as $precio) {
 
@@ -83,7 +83,6 @@ class EmpresaController extends Controller
                 }
             }
         }
-
 
         return view('empresa.estadisticas', [
             "total_invertido" => number_format($total_invertido, 0, ',', '.'),
