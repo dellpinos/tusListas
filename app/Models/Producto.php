@@ -31,24 +31,29 @@ class Producto extends Model
         'empresa_id'
     ];
 
-    public function fabricantes()
+    public function fabricante()
     {
         return $this->belongsTo(Fabricante::class);
     }
-    public function categorias()
+    public function categoria()
     {
         return $this->belongsTo(Categoria::class);
     }
-    public function providers()
+    public function provider()
     {
         return $this->belongsTo(Provider::class);
-    }
-    public function precioss()
-    {
-        return $this->hasMany(Precio::class);
     }
     public function empresas()
     {
         return $this->belongsTo(Empresa::class);
     }
+    // Debo revisar todas estas relaciones, esta tuve que corregirla (estaba invertida)
+    public function precio()
+    {
+        return $this->belongsTo(Precio::class);
+    }
+        // public function precios()
+    // {
+    //     return $this->hasMany(Precio::class);
+    // }
 }

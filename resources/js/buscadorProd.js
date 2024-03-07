@@ -1,4 +1,5 @@
 import * as helpers from './helpers';
+import Swal from 'sweetalert2';
 (function () {
 
     if (document.querySelector('#dashboard__contenedor-tabs')) {
@@ -889,12 +890,13 @@ import * as helpers from './helpers';
                 const fechaUTC = new Date(Date.UTC(year, mes, dia));
 
                 const opciones = {
-                    weekday: 'long',
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
                 }
                 const fechaFormateada = fechaUTC.toLocaleDateString('es-AR', opciones);
+                const precioFormateado = helpers.formatearDineroSinDecimales(resultado.producto.venta);
+                const costoFormateado = helpers.formatearDineroSinDecimales(resultado.precio.precio);
 
                 if (resultado.producto.unidad_fraccion === null) {
                     resultado.producto.unidad_fraccion = '';
@@ -905,27 +907,40 @@ import * as helpers from './helpers';
                 if (resultado.precio.desc_porc) {
                     // Producto en oferta
                     cardProducto.innerHTML = `
-                        <div class=" producto__contenedor producto__contenedor--descuento ">
-                            <a href="/producto/producto-show/${resultado.producto.id}">
-                                <h3 class="producto__card-nombre">${resultado.producto.nombre} - <span class="c-red">En Oferta</span></h3>
-                            </a>
-                            <div class="producto__grid-card">
-                                <div class="producto__card-info">
-                                    <p><span class=" font-bold">Código: </span>${resultado.producto.codigo.toUpperCase()}</p>
-                                    <p><span class="c-red font-bold">Descuento: </span>${resultado.precio.desc_porc} % </p>
-                                    <p><span class="c-red font-bold">Descuento finaliza en: </span>${resultado.precio.semanas_restantes} semanas</p>
-                                    <p><span class=" font-bold">Ganancia aplicada: </span>${resultado.producto.ganancia}</p>
-                                    <p><span class=" font-bold">Costo sin IVA: $ </span>${resultado.precio.precio}</p>
-                                    <p><span class=" font-bold">Modificación: </span>${fechaFormateada}</p>
-                                </div>
-                                <div class="producto__contenedor-precio">
-                                    <p class="producto__card-precio producto__card-precio--oferta">$ ${resultado.producto.venta}<span class="font-bold"> ${resultado.producto.unidad_fraccion}</span></p>
-                                    <div class="producto__btn-opts">
-                                        <a href="/producto/producto-edit/${resultado.producto.id}" class="producto__card-contenedor-boton producto__boton producto__boton--verde">Editar</a>
+
+                    <div class=" producto__contenedor producto__contenedor--descuento">
+                        <a href="/producto/producto-show/${resultado.producto.id}">
+                            <h3 class="producto__card-nombre">${resultado.producto.nombre} - <span class="c-red">En Oferta</span></h3>
+                        </a>
+                        <div class="producto__grid-card">
+                            <div class="producto__card-info">
+                                <p class=" font-bold">Código: <span class=" font-regular" >${resultado.producto.codigo.toUpperCase()}</span></p>
+                                <p class=" font-bold">Descuento: <span class="font-regular c-red">${resultado.precio.desc_porc} % </span></p>
+                                <p class=" font-bold">Descuento finaliza en: <span class="font-regular c-red">${resultado.precio.semanas_restantes} semanas</span></p>
+                                <p class=" font-bold">Ganancia aplicada: <span class=" font-regular" >${resultado.producto.ganancia}</span></p>
+                                <p class=" font-bold">Costo sin IVA: <span class=" font-regular" >${costoFormateado}</span></p>
+                                <p class=" font-bold">Stock Restante: <span class=" font-regular" id="producto-card-stock-actual">${resultado.producto.stock > 0 ? resultado.producto.stock - 1 : resultado.producto.stock}</span></p>
+                                <p class=" font-bold">Modificación: <span class=" font-regular" >${fechaFormateada}</span></p>
+                            </div>
+                            <div class="producto__contenedor-precio">
+                                <p class="producto__card-precio producto__card-precio--oferta">${precioFormateado}</span><span class="font-bold"> ${resultado.producto.unidad_fraccion}</span></p>
+                                <div class="producto__btn-opts">
+                                    <div class="producto__btn-venta">
+                                        <button class="producto__numero" id="producto-card-venta-submit">
+                                            Vender
+                                            <p id="producto-card-venta-numero">1</p>
+                                        </button>
+                                        <div class="producto__btns-arrows">
+                                            <i class="fa-solid fa-square-caret-up" id="producto-card-venta-up"></i>
+                                            <i class="fa-solid fa-square-caret-down" id="producto-card-venta-down"></i>
+                                        </div>
                                     </div>
+                                <a href="/producto/producto-edit/${resultado.producto.id}" class="producto__card-contenedor-boton producto__boton producto__boton--verde">Editar</a>
                                 </div>
                             </div>
                         </div>
+                    </div>
+
                 `;
 
                 } else {
@@ -939,20 +954,130 @@ import * as helpers from './helpers';
                         <div class="producto__grid-card">
 
                             <div class="producto__card-info">
-                                <p><span class=" font-bold">Código: </span>${resultado.producto.codigo.toUpperCase()}</p>
-                                <p><span class=" font-bold">Ganancia aplicada: </span>${resultado.producto.ganancia}</p>
-                                <p><span class=" font-bold">Costo sin IVA: $ </span>${resultado.precio.precio}</p>
-                                <p><span class=" font-bold">Modificación: </span>${fechaFormateada}</p>
+                                <p class=" font-bold">Código: <span class=" font-regular" >${resultado.producto.codigo.toUpperCase()}</span></p>
+                                <p class=" font-bold">Ganancia aplicada: <span class=" font-regular" >${resultado.producto.ganancia}</span></p>
+                                <p class=" font-bold">Costo sin IVA: <span class=" font-regular" >${costoFormateado}</span></p>
+                                <p class=" font-bold">Stock Restante: <span class=" font-regular" id="producto-card-stock-actual">${resultado.producto.stock > 0 ? resultado.producto.stock - 1 : resultado.producto.stock}</span></p>
+                                <p class=" font-bold">Modificación: <span class=" font-regular" >${fechaFormateada}</span></p>
                             </div>
                             <div class="producto__contenedor-precio">
-                                <p class="producto__card-precio">$ ${resultado.producto.venta}<span class="font-bold"> ${resultado.producto.unidad_fraccion}</span></p>
+                                <p class="producto__card-precio">${precioFormateado}</span><span class="font-bold"> ${resultado.producto.unidad_fraccion}</span></p>
                                 <div class="producto__btn-opts">
+
+                                    <div class="producto__btn-venta">
+                                    
+                                        <button class="producto__numero" id="producto-card-venta-submit">
+                                            Vender
+                                            <p id="producto-card-venta-numero">1</p>
+                                        </button>
+                                        <div class="producto__btns-arrows">
+                                        
+                                            <i class="fa-solid fa-square-caret-up" id="producto-card-venta-up"></i>
+                                            <i class="fa-solid fa-square-caret-down" id="producto-card-venta-down"></i>
+                                        </div>
+                                    </div>
                                     <a href="/producto/producto-edit/${resultado.producto.id}" class="producto__card-contenedor-boton producto__boton producto__boton--verde">Editar</a>
                                 </div>
                             </div>
                         </div>
                     </div
                 `;
+                }
+
+                if (document.querySelector('#producto-card-venta-up') && document.querySelector('#producto-card-venta-down')) {
+
+                    const stockOriginal = Number(document.querySelector('#producto-card-stock-actual').textContent);
+                    let cantidad = Number(document.querySelector('#producto-card-venta-numero').textContent);
+                    let stock = Number(document.querySelector('#producto-card-stock-actual').textContent);
+
+                    document.querySelector('#producto-card-venta-submit').addEventListener('click', async () => {
+
+                        const respuesta = await informarVenta(cantidad, stock, resultado.producto.id);
+
+                        if (respuesta) {
+                            Swal.fire({
+                                title: `Has vendido ${cantidad} productos`,
+                                icon: 'info',
+                                confirmButtonText: 'OK',
+                                buttonsStyling: false,
+                                customClass: {
+                                    confirmButton: 'btn btn-confirm'
+                                }
+                            }).then(() => {
+
+                                location.reload();
+
+                            });
+                        }
+                    });
+
+                    async function informarVenta(cantidadVendida, stockRestante, id) {
+                        // En la DB se almacena el ingreso total, el precio de venta restando el costo
+                        // la cantidad sirve para multiplicar el precio de venta
+                        // el stock puede ser diferente a la cantidad si el usuario no tiene el stock al dia
+
+                        try {
+                            const datos = new FormData();
+                            datos.append('id', id);
+                            datos.append('cantidad_vendida', cantidadVendida);
+                            datos.append('stock_restante', stockRestante);
+
+                            const url = '/api/ventas/create';
+                            const respuesta = await fetch(url, {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': tokenCSRF
+                                },
+                                body: datos
+                            });
+
+                            let resultado = await respuesta.json();
+
+                            return resultado;
+
+                        } catch (error) {
+                            console.log(error);
+                        }
+
+                    }
+
+                    document.querySelector('#producto-card-venta-up').addEventListener('click', () => {
+
+                        if (cantidad < 99) {
+                            cantidad++;
+                            document.querySelector('#producto-card-venta-numero').textContent = cantidad;
+                            if (stock >= 1) {
+                                stock--;
+                                document.querySelector('#producto-card-stock-actual').textContent = stock;
+                            }
+                        }
+                        if (stock === 0) {
+                            document.querySelector('#producto-card-stock-actual').classList.add('c-red');
+                        } else {
+                            document.querySelector('#producto-card-stock-actual').classList.remove('c-red');
+
+                        }
+
+                    });
+                    document.querySelector('#producto-card-venta-down').addEventListener('click', () => {
+
+
+                        if (cantidad > 1) {
+                            cantidad--;
+                            document.querySelector('#producto-card-venta-numero').textContent = cantidad;
+                            if (stock < stockOriginal && cantidad <= stockOriginal) {
+                                stock++;
+                                document.querySelector('#producto-card-stock-actual').textContent = stock;
+                            }
+                        }
+                        if (stock === 0) {
+                            document.querySelector('#producto-card-stock-actual').classList.add('c-red');
+                        } else {
+                            document.querySelector('#producto-card-stock-actual').classList.remove('c-red');
+
+                        }
+
+                    });
                 }
 
             } catch (error) {

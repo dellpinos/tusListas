@@ -18,14 +18,12 @@ class APIPendientes extends Controller
         $pendiente = Pendiente::orderBy('created_at', 'asc')->where('empresa_id', session('empresa')->id)->first();
 
         echo json_encode($pendiente);
-
     }
     public function count()
     {
         $pendientes = Pendiente::where('empresa_id', session('empresa')->id)->count();
 
         echo json_encode($pendientes);
-
     }
     public function create(Request $request)
     {
@@ -39,6 +37,12 @@ class APIPendientes extends Controller
 
         ]);
 
+        // Almacenar Compra
+        $compra = new APICompras;
+        $compra->nueva_compra($request);
+
+
+        // Almaceno Pendiente
         $pendiente = Pendiente::create([
             'nombre' => $request->nombre,
             'precio' => $request->precio,
@@ -55,7 +59,7 @@ class APIPendientes extends Controller
 
         $id = filter_var($request->id, FILTER_VALIDATE_INT);
 
-        if(!$id) {
+        if (!$id) {
             echo json_encode("Algo salió mal :( ");
             return;
         }
@@ -64,6 +68,5 @@ class APIPendientes extends Controller
         $resultado = $pendiente->delete();
 
         echo json_encode($resultado);
-
     }
 }

@@ -6,16 +6,17 @@
 @endsection
 
 @section('titulo')
-    Ingreso de Mercaderia
+    Revisión de Stock
 @endsection
 
 @section('contenido')
-<p class="mensaje__info">Dolar aplicado a esta mercaderia: U$S <span class="ingreso__numero">{{ number_format($dolar_hoy->valor, 0, ',', '.') }}</span></p>
+
+<p class="mensaje__info">Aquí puedes consultar/modificar el stock y los descuentos</p>
     <div class="ingreso__contenedor">
 
-        <h3>Ingreso de Productos</h3>
+        <h3>Productos</h3>
 
-        <div class="ingreso__grid" id="mercaderia-grid">
+        <div class="ingreso__grid" id="owner-stock-grid"> 
             
             <label class="formulario__label ingreso__label" for="mercaderia-checkbox">Pendiente</label>
             <label class="formulario__label ingreso__label" for="mercaderia-checkbox">Cant</label>

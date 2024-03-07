@@ -9,6 +9,9 @@
 .swal2-cancel {
 
 }
+.swal2-confim {
+
+}
 .btn {
     cursor: pointer;
     display: inline-block;
@@ -45,6 +48,16 @@
     &:hover {
         background-color: darken(v.$rojo, 20%);
     }
+}
+.btn-confirm {
+    color: v.$blanco;
+    background-color: v.$azul;
+    border-color: v.$azul;
+
+    &:hover {
+        background-color: darken(v.$azul, 10%);
+    }
+
 }
 
 // Clases personalizadas dentro de las alertas Sweert Alers

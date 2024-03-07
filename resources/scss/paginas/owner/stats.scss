@@ -1,0 +1,129 @@
+@use '../../base/variables' as v;
+@use '../../base/mixins' as m;
+
+.stats {
+
+    &__grid-cards {
+
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 2rem;
+    }
+
+    &__contenedor-card {
+        color: v.$blanco;
+        margin: 3rem 0 3rem 0;
+        border-radius: 1rem;
+        overflow: hidden;
+        white-space: nowrap;
+        padding: 1rem;
+
+        &--red {
+            @include m.bg-gradient(v.$rojoSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$rojoSobrio, 5%));
+            }
+        }
+
+        &--orange {
+            @include m.bg-gradient(v.$naranjaSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$naranjaSobrio, 5%));
+            }
+        }
+
+        &--green {
+            @include m.bg-gradient(v.$verdeSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$verdeSobrio, 5%));
+            }
+        }
+
+        &--blue {
+            @include m.bg-gradient(v.$azulSobrio);
+            &:hover {
+                @include m.bg-gradient(darken(v.$azulSobrio, 5%));
+            }
+        }
+
+    }
+
+    &__cards-numero {
+        text-align: center;
+        margin: 0;
+        font-size: 2rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 1rem;
+        font-weight: v.$bold;
+    }
+
+    &__cards-descrip {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+        padding: 0 1rem;
+        font-size: 1.4rem;
+
+    }
+
+    &__listado {
+        margin-bottom: 5rem;
+
+
+        li {
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            list-style: decimal;
+        }
+
+        span {
+            font-weight: v.$bold;
+            color: v.$rojoSobrio;
+        }
+
+        h4 {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: v.$regular;
+        }
+    }
+
+    &__contenedor-graficos-xl {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        gap: 2rem;
+        margin-top: 5rem;
+        width: 100%;
+    }
+
+    &__contenedor-graficos-bar {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+    }
+    
+    &__contenedor-graficos-pie {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        width: 100%;
+        
+    }
+
+    &__grafico-bar {
+        width: 100%;
+    }
+
+    &__grafico-pie {
+        width: 100%;
+
+        h4 {
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: v.$regular;
+        }
+    }
+}

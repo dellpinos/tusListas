@@ -58,6 +58,9 @@
 .font-bold {
     font-weight: v.$bold;
 }
+.font-regular {
+    font-weight: 400;
+}
 .mt-1 {
     margin-top: 1rem;
 }
@@ -66,6 +69,11 @@
 }
 .mb-10 {
     margin-bottom: 10rem;
+}
+.pointer-disabled {
+    cursor: not-allowed!important;
+    background-color: v.$grisBlancoClaro!important;
+    color: v.$grisBlanco!important;
 }
 .no-pointer {
     cursor: default !important;

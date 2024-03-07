@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\APIStats;
 use App\Http\Controllers\APICodigo;
+use App\Http\Controllers\APIVentas;
+use App\Http\Controllers\APICompras;
 use App\Http\Controllers\APIAumentos;
 use App\Http\Controllers\APIBuscador;
 use App\Http\Controllers\APICalculos;
@@ -45,6 +48,9 @@ Route::get('/buscador', [ProductoController::class, 'index'])->name('buscador');
 
 // Empresa
 Route::get('/owner-tools', [EmpresaController::class, 'index'])->name('owner-tools');
+Route::get('/owner-tools/stats', [EmpresaController::class, 'estadisticas'])->name('estadisticas');
+
+Route::get('/owner-tools/stock', [EmpresaController::class, 'stock'])->name('owner.stock');
 
 
 Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil');
@@ -103,11 +109,7 @@ Route::post('/api/buscador/todos', [APIBuscador::class, 'index']);
 Route::post('/api/buscador/producto', [APIBuscador::class, 'nombre_producto']);
 Route::post('/api/buscador/producto-codigo', [APIBuscador::class, 'codigo_producto']);
 Route::post('/api/buscador/producto-individual', [APIBuscador::class, 'producto_individual']);
-
-
 Route::get('/api/buscador/consultarCFP', [APIBuscador::class, 'consultar_CFP']);
-
-
 
 // API OwnerTools
 Route::get('/api/owner-tools/all', [APIOwnerTools::class, 'all']);
@@ -115,6 +117,10 @@ Route::get('/api/owner-tools/name', [APIOwnerTools::class, 'name']);
 Route::post('/api/owner-tools/destroy', [APIOwnerTools::class, 'destroy']);
 Route::post('/api/owner-tools/update', [APIOwnerTools::class, 'update']);
 Route::post('/api/owner-tools/send', [APIOwnerTools::class, 'send']);
+
+// API Stats
+Route::get('/api/stats/buscados', [APIStats::class, 'buscados']);
+Route::get('/api/stats/stock', [APIStats::class, 'stock']);
 
 // API Calculos
 Route::post('/api/calculo/ganancia', [APICalculos::class, 'calculo_ganancia']);
@@ -158,3 +164,10 @@ Route::post('/api/pendientes/destroy', [APIPendientes::class, 'destroy']);
 Route::get('/api/tutorial/consulta', [APITutorial::class, 'consulta']);
 Route::post('/api/tutorial/modificar', [APITutorial::class, 'modificar']);
 Route::post('/api/tutorial/set-lvl', [APITutorial::class, 'set_lvl']);
+
+// API Ventas
+Route::get('/api/ventas/all', [APIVentas::class, 'index']);
+Route::post('/api/ventas/create', [APIVentas::class, 'nueva_venta']);
+
+// API Compras
+Route::get('/api/compras/all', [APICompras::class, 'index']);

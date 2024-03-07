@@ -125,6 +125,73 @@
         &--oferta {
             color: v.$rojo;
         }
+
+
+    }
+
+    &__btn-venta {
+        display: flex;
+        align-items: center;
+        color: v.$blanco;
+        background-color: v.$verde;
+        font-size: 1.8rem;
+        font-weight: v.$bold;
+        text-transform: uppercase;
+        margin: 2rem;
+        border-radius: .5rem;
+
+        button {
+            background-color: inherit;
+            border: none;
+            font-size: inherit;
+            text-transform: inherit;
+            font-weight: inherit;
+
+        }
+
+        p {
+            font-size: 2.5rem;
+        }
+
+    }
+    &__numero {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+        color: v.$blanco;
+        height: 100%;
+        padding: 0 0 0 3rem;
+        border-radius: .5rem;
+        transition: background-color .5s ease;
+        min-width: 17rem;
+        &:hover {
+            background-color: darken(v.$verde, 10%);
+            cursor: pointer;
+        }
+    }
+
+    &__btns-arrows {
+        display: flex;
+        flex-direction: column;
+
+        i {
+
+            border: 1px solid rgba(v.$blanco, .7);
+            padding: .5rem;
+            font-size: 2rem;
+            &:hover {
+                color: v.$naranja;
+                cursor: pointer;
+            }
+        }
+        
+        i:nth-child(1) {
+            border-radius: 0 .5rem 0 0;
+
+        }
+        i:nth-child(2) {
+            border-radius: 0 0 .5rem 0;
+        }
     }
 
     &__btn-opts {
@@ -132,7 +199,7 @@
         
         @include m.tablet {
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
         }
 
     }

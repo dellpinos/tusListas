@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
+
 class ProductoController extends Controller
 {
     public function __construct()
@@ -20,6 +21,10 @@ class ProductoController extends Controller
     }
     public function index()
     {
+
+        // prueba consulta dolar
+        $prueba = new APICotDolar;
+        $prueba->consultaDolar();
 
         return view('producto.buscador');
     }
