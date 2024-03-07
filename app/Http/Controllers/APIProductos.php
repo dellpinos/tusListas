@@ -138,33 +138,55 @@ class APIProductos extends Controller
         $precio = Precio::where('id', $producto->precio_id)->where('empresa_id', session('empresa')->id)->first();
 
         $precio->increment('contador_update');
-        $precio->dolar = $request->dolar;
         $precio->precio = $request->precio;
         $precio->desc_porc = $request->descuento;
         $precio->desc_duracion = $request->semanas;
+
+        // Evalua si modificar el dolar
+        if (!$request->stock_flag) {
+            // Ingreso mercaderia
+            $precio->dolar = $request->dolar;
+        }
 
         if (!is_null($request->descuento)) {
             $precio->increment('desc_acu');
         }
 
         if (!is_null($request->cantidad)) {
-            $producto->stock += $request->cantidad;
-        }
 
-        $resultado = $producto->save();
+            // Evalua si modificar el stock o acumularlo
+            if ($request->stock_flag) {
+                // Revisión stock
+                $producto->stock = $request->cantidad;
+            } else {
+                // Ingreso mercaderia
+                $producto->stock += $request->cantidad;
+            }
+        }
 
         // Almacenar compra
         $compra = new APICompras;
-        $compra->nueva_compra($request);
+        $compra_resultado = $compra->nueva_compra($request);
 
-        if ($resultado) {
-            $respuesta = $precio->save();
+        if($compra_resultado) {
 
-            if ($respuesta) {
-                echo json_encode($respuesta);
+            $resultado = $producto->save();
+
+            if ($resultado) {
+                $respuesta = $precio->save();
+    
+                if ($respuesta) {
+                    echo json_encode($respuesta);
+                }
+            } else {
+                echo json_encode($resultado);
             }
+
         } else {
-            echo json_encode($resultado);
+
+            echo json_encode([
+                'mensaje' => "El monto de la compra es demasiado alto"
+            ]);
         }
     }
 }

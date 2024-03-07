@@ -50,6 +50,8 @@ Route::get('/buscador', [ProductoController::class, 'index'])->name('buscador');
 Route::get('/owner-tools', [EmpresaController::class, 'index'])->name('owner-tools');
 Route::get('/owner-tools/stats', [EmpresaController::class, 'estadisticas'])->name('estadisticas');
 
+Route::get('/owner-tools/stock', [EmpresaController::class, 'stock'])->name('owner.stock');
+
 
 Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil');
 

@@ -30,6 +30,12 @@ class EmpresaController extends Controller
         ]);
     }
 
+    public function stock()
+    {
+
+        return view('empresa.stock');
+    }
+
     public function estadisticas()
     {
 

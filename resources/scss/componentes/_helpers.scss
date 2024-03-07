@@ -70,6 +70,11 @@
 .mb-10 {
     margin-bottom: 10rem;
 }
+.pointer-disabled {
+    cursor: not-allowed!important;
+    background-color: v.$grisBlancoClaro!important;
+    color: v.$grisBlanco!important;
+}
 .no-pointer {
     cursor: default !important;
 }

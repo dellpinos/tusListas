@@ -45,17 +45,28 @@ class APICompras extends Controller
     }
     public function nueva_compra(Request $request)
     {
+        $this->validate($request, [
+            'cantidad' => 'integer|nullable|min:1|max:999999',
+            'precio' => 'numeric|required|max:99999999|min:0',
+        ]);
+
         // Dolar Actual
         $dolar_hoy = Dolar::orderBy('fecha', 'DESC')->first();
         $monto_compra = intval($request->precio) * $request->cantidad;
         $monto_compra_dolar = (intval($request->precio) * $request->cantidad) / intval($dolar_hoy->valor);
 
+        if($monto_compra > 99999999 || $monto_compra_dolar > 999999) {
+            return false; // El monto es demasiado alto
+        }
+
         // Almaceno compra
-        $compra = Compra::create([
+        return $compra = Compra::create([
             'monto' => $monto_compra,
             'monto_dolar' => $monto_compra_dolar,
             'empresa_id' => session('empresa')->id,
         ]);
+
+        
     }
 
 }

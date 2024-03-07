@@ -1,4 +1,5 @@
 import * as helpers from './helpers';
+import Swal from 'sweetalert2';
 (function () {
 
     if (document.querySelector('#dashboard__contenedor-tabs')) {
@@ -990,12 +991,27 @@ import * as helpers from './helpers';
                     let cantidad = Number(document.querySelector('#producto-card-venta-numero').textContent);
                     let stock = Number(document.querySelector('#producto-card-stock-actual').textContent);
 
-                    document.querySelector('#producto-card-venta-submit').addEventListener('click', () => {
+                    document.querySelector('#producto-card-venta-submit').addEventListener('click', async () => {
 
-                        // enviar request a la DB
-                        console.log('click');
-                        const respuesta = informarVenta(cantidad, stock, resultado.producto.id);
-                        console.log(respuesta);
+                        const respuesta = await informarVenta(cantidad, stock, resultado.producto.id);
+
+                        if (respuesta) {
+                            Swal.fire({
+                                title: `Has vendido ${cantidad} productos`,
+                                icon: 'info',
+                                confirmButtonText: 'OK',
+                                buttonsStyling: false,
+                                customClass: {
+                                    confirmButton: 'btn btn-confirm'
+                                }
+                            }).then(() => {
+
+                                location.reload();
+
+                            });
+                        }
+
+
                     });
 
                     async function informarVenta(cantidadVendida, stockRestante, id) {
@@ -1008,7 +1024,7 @@ import * as helpers from './helpers';
                             datos.append('id', id);
                             datos.append('cantidad_vendida', cantidadVendida);
                             datos.append('stock_restante', stockRestante);
-        
+
                             const url = '/api/ventas/create';
                             const respuesta = await fetch(url, {
                                 method: 'POST',
@@ -1017,11 +1033,11 @@ import * as helpers from './helpers';
                                 },
                                 body: datos
                             });
-        
+
                             let resultado = await respuesta.json();
-        
+
                             return resultado;
-        
+
                         } catch (error) {
                             console.log(error);
                         }
@@ -1033,7 +1049,7 @@ import * as helpers from './helpers';
 
 
                     document.querySelector('#producto-card-venta-up').addEventListener('click', () => {
-                        
+
 
                         if (cantidad < 99) {
                             cantidad++;
@@ -1043,7 +1059,7 @@ import * as helpers from './helpers';
                                 document.querySelector('#producto-card-stock-actual').textContent = stock;
                             }
                         }
-                        if(stock === 0) {
+                        if (stock === 0) {
                             document.querySelector('#producto-card-stock-actual').classList.add('c-red');
                         } else {
                             document.querySelector('#producto-card-stock-actual').classList.remove('c-red');
@@ -1062,7 +1078,7 @@ import * as helpers from './helpers';
                                 document.querySelector('#producto-card-stock-actual').textContent = stock;
                             }
                         }
-                        if(stock === 0) {
+                        if (stock === 0) {
                             document.querySelector('#producto-card-stock-actual').classList.add('c-red');
                         } else {
                             document.querySelector('#producto-card-stock-actual').classList.remove('c-red');

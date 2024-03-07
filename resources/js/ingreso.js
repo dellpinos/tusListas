@@ -1,12 +1,15 @@
 import * as helpers from './helpers';
+import Swal from 'sweetalert2';
 
+// Script para Ingreso Mercaderia y Revisión de Stock
 (function () {
 
-    if (document.querySelector('#mercaderia-grid')) {
+    if (document.querySelector('.ingreso__grid')) {
 
         const tokenCSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const grid = document.querySelector('#mercaderia-grid');
+        const grid = document.querySelector('.ingreso__grid');
         const dolarPrevio = document.querySelector('.ingreso__numero');
+        let ownerStockFlag = false;
         let flag = 0; // Saber cuando se obtuvo el primer resultado de la DB
         let flagIVA = false; // False -> sin IVA / True -> con IVA
         let arrayCoincidencias = []; // Aqui se almacena el resultado de la DB
@@ -14,6 +17,12 @@ import * as helpers from './helpers';
         let precioId = ''; // Precio seleccionado que será almacenado
         let productoId = ''; // Producto seleccionado que será almacenado
         let contForms = 0;
+
+        // Verifica si es Owner Stock o no (la diferencia son los campos Pendiente y Precio)
+        if (document.querySelector('#owner-stock-grid')) {
+            ownerStockFlag = true;
+        }
+
 
         document.addEventListener('DOMContentLoaded', app);
 
@@ -70,11 +79,11 @@ import * as helpers from './helpers';
                     cantidad.classList.remove('b-red', 'b-green');
                 }
 
-                if(flagIVA) {
+                if (flagIVA) {
                     objV.precio = Math.round(objV.precio / 1.21);
 
                 }
-                
+
                 // Almacenar informacion
                 const resultado = await almacenarDatos(objV);
 
@@ -147,7 +156,15 @@ import * as helpers from './helpers';
                     datos.append('precio', precio);
                     datos.append('descuento', descuento);
                     datos.append('semanas', semanas);
-                    datos.append('dolar', dolar);
+
+                    if (dolar) {
+                        datos.append('dolar', dolar);
+                    }
+
+                    // Flag, modificar stock en vez de acumularlo
+                    if (ownerStockFlag) {
+                        datos.append('stock_flag', true);
+                    }
 
                     const url = '/api/productos/update';
                     const respuesta = await fetch(url, {
@@ -159,10 +176,29 @@ import * as helpers from './helpers';
                     });
 
                     let resultado = await respuesta.json();
+
+                    if (resultado.mensaje) {
+
+                        Swal.fire({
+                            title: resultado.mensaje,
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'btn btn-confirm'
+                            }
+                        });
+
+                        return false;
+
+
+
+                    }
+
                     return resultado;
 
                 } catch (error) {
-                    console.log('El servidor no responde');
+                    console.log(error);
                 }
             }
         }
@@ -294,8 +330,13 @@ import * as helpers from './helpers';
                 let cantidadDB = '';
                 let descuentoDB = '';
                 const pendiente = objV.pendiente;
+                let dolar = 1;
 
-                let dolar = parseInt(dolarPrevio.textContent);
+                if (dolarPrevio) {
+                    // Evita el undefined en Revisión de Stock
+                    dolar = parseInt(dolarPrevio.textContent);
+
+                }
 
                 // Reemplazo NaN por null
                 if (isNaN(parseInt(cantidad.value))) {
@@ -379,8 +420,6 @@ import * as helpers from './helpers';
         }
         function generarForm() {
 
-            /// crear un label para cada campon e inhabilitarlo con display:none / habilitarlo en mq:phone a la vez que deshabilito los que se encuentran en el HTML
-
 
             // Añado contenedor y Label para la versión móvil
             const contenedorLabelCheckbox = document.createElement('DIV');
@@ -399,9 +438,14 @@ import * as helpers from './helpers';
             checkbox.type = 'checkbox';
             checkbox.classList.add('formulario__checkbox');
 
+            // Desabilita en Owner Stock
+            if (ownerStockFlag) {
+                checkbox.disabled = true;
+                checkbox.classList.add('pointer-disabled');
+            }
+
             contenedorCheck.appendChild(checkbox);
             contenedorLabelCheckbox.appendChild(contenedorCheck);
-
 
             const contenedorLabelCantidad = document.createElement('DIV');
             contenedorLabelCantidad.classList.add('ingreso__contenedor-campo-movil');
@@ -479,6 +523,12 @@ import * as helpers from './helpers';
             precio.classList.add('formulario__campo', 'ingreso__campo-precio');
             precio.placeholder = "Precio sin IVA";
 
+            // Desabilita en Owner Stock
+            if (ownerStockFlag) {
+                precio.disabled = true;
+                precio.classList.add('pointer-disabled');
+            }
+
             const optIVA = document.createElement('P');
             optIVA.textContent = "sin IVA";
             optIVA.classList.add('ingreso__checkbox-IVA');
@@ -489,28 +539,34 @@ import * as helpers from './helpers';
 
             contenedorLabelPrecio.appendChild(contenedorPrecio);
 
-            contenedorCheckIVA.addEventListener('click', () => {
+            // Desabilita en Owner Stock
+            if (ownerStockFlag) {
+                optIVA.classList.add('pointer-disabled');
 
-                if(!flagIVA) {
-                    // Con IVA
+            } else {
+                contenedorCheckIVA.addEventListener('click', () => {
 
-                    flagIVA = true;
-                    optIVA.classList.add('ingreso__checkbox-IVA--checked');
-                    precio.placeholder = "Precio con IVA";
-                    optIVA.textContent = "con IVA";
-                    labelMovilPrecio.textContent = "Precio con IVA";
-                    precio.classList.add('ingreso__campo-precio--checked');
-                } else {
-                    // Sin IVA
+                    if (!flagIVA) {
+                        // Con IVA
 
-                    flagIVA = false;
-                    precio.classList.remove('ingreso__campo-precio--checked');
-                    optIVA.classList.remove('ingreso__checkbox-IVA--checked');
-                    precio.placeholder = "Precio sin IVA";
-                    optIVA.textContent = "sin IVA";
-                    labelMovilPrecio.textContent = "Precio sin IVA";
-                }
-            });
+                        flagIVA = true;
+                        optIVA.classList.add('ingreso__checkbox-IVA--checked');
+                        precio.placeholder = "Precio con IVA";
+                        optIVA.textContent = "con IVA";
+                        labelMovilPrecio.textContent = "Precio con IVA";
+                        precio.classList.add('ingreso__campo-precio--checked');
+                    } else {
+                        // Sin IVA
+
+                        flagIVA = false;
+                        precio.classList.remove('ingreso__campo-precio--checked');
+                        optIVA.classList.remove('ingreso__checkbox-IVA--checked');
+                        precio.placeholder = "Precio sin IVA";
+                        optIVA.textContent = "sin IVA";
+                        labelMovilPrecio.textContent = "Precio sin IVA";
+                    }
+                });
+            }
 
             const contenedorLabelDescuento = document.createElement('DIV');
             contenedorLabelDescuento.classList.add('ingreso__contenedor-campo-movil');
@@ -756,9 +812,15 @@ import * as helpers from './helpers';
 
         function completarCampos(DBproducto, DBprecio, obj, inputProducto) {
 
-            const { checkbox, codigo, nombre, precio, descuento, semanas } = obj;
+            const { checkbox, codigo, nombre, precio, descuento, semanas, cantidad } = obj;
 
             codigo.value = DBproducto.codigo.toUpperCase();
+
+
+            // Desabilita en Owner Stock
+            if (ownerStockFlag) {
+                cantidad.value = DBproducto.stock;
+            }
 
             if (inputProducto) {
                 inputProducto.value = DBproducto.nombre;
