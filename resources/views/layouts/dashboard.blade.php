@@ -41,13 +41,14 @@
                 <nav class="header__nav">
                     @if (auth()->user()->user_type === 'admin' || auth()->user()->user_type === 'owner')
                         <a class="header__enlace header__enlace--admin @if (request()->path() === 'owner-tools') header__enlace--activo @endif
-                        " href="{{ route('owner-tools') }}">
+                        "
+                            href="{{ route('owner-tools') }}">
 
                             <i class="fa-solid fa-user-gear"></i>
                             <span class="font-regular">Admin</span></a>
                     @endif
-                    <a class="header__enlace font-regular @if (request()->path() === 'ayuda') header__enlace--activo @endif" 
-                    href="{{ route('ayuda') }}">
+                    <a class="header__enlace font-regular @if (request()->path() === 'ayuda') header__enlace--activo @endif"
+                        href="{{ route('ayuda') }}">
                         <i class="fa-solid fa-circle-info"></i>
                         Ayuda
                     </a>
@@ -89,6 +90,12 @@
                     <p class="sidebar__texto-icono">Producto</p>
                 </a>
 
+                <a href="{{ route('agenda') }}" id="sidebar-agenda"
+                    class="sidebar__enlace @if (request()->path() === 'agenda') activo @endif">
+                    <i class="fa-solid fa-address-card sidebar__icono"></i>
+                    <p class="sidebar__texto-icono">Agenda</p>
+                </a>
+
                 {{-- Condicional dependiendo el rol del usuario --}}
                 @if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin')
                     <a href="#" class="sidebar__enlace no-owner @if (request()->path() === 'aumentos') activo @endif ">
@@ -104,11 +111,21 @@
                     </a>
                 @endif
 
-                <a href="{{ route('agenda') }}" id="sidebar-agenda"
-                    class="sidebar__enlace @if (request()->path() === 'agenda') activo @endif">
-                    <i class="fa-solid fa-address-card sidebar__icono"></i>
-                    <p class="sidebar__texto-icono">Agenda</p>
-                </a>
+                {{-- Condicional dependiendo el rol del usuario --}}
+                @if (auth()->user()->user_type !== 'owner' && auth()->user()->user_type !== 'admin')
+                    <a href="#"
+                        class="sidebar__enlace no-owner @if (request()->path() === 'aumentos') activo @endif ">
+                        <i class="fa-solid fa-chart-pie" sidebar__icono"></i>
+                        <p class="sidebar__texto-icono">Estadísticas</p>
+                        <i class="sidebar__alert sidebar__alert-no-owner fa-solid fa-user-gear"></i>
+                    </a>
+                @else
+                    <a href=" {{ route('estadisticas') }} "
+                        class="sidebar__enlace @if (request()->path() === 'owner-tools/stats') activo @endif ">
+                        <i class="fa-solid fa-chart-pie sidebar__icono"></i>
+                        <p class="sidebar__texto-icono">Estadísticas</p>
+                    </a>
+                @endif
 
                 {{-- Solo visibles en móviles --}}
                 <a href="{{ route('perfil') }}"

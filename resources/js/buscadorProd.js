@@ -953,7 +953,6 @@ import Swal from 'sweetalert2';
                         </a>
                         <div class="producto__grid-card">
 
-
                             <div class="producto__card-info">
                                 <p class=" font-bold">Código: <span class=" font-regular" >${resultado.producto.codigo.toUpperCase()}</span></p>
                                 <p class=" font-bold">Ganancia aplicada: <span class=" font-regular" >${resultado.producto.ganancia}</span></p>
@@ -1010,8 +1009,6 @@ import Swal from 'sweetalert2';
 
                             });
                         }
-
-
                     });
 
                     async function informarVenta(cantidadVendida, stockRestante, id) {
@@ -1042,14 +1039,9 @@ import Swal from 'sweetalert2';
                             console.log(error);
                         }
 
-                        // Alert que informa al usuario y disminuir el stock restando la cantidad
-
-
                     }
 
-
                     document.querySelector('#producto-card-venta-up').addEventListener('click', () => {
-
 
                         if (cantidad < 99) {
                             cantidad++;
